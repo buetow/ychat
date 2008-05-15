@@ -312,7 +312,7 @@ are very likely to work too.
 
 For SVN download type:
 
-svn co --username=anon http://svn.buetow.org/repos/ychat
+svn co --username=anon http://svn.buetow.org/repos/ychat/trunk
 
 Now you may continue with the installation.
 
