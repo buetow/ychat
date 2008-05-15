@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#cp -f Makefile.in Makefile
+cd ./src
+./configure $@
+
+if test -d mods; then
+  cd ./mods
+  ./configure fromtop
+  cd ..
+fi
