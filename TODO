@@ -1,0 +1,39 @@
+- Must todos for next RELEASE -
+$ Finish make install PREFIX check (ychat.conf, conf/conf.cpp)
+$ Add gmake check
+$ Fix ./configure (checking for libs in /usr/local/lib etc also)
+$ Functional libevent version
+
+- Might todos for next RELEASE -
+$ Add struct event pool
+$ Add context pool
+$ Check shashmap usage
+$ Test yttpdbase rule of ./Makefile
+$ Add thread pool decreasing
+$ Disable /help command for commands wich are not accessible for the
+$ specific user.
+$ Add /nick, /beam, /su
+$ Add / to whisper to the last person to whom the user has been whispered the last time.
+
+- Known bugs -
+$ Using yChat via proxy sometimes causes a white chat stream. This might be
+$ resolved by implementing last modified and current time/date informations
+$ into the HTTP header.
+
+- To do in general for some later RELEASE -
+$ Implement IRC support
+$ Implement a http:// url detection and make a link out of it!
+$ Implement MPI support for some nice load balancing stuff
+$ Implement msession support (only optional)
+$ Implement a switch so that all dynamic dlopen modules can be compiled within the yChat executable not using dlopen. 
+$ Implement dynamic timer
+$ Implement ODBC support
+$ Implement login counter.
+$ Implement msg post counter.
+$ Implement online time counter.
+$ Implement more chat commands
+$ Implement possibility sending Mails through external SMTP server (for password reminder etc)
+$ Implement compatibility to Opera, Links, Konqueror and Safari
+$ Implement browser side caching for gfx files support 
+$ Remove user.cpp member variables as possible and replace them with hash maps 
+$ Write changes of the configuration back into XML if wished.
