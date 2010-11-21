@@ -1,3 +1,0 @@
-All lines marked //<<  and all lines between the //<<* and
-the //*>> marks are used to remove code from the yChat source
-tree to generate an yhttpd tree out of it.
