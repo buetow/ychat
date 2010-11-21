@@ -1,0 +1,3 @@
+ERRORCMD=" <font color='#FF0000'>No such command!</font><br>";
+USERENTR=" enters the chat<br>";
+USERLEAV=" leaves the chat<br>";
