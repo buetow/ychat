@@ -1,0 +1,21 @@
+SRCS=WILLBEADDEDBYCONFIGURE
+OBJS=$(addprefix ../obj/,$(SRCS:.cpp=.o))
+CC=WILLBEADDEDBYCONFIGURE
+LIBADD=`cat libs.add`
+LDFLAGS=$(LIBADD) -lstdc++
+LDADD=
+INCLUDES=`cat includes.add`
+CFLAGS=-fno-inline -fno-default-inline -frepo 
+all: ycurses	
+$(SRCS):
+	$(CC) $(INCLUDES) $(CFLAGS) -c $*.cpp 
+infotext:
+	@echo Compiling base
+ycurses:  infotext $(OBJS) 
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDADD) 
+	@mv ycurses ../bin
+	@echo -n "Size of linked executable: " 
+	@du -hc ../bin/ycurses | tail -n 1
+clean: 
+	@echo Cleaning base obj
+	@if test -d ../obj; then rm -Rf ../obj; fi

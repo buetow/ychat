@@ -1,0 +1,17 @@
+template<class T>
+coordinate
+create_coordinate(dummy_window& d_window)
+{
+  coordinate coord;
+  T(d_window, coord.x, coord.y);
+  return coord; 
+}
+
+template<class T>
+coordinate
+create_coordinate()
+{
+  coordinate coord;
+  T(coord.x, coord.y);
+  return coord; 
+}

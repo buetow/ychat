@@ -1,0 +1,6 @@
+All scripts should be run from the ycurses main directory, example:
+
+./scripts/makeycurses.pl
+
+
+A ./makeycurses.pl WILL NOT work :)
