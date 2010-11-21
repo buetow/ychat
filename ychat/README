@@ -61,46 +61,46 @@ yhttpd does not have as much features but is easy to use and faster than
 apache. yhttpd is a subset of the chat. It can be generated using the
 srcipts/yhttpdbase.pl script in the chat's source tree. 
 
-There are different branches:
+There are different kinds:
 
 - CURRENT - 
-The CURRENT branch is unstable, this is the bleeding developing edge with 
+The CURRENT kind is unstable, this is the bleeding developing edge with 
 all the new experimental features.
 
 A RELEASE of CURRENT can be referred as CURRENTRELEASE.
 
 - STABLE -
-The STABLE branch is more stable than CURRENT. This branch may get new
+The STABLE kind is more stable than CURRENT. This kind may get new
 features as well. But those will be more conservative compared to 
 CURRENT.
 
 A RELEASE of STABLE can be referred as STABLERELEASE.
 
 - BASIC -
-The BASIC branch is a very minimal one. This branch may get bugfixes and
+The BASIC kind is a very minimal one. This kind may get bugfixes and
 updates and might get minor improvements. This is a version of yChat
 with only very few features.  
 
 A RELEASE of BASIC can be referred as BASICRELEASE.
 
 - LEGACY -
-The LEGACY branch has no real support. This branch may get bugfixes and
+The LEGACY kind has no real support. This kind may get bugfixes and
 updates and might get minor improvements. But there is no garuantee to
 be bug free and stable at all. LEGACY versions are of historic meaning. 
 
 - DEVEL -
 DEVEL is only a meta name. If a version is labeled with DEVEL, then its
-currently undefined if this is a CURRENT, STABLE or LEGACY branch. It
+currently undefined if this is a CURRENT, STABLE or LEGACY kind. It
 can be everything. Commonly DEVEL versions are CURRENT. 
 
 There are also releases made:
 
 - RELEASE -
-There can be RELEASEs made out of each branch. While a branch can get
-new features, a RELEASE can not. A RELEASE of a branch is just like
+There can be RELEASEs made out of each kind. While a kind can get
+new features, a RELEASE can not. A RELEASE of a kind is just like
 a snapshot. RELEASEs are complete versions to test and use. But keep
-in mind, that a RELEASE of the STABLE branch is recommended over a
-RELEASE of a CURRENT or a LEGACY branch in a production environment.
+in mind, that a RELEASE of the STABLE kind is recommended over a
+RELEASE of a CURRENT or a LEGACY kind in a production environment.
 RELEASEs of CURRENT are still the bleeding edge and RELEASEs of LEGACY
 may be out of date.
 
@@ -127,8 +127,8 @@ The short name of the httpd is "yh"
 
 - Versioning - 
 In general, versions are made up like X.Y.Z.W. X specifies the major version,
-Y specifies the branch of the major version, Z specifies a sub revision
-of a specific branch. The optional W can be used to specify a maintenance
+Y specifies the kind of the major version, Z specifies a sub revision
+of a specific kind. The optional W can be used to specify a maintenance
 revision which only changes small issues. 
 
 //<<*
@@ -312,18 +312,17 @@ are very likely to work too.
 
 For SVN download type:
 
-svn co --username=anon http://svn.buetow.org/repos/ychat/trunk
+svn co --username=anon http://ssl.buetow.org/repos/ychat/trunk/ychat
 
 Now you may continue with the installation.
 
-There are different branches in the CVS:
+There are different trunks in the SVN:
 
-ychat: This is the latest CURRENT branch of yChat.
-ychat-stable: This is the latest STABLE branch of yChat.
-ychat-X.Y: This is the branch with the specified version prefix.
-yhttpd: This is the latest CURRENT snapshot of yhttpd.
+ychat: This is the latest CURRENT version of yChat.
+yhttpd: This is the latest CURRENT version of yhttpd.
+ycurses: This is the latest CURRENT version of ycurses.
 
-The CURRENT branch of ychat is mostly untested and unstable, so don't 
+The CURRENT version of ychat is mostly untested and unstable, so don't 
 cry if you get errors.
 
 2.4.0 INSTALLATION QUICK START
