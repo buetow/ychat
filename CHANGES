@@ -1,0 +1,215 @@
+-Changes from 0.8.2-RELEASE to 0.9.0-CURRENT
+$ Added .pm files to scripts/stats.pl
+$ Modified the README (New CVS pserver)
+$ Added docs/header.txt as a source header skel
+  All .cpp, .h and .tmpl files now do have a new source header
+  containging copyright infos etc.
+$ New chat commands: /ban, /unban and /banned
+$ Added the following to the ychat.conf:
+	chat.msgs.ban
+	chat.msgs.unban
+	chat.msgs.help.ban
+	chat.msgs.help.unban
+	chat.msgs.help.banned
+	chat.msgs.err.banned
+	chat.msgs.err.alreadybanned
+	chat.msgs.err.isnotbanned
+	chat.msgs.err.nobanned
+$ Added src/build.h, which contains build informations.
+$ Modified the build system. Using GNU Autoconf now.
+$ Added GNU readline support for the yChat Command Line Interface (CLI)
+$ Added the run_loop rule to ./Makefile
+$ Bugfix in src/sock/sock.cpp (No clear() w/ ncurses disabled)
+$ Bugfix in src/cli/cli.cpp (No more segfault by reading empty strings
+  or commands with leading whitespaces)
+$ Fixes in the README TOC and chapter numbers, fixed some typos also
+$ uint32_t -> unsigned
+$ Removed the Ncurses support which caused lots of problems.
+$ CLI commands:
+  (s)hutdown has been renamed into (shut)down
+$ Changed the copyright back to Paul C. Buetow
+$ Removed pthreads
+$ Initial libevent support
+$ New default XHTML style
+$ Added httpd.html.cache option
+$ New brainstorming in the TODO file
+$ New code formatting (astyle)
+$ make style rule for ./Makefile
+$ Made it GCC 4.2.1 compatible
+
+-Changes from 0.8.1-RELEASE to 0.8.2-RELEASE
+$ Fixed some typos
+$ Added the - Versioning - paragraph into the README file
+$ Removed the yc_template command module source file
+$ scripts/config.pl now also accepts q and quit as a command
+$ Minor bugfix in scripts/config.pl 
+$ Some improvements in src/configure
+$ Changed some default values in the src/glob.h
+
+-Changes from 0.8-RELEASE to 0.8.1-RELEASE
+$ Fixed a HTML bug in the stream html (h1 should get closed w/ /h1)
+$ Fixed some typos in the README
+$ Fixed a bug in the /q command
+$ Implemented The /gag and /ungag commands
+$ Implemented flood protection and added the following ychat.conf options:
+$	chat.floodprotection.seconds
+$	chat.floodprotection.messages
+$	chat.msgs.err.gag
+$	chat.msgs.floodgag
+$	chat.msgs.gag
+$	chat.msgs.ungag
+$	chat.msgs.help.gag
+$	chat.msgs.help.ungag
+$ Added the SHORTDESC file
+$ Changed Copyright to "EXA Digital Solutions GbR"
+
+-Changes from 0.7.9.2-RELEASE to 0.8-RELEASE
+$ Modified the Makefiles, so that they produce valid output while using
+$ the -j flag of gmake.
+$ OpenSSL support has been integrated. Thanks to CryptoMail.org for patching!
+$ The next release will also have a credits section in the README!
+$ The HTTP parsing stuff has been reviewed and improved by CryptoMail as well.
+$ Also a mini bug of the configure script has been fixed.
+
+-Changes from 0.7.9.1-RELEASE to 0.7.9.2-RELEASE -
+$ Added monitor/dump, and the dump command to the CLI.
+$ Fixed a bug in the session manager. 
+$ Added gmake dist do the README.
+$ Added the charset to the HTTP-header.
+
+-Changes from 0.7.9-RELEASE to 0.7.9.1-RELEASE -
+$ Fixed etc/ychat.conf (Its now valid XML)
+$ Fixed some typos.
+$ Added the scripts/makedist.sh script, which can be invoked by gmake dist. 
+$ yhttpd.org has been renamed to yChat.org. The yhttpd.org SLD will be
+$ canceled! The yhttpd.org Homepage will remain on yChat.org!
+
+-Changes from 0.7.8-RELEASE to 0.7.9-RELEASE -
+$ In the system messages will be the user printed which has requested the
+  specified module.
+$ Removed the cursor from the ncurses interface.
+$ Added wrap::init_wrappers -> The main.cpp is now shorter.
+$ Added some Makefile modifications
+$ Bugfix: cleanipcache shouldn run every minute but every 10!
+$ Bugfix: scripts/stats.pl now counts all text-files properly.
+
+-Changes from 0.7.7.1-RELEASE to 0.7.8-RELEASE -
+$ Updated the yhttpd generation script due new sources in src/memb.
+$ Changd some hashmaps back into simple std::map objects, this might
+$ has resulted in some bugs due slow hashmap initialization time. 
+$ Hashmaps now only should being used on permanent objects.
+$ Rewrote the dynamic thread pool.
+$ makeyhttpd now also removes the yChat specific form etc/yhttpd.conf
+$ automatically.
+$ Implemnted an IP Cache (makes yChat faster). 
+$ Implemented signal catcher: 
+$ SIGUSR1 will clear the html template cache.
+$ SIGUSR2 will reload the dynamic modules.
+$ SIGSEGV can be catched if defined in src/glob.h. 
+$ SIGHUP, SIGINT and SIGTERM will shutdown yChat cleanly.
+$ Added Allow: GET to the HTTP header.
+$ Bugfix: The httpd.logging.accesslines now will be read correctly.
+$ Bugfix: JavaScript messages now wont be logged. 
+
+-Changes from 0.7.7-RELEASE to 0.7.7.1-RELEASE -
+$ Bugfix in main.cpp which resulted in a core dump on yChat startup.
+
+-Changes from 0.7.6-RELEASE to 0.7.7-RELEASE - 
+$ Major code cleanup.
+$ Bugfix in /col. 
+$ Bugfix in gcol #1 (destroy session also if no database is used).
+$ Bugfix in gcol #2 (now runs each hour not once a day).
+$ Renew the style.css and stream.html.
+
+-Changes from 0.7.5-RELEASE to 0.7.6-RELEASE -
+$ Removed the old hash maps and included the SGI C++ STL extenstion
+$ hash_map.
+
+-Changes from 0.7.4.1-RELEASE to 0.7.5-RELEASE -
+$ Garbage collector will now run once a hour rather than each ten minutes.
+$ Dynamic thread pool improvements.
+$ Removed equiv-http-refresh meta tag from the online list. 
+$ Minor bugfix in the /topic command.
+$ Implemented "User list".
+
+-Changes from 0.7.4-RELEASE to 0.7.4.1-RELEASE -
+$ Dynamic thread pool bugfix (dead lock).
+
+-Changes from 0.7.3-RELEASE to 0.7.4-RELEASE -
+$ Code cleanup.
+$ Made the thread pool increasing dynamic. 
+$ Added some thread pool optimazions.
+$ Added some more ${MAKE} vars to the Makefiles.
+$ Added Content-length to the HTTPD header.
+$ Added the !command to the command line interface.
+$ Added Content-type text/plain.
+$ Added scrolling checkbox to input.html.
+$ Removed modl from yhttpd. Dynamic modules are not needed in yhttpd yet.
+$ Improved session engine.
+$ Fixed auto logout bug.
+$ Fixed newline bug (one \n too much for each html template).
+$ Logging can now be completely disabled.
+
+-Changes from 0.7.2 to 0.7.3-RELEASE -
+$ Added FreeBSD 5.3-RELEASE support.
+$ Added chat.enableguest option. 
+$ Added the /all command (Global system message).
+$ Renamed the /getstatus command into /about.
+$ Fixed the &-bug (& should be allowed in messages). \AND is now a
+$ synonym for & too.
+$ Fixed the /msg bug (In /msg the string replacer should be activated).
+$ Fixed logging bug (do not log any timestamps if there are no messages).
+
+-Changes from 0.7.1 to 0.7.2-RELEASE -
+$ New features:
+$ /morph.
+$ Added the new standard html template design.
+$ Bugfixes:
+$ /away prints a . instead of a : if no away reason is given.
+$ /ko message was wrong. Displayed not room name of the user to be kicked out.
+$ /invisible command displayed wrong private messages.
+$ /getstatus had no help text.
+$ /msg and /s should now print the system time if printalwaystime == true.
+$ Added a blank to the /uptime message. 
+$ /topic now prints the topic in the user's color.
+$ Fixed some typos.
+
+-Changes from 0.7.0 to 0.7.1-RELEASE -
+$ Added ${MAKE} to the config file because some Linux distros dont use
+$ the "gmake" command for GNU make but just "make"! Modified the
+$ configure script to generate a make.version file.
+$ Removed some typos from the ychat.conf.
+$ Fixed the auto away message. This one will be posted in the room
+$ as public rather than only private to the auto-away-user.
+$ Fixed some documentation stuff for yhttpd because yhttpd does not
+$ need MySQL at all.
+$ Added the chat.maxlength.word option.
+
+-Changes from 0.6 to 0.7.0-RELEASE -
+$ Better stability .
+$ Better performance (using more hmaps). 
+$ HTML color switcher menu. 
+$ New commands: /away /room /j /ren. 
+$ Simple garbage collector for old user and room objects. 
+$ Use of the database (MySQL). 
+$ Nick registration and password protection. 
+$ Status images for Operator, Half-Operator, Voiced user and Guests. 
+$ New Makefiles. 
+$ Useful Perl scripts for sourcecode stats generation etc.
+$ Added system_log and room logging to access_log logging. 
+$ Added time-offset option. 
+$ Added to the admin interface new options. 
+$ Added Logout button. 
+$ Added string replacer there certain substr. of postings will be replaced by another string (such as smiley images). 
+$ Added Superuser levels and the /ko and /set commands. 
+$ Added admin CLI (Command Line Interface) mode. 
+$ Added memory rusage history which tracks memory usage for the last 10 days. 
+$ Added HTTP POST request parsing. 
+$ Made yChat more modular so yhttpd can be extracted from it 
+$ (scripts/makeyhttpd.pl).
+$ Added CGI support.
+$ Rewrote big parts of the Makefiles and the configure scripts.
+$ Made it compatible to GNU G++ 3.4, 3.3, 3.2 and 3.1 (3.0 and earlier do not
+$ work).
+$ XML based configuration file (ychat.conf).
+$ Added default operator option: chat.defaultop.
