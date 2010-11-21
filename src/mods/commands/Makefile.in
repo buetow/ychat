@@ -1,0 +1,18 @@
+MODS=$(addprefix ../../../mods/commands/, $(SRCS:.cpp=.so))
+CC=COMPILER
+INCLUDES=`cat ../../includes.add`
+CFLAGS=`cat ../cflags.add`
+all: mods
+$(MODS): 
+	@if ! test -d `dirname $@`; then mkdir -p `dirname $@`; fi
+	@$(CC) $(CFLAGS) $(INCLUDES) -shared -s -o $@ `echo $(notdir $@) | sed s/.so/.cpp/`
+	@echo -n "Command module `basename $@ | sed s/\.so// | sed s/yc_//` " 
+	@du -hc $@ | tail -n 1 | sed s/total// | sed "s/ //g"
+infotext:
+	@echo Compiling command modules
+mods:	infotext $(MODS) 
+	@echo "Num of command modules: "
+	@ls ../../../mods/commands/*.so | wc -l
+clean:
+	@echo Cleaning command modules
+	@if test -d ../../../mods/commands; then rm -Rf ../../../mods/commands; fi
