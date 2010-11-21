@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/chat/room.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -43,6 +42,7 @@ class room : public base<user>, public name
 {
 private:
   string s_topic;
+  pthread_mutex_t mut_s_topic;
 #ifdef LOGGING
 
   logd* p_logd;
@@ -89,6 +89,7 @@ public:
 #ifdef LOGGING
     p_logd->log_simple_line( logd::remove_html_tags(*p_msg) );
 #endif
+
     base<user>::msg_post( p_msg );
   }
 

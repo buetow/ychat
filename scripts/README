@@ -2,16 +2,5 @@ All scripts should be run from the yChat main directory, example:
 
 ./scripts/makeyhttpd.pl
 
-A ./makeyhttpd.pl WILL NOT work :)
 
-astyle.sh - Uses the astyle tool for source code formatting
-buildnr.pl - Increments the yChat build number by one
-checkperl.sh - Checks which perl to use [obsolete]
-config.pl - yChat configurator [obsolete]
-makedist.sh - Creates a yChat destribution package [broken]
-makeyhttpd.pl - Generates yhttpd sourcecode [broken]
-modules/ - Contains perl subroutines 
-screen.sh - Starts yChat inside of a screen session
-setglobvals.pl - Sets some variables inside of the ./src/glob.h file
-stats.pl - Generates and prints out some source code statistics
-version.sh - Prints out the current yChat version
+A ./makeyhttpd.pl WILL NOT work :)

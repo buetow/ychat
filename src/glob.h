@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/glob.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -42,23 +41,18 @@
 //<<*
 /* FIRST THE YCHAT ONLY OPTIONS */
 
-#ifdef HAVE_LIBMYSQLCLIENT
-#ifdef HAVE_MYSQL_MYSQL_H
+#ifdef HAVE_LIBMYSQLCLIENT 
+#ifdef HAVE_MYSQL_MYSQL_H 
 #define USE_MYSQL
 #define DATABASE
 #define DATA_PRINT_QUERIES
 #endif
 #endif
 
-#define PUSHSTR 1000
-
-/* The backlog argument defines the maximum length the queue of pending
-   connections may grow to.
-*/
-#define BACKLOG 128*8
+#define PUSHSTR 500
 
 #ifdef HAVE_LIBSSL
-#ifdef HAVE_OPENSSL_SSL_H
+#ifdef HAVE_OPENSSL_SSL_H 
 #define OPENSSL
 #endif
 #endif
@@ -81,11 +75,11 @@
 #endif
 
 #define POSTBUF 1024
-#define READBUF 2048
+#define READBUF 2048 
 #define READSOCK 2048
-#define SERVMSG
+//#define SERVMSG
 //#define CTCSEGV
-#define VERBOSE
+//#define VERBOSE
 
 using namespace std;
 
@@ -102,8 +96,7 @@ struct dynmod
   void     *the_module;
 };
 
-typedef enum method_
-{
+typedef enum method_ {
   METH_RETSTRING
 } method;
 

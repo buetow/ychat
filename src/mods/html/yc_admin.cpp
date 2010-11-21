@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/mods/html/yc_admin.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -38,7 +37,7 @@ extern "C"
   {
     s_string = tool::replace(s_string, "<", "&lt;");
     s_string = tool::replace(s_string, ">", "&gt;");
-    s_string = tool::replace(s_string, "\n", "<br />");
+    s_string = tool::replace(s_string, "\n", "<br>");
     return s_string;
   }
 
@@ -54,10 +53,10 @@ extern "C"
     sort(p_vec_keys->begin(), p_vec_keys->end());
     vector<string>::iterator p_vec_keys_iter = p_vec_keys->begin();
 
-    p_content->append( "Currently are " + tool::int2string(p_vec_keys->size()) + " options available!<br /><br />\n");
+    p_content->append( "Currently are " + tool::int2string(p_vec_keys->size()) + " options available!<br><br>\n");
     p_content->append( "<table bordercolor=\"1\">\n" );
 
-    for ( ;p_vec_keys_iter != p_vec_keys->end(); ++p_vec_keys_iter )
+    for( ;p_vec_keys_iter != p_vec_keys->end(); ++p_vec_keys_iter )
     {
 
       if ( p_vec_keys_iter->find(".descr") != string::npos )
@@ -89,7 +88,7 @@ extern "C"
       p_content->append( "<br><br></td></tr>\n" );
     } // while
 
-    p_content->append( "</table>\n<br />\n" );
+    p_content->append( "</table>\n<br>\n" );
 
     return 0;
   }

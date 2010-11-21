@@ -1,9 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
- <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-  <title>%%HTML_TITLE_TAG_CONTENT%%</title>
-  <link rel="stylesheet" href="style.css" type=text/css />
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <title>
+   %%HTML_TITLE_TAG_CONTENT%%
+  </title>
+  <link rel=stylesheet href="style.css" type=text/css>
   <script language="JavaScript">
    <!--
     function delout()
@@ -37,9 +39,9 @@
  <body>
   <form method="GET" name="input" action="input.html" target="blank" onsubmit="return delout();">
    <div style="position: absolute; top: 5px;"> 
-    <input class="text" type="text"   name="message" size="60" maxlength="%%chat.maxlength.message%%" />
-    <input type="submit" value="Send" accesskey='s' />
-    <input type="button" value="Select"  accesskey='e' onclick="javascript:selectinput();" />
+    <input class="text" type="text"   name="message" size="60" maxlength="%%chat.maxlength.message%%">
+    <input type="submit" value="Send" accesskey='s'>
+    <input type="button" value="Select"  accesskey='e' onclick="javascript:selectinput();">
    </div>
    <div style="position: absolute; top: 29px;"> 
     <a href='#' class="fancy" onclick="javascript:popup('colors.html?event=colors&tmpid=%%tmpid%%', 600, 480)">Colors</a>
@@ -49,10 +51,10 @@
     <a href='#' class="fancy" onclick="javascript:popup('admin.html?event=admin&tmpid=%%tmpid%%', 600, 480)">Admin</a>
     <a href='input.html?event=input&tmpid=%%tmpid%%&message=%2Fq' class="fancy" target='blank'>Logout</a>
     Scrolling: 
-    <input type="checkbox" name="scroll" checked onClick="chgscroll(this);" />
+    <input type="checkbox" name="scroll" checked onClick="chgscroll(this);">
    </div>
-   <input type="hidden" name="event" value="input" /> 
-   <input type="hidden" name="tmpid" value="%%tmpid%%" /> 
+   <input type="hidden" name="event"   value="input"> 
+   <input type="hidden" name="tmpid"   value="%%tmpid%%"> 
   </form>
  </body>
 </html>

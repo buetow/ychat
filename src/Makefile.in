@@ -1,9 +1,8 @@
 BIN=../bin/ychat
 CXX=@CXX@
 #EFLAGS=-frepo
-CXXFLAGS=-fno-inline -fno-default-inline @CXXFLAGS@ ${EFLAGS} 
-#LDADD+=@LIBS@-lstdc++ -D_THREAD_SAVE -export-dynamic
-LDADD+=@LIBS@-lstdc++ -export-dynamic
+CXXFLAGS=-fno-inline -fno-default-inline @CXXFLAGS@ ${EFLAGS} ${BOOST_CPPFLAGS}
+LDADD+=@LIBS@-lstdc++ -D_THREAD_SAVE -export-dynamic
 PREFIX=@prefix@
 all: message ${OBJS} 
 	@dirname=`dirname ${BIN}`; if ! test -d $$dirname; then mkdir -p $$dirname; fi

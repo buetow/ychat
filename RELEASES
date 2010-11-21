@@ -1,43 +1,43 @@
 Release table 
 
-See the README file for version branch (e.g. CUR, STB, LEG, REL etc.)
+Release date	Release name and version	Release focus 
 
-Release date	Release name and version / Release focus 
+Planing:	yChat 0.9.0-RELEASE       				New current branch	
+Planing:	yhttpd 0.8-RELEASE        				Features
+Planing:	yChat 0.8.4-STABLERELEASE 				New stable branch	
+Planing:	yChat 0.8.3-RELEASE       				New functionality	
 
-Planing 2008:  yChat 0.8.3-STBREL / New stable branch
-Planing 2007:  yChat 0.9.0-CURREL / New current branch 
-
-Nov 21st 2005: yChat 0.7.9.5-STBREL / Maintenance
-Aug 04th 2005: yChat 0.8.2-CURREL / Minor enhancements	
-May 26th 2005: yChat 0.7.9.4-STBREL / Minor bugfixes
-Jun 21st 2005: yChat 0.8.1-CURREL / Major features
-May 25th 2005: yChat 0.8.0-CURREL / Major features
-May 08th 2005: yChat 0.7.9.3-CURREL / Security bugfixes
-Apr 11th 2005: yChat 0.5.5-STBREL / Minor security fixes
-Apr 10th 2005: yChat 0.7.9.2-CURREL / Major security fixes
-Apr 07th 2005: yChat 0.7.9.1-CURREL / Minor bugfixes
-Mar 11th 2005: yChat 0.7.9-CURREL        	
-Mar 08th 2005: yChat 0.5.4-STBREL  
-Mar 05th 2005: yChat 0.7.8-CURREL        
-Mar 02th 2005: yChat 0.5.3-LEGREL  
-Feb 27th 2005: yChat 0.5.2-LEGREL  
-Feb 24th 2005: yChat 0.7.7.1-CURREL / Major bugfixes
-Feb 21th 2005: yChat 0.7.7-CURREL        
-Feb 18th 2005: yChat 0.7.6-CURREL        
-Feb 15th 2005: yChat 0.7.5-CURREL        
-Feb 14th 2005: yChat 0.7.4.1-CURREL / Major bugfixes
-Feb 12th 2005: yChat 0.7.4-CURREL        
-Feb 10th 2005: yChat 0.7.4-PRECURREL     
-Dec 29th 2004: yChat 0.7.3-CURREL        
-Nov 09th 2004: yChat 0.7.2-CURREL        
-Nov 06th 2004: yhttpd 0.7.1-CURREL       
-Nov 06th 2004: yChat 0.7.1-CURREL        
-Nov 01st 2004: yhttpd 0.7-CURREL / Initial release
-Oct 31st 2004: yChat 0.7-CURREL          
-Jan 03rd 2004: yChat 0.5.1-CURREL        
-Sep 15th 2003: yChat 0.6-CURREL          
-Sep 15th 2003: yChat 0.5.0-CURREL        
-Apr 26th 2003: yChat 0.4-CURREL          
-Mar 30th 2003: yChat 0.3-CURREL          
-Mar 24th 2003: yChat 0.2-CURREL          
-Mar 20th 2003: yChat 0.1-CURREL / Initial release
+Nov 21st 05: 	yChat 0.7.9.5-STABLERELEASE	Maintenance
+Aug 04th 05:	yChat 0.8.2-RELEASE				Minor enhancements	
+May 26th 05:	yChat 0.7.9.4-STABLERELEASE	Minor bugfixes
+Jun 21st 05:	yChat 0.8.1-RELEASE				Major features
+May 25th 05:	yChat 0.8.0-RELEASE				Major features
+May 08th 05:	yChat 0.7.9.3-STABLERELEASE	Security bugfixes
+Apr 11th 05:	yChat 0.5.5-STABLERELEASE  	Minor security fixes
+Apr 10th 05:	yChat 0.7.9.2-RELEASE      	Major security fixes
+Apr 07th 05:	yChat 0.7.9.1-RELEASE      	Minor bugfixes
+Mar 11th 05:	yChat 0.7.9-RELEASE        	
+Mar 08th 05:	yChat 0.5.4-STABLERELEASE  
+Mar 05th 05:	yChat 0.7.8-RELEASE        
+Mar 02th 05:	yChat 0.5.3-LEGACYRELEASE  
+Feb 27th 05:	yChat 0.5.2-LEGACYRELEASE  
+Feb 24th 05:	yChat 0.7.7.1-RELEASE      	Major bugfixes
+Feb 21th 05:	yChat 0.7.7-RELEASE        
+Feb 18th 05:	yChat 0.7.6-RELEASE        
+Feb 15th 05:	yChat 0.7.5-RELEASE        
+Feb 14th 05:	yChat 0.7.4.1-RELEASE      	Major bugfixes
+Feb 12th 05:	yChat 0.7.4-RELEASE        
+Feb 10th 05:	yChat 0.7.4-PRERELEASE     
+Dec 29th 04:	yChat 0.7.3-RELEASE        
+Nov 09th 04:	yChat 0.7.2-RELEASE        
+Nov 06th 04:	yhttpd 0.7.1-RELEASE       
+Nov 06th 04:	yChat 0.7.1-RELEASE        
+Nov 01st 04:	yhttpd 0.7-RELEASE         	Initial release
+Oct 31st 04:	yChat 0.7-RELEASE          
+Jan 03rd 04:	yChat 0.5.1-RELEASE        
+Sep 15th 03:	yChat 0.6-RELEASE          
+Sep 15th 03:	yChat 0.5.0-RELEASE        
+Apr 26th 03:	yChat 0.4-RELEASE          
+Mar 30th 03:	yChat 0.3-RELEASE          
+Mar 24th 03:	yChat 0.2-RELEASE          
+Mar 20th 03:	yChat 0.1-RELEASE          	Initial release

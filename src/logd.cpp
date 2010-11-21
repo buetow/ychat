@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/logd.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -46,13 +45,15 @@ logd::logd( string s_filename, int i_log_lines )
 logd::~logd()
 {
   flush_logs();
+  pthread_mutex_destroy( &mut_s_logging );
 }
 
 void
 logd::initialize( string s_filename, int i_log_lines )
 {
+  pthread_mutex_init( &mut_s_logging, NULL );
 
-  if ( s_filename.empty() )
+  if( s_filename.empty() )
   {
     wrap::system_message( LOGERR2 );
     exit(1);
@@ -85,13 +86,13 @@ logd::flush()
   ofstream of_output;
   of_output.open(s_logfile.c_str(), ios::app);
 
-  if ( of_output == NULL )
+  if( of_output == NULL )
   {
     wrap::system_message( LOGERR1 + s_logfile );
     exit(1);
   }
 
-  while ( ! s_queue.empty() )
+  while( ! s_queue.empty() )
   {
     string s_l=s_queue.front();
     s_queue.pop();
@@ -109,11 +110,13 @@ logd::log_access( map<string,string> &map_request )
   string s_time = get_time_string();
   string s_logstr = map_request["REMOTE_ADDR"] + " - - "+s_time+" \"" + map_request["QUERY_STRING"]+"\" 200 0 \""+map_request["request"]+"\" \""+map_request["User-Agent"]+"\"\n";
 
+  pthread_mutex_lock ( &mut_s_logging );
   s_queue.push(s_logstr);
 
   if ( s_queue.size() > i_lines )
     flush();
 
+  pthread_mutex_unlock( &mut_s_logging );
 }
 
 void
@@ -126,45 +129,51 @@ logd::log_simple_line( string s_line )
   string s_time = get_time_string();
   string s_logstr = s_time + " " + s_line;
 
+  pthread_mutex_lock  ( &mut_s_logging );
   s_queue.push(s_logstr);
 
   if ( s_queue.size() > i_lines )
     flush();
 
+  pthread_mutex_unlock( &mut_s_logging );
 }
 
 void
 logd::set_logfile( string s_path, string s_filename )
 {
   // Remove "/" from filename!
-  unsigned long ul_pos = s_filename.find( "/" );
-  while ( ul_pos != string::npos )
+  unsigned i_pos = s_filename.find( "/" );
+  while ( i_pos != string::npos )
   {
-    s_filename.replace( ul_pos, 1, "SLASH" );
-    ul_pos = s_filename.find( "/" );
+    s_filename.replace( i_pos, 1, "SLASH" );
+    i_pos = s_filename.find( "/" );
   }
 
   // Remove "\" from filename (for non unix systems)!
-  ul_pos = s_filename.find( "\\" );
-  while ( ul_pos != string::npos )
+  i_pos = s_filename.find( "\\" );
+  while ( i_pos != string::npos )
   {
-    s_filename.replace( ul_pos, 1, "BACKSLASH" );
-    ul_pos = s_filename.find( "\\" );
+    s_filename.replace( i_pos, 1, "BACKSLASH" );
+    i_pos = s_filename.find( "\\" );
   }
 
+  pthread_mutex_lock  ( &mut_s_logging );
   this->s_logfile = s_path + s_filename;
+  pthread_mutex_unlock( &mut_s_logging );
 }
 
 void
 logd::flush_logs()
 {
+  pthread_mutex_lock  ( &mut_s_logging );
   flush();
+  pthread_mutex_unlock( &mut_s_logging );
 }
 
 string
 logd::remove_html_tags( string s_logs )
 {
-  unsigned long pos[2];
+  unsigned pos[2];
 
   while ( (pos[0] = s_logs.find("<")) != string::npos )
   {

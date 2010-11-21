@@ -1,9 +1,8 @@
-yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
-Copyright (C) 2004 Paul C. Buetow
 Copyright (C) 2005 EXA Digital Solutions GbR
-Copyright (C) 2006, 2007 Paul C. Buetow
+Copyright (C) 2004, 2006 Paul C. Buetow
 -----------------------------------------------------------------
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -61,6 +60,9 @@ yhttpd does not have as much features but is easy to use and faster than
 apache. yhttpd is a subset of the chat. It can be generated using the
 srcipts/yhttpdbase.pl script in the chat's source tree. 
 
+- The ycurses -
+ycurses is a easy to use and small C++ wrapper around the C ncurses API. 
+
 There are different branches:
 
 - CURRENT - 
@@ -113,7 +115,7 @@ CURRENT aka CUR aka C
 RELEASE aka REL aka R
 LEGACY  aka LEG aka L
 STABLE  aka SBL aka S
-BASIC	aka BSC aka B
+BASIC  aka BSC aka B
 DEVEL   aka DEV aka D
 PRE     aka P
 
@@ -124,6 +126,7 @@ etc...
 
 The short name of the chat is "yC"
 The short name of the httpd is "yh"
+The short name of ycurses is "yu"
 
 - Versioning - 
 In general, versions are made up like X.Y.Z.W. X specifies the major version,
@@ -196,9 +199,11 @@ If wished, you can disable database support in the pre-compile options.
 - It has an administration interface -
 yChat includes an libreadline based administration interface which tracks some
 interesting statistics and system messages and enables you to do certain
-administrative tasks like keeping track of the current system usage etc.
-If you dont like libreadline you can disable both options in the pre-compile
-options. 
+administrative tasks. In addition, you can switch to the CLI (command line
+interface) mode of the administration interface in order to be provided with
+more available functions (like keeping track of the current system usage etc.).
+If you dont like libreadline and/or the CLI you can disable both options in the
+pre- compile options. 
 
 - It has logging capabilities -
 The logging manager keeps track to all yChat system messages (such as users 
@@ -219,19 +224,15 @@ etc. so you can also program your dynamic yChat websites in C++.
 
 - Its multi threaded (POSIX threads) -
 There is only one main process which spawns several threads, each for its own
-unique task. For example one thread is used to handle the servers's events.
-(see libevent) Another thread is used to control the libreadline based 
-administration command line interface.
-
-- Its event driven (libevent) -
-yChat is event driven. Non-blocking sockets are used to serve the client
-requests. In contrast do a multi-threaded based client handling, this approach
-is more effective on single processor systems and there is no complex mutex
-structure inside of the code which leads to much cleaner and easier code
-design. The libevent controls all read/write operations of the server and also
-does handle signal and timer events. The timer events prove if clients are still 
-active and frees not needed memory in certain time intervals (see also "Garbage 
-collector") and does some other continuous tasks.
+unique task. For example one thread is used to handle the socket manager which
+waits for incoming TCP/IP requests, another thread schedules the system timer
+which proves if clients are still active or frees not needed memory in certain
+time intervals (see also "Garbage collector"). Also, each Chat-User gets it own
+thread. There is no need of memory wastage by creating for each task a new
+process. All User-Threads are managed by a thread pool to avoid CPU wastage
+creating every time a new thread by reusing thread objects which have done its
+jobs already and have been readded into the queue of the thread pool. The 
+standard sizes of the queue and the total pool size can be set in ychat.conf.
 
 - Its using a smart garbage collection engine -
 All users and rooms which dont have to be kept in the main memory (because the
@@ -250,7 +251,7 @@ lot of user and room objects are created and destroyed frequently.
 2.1.0 REQUIREMENTS: 
 
 - GNU GCC G++  
-  The GNU C++ compiler version 4.2.1 or up.
+  The GNU C++ compiler version 3.1 or up.
 
 - GNU make 3.80 (gmake) or higher
   If you dont have a gmake executable but make is gnu make then you need
@@ -290,12 +291,10 @@ The following platforms have been tested with success. If you find out that
 a listed platform did not work at all please contact me:
 
   Operating system (arch)	GNU G++		GNU make
-- FreeBSD 7.0-BETA2 (i386)		4.2.1		3.81
-
-  Tested longer time before:
-- FreeBSD 6.2-RELEASE (amd64)	3.4.6		3.81	
 - FreeBSD 6.0-RELEASE (i386)	3.4.4		3.80	
 - FreeBSD 5.3-RELEASE (i386)	3.4.2		3.80
+
+  Tested longer time before:
 - FreeBSD 5.4-RELEASE (i386)	3.4.2		3.80
 - FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
 - Gentoo Linux 2004 (i386)	3.3.2		3.80
@@ -310,9 +309,20 @@ are very likely to work too.
 
 2.3.0 HOW TO OBTAIN YCHAT:
 
-For SVN download type:
+yChat can be downloaded as a source package or through CVS. 
 
-svn co --username=anon http://svn.buetow.org/repos/ychat/trunk
+The packages are located at http://www.yChat.org -> Release Versions
+
+For CVS download type:
+
+cvs -d:pserver:anonymous@buetow.org:/cvs/cvsroot login
+( You will be asked for a password. Use "just enter" ).
+
+cvs -z3 -d:pserver:anonymous@buetow.org:/cvs/cvsroot co BRANCH
+( The sources will be copied into your local folder )
+
+cvs -d:pserver:anonymous@buetow.org:/cvs/cvsroot logout
+( Logs your CVS session out ).
 
 Now you may continue with the installation.
 
@@ -641,13 +651,18 @@ command:
 You may contact us through the following addresses:
 
 - Homepage
-  The yChat homepage is located at http://ychat.buetow.org
+  The yChat homepage is located at http://www.yChat.org
+  The EXA Digital Solutions homepage is located at http://www.exa-ds.com
 
 - E-Mail
-  ychat at dev.buetow.org 
+  Paul C. Buetow: buetow at yChat point org (core developer)
+  Mail at yChat dot org (reaches everybody of yChat)
  
+- ICQ
+  Paul C. Buetow: 11655527
+
 - IRC
-  #coding at irc.german-elite.net  
+  #Ychat and #Coding at irc.german-elite.net  
 
 4.2.0 CREDITS
 
@@ -659,10 +674,3 @@ Thanks to the following persons. Without them yChat would not be like today:
 - Joshua Teitelbaum <joshuat at cryptomail.org> of CryptpMail.org for adding
   initial OpenSSL support and lots of security patches in the HTTP header
   handling.
-
-- Ralf Huesing <ralf at stormbind (net)> for his nice rhttpd webserver which
-  served as a nice libevent sample program! And also for his help mails
-  concerning libevent!
-
-- Dave K. (http://maligree.yi.org) for the nice JavaScript color selection
-  menu!

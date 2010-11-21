@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/mods/commands/yc_exec.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -62,7 +61,7 @@ extern "C"
     FILE *file;
     char buffer[READBUF];
 
-    if ( (file=popen(s_command.c_str(), "r")) == NULL )
+    if( (file=popen(s_command.c_str(), "r")) == NULL )
     {
       s_output = "<font color=\"#"
                  + p_conf->get_elem("chat.html.errorcolor")
@@ -73,9 +72,9 @@ extern "C"
     else
     {
       s_output.append("<hr>\n");
-      while (true)
+      while(true)
       {
-        if (fgets(buffer, READBUF, file) == NULL)
+        if(fgets(buffer, READBUF, file) == NULL)
           break;
 
         s_output.append( string(buffer) + "<br>\n" );

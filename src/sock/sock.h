@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/sock/sock.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -28,94 +27,76 @@
 #ifndef SOCK_H
 #define SOCK_H
 
-#include <vector>
 #include <queue>
 #include <netdb.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 
 #include "../reqp.h"
 #include "../chat/user.h"
+
+#include "../thrd/pool.h"
 #include "../maps/shashmap.h"
 
 #ifdef LOGGING
 #include "../logd.h"
 #endif
 
-#include <sys/time.h>
-#include <event.h>
-
 using namespace std;
 
-class sock
+class sock 
 {
-private:
-  static vector< sock* > vec_socks;
-  static int i_id_counter;
-  long i_id;
-
 protected:
 #ifdef LOGGING
+
   logd *log_daemon; // the log daemon
 #endif
-  shashmap< string, unsigned, self_hash<unsigned>, equals_allocator<unsigned> > *p_ip_cache_map;
+  shashmap< string, unsigned, self_hash<unsigned>, equals_allocator<unsigned> > *ip_cache_map;
 
   int i_server_sock;
   int i_server_port;
+
   unsigned long long i_req; // total number of server requests.
-  bool  b_run; // true while socket manager is running.
-  reqp *p_reqp; // parses the http requests from clients.
+  bool  b_run;      		// true while socket manager is running.
+  reqp *req_parser; 		// parses the http requests from clients.
+  char *c_buffer;   		// char buffer!
+  pthread_mutex_t mut_hits;
 
-  struct event ev_handle_server_accept;
-  static void handle_server_accept(int i_fd, short event, void *p_arg);
-  static void handle_client_read(int i_fd, short event, void *p_arg);
-  static void handle_client_write(int i_fd, short event, void *p_arg);
-  static void handle_client_stream_write(int i_fd, short event, void *p_arg);
-
-  int set_nonblock(int i_sock);
+  static string inet_ntoa_callback(void* p_void);
 
 public:
-  explicit sock();
-  void process_request();
+  // creates a server socket.
+  int read_http(_socket *p_sock, char *c_zbuf, int  &i_payloadoffset);
+  string read_http_line(_socket *p_sock);
 
-  shashmap< string, unsigned, self_hash<unsigned>, equals_allocator<unsigned> > * get_ip_cache_map()
-  {
-    return p_ip_cache_map;
-  }
-  reqp *get_req_parser() const
-  {
-    return p_reqp;
-  }
-  int get_id() const
-  {
-    return i_id;
-  }
-  string dump()
-  {
-    return p_ip_cache_map->dump();
-  }
-  bool get_server_() const
-  {
-    return b_run;
-  }
-  bool get_run() const
-  {
-    return b_run;
-  }
-  bool set_run( bool b_run )
-  {
-    this->b_run = b_run;
-  }
+  // small inline methods:
+
+  string dump() { return ip_cache_map->dump(); }
+  bool get_server_() const { return b_run; }
+  bool get_run() const { return b_run; }
+  bool set_run( bool b_run ) { this->b_run = b_run; }
+
+  sock();
+
+  int read_write(_socket* p_sock);
+
+  int start();
   void clean_ipcache();
-  virtual int _make_server_socket(int i_port);
+
+  // the chat stream there all the chat messages will sent through.
+  void chat_stream(_socket* p_sock, user* p_user, map<string,string> &map_params); //<<
+  virtual int _send(_socket *p_sock, const char *sz, int len);
+  virtual int _read(_socket *p_sock, char *sz, int len);
+  virtual int _close(_socket *p_sock);
+  virtual void _main_loop_init();
+
 #ifdef OPENSSL
   virtual bool _main_loop_do_ssl_stuff(int& i_new_sock);
 #endif
 
-  static void init_event_handlers();
-  void init_server_event_handler();
+  virtual _socket* _create_container(int& i_sock);
+  virtual int _make_server_socket(int i_port);
 };
 #endif

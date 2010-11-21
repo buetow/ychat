@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/chat/gcol.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -32,30 +31,37 @@ using namespace std;
 
 gcol::gcol()
 {
+  pthread_mutex_init( &mut_vec_rooms  , NULL);
 
   p_map_users = new shashmap<user*>;
   wrap::system_message( GARBAGE );
+
 }
 
 gcol::~gcol()
 {
   remove_garbage();
+  pthread_mutex_destroy( &mut_vec_rooms );
   delete p_map_users;
 }
 
 void
 gcol::add_room_to_garbage( room* p_room )
 {
+  pthread_mutex_lock  ( &mut_vec_rooms );
   vec_rooms.push_back( p_room );
+  pthread_mutex_unlock( &mut_vec_rooms );
   wrap::system_message( GARROOM + p_room->get_name() );
 }
 
 void
 gcol::add_user_to_garbage( user* p_user )
 {
-  p_user->destroy_session();
+  p_user->s_mess_delete();
   p_map_users->add_elem(p_user, tool::to_lower(p_user->get_name()));
   wrap::system_message(GARUSER + p_user->get_name());
+  p_user->destroy_session();
+
 }
 
 bool
@@ -63,13 +69,16 @@ gcol::remove_garbage()
 {
   bool b_empty;
 
+  pthread_mutex_lock  ( &mut_vec_rooms );
   b_empty  = ( vec_rooms.empty() && p_map_users->size() == 0);
+  pthread_mutex_unlock( &mut_vec_rooms );
 
   if ( b_empty )
     return false;
 
   wrap::system_message( GARBACT );
 
+  pthread_mutex_lock  ( &mut_vec_rooms );
   for ( vector<room*>::iterator iter = vec_rooms.begin();
         iter != vec_rooms.end(); iter++ )
   {
@@ -77,6 +86,7 @@ gcol::remove_garbage()
     delete *iter;
   }
   vec_rooms.clear();
+  pthread_mutex_unlock( &mut_vec_rooms );
 
 
   p_map_users->run_func( delete_users_ );
@@ -88,12 +98,18 @@ gcol::remove_garbage()
 room*
 gcol::get_room_from_garbage()
 {
+  pthread_mutex_lock  ( &mut_vec_rooms );
 
   if ( vec_rooms.empty() )
+  {
+    pthread_mutex_unlock( &mut_vec_rooms );
     return NULL;
+  }
+
 
   room* p_room = vec_rooms.back();
   vec_rooms.pop_back();
+  pthread_mutex_unlock( &mut_vec_rooms );
 
   return p_room;
 }
@@ -111,17 +127,17 @@ gcol::get_room_from_garbage_or_new( string s_room )
 user*
 gcol::get_user_from_garbage( string s_user )
 {
-  user* p_user = p_map_users->get_elem(tool::to_lower(s_user));
+
+  user* p_user = p_map_users->get_elem( tool::to_lower(s_user) );
 
   if ( p_user != NULL )
   {
-    p_map_users->del_elem(tool::to_lower(s_user));
-    p_user->set_name(s_user);
-    p_user->set_online(true);
-    p_user->set_invisible(false);
-    p_user->set_sock(NULL);
+    p_map_users->del_elem( tool::to_lower(s_user) );
+    p_user->set_name( s_user );
+    p_user->set_online( true );
+    p_user->set_invisible( false );
     p_user->renew_timeout();
-    wrap::system_message(GARUSE2 + p_user->get_name());
+    wrap::system_message(GARUSE2 + p_user->get_name() );
   }
 
   return p_user;
@@ -137,10 +153,14 @@ gcol::delete_users_( user *user_obj )
 
 void
 gcol::lock_mutex()
-{}
+{
+  pthread_mutex_lock  ( &mut_vec_rooms );
+}
 
 void
 gcol::unlock_mutex()
-{}
+{
+  pthread_mutex_unlock ( &mut_vec_rooms );
+}
 
 #endif

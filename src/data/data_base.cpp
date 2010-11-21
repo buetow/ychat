@@ -1,27 +1,3 @@
-/*:*
- *: File: ./src/data/data_base.cpp
- *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
 #include "data_base.h"
 
 #ifdef DATABASE
@@ -32,6 +8,7 @@ using namespace std;
 
 data_base::data_base( )
 {
+  pthread_mutex_init ( &mut_con, NULL );
 
   vector<string> vec_keys = *wrap::CONF->get_key_vector();
   vector<string>::iterator iter;
@@ -83,7 +60,9 @@ void data_base::init_connections()
 }
 
 data_base::~data_base()
-{}
+{
+  pthread_mutex_destroy ( &mut_con );
+}
 
 hashmap<string>
 data_base::select_user_data( string s_user, string s_query)
@@ -125,16 +104,19 @@ data_base::print_query_( string s_query )
 con*
 data_base::get_con()
 {
+  pthread_mutex_lock( &mut_con );
 
   if ( empty() )
   {
     wrap::system_message( DATANEW + string("(") + tool::int2string(size()+1) + ")" );
+    pthread_mutex_unlock( &mut_con );
     return new con;
   }
   else if ( size() > i_max_con-1 )
   {
     wrap::system_message( DATAMAX + string("(") + tool::int2string(i_max_con) + ")" );
     usleep( 5000000 );
+    pthread_mutex_unlock( &mut_con );
     return get_con();
   }
 
@@ -142,6 +124,7 @@ data_base::get_con()
   con* p_con = *begin();
   pop_front();
 
+  pthread_mutex_unlock( &mut_con );
   wrap::system_message( DATAGET  );
 
   p_con->renew_timeout();
@@ -151,8 +134,10 @@ data_base::get_con()
 void
 data_base::push_con( con* p_con )
 {
+  pthread_mutex_lock( &mut_con );
   push_front( p_con );
 
+  pthread_mutex_unlock( &mut_con );
   wrap::system_message( DATAADD );
 }
 
@@ -160,6 +145,7 @@ void
 data_base::disconnect_all_connections()
 {
   wrap::system_message( DATADIS );
+  pthread_mutex_lock( &mut_con );
 
   while ( !empty() )
   {
@@ -168,6 +154,7 @@ data_base::disconnect_all_connections()
     delete p_con;
   }
 
+  pthread_mutex_unlock( &mut_con );
 }
 
 void
@@ -176,6 +163,7 @@ data_base::check_data_con_timeout()
   int i_timeout_time = tool::string2int(wrap::CONF->get_elem("chat.database.contimeout"));
   int i_last_activity;
 
+  pthread_mutex_lock( &mut_con );
 
   list< list<con*>::iterator > erase_list;
   for ( list<con*>::iterator iter = begin();
@@ -196,6 +184,7 @@ data_base::check_data_con_timeout()
         erase_iter != erase_list.end(); erase_iter++ )
     erase( *erase_iter );
 
+  pthread_mutex_unlock( &mut_con );
 }
 
 

@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/wrap.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -51,48 +50,6 @@ timr* wrap::TIMR = NULL;
 dynamic_wrap* wrap::WRAP = NULL;
 
 void
-wrap::system_message(char* c_message, int i_code)
-{
-  wrap::system_message(string(c_message)+" ("+tool::int2string(i_code)+")");
-}
-
-void
-wrap::system_message(const char* c_message, int i_code)
-{
-  wrap::system_message(string(c_message)+" ("+tool::int2string(i_code)+")");
-}
-
-void
-wrap::system_message(char* c_message)
-{
-  wrap::system_message(string(c_message));
-}
-
-void
-wrap::system_message(const char* c_message)
-{
-  wrap::system_message(string(c_message));
-}
-
-void
-wrap::system_message(string* p_message, int i_code)
-{
-  wrap::system_message(*p_message+" ("+tool::int2string(i_code)+")");
-}
-
-void
-wrap::system_message(string* p_message)
-{
-  wrap::system_message(*p_message);
-}
-
-void
-wrap::system_message(string s_message, int i_code)
-{
-  wrap::system_message(s_message+" ("+tool::int2string(i_code)+")");
-}
-
-void
 wrap::system_message( string s_message )
 {
 #ifdef SERVMSG
@@ -135,6 +92,7 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
   int i_port = tool::string2int( wrap::CONF->get_elem( "httpd.serverport" ) );
 
 #ifndef OPENSSL
+
   WRAP->SOCK = SOCK = new sock;
 #else
 
@@ -142,11 +100,13 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
 #endif
 
   // create the server socket and set it up to accept connections.
-  if (SOCK->_make_server_socket(i_port) <= 0)
+  if(SOCK->_make_server_socket ( i_port ) <= 0)
   {
     system_message(SOCKER1);
     exit(-1);
   }
+
+  pool::init();
 
   //<<*
   // Init the chat manager.
@@ -171,7 +131,7 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
   //*>>
 
   // Run threads
-  //TIMR->run(); // TODO
+  TIMR->run();
 }
 
 #endif

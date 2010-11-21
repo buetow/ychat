@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/contrib/crypt/md5crypt.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -66,12 +65,12 @@ to64(char *s, unsigned long v, int n)
 char *
 MD5Crypt(const char *pw, const char *salt)
 {
-  static const char *magic = "$1$";	/*
-                          						 * This string is magic for
-                          						 * this algorithm.  Having
-                          						 * it this way, we can get
-                          						 * get better later on
-                          						 */
+  static char	*magic = "$1$";	/*
+                        						 * This string is magic for
+                        						 * this algorithm.  Having
+                        						 * it this way, we can get
+                        						 * get better later on
+                        						 */
   static char     passwd[120], *p;
   static const char *sp,*ep;
   unsigned char	final[16];
@@ -83,11 +82,11 @@ MD5Crypt(const char *pw, const char *salt)
   sp = salt;
 
   /* If it starts with the magic string, then skip that */
-  if (!strncmp(sp,magic,strlen(magic)))
+  if(!strncmp(sp,magic,strlen(magic)))
     sp += strlen(magic);
 
   /* It stops at the first '$', max 8 chars */
-  for (ep=sp;*ep && *ep != '$' && ep < (sp+8);ep++)
+  for(ep=sp;*ep && *ep != '$' && ep < (sp+8);ep++)
     continue;
 
   /* get the length of the true salt */
@@ -110,7 +109,7 @@ MD5Crypt(const char *pw, const char *salt)
   MD5Update(&ctx1,(const unsigned char*)sp,sl);
   MD5Update(&ctx1,(const unsigned char*)pw,strlen(pw));
   MD5Final(final,&ctx1);
-  for (pl = strlen(pw); pl > 0; pl -= 16)
+  for(pl = strlen(pw); pl > 0; pl -= 16)
     MD5Update(&ctx,final,pl>16 ? 16 : pl);
 
   /* Don't leave anything around in vm they could use. */
@@ -118,7 +117,7 @@ MD5Crypt(const char *pw, const char *salt)
 
   /* Then something really weird... */
   for (j=0,i = strlen(pw); i ; i >>= 1)
-    if (i&1)
+    if(i&1)
       MD5Update(&ctx, final+j, 1);
     else
       MD5Update(&ctx, (const unsigned char*)pw+j, 1);
@@ -135,21 +134,21 @@ MD5Crypt(const char *pw, const char *salt)
    * On a 60 Mhz Pentium this takes 34 msec, so you would
    * need 30 seconds to build a 1000 entry dictionary...
    */
-  for (i=0;i<1000;i++)
+  for(i=0;i<1000;i++)
   {
     MD5Init(&ctx1);
-    if (i & 1)
+    if(i & 1)
       MD5Update(&ctx1,(const unsigned char*)pw,strlen(pw));
     else
       MD5Update(&ctx1,final,16);
 
-    if (i % 3)
+    if(i % 3)
       MD5Update(&ctx1,(const unsigned char*)sp,sl);
 
-    if (i % 7)
+    if(i % 7)
       MD5Update(&ctx1,(const unsigned char*)pw,strlen(pw));
 
-    if (i & 1)
+    if(i & 1)
       MD5Update(&ctx1,final,16);
     else
       MD5Update(&ctx1,(const unsigned char*)pw,strlen(pw));

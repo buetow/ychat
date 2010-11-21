@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/reqp.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -28,7 +27,6 @@
 #define REQP_H
 
 #include "maps/hashmap.h"
-#include "sock/context.h"
 
 using namespace std;
 
@@ -41,11 +39,28 @@ private:
   static const string s_http_cotype;
   static const string s_http_cotype_add;
 
+  // returns the request url from thr client's http request header
+  // until the first "?" and stores all request parameter values
+  // ( behind "?" ) into map_params.
+  string get_url( string s_req, map<string,string> &map_params, int& i_postpayloadoffset );
+  // returns a specific value of the client's http request header.
+  // ( s.t. like the User-Agent, Referer etc... ).
+  string get_from_header( string s_req, string s_hdr );
+
+  int htoi( string *p_str );
   void run_html_mod( string s_event, map<string,string> &map_params, user* p_user ); //<<
+  // Removes double dots ".."
+  string remove_dots( string s_req );
+
+  // Parses "event=bla?blu=bli&sadasda=asddds ..." string and stores them in the map
+  void get_request_parameters( string s_parameters, map<string,string>& map_params );
 
 public:
   reqp( );
-  void parse(context *p_context);
+  string parse( _socket* p_sock, string s_req, map<string,string> &map_params, int &i_postpayloadoffset );
+  string url_decode ( string s_url );
+  string get_content_type( string& s_file );
+  void parse_headers( string s_req, map<string,string> &map_params );
 };
 
 #endif

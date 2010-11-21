@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/monitor/stats.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -37,11 +36,16 @@ stats::stats()
 
   i_num_rooms = 0; //<<
 
+  pthread_mutex_init( &mut_vec_rusage, NULL );
+  pthread_mutex_init( &mut_num_rooms, NULL ); //<<
 
 }
 
 stats::~stats()
-{}
+{
+  pthread_mutex_destroy( &mut_vec_rusage );
+  pthread_mutex_destroy( &mut_num_rooms ); //<<
+}
 
 void
 stats::update_rusage_history()
@@ -70,18 +74,22 @@ stats::update_rusage_history()
 
   delete p_rusage;
 
+  pthread_mutex_lock ( &mut_vec_rusage );
 
   if ( vec_rusage_history.size() >= i_rusage_vec_size )
     vec_rusage_history.erase( vec_rusage_history.begin() );
 
   vec_rusage_history.push_back(map_rusage);
 
+  pthread_mutex_unlock( &mut_vec_rusage );
 }
 
 void
 stats::set_rusage_vec_size( int i_rusage_vec_size )
 {
+  pthread_mutex_lock ( &mut_vec_rusage );
   this->i_rusage_vec_size = i_rusage_vec_size;
+  pthread_mutex_unlock( &mut_vec_rusage );
 }
 
 long
@@ -103,6 +111,7 @@ stats::get_rusage_history( string s_type, string s_seperator )
   int i_count = 0;
   vector< map<string,long> >::iterator iter;
 
+  pthread_mutex_lock  ( &mut_vec_rusage );
 
   for ( iter = vec_rusage_history.begin();
         iter != vec_rusage_history.end();
@@ -111,6 +120,7 @@ stats::get_rusage_history( string s_type, string s_seperator )
                  tool::int2string(i_count) + ". " + iter->find(s_type)->first + " " +
                  tool::int2string( iter->find(s_type)->second) + "\n");
 
+  pthread_mutex_unlock( &mut_vec_rusage );
 
   return s_ret;
 }
@@ -119,19 +129,25 @@ stats::get_rusage_history( string s_type, string s_seperator )
 int
 stats::get_num_rooms()
 {
+  pthread_mutex_lock  ( &mut_num_rooms );
   int i_ret = i_num_rooms;
+  pthread_mutex_unlock( &mut_num_rooms );
   return i_ret;
 }
 
 void
 stats::increment_num_rooms()
 {
+  pthread_mutex_lock  ( &mut_num_rooms );
   ++i_num_rooms;
+  pthread_mutex_unlock( &mut_num_rooms );
 }
 void
 stats::decrement_num_rooms()
 {
+  pthread_mutex_lock  ( &mut_num_rooms );
   --i_num_rooms;
+  pthread_mutex_unlock( &mut_num_rooms );
 }
 
 //*>>

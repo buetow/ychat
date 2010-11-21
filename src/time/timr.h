@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/time/timr.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -28,11 +27,13 @@
 #ifndef TIMR_H
 #define TIMR_H
 
+#include "../thrd/thro.h"
+
 #include <unistd.h>
 
 using namespace std;
 
-class timr
+class timr : public thro
 {
 private:
   bool b_timer_active;
@@ -40,6 +41,9 @@ private:
   string s_uptime;
   string s_time;
 
+  pthread_mutex_t mut_s_time;
+  pthread_mutex_t mut_s_uptime;
+  pthread_mutex_t mut_i_offset;
 
 public:
   timr();
@@ -56,7 +60,9 @@ public:
   get_time(  )
   {
     string s_ret;
+    pthread_mutex_lock  ( &mut_s_time );
     s_ret = this->s_time;
+    pthread_mutex_unlock( &mut_s_time );
     return s_ret;
   }
 
@@ -64,7 +70,9 @@ public:
   get_uptime(  )
   {
     string s_ret;
+    pthread_mutex_lock  ( &mut_s_uptime );
     s_ret = this->s_uptime;
+    pthread_mutex_unlock( &mut_s_uptime );
     return s_ret;
   }
 

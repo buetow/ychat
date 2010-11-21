@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/cli/cli.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -43,11 +42,12 @@
 #define CLI_H
 #ifdef CLI
 
+#include "../thrd/thro.h"
 #include "../monitor/dump.h"
 
 using namespace std;
 
-class cli
+class cli : public thro
 {
 private:
   int parse_input(string s_input);

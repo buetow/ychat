@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/chat/sman.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -34,12 +33,14 @@
 sman::sman()
 {
   i_continous_session_count = i_session_count = 0;
+  pthread_mutex_init( &mut_i_session_count, NULL );
 }
 
 sman::~sman()
 {
   // Delete each session object of the shashmap!
   shashmap<sess*>::run_func( mtools<sess*>::delete_obj );
+  pthread_mutex_destroy( &mut_i_session_count );
 }
 
 string sman::generate_id( int i_len )
@@ -82,11 +83,13 @@ sess *sman::create_session( )
 
   sess* p_sess = new sess( s_tmpid );
 
+  pthread_mutex_lock( &mut_i_session_count );
   i_session_count++;
   wrap::system_message(string(SESSIOC) + "(" +
-                       tool::int2string(++i_continous_session_count) + "," +
-                       tool::long2string((long)p_sess) + ")" );
+		tool::int2string(++i_continous_session_count) + "," + 
+		tool::int2string(reinterpret_cast<int>(p_sess)) + ")" );
 
+  pthread_mutex_unlock( &mut_i_session_count );
 
   //????
   add_elem( p_sess, s_tmpid );
@@ -104,12 +107,14 @@ sman::destroy_session( string s_id )
 {
   sess* p_sess = get_elem(s_id);
 
+  pthread_mutex_lock( &mut_i_session_count );
   i_session_count--;
 
   wrap::system_message(string(SESSIOD) + "(" +
-                       tool::int2string(i_continous_session_count) + "," +
-                       tool::long2string((long)p_sess) + ")" );
+		tool::int2string(i_continous_session_count) + "," + 
+		tool::int2string(reinterpret_cast<int>(p_sess)) + ")" );
 
+  pthread_mutex_unlock( &mut_i_session_count );
 
   del_elem(s_id);
   delete p_sess;
@@ -118,14 +123,16 @@ sman::destroy_session( string s_id )
 int
 sman::get_session_count()
 {
+  pthread_mutex_lock( &mut_i_session_count );
   int i_ret = i_session_count;
+  pthread_mutex_unlock( &mut_i_session_count );
   return i_ret;
 }
 
 /*
 void
 sman::dump() {
-  shashmap<sess*>::dump();
+  shashmap<sess*>::dump(); 
   cout << "BLA" << endl;
 }
 */

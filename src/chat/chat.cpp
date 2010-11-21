@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/chat/chat.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -37,15 +36,12 @@ using namespace std;
 
 chat::chat( )
 {
-  {
-    // Set up replace strings;
+  { // Set up replace strings;
     wrap::system_message(CHATREP);
     vector<string>* p_vec_keys = wrap::CONF->get_key_vector();
 
-    for (vector<string>::iterator iter = p_vec_keys->
-                                         begin();
-         iter != p_vec_keys->end();
-         iter++ )
+    for (vector<string>::iterator iter = p_vec_keys-> begin();
+         iter != p_vec_keys->end(); iter++ )
     {
       if ( iter->length() >= 24 && iter->compare( 0, 22, "chat.html.replace.from" ) == 0 )
       {
@@ -150,9 +146,17 @@ chat::login( map<string,string> &map_params )
     return;
   }
 
-  // prove if nick is banned from chat
-  if (map_banned_nicks.exists(tool::to_lower(s_user)))
+  // prove if maxpoolsize (threads) allows this login
+  else if ( !pool::allow_user_login() )
   {
+    map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.maxuserlimit" );
+    map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
+    wrap::system_message( LOGINE5 + s_user);
+    return;
+  }
+
+  // prove if nick is banned from chat
+  if (map_banned_nicks.exists(tool::to_lower(s_user))) {
     map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.banned" );
     map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" );
     return;
@@ -220,8 +224,7 @@ chat::login( map<string,string> &map_params )
         return;
       }
       else
-      {
-        // If registered use saved options
+      { // If registered use saved options
         map_params["registered"] = "yes";
         map_params["color1"] = map_results["color1"];
         map_params["color2"] = map_results["color2"];
@@ -232,8 +235,7 @@ chat::login( map<string,string> &map_params )
     else
 #endif
 
-    {
-      // If not registered prove if guest chatting is enabled.
+    { // If not registered prove if guest chatting is enabled.
       if (wrap::CONF->get_elem("chat.enableguest") != "true")
       {
         map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.noguest" );
@@ -302,7 +304,7 @@ chat::login( map<string,string> &map_params )
     // Now we will store all wanted user data into MySQL after logging out! (recycled user already have this set)
     p_user->set_changed_data_on();
   }
-  p_room->msg_post(&s_msg);
+  p_room->msg_post( &s_msg );
 }
 
 void
@@ -355,8 +357,8 @@ chat::post( user* p_user, map<string,string> &map_params )
 
   if (p_user->get_is_gag())
   {
-    p_user->msg_post(wrap::CONF->colored_error_msg("chat.msgs.err.gagged"));
-    return;
+     p_user->msg_post(wrap::CONF->colored_error_msg("chat.msgs.err.gagged"));
+     return;
   }
 
 
@@ -399,30 +401,28 @@ void
 chat::dumpit()
 {
   dumpable::add
-  ("[chat]");
+    ("[chat]");
   base<room>::dumpit();
 }
 
 string
-chat::ban_nick(string &s_nick, string s_reason)
-{
+chat::ban_nick(string &s_nick, string s_reason) {
   string s_lower_nick(tool::to_lower(s_nick));
 
   if (map_banned_nicks.exists(s_lower_nick))
-    return map_banned_nicks.get_elem(s_lower_nick);
-
+	return map_banned_nicks.get_elem(s_lower_nick);
+  
   map_banned_nicks.add_elem(s_reason, s_lower_nick);
   return "";
 }
 
 string
-chat::unban_nick(string &s_nick)
-{
+chat::unban_nick(string &s_nick) {
   string s_lower_nick(tool::to_lower(s_nick));
 
   if (!map_banned_nicks.exists(s_lower_nick))
-    return "";
-
+	return "";
+  
   string s_ret(map_banned_nicks.get_elem(s_lower_nick));
   map_banned_nicks.del_elem(s_lower_nick);
 
@@ -430,8 +430,7 @@ chat::unban_nick(string &s_nick)
 }
 
 shashmap<string>*
-chat::get_map_banned_nicks()
-{
+chat::get_map_banned_nicks() {
   return &map_banned_nicks;
 }
 

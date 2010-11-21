@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/sign.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -27,41 +26,21 @@
 #define SIGN_H
 
 #include "incl.h"
-#include <sys/time.h>
-#include <event.h>
 #include <signal.h>
 
 class sign
 {
 private:
-  static struct event ev_sigpipe;
-  static struct event ev_sigusr1;
-  static struct event ev_sigusr2;
-  static struct event ev_sighup;
-  static struct event ev_sigint;
-  static struct event ev_sigterm;
+  static void clean_template_cache(int i_param);
+  static void reload_dlopen_modules(int i_param); //<<
 #ifdef CTCSEGV
 
-  struct event ev_sigsev;
+  static void sigsev_received(int i_param);
 #endif
-
-  static void handle_sigpipe(int i_fd, short event, void *p_arg);
-  static void handle_sigusr1(int i_fd, short event, void *p_arg);
-  static void handle_sigusr2(int i_fd, short event, void *p_arg);
-  static void handle_sighup(int i_fd, short event, void *p_arg);
-  static void handle_sigint(int i_fd, short event, void *p_arg);
-  static void handle_sigterm(int i_fd, short event, void *p_arg);
-#ifdef CTCSEGV
-
-  static void handle_sigsev(int i_fd, short event, void *p_arg);
-#endif
-
-  static void clean_template_cache();
-  static void reload_dlopen_modules(); //<<
 
 public:
-  static void init_event_handlers();
-  static void terminate_received();
+  static void init_signal_handlers();
+  static void terminate_received(int i_param);
 };
 
 #endif

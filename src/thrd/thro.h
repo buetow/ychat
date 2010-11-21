@@ -1,12 +1,11 @@
 /*:*
- *: File: ./src/sock/context.cpp
+ *: File: ./src/thrd/thro.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -23,40 +22,33 @@
  *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *:*/
 
-#ifndef CONTEXT_CPP
-#define CONTEXT_CPP
+#include "../incl.h"
 
-#include "context.h"
+#ifndef THRO_H
+#define THRO_H
 
 using namespace std;
 
-context::context(sock *p_sock, struct event *p_event, int i_fd)
+class thro
 {
-  this->p_sock = p_sock;
-  this->p_event = p_event;
-  this->i_fd = i_fd;
-}
+private:
+  pthread_t pthread;
 
-context::~context()
-{
-  shutdown(i_fd, 2);
-  close(i_fd);
+  struct elements
+  {
+    thro *p_thro;
+    void *p_void;
+  }
+  elem;
 
-  if (this->p_event)
-    delete this->p_event;
+  static void *start_( void *p_void );
 
-  if (this->p_map_params)
-    delete this->p_map_params;
+public:
+  thro( );
+  ~thro( );
+  void run();
+  void run( void *p_void );
+  virtual void start( void *p_void );
+};
 
-  if (this->p_response)
-    delete this->p_response;
-}
-
-void
-context::del_event()
-{
-  if (this->p_event)
-    delete this->p_event;
-  this->p_event = NULL;
-}
 #endif

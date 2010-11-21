@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/contrib/xml/tinyxml.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -26,23 +25,23 @@
 /*
 www.sourceforge.net/projects/tinyxml
 Original code (2.0 and earlier )copyright (c) 2000-2002 Lee Thomason (www.grinninglizard.com)
-
+ 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any
 damages arising from the use of this software.
-
+ 
 Permission is granted to anyone to use this software for any
 purpose, including commercial applications, and to alter it and
 redistribute it freely, subject to the following restrictions:
-
+ 
 1. The origin of this software must not be misrepresented; you must
 not claim that you wrote the original software. If you use this
 software in a product, an acknowledgment in the product documentation
 would be appreciated but is not required.
-
+ 
 2. Altered source versions must be plainly marked as such, and
 must not be misrepresented as being the original software.
-
+ 
 3. This notice may not be removed or altered from any source
 distribution.
 */
@@ -68,7 +67,7 @@ void TiXmlBase::PutString( const TIXML_STRING& str, TIXML_STRING* outString )
 {
   int i=0;
 
-  while ( i<(int)str.length() )
+  while( i<(int)str.length() )
   {
     unsigned char c = (unsigned char) str[i];
 
@@ -480,7 +479,7 @@ TiXmlDocument* TiXmlNode::GetDocument() const
 {
   const TiXmlNode* node;
 
-  for ( node = this; node; node = node->parent )
+  for( node = this; node; node = node->parent )
   {
     if ( node->ToDocument() )
       return node->ToDocument();
@@ -531,7 +530,7 @@ TiXmlElement::~TiXmlElement()
 void TiXmlElement::ClearThis()
 {
   Clear();
-  while ( attributeSet.First() )
+  while( attributeSet.First() )
   {
     TiXmlAttribute* node = attributeSet.First();
     attributeSet.Remove( node );
@@ -682,7 +681,7 @@ void TiXmlElement::Print( FILE* cfile, int depth ) const
       node->Print( cfile, depth+1 );
     }
     fprintf( cfile, "\n" );
-    for ( i=0; i<depth; ++i )
+    for( i=0; i<depth; ++i )
       fprintf( cfile, "    " );
     fprintf( cfile, "</%s>", value.c_str() );
   }
@@ -727,9 +726,9 @@ void TiXmlElement::CopyTo( TiXmlElement* target ) const
   // Element class:
   // Clone the attributes, then clone the children.
   TiXmlAttribute* attribute = 0;
-  for (	attribute = attributeSet.First();
-        attribute;
-        attribute = attribute->Next() )
+  for(	attribute = attributeSet.First();
+       attribute;
+       attribute = attribute->Next() )
   {
     target->SetAttribute( attribute->Name(), attribute->Value() );
   }
@@ -854,7 +853,7 @@ bool TiXmlDocument::LoadFile( const char* filename, TiXmlEncoding encoding )
     const int BUF_SIZE = 2048;
     char buf[BUF_SIZE];
 
-    while ( fgets( buf, BUF_SIZE, file ) )
+    while( fgets( buf, BUF_SIZE, file ) )
     {
       data += buf;
     }
@@ -1270,7 +1269,7 @@ void TiXmlAttributeSet::Remove( TiXmlAttribute* removeMe )
 {
   TiXmlAttribute* node;
 
-  for ( node = sentinel.next; node != &sentinel; node = node->next )
+  for( node = sentinel.next; node != &sentinel; node = node->next )
   {
     if ( node == removeMe )
     {
@@ -1288,7 +1287,7 @@ TiXmlAttribute*	TiXmlAttributeSet::Find( const char * name ) const
 {
   TiXmlAttribute* node;
 
-  for ( node = sentinel.next; node != &sentinel; node = node->next )
+  for( node = sentinel.next; node != &sentinel; node = node->next )
   {
     if ( node->name == name )
       return node;

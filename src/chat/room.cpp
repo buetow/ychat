@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/chat/room.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -33,6 +32,7 @@ using namespace std;
 
 room::room( string s_name ) : name( s_name )
 {
+  pthread_mutex_init( &mut_s_topic, NULL );
 #ifdef LOGGING
 
   p_logd = new logd( wrap::CONF->get_elem("chat.logging.roomlogdir") + get_lowercase_name(),
@@ -54,23 +54,29 @@ room::~room()
   delete p_logd;
 #endif
 
+  pthread_mutex_destroy( &mut_s_topic );
+  pthread_mutex_destroy( &mut_s_name );
 }
 
 string
 room::get_topic()
 {
   string s_ret;
+  pthread_mutex_lock  ( &mut_s_topic );
   s_ret = s_topic;
+  pthread_mutex_unlock( &mut_s_topic );
   return s_ret;
 }
 
 void
 room::set_topic( string s_topic )
 {
+  pthread_mutex_lock  ( &mut_s_topic );
   if ( s_topic == "" )
     this->s_topic = "";
   else
     this->s_topic = s_topic + "<br><br>";
+  pthread_mutex_unlock( &mut_s_topic );
   reload_onlineframe();
 }
 
@@ -83,7 +89,9 @@ room::set_topic( string s_topic, string s_color )
 void
 room::clean_room()
 {
+  pthread_mutex_lock  ( &mut_s_topic );
   this->s_topic = "";
+  pthread_mutex_unlock( &mut_s_topic );
   wrap::CHAT->del_elem( get_lowercase_name() );
   wrap::GCOL->add_room_to_garbage( this );
 }
@@ -121,11 +129,11 @@ void
 room::dumpit()
 {
   dumpable::add
-  ("[room]");
+    ("[room]");
   dumpable::add
-  ("Name: "+get_name());
+    ("Name: "+get_name());
   dumpable::add
-  ("Topic: "+get_topic());
+    ("Topic: "+get_topic());
   base<user>::dumpit();
 }
 

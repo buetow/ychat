@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/main.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
+ *: Copyright (C) 2004, 2006 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -22,9 +21,6 @@
  *: along with this program; if not, write to the Free Software
  *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *:*/
-
-#include <sys/time.h>
-#include <event.h>
 
 #include "incl.h"
 #include "sign.h"
@@ -106,26 +102,17 @@ main(int argc, char* argv[])
 #endif
   //*>>
 
-  event_init();
-  sign::init_event_handlers();
-  sock::init_event_handlers();
-  //wrap::SOCK->start();
-  event_dispatch();
+  sign::init_signal_handlers();
 
-  return 0;
-
-  /*
-  #ifdef CLI
-  // cli _cli; // TODO
-  // _cli.start();
-  #endif
+#ifdef CLI
+  cli _cli;
+  _cli.run();
+#endif
 
   // start the socket manager. this one will listen for incoming http requests and will
   // forward them to the specified routines which will generate a http response.
-  //wrap::SOCK->start();
-
+  wrap::SOCK->start();
 
   cout << DOWNMSG << endl;
   return 0;
-  */
 }

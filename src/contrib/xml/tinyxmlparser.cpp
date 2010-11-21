@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/contrib/xml/tinyxmlparser.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -26,24 +25,24 @@
 /*
 www.sourceforge.net/projects/tinyxml
 Original code (2.0 and earlier )copyright (c) 2000-2002 Lee Thomason (www.grinninglizard.com)
-
-This software is provided 'as-is', without any express or implied
-warranty. In no event will the authors be held liable for any
+ 
+This software is provided 'as-is', without any express or implied 
+warranty. In no event will the authors be held liable for any 
 damages arising from the use of this software.
-
-Permission is granted to anyone to use this software for any
-purpose, including commercial applications, and to alter it and
+ 
+Permission is granted to anyone to use this software for any 
+purpose, including commercial applications, and to alter it and 
 redistribute it freely, subject to the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must
+ 
+1. The origin of this software must not be misrepresented; you must 
 not claim that you wrote the original software. If you use this
 software in a product, an acknowledgment in the product documentation
 would be appreciated but is not required.
-
-2. Altered source versions must be plainly marked as such, and
+ 
+2. Altered source versions must be plainly marked as such, and 
 must not be misrepresented as being the original software.
-
-3. This notice may not be removed or altered from any source
+ 
+3. This notice may not be removed or altered from any source 
 distribution.
 */
 
@@ -56,13 +55,13 @@ distribution.
 // is less flexible than it appears. Changing the entries
 // or order will break putstring.
 TiXmlBase::Entity TiXmlBase::entity[ NUM_ENTITY ] =
-{
-  { "&amp;",  5, '&' },
-  { "&lt;",   4, '<' },
-  { "&gt;",   4, '>' },
-  { "&quot;", 6, '\"' },
-  { "&apos;", 6, '\'' }
-};
+  {
+    { "&amp;",  5, '&' },
+    { "&lt;",   4, '<' },
+    { "&gt;",   4, '>' },
+    { "&quot;", 6, '\"' },
+    { "&apos;", 6, '\'' }
+  };
 
 // Bunch of unicode info at:
 //		http://www.unicode.org/faq/utf_bom.html
@@ -77,25 +76,25 @@ TiXmlBase::Entity TiXmlBase::entity[ NUM_ENTITY ] =
 
 
 const int TiXmlBase::utf8ByteTable[256] =
-{
-  //	0	1	2	3	4	5	6	7	8	9	a	b	c	d	e	f
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x00
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x10
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x20
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x30
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x40
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x50
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x60
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x70	End of ASCII range
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x80 0x80 to 0xc1 invalid
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x90
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0xa0
-  1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0xb0
-  1,	1,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	// 0xc0 0xc2 to 0xdf 2 byte
-  2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	// 0xd0
-  3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	// 0xe0 0xe0 to 0xef 3 byte
-  4,	4,	4,	4,	4,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1	// 0xf0 0xf0 to 0xf4 4 byte, 0xf5 and higher invalid
-};
+  {
+    //	0	1	2	3	4	5	6	7	8	9	a	b	c	d	e	f
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x00
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x10
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x20
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x30
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x40
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x50
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x60
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x70	End of ASCII range
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x80 0x80 to 0xc1 invalid
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0x90
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0xa0
+    1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	// 0xb0
+    1,	1,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	// 0xc0 0xc2 to 0xdf 2 byte
+    2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	2,	// 0xd0
+    3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	3,	// 0xe0 0xe0 to 0xef 3 byte
+    4,	4,	4,	4,	4,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1,	1	// 0xf0 0xf0 to 0xf4 4 byte, 0xf5 and higher invalid
+  };
 
 
 void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* length )
@@ -103,9 +102,9 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
   const unsigned long BYTE_MASK = 0xBF;
   const unsigned long BYTE_MARK = 0x80;
   const unsigned long FIRST_BYTE_MARK[7] =
-  {
-    0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC
-  };
+    {
+      0x00, 0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC
+    };
 
   if (input < 0x80)
     *length = 1;
@@ -145,8 +144,7 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 }
 
 
-/*static*/
-int TiXmlBase::IsAlpha( unsigned char anyByte, TiXmlEncoding encoding )
+/*static*/ int TiXmlBase::IsAlpha( unsigned char anyByte, TiXmlEncoding encoding )
 {
   // This will only work for low-ascii, everything else is assumed to be a valid
   // letter. I'm not sure this is the best approach, but it is quite tricky trying
@@ -167,8 +165,7 @@ int TiXmlBase::IsAlpha( unsigned char anyByte, TiXmlEncoding encoding )
 }
 
 
-/*static*/
-int TiXmlBase::IsAlphaNum( unsigned char anyByte, TiXmlEncoding encoding )
+/*static*/ int TiXmlBase::IsAlphaNum( unsigned char anyByte, TiXmlEncoding encoding )
 {
   // This will only work for low-ascii, everything else is assumed to be a valid
   // letter. I'm not sure this is the best approach, but it is quite tricky trying
@@ -356,16 +353,16 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
         p += 3;
         continue;
       }
-      else if (*(p+0)==(char) 0xef
-               && *(p+1)==(char) 0xbf
-               && *(p+2)==(char) 0xbe )
+      else if(*(p+0)==(char) 0xef
+              && *(p+1)==(char) 0xbf
+              && *(p+2)==(char) 0xbe )
       {
         p += 3;
         continue;
       }
-      else if (*(p+0)==(char) 0xef
-               && *(p+1)==(char) 0xbf
-               && *(p+2)==(char) 0xbf )
+      else if(*(p+0)==(char) 0xef
+              && *(p+1)==(char) 0xbf
+              && *(p+2)==(char) 0xbf )
       {
         p += 3;
         continue;
@@ -389,7 +386,7 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
 #ifdef TIXML_USE_STL
 /*static*/ bool TiXmlBase::StreamWhiteSpace( TIXML_ISTREAM * in, TIXML_STRING * tag )
 {
-  for ( ;; )
+  for( ;; )
   {
     if ( !in->good() )
       return false;
@@ -404,8 +401,7 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
   }
 }
 
-/*static*/
-bool TiXmlBase::StreamTo( TIXML_ISTREAM * in, int character, TIXML_STRING * tag )
+/*static*/ bool TiXmlBase::StreamTo( TIXML_ISTREAM * in, int character, TIXML_STRING * tag )
 {
   //assert( character > 0 && character < 128 );	// else it won't work in utf-8
   while ( in->good() )
@@ -439,12 +435,12 @@ const char* TiXmlBase::ReadName( const char* p, TIXML_STRING * name, TiXmlEncodi
   if (    p && *p
           && ( IsAlpha( (unsigned char) *p, encoding ) || *p == '_' ) )
   {
-    while (		p && *p
-             &&	(		IsAlphaNum( (unsigned char ) *p, encoding )
-                   || *p == '_'
-                   || *p == '-'
-                   || *p == '.'
-                   || *p == ':' ) )
+    while(		p && *p
+            &&	(		IsAlphaNum( (unsigned char ) *p, encoding )
+                  || *p == '_'
+                  || *p == '-'
+                  || *p == '.'
+                  || *p == ':' ) )
     {
       (*name) += *p;
       ++p;
@@ -535,7 +531,7 @@ const char* TiXmlBase::GetEntity( const char* p, char* value, int* length, TiXml
   }
 
   // Now try to match it.
-  for ( i=0; i<NUM_ENTITY; ++i )
+  for( i=0; i<NUM_ENTITY; ++i )
   {
     if ( strncmp( entity[i].str, p, entity[i].strLength ) == 0 )
     {
@@ -833,7 +829,7 @@ TiXmlNode* TiXmlNode::Identify( const char* p, TiXmlEncoding encoding )
   TiXmlNode* returnNode = 0;
 
   p = SkipWhiteSpace( p, encoding );
-  if ( !p || !*p || *p != '<' )
+  if( !p || !*p || *p != '<' )
   {
     return 0;
   }
@@ -924,7 +920,7 @@ void TiXmlElement::StreamIn (TIXML_ISTREAM * in, TIXML_STRING * tag)
 {
   // We're called with some amount of pre-parsing. That is, some of "this"
   // element is in "tag". Go ahead and stream to the closing ">"
-  while ( in->good() )
+  while( in->good() )
   {
     int c = in->get
             ();
@@ -985,7 +981,7 @@ void TiXmlElement::StreamIn (TIXML_ISTREAM * in, TIXML_STRING * tag)
       bool closingTag = false;
       bool firstCharFound = false;
 
-      for ( ;; )
+      for( ;; )
       {
         if ( !in->good() )
           return;
@@ -1564,7 +1560,7 @@ const char* TiXmlDeclaration::Parse( const char* p, TiXmlParsingData* data, TiXm
     else
     {
       // Read over whatever it is.
-      while ( p && *p && *p != '>' && !IsWhiteSpace( *p ) )
+      while( p && *p && *p != '>' && !IsWhiteSpace( *p ) )
         ++p;
     }
   }

@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/tool/tool.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -42,7 +41,6 @@ public:
   static string trim( string s_str );
   static string replace( string s_string, string s_search, string s_replace );
   static string int2string( int i_int );
-  static string long2string( long l_long );
   static long unixtime();
   static int string2int( string s_digit );
   static string get_extension( string s_file );
@@ -50,8 +48,6 @@ public:
   static void strip_html( string *p_str );
   static string shell_command( string s_command, method m_method );
   static string ychat_version();
-  static string url_decode(string s_url);
-  static int htoi(string &s_str);
 };
 
 #endif

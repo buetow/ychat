@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/html.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -63,7 +62,7 @@ html::parse( map<string,string> &map_params )
     if ( ! if_templ )
     {
       wrap::system_message( OFFFOUND + s_path );
-      if (map_params["request"] == wrap::CONF->get_elem( "httpd.html.notfound" ))
+      if(map_params["request"] == wrap::CONF->get_elem( "httpd.html.notfound" ))
         return "";
 
       map_params["request"] = wrap::CONF->get_elem( "httpd.html.notfound" );
@@ -71,7 +70,7 @@ html::parse( map<string,string> &map_params )
     }
 
     char c_buf;
-    while ( !if_templ.eof() )
+    while( !if_templ.eof() )
     {
       if_templ.get( c_buf );
       s_templ += c_buf;
@@ -82,17 +81,10 @@ html::parse( map<string,string> &map_params )
 
     if_templ.close();
 
+    wrap::system_message( TECACHE + s_path );
 
     // cache file.
-    if (wrap::CONF->get_bool("httpd.html.cache"))
-    {
-      wrap::system_message( TECACHE + s_path );
-      shashmap<string>::add_elem(s_templ, s_file);
-    }
-    else
-    {
-      wrap::system_message( TECACHN + s_path );
-    }
+    shashmap<string>::add_elem(s_templ, s_file);
   }
   else
   {
@@ -100,10 +92,10 @@ html::parse( map<string,string> &map_params )
   }
 
   // find %%KEY%% token and substituate those.
-  unsigned long pos[2];
+  unsigned pos[2];
   pos[0] = pos[1] = 0;
 
-  for (;;)
+  for(;;)
   {
     pos[0] = s_templ.find( "%%", pos[1] );
 

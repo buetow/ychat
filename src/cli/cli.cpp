@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/cli/cli.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -38,7 +37,8 @@
 using namespace std;
 
 cli::cli( )
-{}
+{
+}
 
 cli::~cli()
 {}
@@ -47,31 +47,30 @@ int
 cli::parse_input( string s_input )
 {
   string s_param = "";
-  unsigned long ul_pos;
+  unsigned i_pos;
 
   // Check for empty string or ignore leading whitespaces
-  while (1)
+  while(1) 
   {
-    if (s_input.empty())
+    if (s_input.empty()) 
     {
-#ifndef READLINE
+      #ifndef READLINE
       cout << CLIPRMI;
-#endif
-
+      #endif
       return 1;
     }
+  
+    i_pos = s_input.find_first_of(" ");
 
-    ul_pos = s_input.find_first_of(" ");
-
-    if (ul_pos != 0)
+    if (i_pos != 0)
       break;
-    s_input.erase(s_input.begin());
-  }
+    s_input.erase(s_input.begin());      
+  } 
 
-  if ( ul_pos != (unsigned long) string::npos )
+  if ( i_pos != string::npos )
   {
-    s_param = s_input.substr(ul_pos+1);
-    s_input = s_input.substr(0, ul_pos);
+    s_param = s_input.substr(i_pos+1);
+    s_input = s_input.substr(0, i_pos);
   }
 
   if ( s_input.compare("help") == 0 || s_input.compare("h") == 0)
@@ -93,10 +92,9 @@ cli::parse_input( string s_input )
     << CLIPRMO << " (rel)oad      - Reloads all modules" << endl;
     //*>>
 
-#ifdef EXPERIM
-
+    #ifdef EXPERIM
     cout << CLIPRMO << " (re)conf      - Reloads configuration (EXPERIMENTAL)" << endl;
-#endif
+    #endif
 
     cout << CLIPRMO << " (r)usage      - Shows current resource usage" << endl
     << CLIPRMO << " (ru)sageh     - Shows resource usage history (yChat needs to run > 1 day)" << endl
@@ -107,51 +105,43 @@ cli::parse_input( string s_input )
     cout << CLIPRMO << " (unl)oad      - Unloads all loaded modules" << endl;//<<
     cout << CLIPRMO << " (u)nset VAR   - Deletes configuration value VAR" << endl
     << CLIPRMO << " (v)ersion     - Prints out version" << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
-  else if ( s_input.at(0) == '!' )
+  else if( s_input.at(0) == '!' )
   {
     system( s_input.substr(1).c_str() );
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
 
 #ifdef DEBUG
   else if ( s_input.compare("d") == 0 || s_input.compare("debug") == 0 )
   {
     debug_routine();
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
 #endif
   else if ( s_input.compare("du") == 0 || s_input.compare("dump") == 0 )
   {
     dump d(vectorize(s_param));
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
-  else if ( s_input.compare("echo") == 0 || s_input.compare("e") == 0 )
+  else if( s_input.compare("echo") == 0 || s_input.compare("e") == 0 )
   {
     string s_val;
 
     // Check wildcards
-    unsigned long ul_pos = s_param.find("*");
-    if ( ul_pos != (unsigned long) string::npos )
+    unsigned i_pos = s_param.find("*");
+    if ( i_pos != string::npos )
     {
-      s_param = s_param.substr( 0, ul_pos );
+      s_param = s_param.substr( 0, i_pos );
       vector<string>* p_vec = wrap::CONF->get_key_vector();
       sort(p_vec->begin(), p_vec->end());
       vector<string>::iterator iter;
@@ -166,19 +156,17 @@ cli::parse_input( string s_input )
       s_val = wrap::CONF->get_elem(s_param);
     }
 
-    if ( s_val.empty() )
+    if( s_val.empty() )
       s_val = "Value not set";
 
     cout << CLIPRMO << s_val << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
 
   //<<*
-  else if ( s_input.compare("mysql") == 0 || s_input.compare("m") == 0 )
+  else if( s_input.compare("mysql") == 0 || s_input.compare("m") == 0 )
   {
     cout << CLIPRMO << CLIMSQL << endl;
 
@@ -187,70 +175,60 @@ cli::parse_input( string s_input )
             wrap::CONF->get_elem("chat.database.user") ).c_str());
 
     cout << CLIPRMO << CLIWELC << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
   //*>>
 
 
   //<<*
-  else if ( s_input.compare("reload") == 0 || s_input.compare("rel") == 0 )
+  else if( s_input.compare("reload") == 0 || s_input.compare("rel") == 0 )
   {
     cout << CLIPRMO;
     wrap::MODL->reload_modules();
     cout << MODRELO << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
   //*>>
 
 #ifdef EXPERIM
-  else if ( s_input.compare("reconf") == 0 || s_input.compare("re") == 0 )
+  else if( s_input.compare("reconf") == 0 || s_input.compare("re") == 0 )
   {
     wrap::CHAT->reconf();
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
 #endif
 
-  else if ( s_input.compare("rusage") == 0 || s_input.compare("r") == 0 )
+  else if( s_input.compare("rusage") == 0 || s_input.compare("r") == 0 )
   {
     print_rusage();
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
-  else if ( s_input.compare("ru") == 0 || s_input.compare("rusageh") == 0 )
+  else if( s_input.compare("ru") == 0 || s_input.compare("rusageh") == 0 )
   {
     cout << wrap::STAT->get_rusage_history( "ru_maxrss", string(CLIPRMO) + " " );
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
-  else if ( s_input.compare("set") == 0 )
+  else if( s_input.compare("set") == 0 )
   {
     string s_varname = "";
-    ul_pos = s_param.find_first_of(" ");
+    i_pos = s_param.find_first_of(" ");
 
-    if ( ul_pos != string::npos )
+    if ( i_pos != string::npos )
     {
-      s_varname = s_param.substr(0, ul_pos);
+      s_varname = s_param.substr(0, i_pos);
 
-      if ( s_param.length() > ul_pos+1 )
-        s_param = s_param.substr(ul_pos+1);
+      if ( s_param.length() > i_pos+1 )
+        s_param = s_param.substr(i_pos+1);
 
       else
         s_param = "";
@@ -266,53 +244,45 @@ cli::parse_input( string s_input )
 
     wrap::CONF->add_elem(s_param, s_varname);
     cout << CLIPRMO << "New value: " << s_param << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
-  else if ( s_input.compare("shell") == 0 || s_input.compare("sh") == 0 )
+  else if( s_input.compare("shell") == 0 || s_input.compare("sh") == 0 )
   {
     cout << CLIPRMO << CLISHEL << endl;
     system(wrap::CONF->get_elem("httpd.system.shell").c_str());
     cout << CLIPRMO << CLIWELC << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
-  else if ( s_input.compare("shutdown") == 0 || s_input.compare("shut") == 0 )
+  else if( s_input.compare("shutdown") == 0 || s_input.compare("shut") == 0 )
   {
     exit(0);
   }
-  else if ( s_input.compare("t") == 0 || s_input.compare("time") == 0 )
+  else if( s_input.compare("t") == 0 || s_input.compare("time") == 0 )
   {
     cout << CLIPRMO  << "Time:   " << wrap::TIMR->get_time() << endl
     << CLIPRMO  << "Uptime: " << wrap::TIMR->get_uptime() << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
 
   //<<*
-  else if ( s_input.compare("unl") == 0 || s_input.compare("unload") == 0 )
+  else if( s_input.compare("unl") == 0 || s_input.compare("unload") == 0 )
   {
     cout << CLIPRMO;
     wrap::MODL->unload_modules();
     cout << MODUNLO << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
   //*>>
 
-  else if ( s_input.compare("u") == 0 || s_input.compare("unset") == 0 )
+  else if( s_input.compare("u") == 0 || s_input.compare("unset") == 0 )
   {
     if (!s_param.empty())
     {
@@ -326,38 +296,27 @@ cli::parse_input( string s_input )
       {
         cout << CLIPRMO << "Variable " << s_param << " was not set" << endl;
       }
-#ifndef READLINE
+      #ifndef READLINE
       cout << CLIPRMI;
-#endif
-
+      #endif
     }
   }
-  else if ( s_input.compare("v") == 0 || s_input.compare("version") == 0 )
+  else if( s_input.compare("v") == 0 || s_input.compare("version") == 0 )
   {
     cout << CLIPRMO  << tool::ychat_version() << " " << UNAME << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
   else
   {
     cout << CLIPRMO << CLIHELP << "\"" << s_input << "\"" << endl;
-#ifndef READLINE
-
+    #ifndef READLINE
     cout << CLIPRMI;
-#endif
-
+    #endif
   }
 
   return 1;
-}
-
-void
-cli::start()
-{
-  start(NULL);
 }
 
 void
@@ -367,24 +326,22 @@ cli::start(void* p_void)
 
   string s_input;
 
-#ifndef READLINE
-
+  #ifndef READLINE
   cout << CLIPRMI;
-#endif
+  #endif
 
-  while (1)
+  while(1)
   {
-#ifndef READLINE
+    #ifndef READLINE
     getline(cin, s_input);
-#else
-
+    #else
     char *c_line = readline(CLIPRMI);
     s_input = string(c_line);
     free(c_line);
-#endif
+    #endif
 
     if (!parse_input(s_input))
-      break;
+ 	break;
   }
 }
 
@@ -416,14 +373,14 @@ vector<string>
 cli::vectorize(string s_param)
 {
   vector<string> vec_ret;
-  unsigned long ul_pos;
+  unsigned i_pos;
 
-  for (ul_pos = s_param.find(" ");
-       ul_pos != (unsigned long) string::npos;
-       ul_pos = s_param.find(" "))
+  for (i_pos = s_param.find(" ");
+       i_pos != string::npos;
+       i_pos = s_param.find(" "))
   {
-    vec_ret.push_back(s_param.substr(0, ul_pos));
-    s_param = s_param.substr(ul_pos+1);
+    vec_ret.push_back(s_param.substr(0, i_pos));
+    s_param = s_param.substr(i_pos+1);
   }
 
   if (!s_param.empty())
@@ -437,13 +394,13 @@ void
 cli::debug_routine()
 {
   rusage* p_rusage = new rusage;
-  for (;;)
+  for(;;)
   {
     /*
       ossl *p_tmp = new ossl;
-      getrusage( RUSAGE_SELF, p_rusage );
+      getrusage( RUSAGE_SELF, p_rusage );      
        cout << CLIPRMO << "ru_maxrss:   " << p_rusage->ru_maxrss   << "\t(max resident set size)" << endl;
-      delete p_tmp;
+      delete p_tmp;	
      */
   }
   delete p_rusage;

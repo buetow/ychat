@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/msgs.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -31,9 +30,6 @@
 // alphabetical ordered:
 #define ACCPERR "Sock: Accept error "
 #define BINDERR "Sock: Bind error "
-#define HTTPERR "Sock: Invalid HTTP request "
-#define NONBLER "Sock: Could not set server socket nonblocking"
-#define NONBCER "Sock: Could not set client socket nonblocking"
 #define CHATREP "Chat: Using replacement strings"
 #define CHATDOP "Chat: Default operator login "
 #define CHATFLO "Chat: Flooding ("
@@ -62,7 +58,6 @@
 #define DESCRI3 "Copyright (C) 2005 EXA Digital Solutions GbR"
 #define DONEMSG "done"
 #define DOWNMSG "Shutting down "
-#define EVENTSO "Initializing sock events"
 #define GARBAGE "Garbage: Initializing collector "
 #define GARBACT "Garbage collector activated "
 #define GAROFFNE "Garbage: No garbage to remove available "
@@ -91,20 +86,27 @@
 #define MYSQLE1 "MySQL: Error running mysql_init "
 #endif
 
-#define SIGNALR "Signal: Received "
+#ifdef CTCSEGV
+#define SIGNSEG "Signal: Received SIGSEGV"
+#endif
+
 #define NEWREQU "Sock: New request "
 #define NEWROOM "Chat: New room "
 #define NEWUSER "Chat: New user "
 #define OFFFOUND "HTML: File not found "
 #define PERMSTD "Reading standard command exec permissions"
-#define READERR "Sock: Read error"
+#define POOLER1 "Pool: Did not allocate all threads ("
+#define POOLER2 "Pool: Max pool size reached ("
+#define POOLFLL "Pool: Allocating new threads ("
+#define READERR "Sock: Read error "
 #define REMROOM "Garbage: Removing room "
 #define REMUSER "Garbage: Removing user "
 #define REQUEST "Reqp: Request string "
+#define SELCERR "Sock: Select error "
 #define SEPERAT "-----------------------"
-#define SESSIOC "Session: Create "
-#define SESSIOD "Session: Destroy "
-#define SESSIOI "Session: Invalidated a session "
+#define SESSIOC "Session: Create "	 
+#define SESSIOD "Session: Destroy "	 
+#define SESSIOI "Session: Invalidated a session "	 
 #define SESSION "Session: Count "
 #define SESSDMP "Session: Dump of session"
 #define SESSERR "Session: Could not find session "
@@ -118,11 +120,11 @@
 #define SOCKCLN "Sock: Initializing a client socket at "
 #define SOCKCON "Sock: Connecting to "
 #define SOCKCRT "Sock: Created socket on "
+#define SOCKSRV "Sock: Initializing server socket "
 #define SOCKERR "Sock: Can't create socket, trying next port "
 #define SOCKER1 "Sock: Can't create socket, aborting"
 #define SOCKER2 "Sock: Unknown hostname "
 #define SOCKER4 "Sock: Incomplete HTTP request"
-#define SOCKER5 "Sock: Could not set socket nonblocking"
 #define SOCKRDY "Sock: Server socket is ready "
 #define SOCKCAC "Sock: Caching IP "
 #define SOCKCA2 "Sock: Cleaning IP cache ("
@@ -135,7 +137,6 @@
 #define SOCKSEC "SSL: Starting secure transport [HTTPS]"
 #endif
 #define TECACHE "HTML: Caching document "
-#define TECACHN "HTML: Not caching document (caching disabled) "
 #define THRDSTR "Thread: Running"
 #define TIMERAT "Timer: User autoaway timeout "
 #define TIMERIN "Timer: Initializing "
@@ -151,9 +152,8 @@
 #define HEADER1 "HTTP/1.1 200 OK\r\n"
 #define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n"
 #define HEADER3 "Cache-Control: no-cache\r\n"
-//#define HEADER4 ""
-#define HEADER4 "Pragma: no-cache\r\nConnection: close\r\n"
-//#define HEADER4 "Pragma: no-cache\r\nDate: Sat, 09 Sep 2006 03:22:06 GMT\r\nConnection: close\r\n"
+#define HEADER4 ""
+//#define HEADER4 "Pragma: no-cache\r\n"
 #define HEADER5 "Transfer-Encoding: chunked\r\n"
 #define HEADER6 "Connection: keep-alive\r\n"
 #define HEADER7 "Content-Length: ";

@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/time/timr.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -36,6 +35,9 @@ timr::timr()
   wrap::system_message( TIMERIN );
   b_timer_active = true;
 
+  pthread_mutex_init( &mut_s_time, NULL);
+  pthread_mutex_init( &mut_s_uptime, NULL);
+  pthread_mutex_init( &mut_i_offset, NULL);
 
   i_time_offset = tool::string2int( wrap::CONF->get_elem("chat.timeoffset") );
   wrap::system_message( TIMEROF + tool::int2string( i_time_offset ) );
@@ -45,7 +47,11 @@ timr::timr()
 }
 
 timr::~timr()
-{}
+{
+  pthread_mutex_destroy( &mut_s_time );
+  pthread_mutex_destroy( &mut_s_uptime );
+  pthread_mutex_destroy( &mut_i_offset );
+}
 
 bool
 timr::get_timer_active() const
@@ -56,7 +62,9 @@ timr::get_timer_active() const
 int
 timr::get_offset()
 {
+  pthread_mutex_lock  ( &mut_i_offset );
   int i_ret_val = i_time_offset;
+  pthread_mutex_unlock( &mut_i_offset );
   return i_ret_val;
 }
 
@@ -150,13 +158,17 @@ timr::set_time( double d_uptime, int i_cur_seconds, int i_cur_minutes, int i_cur
   if (i_cur_hours == 24)
     i_cur_hours = 0;
 
+  pthread_mutex_lock  ( &mut_s_time );
   s_time = add_zero_to_front( tool::int2string( i_cur_hours ) ) + ":" +
            add_zero_to_front( tool::int2string( i_cur_minutes ) ) + ":" +
            add_zero_to_front( tool::int2string( i_cur_seconds ) );
+  pthread_mutex_unlock( &mut_s_time );
 
+  pthread_mutex_lock  ( &mut_s_uptime );
   s_uptime = add_zero_to_front( tool::int2string( i_hours ) ) + ":" +
              add_zero_to_front( tool::int2string( i_minutes ) )  + ":" +
              add_zero_to_front( tool::int2string( (int) d_uptime ) );
+  pthread_mutex_unlock( &mut_s_uptime );
 }
 
 string

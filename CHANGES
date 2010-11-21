@@ -1,4 +1,4 @@
--Changes from 0.8.2-RELEASE to 0.9.0-CURRENT
+-Changes from 0.8.2-RELEASE to 0.8.3-CURRENT
 $ Added .pm files to scripts/stats.pl
 $ Modified the README (New CVS pserver)
 $ Added docs/header.txt as a source header skel
@@ -19,6 +19,7 @@ $ Added src/build.h, which contains build informations.
 $ Modified the build system. Using GNU Autoconf now.
 $ Added GNU readline support for the yChat Command Line Interface (CLI)
 $ Added the run_loop rule to ./Makefile
+$ The thread pool class is now completely static!
 $ Bugfix in src/sock/sock.cpp (No clear() w/ ncurses disabled)
 $ Bugfix in src/cli/cli.cpp (No more segfault by reading empty strings
   or commands with leading whitespaces)
@@ -28,14 +29,6 @@ $ Removed the Ncurses support which caused lots of problems.
 $ CLI commands:
   (s)hutdown has been renamed into (shut)down
 $ Changed the copyright back to Paul C. Buetow
-$ Removed pthreads
-$ Initial libevent support
-$ New default XHTML style
-$ Added httpd.html.cache option
-$ New brainstorming in the TODO file
-$ New code formatting (astyle)
-$ make style rule for ./Makefile
-$ Made it GCC 4.2.1 compatible
 
 -Changes from 0.8.1-RELEASE to 0.8.2-RELEASE
 $ Fixed some typos

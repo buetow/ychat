@@ -1,12 +1,11 @@
 /*:*
- *: File: ./src/mods/commands/yc_ban.cpp
+ *: File: ./src/mods/commands/yc_bannick.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -57,37 +56,36 @@ extern "C"
           s_reason.append( *iter + " " );
 
         bool b_reason = s_reason.length() > 0;
-
+       
         string s_retmsg = p_chat->ban_nick(s_bannick_user, string("( " + p_user->get_colored_name() + (b_reason ? ": " : "") + s_reason + " )"));
-        if (!s_retmsg.empty())
-        {
+        if (!s_retmsg.empty()) { 
           string s_msg = "<font color=\"#"
-                         + p_conf->get_elem("chat.html.errorcolor")
-                         + "\"><b>"
-                         + s_bannick_user + "</b> "
-                         + p_conf->get_elem("chat.msgs.err.alreadybanned")
-                         + " " + s_retmsg
-                         + "</font><br>\n";
+                       + p_conf->get_elem("chat.html.errorcolor")
+                       + "\"><b>"
+                       + s_bannick_user + "</b> "
+                       + p_conf->get_elem("chat.msgs.err.alreadybanned")
+		       + " " + s_retmsg
+                       + "</font><br>\n";
 
           p_user->msg_post( &s_msg );
-          return 0;
-        }
+     	  return 0;
+        }	
 
         string s_time = "";
         if ( p_conf->get_elem("chat.printalwaystime") == "true" )
           s_time = p_timr->get_time() + " ";
 
         string s_msg = s_time + "<i> " + p_user->get_colored_bold_name() + " " + p_conf->get_elem("chat.msgs.ban") + " "
-                       + p_bannick_user->get_colored_bold_name();
+			+ p_bannick_user->get_colored_bold_name();
 
-        if (b_reason)
+        if (b_reason) 
           s_msg.append( " ( " + s_reason + " )");
-
+  
         s_msg.append("</i><br>\n");
 
-        p_user->msg_post(s_msg);
-        if (! p_user->same_rooms(p_bannick_user) )
-          p_bannick_user->msg_post(s_msg);
+	p_user->msg_post(s_msg);
+	if (! p_user->same_rooms(p_bannick_user) )
+	  p_bannick_user->msg_post(s_msg);
 
       }
       else

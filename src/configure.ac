@@ -1,6 +1,6 @@
-dnl configure.ac Cypyright (2005, 2006, 2007) by the yChat Project
+dnl configure.ac Cypyright (2005, 2006) by the yChat Project
 
-AC_INIT(main.cpp, [], [ychat at dev dot buetow dot org])
+AC_INIT(main.cpp, [], [paul at buetow dot org])
 AC_CONFIG_HEADER(config.h)
 AC_PROG_CXX
 AC_PREFIX_DEFAULT(/usr/local)
@@ -14,10 +14,8 @@ header_error() AC_MSG_ERROR([Could not find required header, please check the in
 lib_error() AC_MSG_ERROR([Library test failed, please check the installation of the required library])
 
 echo "===> Checking for dependencies"
-
-AC_CHECK_HEADERS(dlfcn.h netinet/in.h time.h pthread.h event.h, [], [header_error])
+AC_CHECK_HEADERS(dlfcn.h netinet/in.h time.h pthread.h, [], [header_error])
 AC_CHECK_LIB(pthread, pthread_create, [], [lib_error])
-AC_CHECK_LIB(event, event_init, [], [lib_error])
 
 echo -n "===> Configuring with SSL "
 if test -z $enable_ssl || test $enable_ssl != "yes"; then
@@ -87,11 +85,6 @@ rm -f .Makefile.deps
 
 echo "===> Posttasking config.h"
 cat << END >> config.h
-
-/* Posttasking has been done by ./src/configure.
-   Please edit ./src/configure.ac and run autoconf if you
-   want to modify all values below this comment!
- */
 
 /* Program prefix. */
 #define PREFIX "$prefix"

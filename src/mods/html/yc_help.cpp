@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/mods/html/yc_help.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -49,7 +48,7 @@ extern "C"
     sort(p_vec_keys->begin(), p_vec_keys->end());
     vector<string>::iterator p_vec_keys_iter = p_vec_keys->begin();
 
-    while ( p_vec_keys_iter != p_vec_keys->end() )
+    while( p_vec_keys_iter != p_vec_keys->end() )
     {
 
       if ( p_vec_keys_iter->find( "mods/commands/", 0 ) != string::npos )
@@ -64,7 +63,7 @@ extern "C"
           s_content->append( "<table bordercolor=\"1\">\n" );
           s_content->append( "<tr><td><font color=\"#FFFFFF\"><b>/" + s_command_name + "</b></font></td></tr>\n" );
           s_content->append( "<tr><td>" + p_conf->get_elem("chat.msgs.help." + s_command_name) + "</td></tr>\n" );
-          s_content->append( "</table>\n<br />\n" );
+          s_content->append( "</table>\n<br>\n" );
         }
       }
       p_vec_keys_iter++;

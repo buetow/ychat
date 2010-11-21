@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/wrap.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -34,9 +33,9 @@ struct socketcontainer
   int i_sock;
   void *p_ssl_context;
 };
-#define _socket socketcontainer
+#define _socket socketcontainer 
 #else
-#define _socket int
+#define _socket int 
 #endif
 
 #ifdef DATABASE
@@ -67,6 +66,7 @@ struct socketcontainer
 
 #include "monitor/stats.h"
 #include "time/timr.h"
+#include "thrd/pool.h"
 
 using namespace std;
 
@@ -100,14 +100,17 @@ public:
 class wrap
 {
 public:
-  static void system_message(char* c_message, int i_code);
-  static void system_message(char* c_message);
-  static void system_message(const char* c_message, int i_code);
-  static void system_message(const char* c_message);
-  static void system_message(string* p_message, int i_code);
-  static void system_message(string* p_message );
-  static void system_message(string s_message, int i_code);
-  static void system_message(string s_message);
+  static void system_message( char* c_message )
+  {
+    wrap::system_message( string(c_message) );
+  }
+
+  static void system_message( string* p_message )
+  {
+    wrap::system_message( *p_message );
+  }
+
+  static void system_message( string s_message );
 
   static void init_wrapper(map<string,string>* p_main_loop_params);
 
@@ -134,7 +137,6 @@ public:
 
   static logd* LOGD;
 #endif
-
   static sock* SOCK;
   static stats* STAT;
   static timr* TIMR;

@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/tool/tool.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -42,7 +41,7 @@ tool::is_alpha_numeric( string &s_digit )
   const char *p_digit = s_digit.c_str();
   int   i_len = strlen( p_digit );
 
-  for ( int i=0; i<i_len; i++ )
+  for( int i=0; i<i_len; i++ )
   {
     if ( ! isalnum( *p_digit ) )
       return false;
@@ -57,14 +56,6 @@ tool::int2string( int i_int )
 {
   char buf[64];
   sprintf(buf, "%d", i_int);
-  return buf;
-}
-
-string
-tool::long2string( long l_long )
-{
-  char buf[64];
-  sprintf(buf, "%d", l_long);
   return buf;
 }
 
@@ -102,7 +93,7 @@ tool::to_lower( string s_str )
 {
   string s_tmp("");
 
-  for ( int i = 0; i < s_str.size() ;i++ )
+  for( int i = 0; i < s_str.size() ;i++ )
     s_tmp = s_tmp + (char) tolower( s_str.at(i) );
 
   return s_tmp;
@@ -113,14 +104,14 @@ tool::strip_html( string *p_str)
 {
   int i_pos;
 
-  if ( (i_pos=p_str->find("<", 0)) == string::npos )
+  if( (i_pos=p_str->find("<", 0)) == string::npos )
     return;
 
-  while (true)
+  while(true)
   {
     p_str->replace(i_pos, 1, "&lt;");
 
-    if ( (i_pos = p_str->find("<", 0)) == string::npos )
+    if( (i_pos = p_str->find("<", 0)) == string::npos )
       return;
   }
 }
@@ -139,7 +130,7 @@ tool::split_string(string s_string, string s_split)
   list<string> list_ret;
   unsigned i_pos, i_len = s_split.length();
 
-  while ( (i_pos = s_string.find(s_split)) != (unsigned) string::npos )
+  while ( (i_pos = s_string.find(s_split)) != string::npos )
   {
     list_ret.push_back( s_string.substr(0, i_pos) );
     s_string = s_string.substr( i_pos + i_len );
@@ -153,7 +144,7 @@ tool::split_string(string s_string, string s_split)
 string
 tool::trim( string s_str )
 {
-  if ( s_str.empty() )
+  if( s_str.empty() )
     return s_str;
 
   char c_cur = s_str[0];
@@ -196,7 +187,7 @@ tool::replace( string s_string, string s_search, string s_replace )
   unsigned i_pos[2];
 
   for ( i_pos[0]  = s_string.find( s_search );
-        i_pos[0] != (unsigned) string::npos;
+        i_pos[0] != string::npos;
         i_pos[0]  = s_string.find( s_search, i_pos[1] ) )
   {
     s_string.replace( i_pos[0], s_search.length(), s_replace );
@@ -211,10 +202,10 @@ tool::get_extension( string s_file )
 {
   int i_pos = s_file.find_last_of(".");
 
-  if ( i_pos != string::npos )
+  if( i_pos != string::npos )
   {
     string s_ext = s_file.substr(i_pos+1, s_file.size()-i_pos-1 );
-    for ( int i = 0; i < s_ext.size(); ++i )
+    for( int i = 0; i < s_ext.size(); ++i )
       s_ext[i] = tolower(s_ext[i]);
 
     return to_lower(s_ext);
@@ -242,15 +233,15 @@ tool::shell_command( string s_command, method m_method )
   wrap::system_message(SHELLEX);
   wrap::system_message(s_command);
 
-  if ( (file=popen(s_command.c_str(), "r")) == NULL )
+  if( (file=popen(s_command.c_str(), "r")) == NULL )
   {
     wrap::system_message( SHELLER );
   }
   else
   {
-    while (true)
+    while(true)
     {
-      if (fgets(buf, READBUF, file) == NULL)
+      if(fgets(buf, READBUF, file) == NULL)
         break;
 
       switch (m_method)
@@ -265,59 +256,6 @@ tool::shell_command( string s_command, method m_method )
 
   return s_ret;
 }
-
-string
-tool::url_decode( string s_url )
-{
-  string s_dest = "";
-  int i_len = s_url.size();
-  int i_prv = i_len - 2;
-
-  char c;
-  for ( int i = 0; i < i_len; ++i)
-  {
-    c = s_url.at(i);
-    if ( c == '+' )
-    {
-      s_dest += " ";
-    }
-    else if (c == '%' && i < i_prv)
-    {
-      string s_tmp = s_url.substr(i+1, 2);
-      c = (char) htoi(s_tmp);
-      s_dest += c;
-      i += 2;
-    }
-    else
-    {
-      s_dest += c;
-    }
-  }
-
-  return s_dest;
-}
-
-int
-tool::htoi(string &s_str)
-{
-  int value, c;
-  c = s_str.at(0);
-
-  if ( isupper(c) )
-    c = tolower(c);
-
-  value = (c >= '0' && c <= '9' ? c - '0' : c - 'a' + 10) * 16;
-
-  c = s_str.at(1);
-
-  if ( isupper(c) )
-    c = tolower(c);
-
-  value += c >= '0' && c <= '9' ? c - '0' : c - 'a' + 10;
-
-  return value;
-}
-
 
 #endif
 

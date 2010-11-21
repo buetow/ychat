@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/contrib/xml/tinyxml.h
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -29,23 +28,23 @@
 /*
 www.sourceforge.net/projects/tinyxml
 Original code (2.0 and earlier )copyright (c) 2000-2002 Lee Thomason (www.grinninglizard.com)
-
+ 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any
 damages arising from the use of this software.
-
+ 
 Permission is granted to anyone to use this software for any
 purpose, including commercial applications, and to alter it and
 redistribute it freely, subject to the following restrictions:
-
+ 
 1. The origin of this software must not be misrepresented; you must
 not claim that you wrote the original software. If you use this
 software in a product, an acknowledgment in the product documentation
 would be appreciated but is not required.
-
+ 
 2. Altered source versions must be plainly marked as such, and
 must not be misrepresented as being the original software.
-
+ 
 3. This notice may not be removed or altered from any source
 distribution.
 */
@@ -137,22 +136,22 @@ const TiXmlEncoding TIXML_DEFAULT_ENCODING = TIXML_ENCODING_UNKNOWN;
 /** TiXmlBase is a base class for every class in TinyXml.
 	It does little except to establish that TinyXml classes
 	can be printed and provide some utility functions.
-
+ 
 	In XML, the document and elements can contain
 	other elements and other types of nodes.
-
+ 
 	@verbatim
 	A Document can contain:	Element	(container or leaf)
 							Comment (leaf)
 							Unknown (leaf)
 							Declaration( leaf )
-
+ 
 	An Element can contain:	Element (container or leaf)
 							Text	(leaf)
 							Attributes (not on tree)
 							Comment (leaf)
 							Unknown (leaf)
-
+ 
 	A Decleration contains: Attributes (not on tree)
 	@endverbatim
 */
@@ -681,7 +680,7 @@ public:
 
   TiXmlDocument* ToDocument()	const
   {
-    return ( this && type == DOCUMENT ) ? (TiXmlDocument*) this : 0;
+  return ( this && type == DOCUMENT ) ? (TiXmlDocument*) this : 0;
   } ///< Cast to a more defined type. Will return null not of the requested type.
   TiXmlElement*  ToElement() const
   {
@@ -705,7 +704,7 @@ public:
   } ///< Cast to a more defined type. Will return null not of the requested type.
 
   /** Create an exact duplicate of this node and return it. The memory must be deleted
-  	by the caller.
+  	by the caller. 
   */
   virtual TiXmlNode* Clone() const = 0;
 
@@ -749,7 +748,7 @@ private:
 
 /** An attribute is a name-value pair. Elements have an arbitrary
 	number of attributes, each with a unique name.
-
+ 
 	@note The attributes are not TiXmlNodes, since they are not
 		  part of the tinyXML document object model. There are other
 		  suggested ways to look at this problem.
@@ -799,7 +798,7 @@ public:
 
   /** QueryIntValue examines the value string. It is an alternative to the
   	IntValue() method with richer error checking.
-  	If the value is an integer, it is stored in 'value' and
+  	If the value is an integer, it is stored in 'value' and 
   	the call returns TIXML_SUCCESS. If it is not
   	an integer, it returns TIXML_WRONG_TYPE.
 
@@ -885,12 +884,12 @@ private:
 
 /*	A class used to manage a group of attributes.
 	It is only used internally, both by the ELEMENT and the DECLARATION.
-
+	
 	The set can be changed transparent to the Element and Declaration
 	classes that use it, but NOT transparent to the Attribute
 	which has to implement a next() and previous() method. Which makes
 	it a bit problematic and prevents the use of STL.
-
+ 
 	This version is implemented with circular lists because:
 		- I like circular lists
 		- it demonstrates some independence from the (typical) doubly linked list.
@@ -963,7 +962,7 @@ public:
 
   /** QueryIntAttribute examines the attribute - it is an alternative to the
   	Attribute() method with richer error checking.
-  	If the attribute is an integer, it is stored in 'value' and
+  	If the attribute is an integer, it is stored in 'value' and 
   	the call returns TIXML_SUCCESS. If it is not
   	an integer, it returns TIXML_WRONG_TYPE. If the attribute
   	does not exist, then TIXML_NO_ATTRIBUTE is returned.
@@ -1179,11 +1178,11 @@ private:
 	@verbatim
 		<?xml version="1.0" standalone="yes"?>
 	@endverbatim
-
+ 
 	TinyXml will happily read or write files without a declaration,
 	however. There are 3 possible attributes to the declaration:
 	version, encoding, and standalone.
-
+ 
 	Note: In this version of the code, the attributes are
 	handled as special cases, not generic attributes, simply
 	because there can only be at most 3 and they are always the same.
@@ -1258,7 +1257,7 @@ private:
 	unknown. It is a tag of text, but should not be modified.
 	It will be written back to the XML, unchanged, when the file
 	is saved.
-
+ 
 	DTD tags get thrown into TiXmlUnknowns.
 */
 class TiXmlUnknown : public TiXmlNode
@@ -1481,7 +1480,7 @@ private:
 	A TiXmlHandle is a class that wraps a node pointer with null checks; this is
 	an incredibly useful thing. Note that TiXmlHandle is not part of the TinyXml
 	DOM structure. It is a separate utility class.
-
+ 
 	Take an example:
 	@verbatim
 	<Document>
@@ -1491,10 +1490,10 @@ private:
 		</Element>
 	<Document>
 	@endverbatim
-
-	Assuming you want the value of "attributeB" in the 2nd "Child" element, it's very
+ 
+	Assuming you want the value of "attributeB" in the 2nd "Child" element, it's very 
 	easy to write a *lot* of code that looks like:
-
+ 
 	@verbatim
 	TiXmlElement* root = document.FirstChildElement( "Document" );
 	if ( root )
@@ -1510,11 +1509,11 @@ private:
 				{
 					// Finally do something useful.
 	@endverbatim
-
+ 
 	And that doesn't even cover "else" cases. TiXmlHandle addresses the verbosity
-	of such code. A TiXmlHandle checks for null	pointers so it is perfectly safe
+	of such code. A TiXmlHandle checks for null	pointers so it is perfectly safe 
 	and correct to use:
-
+ 
 	@verbatim
 	TiXmlHandle docHandle( &document );
 	TiXmlElement* child2 = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", 1 ).Element();
@@ -1522,18 +1521,18 @@ private:
 	{
 		// do something useful
 	@endverbatim
-
+ 
 	Which is MUCH more concise and useful.
-
+ 
 	It is also safe to copy handles - internally they are nothing more than node pointers.
 	@verbatim
 	TiXmlHandle handleCopy = handle;
 	@endverbatim
-
+ 
 	What they should not be used for is iteration:
-
+ 
 	@verbatim
-	int i=0;
+	int i=0; 
 	while ( true )
 	{
 		TiXmlElement* child = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).Child( "Child", i ).Element();
@@ -1543,14 +1542,14 @@ private:
 		++i;
 	}
 	@endverbatim
-
-	It seems reasonable, but it is in fact two embedded while loops. The Child method is
-	a linear walk to find the element, so this code would iterate much more than it needs
+ 
+	It seems reasonable, but it is in fact two embedded while loops. The Child method is 
+	a linear walk to find the element, so this code would iterate much more than it needs 
 	to. Instead, prefer:
-
+ 
 	@verbatim
 	TiXmlElement* child = docHandle.FirstChild( "Document" ).FirstChild( "Element" ).FirstChild( "Child" ).Element();
-
+ 
 	for( child; child; child=child->NextSiblingElement() )
 	{
 		// do something

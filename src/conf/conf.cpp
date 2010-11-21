@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/conf/conf.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -33,14 +32,12 @@ using namespace std;
 
 conf::conf( string s_conf, map<string,string>* p_main_loop_params ) : name::name( s_conf )
 {
-  string s_check[] =
-  {
-    get_name(),
-    string(getenv("HOME"))+string("/.ychat/") + get_name(),
-    string("./etc/") + get_name(),
-    string("/etc/") + get_name(),
-    string(PREFIX+string("etc/")+get_name())
-  };
+  string s_check[] = {
+                       get_name(),
+                       string(getenv("HOME"))+string("/.ychat/") + get_name(),
+                       string("./etc/") + get_name(),
+                       string("/etc/") + get_name(),
+                       string(PREFIX+string("etc/")+get_name()) };
 
   string s_config;
 
@@ -48,7 +45,7 @@ conf::conf( string s_conf, map<string,string>* p_main_loop_params ) : name::name
   {
     cout << "Checking for " << s_check[i];
     ifstream if_check( s_check[i].c_str() );
-    if ( if_check )
+    if( if_check )
     {
       s_config = s_check[i];
       if_check.close();
@@ -204,19 +201,13 @@ conf::get_int(string s_key)
   return tool::string2int(get_elem(s_key));
 }
 
-bool
-conf::get_bool(string s_key)
-{
-  return get_elem(s_key).compare("true") == 0;
-}
-
 vector<string>
 conf::get_vector(string s_key)
 {
   vector<string> vec_ret;
   string s_val = get_elem(s_key);
 
-  for (size_type i_pos = s_val.find(" "); i_pos != string::npos; i_pos = s_val.find(" "))
+  for (unsigned i_pos = s_val.find(" "); i_pos != string::npos; i_pos = s_val.find(" "))
   {
     vec_ret.push_back(s_val.substr(0, i_pos));
     s_val = s_val.substr(i_pos+1);

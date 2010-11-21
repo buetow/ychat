@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 # The yChat Project (2005)
 #
 # This script creates a .tar.bz2 ball. 
