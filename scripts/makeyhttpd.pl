@@ -40,7 +40,6 @@ my %substituate = (
   'yChat' => 'yhttpd',
   'YCHAT' => 'YHTTPD',
   'CHAT' => 'HTTPD',
-  'yhttpd.org' => 'yChat.org',
   '//>>' => ''
 );
 
@@ -157,7 +156,7 @@ sub remove_marked_lines {
 sub edit_yhttpd_conf
 {
   my @old = fopen("etc/yhttpd.conf");
-  my @new = @old[0..1];
+  my @new = shift @old;
 
   my $flag = 0;
   for (@old)

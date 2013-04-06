@@ -7,11 +7,10 @@
 
 #include "sess.h"
 #include "../maps/shashmap.h"
-#include "../monitor/dump.h"
 
 using namespace std;
 
-class sman : public shashmap<sess*>
+class sman : private shashmap<sess*>
 {
 private:
   string generate_id( int i_len );

@@ -1,43 +1,33 @@
 Release table 
 
-Release date	Release name and version	Release focus 
+Release date	Branch				Release focus 
 
-Planing:	yChat 0.9.0-RELEASE       				New current branch	
-Planing:	yhttpd 0.8-RELEASE        				Features
-Planing:	yChat 0.8.4-STABLERELEASE 				New stable branch	
-Planing:	yChat 0.8.3-RELEASE       				New functionality	
+Planing:	yXML 0.1-RELEASE_________	Initial release
+Planing:	yhttpd 0.7.2-RELEASE_____	Features
+Planing:	yChat 0.7.9-RELEASE______	N/A
 
-Nov 21st 05: 	yChat 0.7.9.5-STABLERELEASE	Maintenance
-Aug 04th 05:	yChat 0.8.2-RELEASE				Minor enhancements	
-May 26th 05:	yChat 0.7.9.4-STABLERELEASE	Minor bugfixes
-Jun 21st 05:	yChat 0.8.1-RELEASE				Major features
-May 25th 05:	yChat 0.8.0-RELEASE				Major features
-May 08th 05:	yChat 0.7.9.3-STABLERELEASE	Security bugfixes
-Apr 11th 05:	yChat 0.5.5-STABLERELEASE  	Minor security fixes
-Apr 10th 05:	yChat 0.7.9.2-RELEASE      	Major security fixes
-Apr 07th 05:	yChat 0.7.9.1-RELEASE      	Minor bugfixes
-Mar 11th 05:	yChat 0.7.9-RELEASE        	
-Mar 08th 05:	yChat 0.5.4-STABLERELEASE  
-Mar 05th 05:	yChat 0.7.8-RELEASE        
-Mar 02th 05:	yChat 0.5.3-LEGACYRELEASE  
-Feb 27th 05:	yChat 0.5.2-LEGACYRELEASE  
-Feb 24th 05:	yChat 0.7.7.1-RELEASE      	Major bugfixes
-Feb 21th 05:	yChat 0.7.7-RELEASE        
-Feb 18th 05:	yChat 0.7.6-RELEASE        
-Feb 15th 05:	yChat 0.7.5-RELEASE        
-Feb 14th 05:	yChat 0.7.4.1-RELEASE      	Major bugfixes
-Feb 12th 05:	yChat 0.7.4-RELEASE        
-Feb 10th 05:	yChat 0.7.4-PRERELEASE     
-Dec 29th 04:	yChat 0.7.3-RELEASE        
-Nov 09th 04:	yChat 0.7.2-RELEASE        
-Nov 06th 04:	yhttpd 0.7.1-RELEASE       
-Nov 06th 04:	yChat 0.7.1-RELEASE        
-Nov 01st 04:	yhttpd 0.7-RELEASE         	Initial release
-Oct 31st 04:	yChat 0.7-RELEASE          
-Jan 03rd 04:	yChat 0.5.1-RELEASE        
-Sep 15th 03:	yChat 0.6-RELEASE          
-Sep 15th 03:	yChat 0.5.0-RELEASE        
-Apr 26th 03:	yChat 0.4-RELEASE          
-Mar 30th 03:	yChat 0.3-RELEASE          
-Mar 24th 03:	yChat 0.2-RELEASE          
-Mar 20th 03:	yChat 0.1-RELEASE          	Initial release
+Mar 08th 05:	yChat 0.5.4-STABLERELEASE	Minor improvements	
+Mar 05th 05	yChat 0.7.8-RELEASE______	Features
+Mar 02th 05	yChat 0.5.3-LEGACYRELEASE	Minor improvements	
+Feb 27th 05	yChat 0.5.2-LEGACYRELEASE	Bugfixes, code cleanup
+Feb 24th 05	yChat 0.7.7.1-RELEASE____	Bugfix
+Feb 21th 05	yChat 0.7.7-RELEASE______	Code cleanup		
+Feb 18th 05	yChat 0.7.6-RELEASE______	Improvements	
+Feb 15th 05	yChat 0.7.5-RELEASE______	Features, bugfixes	
+Feb 14th 05	yChat 0.7.4.1-RELEASE____	Bugfix	
+Feb 12th 05	yChat 0.7.4-RELEASE______	Bugfixes, improvements, feat. 
+Feb 10th 05	yChat 0.7.4-PRERELEASE___	Bugfixes, improvements, feat.  
+Dec 29th 04	yChat 0.7.3-RELEASE______	Bugfixes, features
+Nov 09th 04	yChat 0.7.2-RELEASE______	Bugfixes, features
+Nov 06th 04	yhttpd 0.7.1-RELEASE_____	Bugfixes	
+Nov 06th 04	yChat 0.7.1-RELEASE______	Bugfixes	
+Nov 01st 04	yhttpd 0.7-RELEASE_______	Initial release
+Oct 31st 04	yChat 0.7-RELEASE________	Cleanup, features 
+Jan 03rd 04	yChat 0.5.1-RELEASE______	Cleanup, bugfixes  
+Sep 15th 03	yChat 0.6-RELEASE________	Cleanup, features
+Sep 15th 03	yChat 0.5.0-RELEASE______	Features	
+Apr 26th 03	yChat 0.4-RELEASE________	Features	
+Mar 30th 03	yChat 0.3-RELEASE________	Features	
+Mar 24th 03	yChat 0.2-RELEASE________	Bugfixes	
+Mar 20th 03	yChat 0.1-RELEASE________	Initial release
+ 

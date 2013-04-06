@@ -23,8 +23,6 @@ private:
 
   logd* p_logd;
 #endif
-  
-  void dumpit();
 
 public:
   room( string s_name );

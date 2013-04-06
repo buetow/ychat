@@ -37,8 +37,6 @@ cli::parse_input( string s_input )
     cout << CLIPRMO << " (d)ebug       - Starts debug routine (cli.cpp)" << endl;
 #endif
 
-    cout << CLIPRMO << " (du)mp [part] - Prints out a dump of the data structure" << endl;
-    cout << CLIPRMO << "		    (Run without part to list all possibilities)" << endl;
     cout << CLIPRMO << " (e)cho VAR    - Prints out configuration value of VAR" << endl;
     cout << CLIPRMO << "                 Wildcards can be used too, example: echo http*" << endl;
 #ifdef NCURSES
@@ -80,11 +78,6 @@ cli::parse_input( string s_input )
     cout << CLIPRMI;
   }
 #endif
-  else if ( s_input.compare("du") == 0 || s_input.compare("dump") == 0 )
-  {
-    dump d(vectorize(s_param));
-    cout << CLIPRMI;
-  }
   else if( s_input.compare("echo") == 0 || s_input.compare("e") == 0 )
   {
     string s_val;
@@ -141,7 +134,6 @@ cli::parse_input( string s_input )
   {
     cout << CLIPRMO;
     wrap::MODL->reload_modules();
-    cout << MODRELO << endl;
     cout << CLIPRMI;
   }
   //*>>
@@ -215,7 +207,6 @@ cli::parse_input( string s_input )
   {
     cout << CLIPRMO;
     wrap::MODL->unload_modules();
-    cout << MODUNLO << endl;
     cout << CLIPRMI;
   }
   //*>>
@@ -292,26 +283,6 @@ cli::print_rusage()
   << CLIPRMO << "ru_nivcsw:   " << p_rusage->ru_nivcsw   << "\t(involuntary context switches)" << endl;
 
   delete p_rusage;
-}
-
-vector<string>
-cli::vectorize(string s_param) 
-{
-  vector<string> vec_ret;
-  unsigned i_pos;
-
-  for (i_pos = s_param.find(" ");
-       i_pos != string::npos;
-       i_pos = s_param.find(" "))
-  {
-    vec_ret.push_back(s_param.substr(0, i_pos));
-    s_param = s_param.substr(i_pos+1);
-  }
-
-  if (!s_param.empty())
-    vec_ret.push_back(s_param);
-
-  return vec_ret;
 }
 
 #ifdef DEBUG

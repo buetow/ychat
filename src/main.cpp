@@ -1,8 +1,7 @@
 /*
  * yChat; Contact: www.yChat.org; Mail@yChat.org
  * Copyright (C) 2003 Paul C. Buetow, Volker Richter 
- * Copyright (C) 2004 Paul C. Buetow
- * Copyright (C) 2005 EXA Digital Solutions GbR
+ * Copyright (C) 2004, 2005 Paul C. Buetow
  * -----------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or
@@ -88,6 +87,7 @@ main(int argc, char* argv[])
   << SEPERAT << endl;
 
   wrap::init_wrapper(parse_argc(argc, argv));
+
 
   //<<*
   // Initialize database connection queue

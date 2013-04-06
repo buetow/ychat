@@ -1,44 +1,3 @@
-/*:*
- *: File: ./src/memb/memb.tmpl
- *: 
- *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
-
-
-template<class obj_type>
-memb<obj_type>::memb(vector<string> &vec_fields)
-{
-  initialize(vec_fields);
-}
-
-template<class obj_type>
-void
-memb<obj_type>::initialize(vector<string> &vec_fields)
-{
-  obj_type t_default;
-  vector<string>::iterator iter;
-  for (iter = vec_fields.begin(); iter != vec_fields.end(); ++iter)
-    map_elems[*iter] = new mutexed_tupel<obj_type>(t_default);
-}
-
 template<class obj_type>
 obj_type
 memb<obj_type>::get_elem(string s_key)
@@ -47,58 +6,12 @@ memb<obj_type>::get_elem(string s_key)
   if ( p_tupel )
     return p_tupel->get_elem();
 
-  obj_type t_ret;
-  return t_ret;
+  return obj_type();
 }
 
 template<class obj_type>
 void
 memb<obj_type>::set_elem(obj_type t_obj, string s_key)
 {
-  mutexed_tupel<obj_type> *p_tupel = map_elems.get_elem(s_key);
-  if ( p_tupel )
-  {
-    p_tupel->set_elem(t_obj);
-    return;
-  }
-
-  //wrap::system_message(MEMBERE+string("("+s_key+")"));
+  //  mutexed_tupel<obj_type> *p_tupel = map_elems
 }
-
-string
-memb_string::get_string(string s_key)
-{
-  return get_elem(s_key);
-}
-
-void
-memb_string::set_string(string s_obj, string s_key)
-{
-  set_elem(s_obj, s_key);
-}
-
-int
-memb_int::get_int(string s_key)
-{
-  return get_elem(s_key);
-}
-
-void
-memb_int::set_int(int i_obj, string s_key)
-{
-  set_elem(i_obj, s_key);
-}
-
-bool
-memb_bool::get_bool(string s_key)
-{
-  return get_elem(s_key);
-}
-
-void
-memb_bool::set_bool(bool b_obj, string s_key)
-{
-  set_elem(b_obj, s_key);
-}
-
-

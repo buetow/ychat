@@ -4,12 +4,12 @@ INCLUDES=`cat ../../includes.add`
 CFLAGS=`cat ../cflags.add`
 all: mods
 $(MODS): 
+	@echo -n "Compiling html module `basename $@ | sed s/\.so// | sed s/yc_//` " 
 	@if ! test -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	@$(CC) $(CFLAGS) $(INCLUDES) -shared -s -o $@ `echo $(notdir $@) | sed s/.so/.cpp/`
-	@echo -n "HTML module `basename $@ | sed s/\.so// | sed s/yc_//` " 
 	@du -hc $@ | tail -n 1 | sed s/total// | sed "s/ //g"
 infotext:
-	@echo Compiling HTML modules
+	@echo Compiling html modules
 mods:	infotext $(MODS) 
 	@echo "Num of html modules: "
 	@ls ../../../mods/html/*.so | wc -l

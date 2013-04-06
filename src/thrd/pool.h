@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class pool
+class pool 
 {
 private:
   friend class thro;
@@ -22,7 +22,7 @@ private:
       this->p_func = p_func;
       this->p_void = p_void;
     }
-  };
+  }; 
 
   pthread_mutex_t mut_threads;
   pthread_mutex_t mut_queue_tasks;
@@ -43,11 +43,10 @@ public:
   pool();
   ~pool();
 
-  void run(void* p_void);
+  void run(void* p_void); 
   bool allow_user_login();
 
 #ifdef NCURSES
-
   void print_pool_size();
 #endif
 };

@@ -2,13 +2,6 @@
 #define WRAP_H
 
 #include "incl.h"
-
-
-struct socketcontainer
-{
-  int i_sock;
-};
-
 #ifdef DATABASE
 #include "data/data.h"
 #endif
@@ -32,15 +25,13 @@ struct socketcontainer
 #endif
 
 #include "chat/sman.h"
-
 #include "sock/sock.h"
-#include "monitor/stats.h"
+#include "stats.h"
 #include "time/timr.h"
 #include "thrd/pool.h"
 
 
 using namespace std;
-
 
 class dynamic_wrap
 {
@@ -89,7 +80,7 @@ public:
 
   static void system_message( string s_message );
 
-  static void init_wrapper(map<string,string>* p_main_loop_params);
+  static void init_wrapper(map<string,string>* p_start_params);
 
   //<<*
   static chat* CHAT;
@@ -125,6 +116,5 @@ public:
   static pool* POOL;
   static dynamic_wrap* WRAP;
 };
-
 
 #endif

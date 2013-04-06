@@ -86,15 +86,12 @@
 #define SESSION "Session: Count "
 #define SESSDMP "Session: Dump of session"
 #define SESSERR "Session: Could not find session "
-#define SESSEXI "Session: New TempID already exists, recalc."
 #define SHELLER "Shell: Could not execute command"
 #define SHELLEX "Shell: Executing the following command:"
 #define SIGSIGV "Signal: SIGV received!"
 #define STATUPR "Stats: Updated rusage history"
 #define STATRSS "Stats: Max resident set size "
 #define REUROOM "Garbage: Reusing room object "
-#define SOCKER1 "Sock: Can't create socket, aborting"
-#define SOCKUNS "Sock: Starting hypertext transport [HTTP]"
 #define SOCKCLN "Sock: Initializing a client socket at "
 #define SOCKCON "Sock: Connecting to "
 #define SOCKCRT "Sock: Created socket on "
@@ -115,14 +112,14 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "0.7.9.4"
+#define VERSION "0.7.9"
 #define BRANCH "RELEASE"
-#define BUILDNR 3807
-#define UNAME "FreeBSD 5.4-RELEASE i386"
+#define BUILDNR 3624
+#define UNAME "FreeBSD 5.3-RELEASE-p5 i386"
 #define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.2 [FreeBSD] 20040728; 3.4; g++"
 #define YCUSAGE "Usage: ./ychat {h|v}|{o confkey confvalue}\n"
 
-#define HEADER1 "HTTP/1.1 200 OK\r\n"
+#define HEADER1 "HTTP/1.0 200 OK\r\n"
 #define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n"
 #define HEADER3 "Cache-control: no-cache\r\n"
 #define HEADER4 "Pragma: no-cache\r\n"
@@ -130,7 +127,6 @@
 #define HEADER6 "Connection: keep-alive\r\n"
 #define HEADER7 "Content-Length: ";
 #define HEADER8 "Content-Type: ";
-#define HEADER8b "; charset=ISO-8859-1\r\n";
-#define HEADER9 "Allow: GET\r\n";
+#define HEADER9 "Allow: GET\n";
 
 #endif

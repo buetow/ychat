@@ -44,8 +44,6 @@ gcol::add_user_to_garbage( user* p_user )
   p_user->s_mess_delete();
   p_map_users->add_elem( p_user, tool::to_lower(p_user->get_name()) );
   wrap::system_message( GARUSER + p_user->get_name() );
-  p_user->destroy_session();
-
 #ifdef NCURSES
 
   print_garbage();

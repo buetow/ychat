@@ -1,29 +1,3 @@
--Changes from 0.7.9.3-STABLERELEASE to 0.7.9.4-STABLERELEASE -
-$ Removed the TODO list. All major feature changes will be in the CURRENT 
-$ branch.
-$ Added the SHORTDESC file
-$ Changed Copyright to "EXA Digital Solutions GbR"
-
--Changes from 0.7.9.2-RELEASE to 0.7.9.3-STABLERELEASE -
-$ The  0.7 branch is now STABLE.
-$ Modified the Makefiles, so that they produce valid output while using
-$ the -j flag of gmake.
-$ Fixed a mini bug in the src/configure script.
-$ Backported some security related  HTTP patches from the 0.8-CURRENT branch.
-
--Changes from 0.7.9.1-RELEASE to 0.7.9.2-RELEASE -
-$ Added monitor/dump, and the dump command to the CLI.
-$ Fixed a bug in the session manager. 
-$ Added gmake dist do the README.
-$ Added the charset to the HTTP-header.
-
--Changes from 0.7.9-RELEASE to 0.7.9.1-RELEASE -
-$ Fixed etc/ychat.conf (Its now valid XML)
-$ Fixed some typos.
-$ Added the scripts/makedist.sh script, which can be invoked by gmake dist. 
-$ yhttpd.org has been renamed to yChat.org. The yhttpd.org SLD will be
-$ canceled! The yhttpd.org Homepage will remain on yChat.org!
-
 -Changes from 0.7.8-RELEASE to 0.7.9-RELEASE -
 $ In the system messages will be the user printed which has requested the
   specified module.

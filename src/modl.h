@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class modl : public shashmap<dynmod*>
+class modl : private shashmap<dynmod*>
 {
 private:
   static  void dlclose_( dynmod* mod   );

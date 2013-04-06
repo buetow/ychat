@@ -6,42 +6,34 @@
 using namespace std;
 
 //<<*
-chat* wrap::CHAT = NULL;
+chat* wrap::CHAT;
 #ifdef DATABASE
-data* wrap::DATA = NULL;
+data* wrap::DATA;
 #endif
-gcol* wrap::GCOL = NULL;
-sman* wrap::SMAN = NULL;
-modl* wrap::MODL = NULL;
+gcol* wrap::GCOL;
+sman* wrap::SMAN;
+modl* wrap::MODL;
 //*>>
 
-conf* wrap::CONF = NULL;
-html* wrap::HTML = NULL;
+conf* wrap::CONF;
+html* wrap::HTML;
 #ifdef LOGGING
-logd* wrap::LOGD = NULL;
+logd* wrap::LOGD;
 #endif
 #ifdef NCURSES
-ncur* wrap::NCUR = NULL;
+ncur* wrap::NCUR;
 #endif
-sock* wrap::SOCK = NULL;
-stats* wrap::STAT = NULL;
-timr* wrap::TIMR = NULL;
-pool* wrap::POOL = NULL;
-dynamic_wrap* wrap::WRAP = NULL;
+sock* wrap::SOCK;
+stats* wrap::STAT;
+timr* wrap::TIMR;
+pool* wrap::POOL;
+dynamic_wrap* wrap::WRAP;
 
 void
 wrap::system_message( string s_message )
 {
 #ifdef NCURSES
-  if(NCUR)
-  {
-    NCUR->print( s_message );
-  }
-
-  else
-  {
-    cout << s_message << endl;
-  }
+  NCUR->print( s_message );
 #endif
 
 #ifdef SERVMSG
@@ -49,20 +41,19 @@ wrap::system_message( string s_message )
 #endif
 
 #ifdef LOGGING
-
   LOGD->log_simple_line( s_message + "\n" );
 #endif
 }
 
 void
-wrap::init_wrapper(map<string,string>* p_main_loop_params)
+wrap::init_wrapper(map<string,string>* p_start_params)
 {
   // Init the dynamic wrapper (is needed to pass all wrapped objects through a single pointer).
   WRAP = new dynamic_wrap;
 
   // Init the config manager.
-  WRAP->CONF = CONF = new conf( CONFILE, p_main_loop_params );
-  delete p_main_loop_params,
+  WRAP->CONF = CONF = new conf( CONFILE, p_start_params );
+  delete p_start_params,
 
   // Init the statistic manager.
   WRAP->STAT = STAT = new stats;
@@ -80,17 +71,7 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
   // Init the session manager.
   WRAP->SMAN = SMAN = new sman;
   //*>>
-  // Init the socket manager.
-  int i_port = tool::string2int( wrap::CONF->get_elem( "httpd.serverport" ) );
 
-  WRAP->SOCK = SOCK = new sock;
-
-  // create the server socket and set it up to accept connections.
-  if(SOCK->_make_server_socket ( i_port ) <= 0)
-  {
-    system_message(SOCKER1);
-    exit(-1);
-  }
 
 #ifdef NCURSES
 
@@ -98,16 +79,13 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
   NCUR->run();				// run the thread
 
   // Wait until ncurses interface has been initialized.
-  do
-  {
+  do {
     usleep(1000);
-  }
-  while ( ! NCUR->is_ready() );
+  } while ( ! NCUR->is_ready() );
 
   HTML->print_cached(0);
 #else
 #ifdef CLI
-
   cli* p_cli = new cli;
   p_cli->run();
 #endif
@@ -115,6 +93,9 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
 
   // Init the thread pool
   WRAP->POOL = POOL = new pool;
+
+  // Init the socket manager.
+  WRAP->SOCK = SOCK = new sock;
 
   //<<*
   // Init the chat manager.
@@ -133,13 +114,12 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
 
   // Init the data manager.
 #ifdef DATABASE
-
   WRAP->DATA = DATA = new data;
 #endif
   //*>>
 
   // Run threads
-  TIMR->run();
-}
+  TIMR->run(); 
 
+}
 #endif

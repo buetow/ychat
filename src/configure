@@ -70,7 +70,7 @@ perl -e '
    remove_from_array("libmysqlclient.so",\@libs);
   }
 
-  if ( /\/\/#define NCURSES/ )
+  elsif ( /\/\/#define NCURSES/ )
   {
    remove_from_array("ncurses.h",\@headers);
    remove_from_array("libncurses.so",\@libs);
@@ -158,21 +158,19 @@ perl -e '
    print Fout "\t\@if ! test -d `dirname ../obj/$ofile`; then mkdir -p `dirname ../obj/$ofile`; fi\n";
    my $class = $ofile;
    $class =~ s/\.o//; 
-
-   my $text;
    if ( $class =~ /contrib\/.+/ )
    {
     my $dirname = `dirname $class`;
-    $text = "\t\@echo -n \"Contributed class $class  \"\n";
+     print Fout "\t\@echo -n \"Compiling contributed class $class \"\n";
    }
 
    else
    {
-    $text = "\t\@echo -n \"Base class $class  \"\n";	
+    print Fout "\t\@echo -n \"Compiling base class $class \"\n";	
    }
 
    print Fout "\t\@\$(CC) \$(CFLAGS) \$(INCLUDES) $args -c -o ../obj/$ofile $cppfile\n";
-   print Fout $text."\t\@du -hc ../obj/$ofile | tail -n 1 | sed s/total// | sed \"s/ //g\"\n";
+   print Fout "\t\@du -hc ../obj/$ofile | tail -n 1 | sed s/total// | sed \"s/ //g\"\n";
  }
 
  close Fout;
