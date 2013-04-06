@@ -13,16 +13,16 @@ extern "C"
     container* c          = (container*) v_arg;
     dynamic_wrap* p_wrap  = (dynamic_wrap*) c->elem[0];
     conf*      p_conf     = (conf*) p_wrap->CONF;
-    string*    p_flag     = &(*((map<string,string>*) c->elem[1]))["flag"];
-    string*    p_email    = &(*((map<string,string>*) c->elem[1]))["email"];
-    string*    p_pass     = &(*((map<string,string>*) c->elem[1]))["pass"];
-    string*    p_newpass  = &(*((map<string,string>*) c->elem[1]))["newpass"];
-    string*    p_newpass2 = &(*((map<string,string>*) c->elem[1]))["newpass2"];
+    string*    p_flag     = &(*((hashmap<string>*) c->elem[1]))["flag"];
+    string*    p_email    = &(*((hashmap<string>*) c->elem[1]))["email"];
+    string*    p_pass     = &(*((hashmap<string>*) c->elem[1]))["pass"];
+    string*    p_newpass  = &(*((hashmap<string>*) c->elem[1]))["newpass"];
+    string*    p_newpass2 = &(*((hashmap<string>*) c->elem[1]))["newpass2"];
     user*      p_user     = (user*) c->elem[2];
 
     if ( *p_flag == "submit" )
     {
-      string*  p_msgs  = &(*((map<string,string>*) c->elem[1])
+      string*  p_msgs  = &(*((hashmap<string>*) c->elem[1])
                           )["msgs"];
 
       // If the password has to be changed:

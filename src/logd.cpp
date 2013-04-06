@@ -35,9 +35,6 @@ logd::initialize( string s_filename, int i_log_lines )
     exit(1);
   }
 
-  //if (wrap::NCUR->is_ready())
-  //  wrap::system_message(LOGGINI+s_filename);
-
   s_logfile = s_filename;
   i_lines   = i_log_lines;
 }
@@ -60,6 +57,7 @@ void
 logd::flush()
 {
   ofstream of_output;
+
   of_output.open(s_logfile.c_str(), ios::app);
 
   if( of_output == NULL )
@@ -79,10 +77,8 @@ logd::flush()
 }
 
 void
-logd::log_access( map<string,string> &map_request )
+logd::log_access( hashmap<string> &map_request )
 {
-  //static int i_access_lines = wrap::CONF->get_elem("httpd.logging.accesslines");
-
   string s_time = get_time_string();
   string s_logstr = map_request["REMOTE_ADDR"] + " - - "+s_time+" \"" + map_request["QUERY_STRING"]+"\" 200 0 \""+map_request["request"]+"\" \""+map_request["User-Agent"]+"\"\n";
 

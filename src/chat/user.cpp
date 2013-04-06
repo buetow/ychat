@@ -411,7 +411,7 @@ user::command( string &s_command )
   string s_command2 = s_command.substr(0, pos2-1);
   s_mod.append( s_command2  ).append( ".so" );
 
-  dynmod *mod = wrap::MODL->get_module( s_mod, get_name() );
+  dynmod *mod = wrap::MODL->get_module( s_mod );
 
   if ( mod == NULL ||
        wrap::CHAT->get_command_disabled( s_command2 ) ||
@@ -454,7 +454,7 @@ user::command( string &s_command )
   c->elem[2] = (void*) &params;
   c->elem[3] = (void*) wrap::WRAP;
 
-  ( *(mod->the_func) ) ( static_cast<void*>(c) );
+  ( *(mod->the_func) ) ( (void*) c );
 
   delete c;
 }

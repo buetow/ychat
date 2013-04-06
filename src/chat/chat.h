@@ -46,10 +46,10 @@ public:
   static void get_user_( room* room_obj, void *v_arg   );
 
   // will be called every time a user tries to login.
-  void login( map<string,string> &map_params );
+  void login( hashmap<string> &map_params );
 
   // will be called if a user posts a message.
-  void post ( user* u_user, map<string,string> &map_params );
+  void post ( user* u_user, hashmap<string> &map_params );
 
   void del_elem( string s_name )
   {

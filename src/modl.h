@@ -24,7 +24,6 @@ public:
   ~modl();
 
   dynmod* get_module( string s_name );
-  dynmod* get_module( string s_name, string s_user );
 
   vector<string>* get_mod_vector()
   {

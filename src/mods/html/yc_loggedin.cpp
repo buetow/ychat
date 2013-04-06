@@ -13,7 +13,7 @@ extern "C"
     container* c          = (container*) v_arg;
     dynamic_wrap* p_wrap  = (dynamic_wrap*) c->elem[0];
     chat*      p_chat     = (chat*) p_wrap->CHAT;
-    map<string,string>*  p_map  = (map<string,string>*) c->elem[1];
+    hashmap<string>*  p_map  = (hashmap<string>*) c->elem[1];
 
     /*
     	string s_list;

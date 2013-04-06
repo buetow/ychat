@@ -4,7 +4,7 @@ INCLUDES=`cat ../../includes.add`
 CFLAGS=`cat ../cflags.add`
 all: mods
 $(MODS): 
-	@echo -n "Compiling command module `basename $@ | sed s/\.so// | sed s/yc_//` " 
+	@echo -n "Compiling command module `basename $@` " 
 	@if ! test -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	@$(CC) $(CFLAGS) $(INCLUDES) -shared -s -o $@ `echo $(notdir $@) | sed s/.so/.cpp/`
 	@du -hc $@ | tail -n 1 | sed s/total// | sed "s/ //g"

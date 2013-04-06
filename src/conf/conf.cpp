@@ -36,7 +36,6 @@ conf::conf( string s_conf, map<string,string>* p_start_params ) : name::name( s_
     cout << CFILEFA << endl;
     exit(1);
   }
-
   else
   {
     cout << CFILEOK << "..." << endl;
@@ -77,18 +76,12 @@ conf::parse_xml(TiXmlNode* p_node, vector<string>* p_vec)
   {
     //cout << p_vec->size() << ": (Value:" << p_child->Value() << ") (Type:" << p_child->Type() << ")" << endl;
 
-    if ( strcmp(p_child->Value(),"config") == 0 )
-    {
-      parse_xml(p_child, p_vec);
-    }
-
-    else if ( strcmp(p_child->Value(),"category") == 0 )
+    if ( strcmp(p_child->Value(),"category") == 0 )
     {
       p_vec->push_back(p_child->ToElement()->Attribute("name"));
       parse_xml(p_child, p_vec);
       p_vec->pop_back();
     }
-
     else if ( strcmp(p_child->Value(),"option") == 0 )
     {
       string s_option_name = "";
@@ -170,11 +163,5 @@ conf::colored_error_msg(string s_key)
          + "\">" + shashmap<string>::get_elem(s_key) + "</font><br>\n";
 }
 //*>>
-
-int
-conf::get_int(string s_key)
-{
-   return tool::string2int(get_elem(s_key));
-}
 
 #endif

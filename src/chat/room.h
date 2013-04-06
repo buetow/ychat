@@ -57,7 +57,6 @@ public:
   {
     msg_post( &s_msg );
   }
-
   void msg_post( string *p_msg )
   {
 #ifdef LOGGING
@@ -65,12 +64,6 @@ public:
 #endif
 
     base<user>::msg_post( p_msg );
-  }
-
-  void javascript_post( string s_msg )
-  {
-    string s_js = "<script language=\"JavaScript\">"+s_msg+"</script>\n"; 
-    base<user>::msg_post( &s_js );
   }
 
   string get_bold_name()

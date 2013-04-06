@@ -10,34 +10,36 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#include "../thrd/pool.h"
 #include "../reqp.h"
 #include "../chat/user.h"
-#include "../thrd/pool.h"
-#include "../maps/shashmap.h"
 
 #ifdef LOGGING
 #include "../logd.h"
 #endif
 
+#include "../maps/hashmap.h"
+
 using namespace std;
 
-class sock : protected shashmap
-< string, uint32_t, self_hash<uint32_t>, equals_allocator<uint32_t> >
+class sock
 {
 private:
+  // total number of server requests.
+  unsigned long long i_req;
+
+  bool  b_run;      // true while socket manager is running.
+  reqp *req_parser; // parses the http requests from clients.
+  pool *thrd_pool;  // the thread pool.
 #ifdef LOGGING
+
   logd *log_daemon; // the log daemon
 #endif
 
-  // total number of server requests.
-  unsigned long long i_req;
-  bool  b_run;      // true while socket manager is running.
-  reqp *req_parser; // parses the http requests from clients.
-
   char *c_buffer;   // char buffer!
-  pthread_mutex_t mut_hits;
+  int   i_threads;  // total amount of threads inside the thread pool.
 
-  static string inet_ntoa_callback(void* p_void);
+  pthread_mutex_t mut_hits;
 
 public:
   // creates a server socket.
@@ -59,10 +61,9 @@ public:
 
   int read_write( int* p_sock );
   int start();
-  void clean_ipcache();
 
   // the chat stream there all the chat messages will sent through.
-  static void chat_stream( int i_sock, user* p_user, map<string,string> &map_params ); //<<
+  static void chat_stream( int i_sock, user* p_user, hashmap<string> &map_params ); //<<
 
 #ifdef NCURSES
 

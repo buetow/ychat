@@ -16,7 +16,6 @@ using namespace std;
 class ncur : public thro
 {
 private:
-  friend class sign;
   menu*   p_menu;
   WINDOW* p_serveroutput;
   list<char*>* p_messagelist;   // contains the messages for p_serveroutput!
@@ -29,8 +28,8 @@ private:
   pthread_mutex_t mut_is_ready;
 
 public:
-  ncur();
-  ~ncur();
+  ncur( );      	      // a standard constructor.
+  ~ncur( );
 
   void start( void *p_void );
   void print( char* c_print );

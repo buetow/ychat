@@ -80,13 +80,13 @@ data::parse_result( MYSQL_RES* p_result, vector<string>& vec_elements )
 }
 
 void
-data::insert_user_data( string s_user, string s_query, map<string,string> insert_map )
+data::insert_user_data( string s_user, string s_query, hashmap<string> insert_map )
 {
   insert_query( s_query, insert_map );
 }
 
 void
-data::insert_query( string s_query, map<string,string> map_insert )
+data::insert_query( string s_query, hashmap<string> map_insert )
 {
   vector<string> vec_elements = map_queries[s_query];
   vector<string>::iterator iter = vec_elements.begin();

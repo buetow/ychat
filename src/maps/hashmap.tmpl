@@ -1,47 +1,12 @@
-template<class key_type_>
-bool
-compare_allocator<key_type_>::operator()(key_type_ t_key_1, key_type_ t_key_2) const
-{
-  return t_key_1.compare(t_key_2) == 0;
-}
-
-template<class key_type_>
-bool
-equals_allocator<key_type_>::operator()(key_type_ t_key_1, key_type_ t_key_2) const
-{
-  return t_key_1 == t_key_2;
-}
-
-template<class key_type_>
-int
-size_hash<key_type_>::operator()(key_type_ t_key) const
-{
-  int i_hash = 0;
-  int i_size = t_key.size();
-
-  for( size_t i = 0; i < i_size; ++i )
-    i_hash =  ( i_hash << 5 ) ^ t_key.at(i) ^ i_hash;
-
-  return i_hash;
-}
-
-template<class key_type_>
-int
-self_hash<key_type_>::operator()(key_type_ t_key) const
-{
-  return t_key;
-}
-
-
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
+template<class obj_type>
 obj_type
-hashmap<obj_type, key_type_, hash_type, alloc_type>::get_set_elem(obj_type t_obj, key_type_ t_key)
+hashmap<obj_type>::get_set_elem(obj_type t_obj, string s_key)
 {
-  typename hashmap<obj_type, key_type_, hash_type, alloc_type>::iterator iter = this->find(t_key);
+  typename hashmap<obj_type>::iterator iter = this->find(s_key);
 
   if ( iter == this->end() )
   {
-    set_elem(t_obj, t_key);
+    set_elem(t_obj, s_key);
     return obj_type();
   }
 
@@ -51,35 +16,18 @@ hashmap<obj_type, key_type_, hash_type, alloc_type>::get_set_elem(obj_type t_obj
   return t_ret;
 }
 
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
-obj_type
-hashmap<obj_type, key_type_, hash_type, alloc_type>::get_or_callback_set
-(obj_type (*func)(void*), void* p_void, key_type_ t_key)
-{
-  typename hashmap<obj_type, key_type_, hash_type, alloc_type>::iterator iter = this->find(t_key);
-
-  if ( iter == this->end() )
-  {
-    obj_type t_obj = (*func) (p_void);
-    set_elem(t_obj, t_key);
-    return t_obj;
-  }
-
-  return iter->second;
-}
-
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
+template<class obj_type>
 void
-hashmap<obj_type, key_type_, hash_type, alloc_type>::set_elem(obj_type t_obj, key_type_ t_key)
+hashmap<obj_type>::set_elem(obj_type t_obj, string s_key)
 {
-  (*this)[t_key] = t_obj;
+  (*this)[s_key] = t_obj;
 }
 
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
+template<class obj_type>
 obj_type
-hashmap<obj_type, key_type_, hash_type, alloc_type>::get_elem(key_type_ t_key)
+hashmap<obj_type>::get_elem(string s_key)
 {
-  typename hashmap<obj_type, key_type_, hash_type, alloc_type>::iterator iter = this->find(t_key);
+  typename hashmap<obj_type>::iterator iter = this->find(s_key);
 
   if ( iter != this->end() )
     return iter->second;
@@ -87,12 +35,12 @@ hashmap<obj_type, key_type_, hash_type, alloc_type>::get_elem(key_type_ t_key)
   return obj_type();
 }
 
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
-vector<key_type_>*
-hashmap<obj_type, key_type_, hash_type, alloc_type>::get_key_vector()
+template<class obj_type>
+vector<string>*
+hashmap<obj_type>::get_key_vector()
 {
-  vector<key_type_>* p_vec = new vector<key_type_>;
-  typename hashmap<obj_type, key_type_, hash_type, alloc_type>::iterator iter;
+  vector<string>* p_vec = new vector<string>;
+  typename hashmap<obj_type>::iterator iter;
 
   for ( iter = this->begin(); iter != this->end(); ++iter )
     p_vec->push_back(iter->first);
@@ -100,27 +48,27 @@ hashmap<obj_type, key_type_, hash_type, alloc_type>::get_key_vector()
   return p_vec;
 }
 
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
+template<class obj_type>
 bool
-hashmap<obj_type, key_type_, hash_type, alloc_type>::exists(key_type_ t_key)
+hashmap<obj_type>::exists(string s_key)
 {
-  return this->find(t_key) != this->end();
+  return this->find(s_key) != this->end();
 }
 
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
+template<class obj_type>
 void
-hashmap<obj_type, key_type_, hash_type, alloc_type>::run_func( void (*func)(obj_type) )
+hashmap<obj_type>::run_func( void (*func)(obj_type) )
 {
-  typename hashmap<obj_type, key_type_, hash_type, alloc_type>::iterator iter;
+  typename hashmap<obj_type>::iterator iter;
   for ( iter = this->begin(); iter != this->end(); ++iter )
     ( *func ) ( iter->second );
 }
 
-template<class obj_type, class key_type_, class hash_type, class alloc_type>
+template<class obj_type>
 void
-hashmap<obj_type, key_type_, hash_type, alloc_type>::run_func( void (*func)(obj_type, void*), void* v_arg )
+hashmap<obj_type>::run_func( void (*func)(obj_type, void*), void* v_arg )
 {
-  typename hashmap<obj_type, key_type_, hash_type, alloc_type>::iterator iter;
+  typename hashmap<obj_type>::iterator iter;
   for ( iter = this->begin(); iter != this->end(); ++iter )
     ( *func ) ( iter->second, v_arg );
 }

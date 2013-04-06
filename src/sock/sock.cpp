@@ -15,7 +15,9 @@ sock::sock()
 {
   this->b_run      = true;
   this->i_req      = 0;
+  this->i_threads  = 0;
   this->req_parser = new reqp();
+  this->thrd_pool  = new pool();
 #ifdef LOGGING
 
   this->log_daemon = new logd( wrap::CONF->get_elem( "httpd.logging.accessfile" ),
@@ -29,7 +31,7 @@ sock::~sock()
 
 //<<*
 void
-sock::chat_stream( int i_sock, user *p_user, map<string,string> &map_params )
+sock::chat_stream( int i_sock, user *p_user, hashmap<string> &map_params )
 {
   string s_msg( "\n" );
 
@@ -150,11 +152,10 @@ sock::read_write( int* p_sock )
   {
     wrap::system_message( READERR );
   }
-
   else
   {
     // stores the request params.
-    map<string,string> map_params;
+    hashmap<string> map_params;
 
     // get the s_rep ( s_html response which will be send imediatly to the client
     struct sockaddr_in client;
@@ -164,21 +165,14 @@ sock::read_write( int* p_sock )
 
     getpeername( i_sock, (struct sockaddr *)&client, (int*)&size);
 #else
+
     getpeername( i_sock, (struct sockaddr *)&client, &size);
 #endif
-    
-    uint32_t &s_addr = client.sin_addr.s_addr;
-    if ( (map_params["REMOTE_ADDR"] = get_elem(s_addr)) == "" ) 
-    {
-      map_params["REMOTE_ADDR"] = string(inet_ntoa(client.sin_addr));
-      set_elem(map_params["REMOTE_ADDR"], s_addr);
-      wrap::system_message(SOCKCAC+map_params["REMOTE_ADDR"]);
-    }
 
-    //map_params["REMOTE_ADDR"] = inet_ntoa_callback(&client.sin_addr);
+    map_params["REMOTE_ADDR"] = inet_ntoa(client.sin_addr);
     //map_params["REMOTE_PORT"] = ntohs(client.sin_port);
 
-    string s_rep = req_parser->parse(i_sock, string(c_req), map_params);
+    string s_rep = req_parser->parse( i_sock, string( c_req ), map_params );
 
 #ifdef LOGGING
 
@@ -207,11 +201,11 @@ int
 sock::start()
 {
   wrap::system_message( SOCKSRV );
-  pool* p_pool = wrap::POOL;
 
 #ifdef NCURSES
+
   print_hits();
-  p_pool->print_pool_size();
+  thrd_pool->print_pool_size();
 #endif
 
   int i_port = tool::string2int( wrap::CONF->get_elem( "httpd.serverport" ) );
@@ -293,24 +287,10 @@ sock::start()
         {
           int *p_sock = new int;
           *p_sock = i;
-          p_pool->run( (void*) p_sock );
+          thrd_pool->run( (void*) p_sock );
           FD_CLR( i, &active_fd_set );
         }
       }
-  }
-}
-
-void
-sock::clean_ipcache()
-{
-  int i_ipcachesize = wrap::CONF->get_int("httpd.ipcachesize");
-  int i_currentsize = size();
-
-  if ( i_currentsize > 0 && (i_ipcachesize == 0 || i_ipcachesize <= i_currentsize) )
-  {
-    wrap::system_message(
-	SOCKCA2+tool::int2string(i_currentsize)+","+tool::int2string(i_ipcachesize)+")");
-    clear();
   }
 }
 

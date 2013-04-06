@@ -74,7 +74,7 @@ chat::get_user_( room *room_obj, void *v_arg )
 }
 
 void
-chat::login( map<string,string> &map_params )
+chat::login( hashmap<string> &map_params )
 {
   string s_user = map_params["nick"];
 
@@ -120,15 +120,6 @@ chat::login( map<string,string> &map_params )
     map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.noroom" );
     map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
     wrap::system_message( LOGINE3 + s_user + " / " + map_params["room"] );
-    return;
-  }
-
-  // prove if maxpoolsize (threads) allows this login 
-  else if ( !wrap::POOL->allow_user_login() )
-  {
-    map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.maxuserlimit" );
-    map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
-    wrap::system_message( LOGINE5 + s_user);
     return;
   }
 
@@ -279,7 +270,7 @@ chat::login( map<string,string> &map_params )
 }
 
 void
-chat::post( user* p_user, map<string,string> &map_params )
+chat::post( user* p_user, hashmap<string> &map_params )
 {
   p_user->renew_timeout();
 

@@ -7,6 +7,8 @@
 #include <queue>
 #include <time.h>
 
+#include "maps/hashmap.h"
+
 class logd
 {
 private:
@@ -26,7 +28,7 @@ public:
   ~logd();
 
   void set_logfile( string s_path, string s_filename );
-  void log_access( map<string,string> &map_request );
+  void log_access( hashmap<string> &map_request );
   void log_simple_line( string s_line );
   void flush_logs();
   static string remove_html_tags( string s_log );

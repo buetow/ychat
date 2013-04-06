@@ -47,7 +47,7 @@ data_base::data_base( )
   }
 }
 
-void data_base::init_connections()
+void data_base::initialize_connections()
 {
   int i_min_con = tool::string2int( wrap::CONF->get_elem("chat.database.mincon") ),
                   i_max_con = tool::string2int( wrap::CONF->get_elem("chat.database.maxcon") );

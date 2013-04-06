@@ -30,15 +30,15 @@ cli::parse_input( string s_input )
 
   if ( s_input.compare("help") == 0 || s_input.compare("h") == 0)
   {
-    cout << CLIPRMO << "COMMAND LINE INTERFACE HELP MENU" << endl
-         << CLIPRMO << " !command      - Uses system to run a command" << endl;
+    cout << CLIPRMO << "COMMAND LINE INTERFACE HELP MENU" << endl;
+    cout << CLIPRMO << " !command      - Uses system to run a command" << endl;
 #ifdef DEBUG
 
     cout << CLIPRMO << " (d)ebug       - Starts debug routine (cli.cpp)" << endl;
 #endif
 
-    cout << CLIPRMO << " (e)cho VAR    - Prints out configuration value of VAR" << endl;
-    cout << CLIPRMO << "                 Wildcards can be used too, example: echo http*" << endl;
+    cout << CLIPRMO << " (e)cho VAR    - Prints out configuration value of VAR" << endl
+    << CLIPRMO << "                 Wildcards can be used too, example: echo http*" << endl;
 #ifdef NCURSES
 
     cout << CLIPRMO << " (ex)it        - Quits CLI mode and respawns ncurses mode" << endl;
@@ -70,9 +70,8 @@ cli::parse_input( string s_input )
     system( s_input.substr(1).c_str() );
     cout << CLIPRMI;
   }
-
 #ifdef DEBUG
-  else if ( s_input.compare("d") == 0 || s_input.compare("debug") == 0 )
+  else if( s_input.compare("d") == 0 || s_input.compare("debug") == 0 )
   {
     debug_routine();
     cout << CLIPRMI;

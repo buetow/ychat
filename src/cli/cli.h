@@ -24,14 +24,13 @@
 
 using namespace std;
 
+class cli
 #ifndef NCURSES
-class cli : public thro
-{
-#else
-class cli 
-{
+      : public thro
 #endif
-private:
+{
+
+      private:
       int parse_input(string s_input);
 
 public:

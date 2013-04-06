@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# The yhttpd Project (2003 - 2004)
+# The yChat Project (2003 - 2004)
 #
 # This script generates source code and project statistics 
 

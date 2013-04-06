@@ -36,7 +36,7 @@ public:
   data_base();
   ~data_base();
 
-  void init_connections();
+  void initialize_connections();
   virtual hashmap<string> select_user_data( string s_user, string s_query );
   virtual void insert_user_data( string s_user, string s_query, hashmap<string> insert_map );
   virtual void update_user_data( string s_user, string s_query, hashmap<string> update_map );

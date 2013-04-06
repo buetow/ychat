@@ -1,17 +1,17 @@
 /base.h/1.8/Mon Feb 21 01:55:49 2005//
 /base.tmpl/1.6/Mon Feb 21 01:55:49 2005//
-/chat.cpp/1.20/Fri Feb 25 00:15:38 2005//
-/chat.h/1.12/Wed Feb 23 03:12:05 2005//
+/chat.cpp/1.18/Mon Feb 21 01:55:49 2005//
+/chat.h/1.11/Mon Feb 21 01:55:49 2005//
 /gcol.cpp/1.7/Mon Feb 21 01:55:49 2005//
 /gcol.h/1.5/Mon Feb 21 01:55:49 2005//
 /perm.cpp/1.10/Mon Feb 21 01:55:49 2005//
 /perm.h/1.8/Mon Feb 21 01:55:49 2005//
-/room.cpp/1.11/Fri Mar  4 00:34:29 2005//
-/room.h/1.8/Fri Mar  4 00:34:29 2005//
+/room.cpp/1.10/Mon Feb 21 01:55:49 2005//
+/room.h/1.7/Mon Feb 21 01:55:49 2005//
 /sess.cpp/1.6/Mon Feb 21 01:55:49 2005//
 /sess.h/1.6/Mon Feb 21 01:55:49 2005//
 /sman.cpp/1.11/Mon Feb 21 01:55:49 2005//
 /sman.h/1.6/Mon Feb 21 01:55:49 2005//
-/user.cpp/1.18/Sun Mar  6 20:44:47 2005//
+/user.cpp/1.16/Mon Feb 21 01:55:49 2005//
 /user.h/1.11/Mon Feb 21 01:55:49 2005//
 D

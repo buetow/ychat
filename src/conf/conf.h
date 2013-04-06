@@ -22,8 +22,7 @@ public:
   conf(string s_conf, map<string,string>* p_start_params);
   ~conf();
 
-  string colored_error_msg(string s_key);  //<<
-  int get_int(string s_key);  
+  string colored_error_msg( string s_key );  //<<
 };
 
 #endif

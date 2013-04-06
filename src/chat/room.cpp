@@ -75,7 +75,8 @@ room::clean_room()
 void
 room::reload_onlineframe()
 {
-  javascript_post("parent.online.location.reload();");
+  string s_msg = "<script language=\"JavaScript\"> parent.online.location.reload(); </script>\n";
+  msg_post( &s_msg );
 }
 
 void
