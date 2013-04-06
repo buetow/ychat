@@ -7,8 +7,10 @@
 class sign
 {
 private:
-  static void clean_template_cache(int i_param); 
+  static void clean_template_cache(int i_param);
+  static void reload_dlopen_modules(int i_param); //<<
 #ifdef CTCSEGV
+
   static void sigsev_received(int i_param);
 #endif
 

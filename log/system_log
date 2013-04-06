@@ -1,0 +1,114 @@
+[04/Aug/2005:00:42:06 +0000] Sock: Created socket on localhost:2000
+[04/Aug/2005:00:42:06 +0000] Pool: Allocating new threads (10,0)
+[04/Aug/2005:00:42:06 +0000] Reading standard command exec permissions
+[04/Aug/2005:00:42:06 +0000] Chat: Using replacement strings
+[04/Aug/2005:00:42:06 +0000] Timer: Initializing 
+[04/Aug/2005:00:42:06 +0000] Timer: Setting offset to 0
+[04/Aug/2005:00:42:07 +0000] Garbage: Initializing collector 
+[04/Aug/2005:00:42:07 +0000] Sock: Initializing server socket 
+[04/Aug/2005:00:42:07 +0000] Sock: Starting unsecure transport [HTTP]
+[04/Aug/2005:00:42:07 +0000] Sock: Server socket is ready 
+[04/Aug/2005:00:42:07 +0000] Timer: Starting timer thread 
+[04/Aug/2005:00:49:58 +0000] Sock: Bind error 
+[04/Aug/2005:00:49:58 +0000] Sock: Can't create socket, trying next port 2001
+[04/Aug/2005:00:49:58 +0000] Sock: Created socket on localhost:2001
+[04/Aug/2005:00:49:58 +0000] Pool: Allocating new threads (10,0)
+[04/Aug/2005:00:49:58 +0000] Reading standard command exec permissions
+[04/Aug/2005:00:49:58 +0000] Chat: Using replacement strings
+[04/Aug/2005:00:49:58 +0000] Timer: Initializing 
+[04/Aug/2005:00:49:58 +0000] Timer: Setting offset to 0
+[04/Aug/2005:00:49:58 +0000] Garbage: Initializing collector 
+[04/Aug/2005:00:49:58 +0000] Sock: Initializing server socket 
+[04/Aug/2005:00:49:58 +0000] Sock: Starting unsecure transport [HTTP]
+[04/Aug/2005:00:49:58 +0000] Sock: Server socket is ready 
+[04/Aug/2005:00:49:58 +0000] Timer: Starting timer thread 
+[04/Aug/2005:00:50:07 +0000] Sock: Bind error 
+[04/Aug/2005:00:50:07 +0000] Sock: Can't create socket, trying next port 2001
+[04/Aug/2005:00:50:07 +0000] Sock: Created socket on localhost:2001
+[04/Aug/2005:00:50:08 +0000] Pool: Allocating new threads (10,0)
+[04/Aug/2005:00:50:08 +0000] Reading standard command exec permissions
+[04/Aug/2005:00:50:08 +0000] Chat: Using replacement strings
+[04/Aug/2005:00:50:08 +0000] Timer: Initializing 
+[04/Aug/2005:00:50:08 +0000] Timer: Setting offset to 0
+[04/Aug/2005:00:50:08 +0000] Garbage: Initializing collector 
+[04/Aug/2005:00:50:08 +0000] Sock: Initializing server socket 
+[04/Aug/2005:00:50:08 +0000] Sock: Starting unsecure transport [HTTP]
+[04/Aug/2005:00:50:08 +0000] Sock: Server socket is ready 
+[04/Aug/2005:00:50:08 +0000] Timer: Starting timer thread 
+[04/Aug/2005:00:50:17 +0000] Sock: Caching IP 127.0.0.1
+[04/Aug/2005:00:50:17 +0000] HTML: Caching document html/index.html
+[04/Aug/2005:00:50:17 +0000] HTML: Caching document html/style.css
+[04/Aug/2005:00:50:21 +0000] New tmpid: 0n81ffo3r9a_2.p_f0b81eer8py4idfoxAZ2HCXcvWcjChcXeShR1
+[04/Aug/2005:00:50:21 +0000] Chat: New room Lounge
+[04/Aug/2005:00:50:21 +0000] Chat: New user sdfsdfs
+[04/Aug/2005:00:50:21 +0000] HTML: Caching document html/frameset.html
+[04/Aug/2005:00:50:21 +0000] HTML: Caching document html/stream.html
+[04/Aug/2005:00:50:21 +0000] HTML: Caching document html/input.html
+[04/Aug/2005:00:50:21 +0000] HTML: Caching document html/online.html
+[04/Aug/2005:00:50:21 +0000] HTML: Caching document html/blank.html
+[04/Aug/2005:00:50:30 +0000] Modl: Requesting yc_q.so (sdfsdfs)
+[04/Aug/2005:00:50:30 +0000] Garbage: Added room Lounge
+[04/Aug/2005:00:50:30 +0000] Garbage: Added user sdfsdfs
+[04/Aug/2005:00:50:34 +0000] Garbage collector activated 
+[04/Aug/2005:00:50:34 +0000] Garbage: Removing room Lounge
+[04/Aug/2005:00:50:34 +0000] Garbage: Removing user sdfsdfs
+[04/Aug/2005:00:50:59 +0000] Sock: Bind error 
+[04/Aug/2005:00:50:59 +0000] Sock: Can't create socket, trying next port 2001
+[04/Aug/2005:00:50:59 +0000] Sock: Created socket on localhost:2001
+[04/Aug/2005:00:50:59 +0000] Pool: Allocating new threads (10,0)
+[04/Aug/2005:00:50:59 +0000] Reading standard command exec permissions
+[04/Aug/2005:00:50:59 +0000] Chat: Using replacement strings
+[04/Aug/2005:00:50:59 +0000] Timer: Initializing 
+[04/Aug/2005:00:50:59 +0000] Timer: Setting offset to 0
+[04/Aug/2005:00:50:59 +0000] Garbage: Initializing collector 
+[04/Aug/2005:00:50:59 +0000] Sock: Initializing server socket 
+[04/Aug/2005:00:50:59 +0000] Sock: Starting unsecure transport [HTTP]
+[04/Aug/2005:00:50:59 +0000] Sock: Server socket is ready 
+[04/Aug/2005:00:50:59 +0000] Timer: Starting timer thread 
+[04/Aug/2005:00:51:02 +0000] Sock: Caching IP 127.0.0.1
+[04/Aug/2005:00:51:02 +0000] New tmpid: wkhkmpvcub33ji_9qz61k8wwho6dtjplrbm4SI.I912ZU/.zHQFd0
+[04/Aug/2005:00:51:02 +0000] Chat: New room Lounge
+[04/Aug/2005:00:51:02 +0000] Chat: New user sdfsdf
+[04/Aug/2005:00:51:02 +0000] HTML: Caching document html/frameset.html
+[04/Aug/2005:00:51:02 +0000] HTML: Caching document html/online.html
+[04/Aug/2005:00:51:02 +0000] HTML: Caching document html/stream.html
+[04/Aug/2005:00:51:02 +0000] HTML: Caching document html/input.html
+[04/Aug/2005:00:51:02 +0000] HTML: Caching document html/blank.html
+[04/Aug/2005:00:51:03 +0000] HTML: Caching document html/style.css
+[04/Aug/2005:00:51:03 +0000] HTML: Caching document html/images/guest.png
+[04/Aug/2005:00:51:53 +0000] Sock: Bind error 
+[04/Aug/2005:00:51:53 +0000] Sock: Can't create socket, trying next port 2001
+[04/Aug/2005:00:51:53 +0000] Sock: Created socket on localhost:2001
+[04/Aug/2005:00:51:54 +0000] Pool: Allocating new threads (10,0)
+[04/Aug/2005:00:51:54 +0000] Reading standard command exec permissions
+[04/Aug/2005:00:51:54 +0000] Chat: Using replacement strings
+[04/Aug/2005:00:51:54 +0000] Timer: Initializing 
+[04/Aug/2005:00:51:54 +0000] Timer: Setting offset to 0
+[04/Aug/2005:00:51:54 +0000] Garbage: Initializing collector 
+[04/Aug/2005:00:51:54 +0000] Sock: Initializing server socket 
+[04/Aug/2005:00:51:54 +0000] Sock: Starting unsecure transport [HTTP]
+[04/Aug/2005:00:51:54 +0000] Sock: Server socket is ready 
+[04/Aug/2005:00:51:54 +0000] Timer: Starting timer thread 
+[04/Aug/2005:00:51:59 +0000] Sock: Caching IP 127.0.0.1
+[04/Aug/2005:00:51:59 +0000] Chat: New room Lounge
+[04/Aug/2005:00:51:59 +0000] Chat: New user sdfsdf
+[04/Aug/2005:00:51:59 +0000] HTML: Caching document html/frameset.html
+[04/Aug/2005:00:51:59 +0000] HTML: Caching document html/online.html
+[04/Aug/2005:00:51:59 +0000] HTML: Caching document html/stream.html
+[04/Aug/2005:00:51:59 +0000] HTML: Caching document html/input.html
+[04/Aug/2005:00:51:59 +0000] HTML: Caching document html/blank.html
+[04/Aug/2005:00:51:59 +0000] HTML: Caching document html/style.css
+[04/Aug/2005:00:52:01 +0000] HTML: Caching document html/images/guest.png
+[04/Aug/2005:01:08:20 +0000] Sock: Bind error 
+[04/Aug/2005:01:08:20 +0000] Sock: Can't create socket, trying next port 2001
+[04/Aug/2005:01:08:20 +0000] Sock: Created socket on localhost:2001
+[04/Aug/2005:01:08:20 +0000] Pool: Allocating new threads (10,0)
+[04/Aug/2005:01:08:20 +0000] Reading standard command exec permissions
+[04/Aug/2005:01:08:20 +0000] Chat: Using replacement strings
+[04/Aug/2005:01:08:20 +0000] Timer: Initializing 
+[04/Aug/2005:01:08:20 +0000] Timer: Setting offset to 0
+[04/Aug/2005:01:08:20 +0000] Garbage: Initializing collector 
+[04/Aug/2005:01:08:20 +0000] Sock: Initializing server socket 
+[04/Aug/2005:01:08:20 +0000] Sock: Starting unsecure transport [HTTP]
+[04/Aug/2005:01:08:20 +0000] Sock: Server socket is ready 
+[04/Aug/2005:01:08:21 +0000] Timer: Starting timer thread 

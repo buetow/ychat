@@ -17,7 +17,7 @@ extern "C"
 
     conf* p_conf = (conf*) ((dynamic_wrap*)c->elem[3])->CONF;
 
-    string s_quit = "<script confuage=JavaScript>top.location.href='/"
+    string s_quit = "<script language='JavaScript'>top.location.href='/"
                     + p_conf->get_elem("httpd.startsite")
                     + "';</script>";
 

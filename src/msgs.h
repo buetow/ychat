@@ -4,8 +4,9 @@
 // alphabetical ordered:
 #define ACCPERR "Sock: Accept error "
 #define BINDERR "Sock: Bind error "
-#define HTTPDREP "Chat: Using replacement strings"
-#define HTTPDDOP "Chat: Default operator login "
+#define CHATREP "Chat: Using replacement strings"
+#define CHATDOP "Chat: Default operator login "
+#define CHATFLO "Chat: Flooding ("
 #define CFILEOK "Parsing config file"
 #define CFILEFA "Failed opening config file!"
 #define CONTACT "Contact: http://www.yChat.org, Mail@yChat.org, ICQ: 11655527"
@@ -93,17 +94,24 @@
 #define STATUPR "Stats: Updated rusage history"
 #define STATRSS "Stats: Max resident set size "
 #define REUROOM "Garbage: Reusing room object "
-#define SOCKER1 "Sock: Can't create socket, aborting"
-#define SOCKUNS "Sock: Starting hypertext transport [HTTP]"
 #define SOCKCLN "Sock: Initializing a client socket at "
 #define SOCKCON "Sock: Connecting to "
 #define SOCKCRT "Sock: Created socket on "
 #define SOCKSRV "Sock: Initializing server socket "
 #define SOCKERR "Sock: Can't create socket, trying next port "
+#define SOCKER1 "Sock: Can't create socket, aborting"
 #define SOCKER2 "Sock: Unknown hostname "
 #define SOCKRDY "Sock: Server socket is ready "
 #define SOCKCAC "Sock: Caching IP "
 #define SOCKCA2 "Sock: Cleaning IP cache ("
+#define SOCKUNS "Sock: Starting unsecure transport [HTTP]"
+#ifdef OPENSSL
+#define SSLERR1 "SSL: Can't create socket"
+#define SSLERR2 "SSL: Private key does not match cert. file"
+#define SSLERR3 "SSL: Can't create new SSL context"
+#define SSLERR4 "SSL: Can't create new SSL socket via accept"
+#define SOCKSEC "SSL: Starting secure transport [HTTPS]"
+#endif
 #define TECACHE "HTML: Caching document "
 #define THRDSTR "Thread: Running"
 #define TIMERAT "Timer: User autoaway timeout "
@@ -115,16 +123,16 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "0.7.2"
+#define VERSION "0.8.2"
 #define BRANCH "RELEASE"
-#define BUILDNR 3807
-#define UNAME "FreeBSD 5.4-DEVEL i386"
-#define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4 [FreeBSD] 20040728; 3.4; g++"
-#define YCUSAGE "Usage: ./yhttpd {h|v}|{o confkey confvalue}\n"
+#define BUILDNR 4003
+#define UNAME "FreeBSD 5.4-RELEASE-p3 i386"
+#define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.2 [FreeBSD] 20040728; 3.4; g++"
+#define YCUSAGE "Usage: ./ychat {h|v}|{o confkey confvalue}\n"
 
 #define HEADER1 "HTTP/1.1 200 OK\r\n"
-#define HEADER2 "Server: yhttpd/" VERSION "-" BRANCH "\r\n"
-#define HEADER3 "Cache-control: no-cache\r\n"
+#define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n"
+#define HEADER3 "Cache-Control: no-cache\r\n"
 #define HEADER4 "Pragma: no-cache\r\n"
 #define HEADER5 "Transfer-Encoding: chunked\r\n"
 #define HEADER6 "Connection: keep-alive\r\n"
@@ -132,5 +140,6 @@
 #define HEADER8 "Content-Type: ";
 #define HEADER8b "; charset=ISO-8859-1\r\n";
 #define HEADER9 "Allow: GET\r\n";
+//#define MEMBERE "Memb: No such member "
 
 #endif

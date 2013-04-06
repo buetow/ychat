@@ -31,7 +31,7 @@ cli::parse_input( string s_input )
   if ( s_input.compare("help") == 0 || s_input.compare("h") == 0)
   {
     cout << CLIPRMO << "COMMAND LINE INTERFACE HELP MENU" << endl
-         << CLIPRMO << " !command      - Uses system to run a command" << endl;
+    << CLIPRMO << " !command      - Uses system to run a command" << endl;
 #ifdef DEBUG
 
     cout << CLIPRMO << " (d)ebug       - Starts debug routine (cli.cpp)" << endl;
@@ -47,17 +47,22 @@ cli::parse_input( string s_input )
 #endif
 
     cout << CLIPRMO << " (h)elp        - Prints out this help!" << endl;
+    //<<*
+    cout << CLIPRMO << " (m)ysql       - Runs MySQL client on yChat DB" << endl
+    << CLIPRMO << " (rel)oad      - Reloads all modules" << endl;
+    //*>>
 #ifdef EXPERIM
 
     cout << CLIPRMO << " (re)conf      - Reloads configuration (EXPERIMENTAL)" << endl;
 #endif
 
     cout << CLIPRMO << " (r)usage      - Shows current resource usage" << endl
-    << CLIPRMO << " (ru)sageh     - Shows resource usage history (yhttpd needs to run > 1 day)" << endl
+    << CLIPRMO << " (ru)sageh     - Shows resource usage history (yChat needs to run > 1 day)" << endl
     << CLIPRMO << " (set) VAR VAL - Sets configuration value VAR to VAL" << endl
     << CLIPRMO << " (sh)ell       - Runs a system shell" << endl
     << CLIPRMO << " (s)hutdown    - Shuts down the whole server" << endl
     << CLIPRMO << " (t)ime        - Prints out time and uptime" << endl;
+    cout << CLIPRMO << " (unl)oad      - Unloads all loaded modules" << endl;//<<
     cout << CLIPRMO << " (u)nset VAR   - Deletes configuration value VAR" << endl
     << CLIPRMO << " (v)ersion     - Prints out version" << endl;
     cout << CLIPRMI;
@@ -110,6 +115,19 @@ cli::parse_input( string s_input )
     cout << CLIPRMI;
   }
 
+  //<<*
+  else if( s_input.compare("mysql") == 0 || s_input.compare("m") == 0 )
+  {
+    cout << CLIPRMO << CLIMSQL << endl;
+
+    system((wrap::CONF->get_elem("chat.system.mysqlclient") + " -p -h " +
+            wrap::CONF->get_elem("chat.database.serverhost") + " -u " +
+            wrap::CONF->get_elem("chat.database.user") ).c_str());
+
+    cout << CLIPRMO << CLIWELC << endl;
+    cout << CLIPRMI;
+  }
+  //*>>
 
 #ifdef NCURSES
   else if( s_input.compare("exit") == 0 || s_input.compare("ex") == 0 )
@@ -118,11 +136,20 @@ cli::parse_input( string s_input )
   }
 #endif
 
+  //<<*
+  else if( s_input.compare("reload") == 0 || s_input.compare("rel") == 0 )
+  {
+    cout << CLIPRMO;
+    wrap::MODL->reload_modules();
+    cout << MODRELO << endl;
+    cout << CLIPRMI;
+  }
+  //*>>
 
 #ifdef EXPERIM
   else if( s_input.compare("reconf") == 0 || s_input.compare("re") == 0 )
   {
-    wrap::HTTPD->reconf();
+    wrap::CHAT->reconf();
     cout << CLIPRMI;
   }
 #endif
@@ -183,6 +210,15 @@ cli::parse_input( string s_input )
     cout << CLIPRMI;
   }
 
+  //<<*
+  else if( s_input.compare("unl") == 0 || s_input.compare("unload") == 0 )
+  {
+    cout << CLIPRMO;
+    wrap::MODL->unload_modules();
+    cout << MODUNLO << endl;
+    cout << CLIPRMI;
+  }
+  //*>>
 
   else if( s_input.compare("u") == 0 || s_input.compare("unset") == 0 )
   {
@@ -203,7 +239,7 @@ cli::parse_input( string s_input )
   }
   else if( s_input.compare("v") == 0 || s_input.compare("version") == 0 )
   {
-    cout << CLIPRMO  << tool::yhttpd_version() << " " << UNAME << endl;
+    cout << CLIPRMO  << tool::ychat_version() << " " << UNAME << endl;
     cout << CLIPRMI;
   }
   else
@@ -259,7 +295,7 @@ cli::print_rusage()
 }
 
 vector<string>
-cli::vectorize(string s_param) 
+cli::vectorize(string s_param)
 {
   vector<string> vec_ret;
   unsigned i_pos;

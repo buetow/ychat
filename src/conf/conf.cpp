@@ -6,11 +6,11 @@
 
 using namespace std;
 
-conf::conf( string s_conf, map<string,string>* p_start_params ) : name::name( s_conf )
+conf::conf( string s_conf, map<string,string>* p_main_loop_params ) : name::name( s_conf )
 {
   string s_check[] = {
                        get_name(),
-                       string(getenv("HOME"))+string("/.yhttpd/") + get_name(),
+                       string(getenv("HOME"))+string("/.ychat/") + get_name(),
                        string("./etc/") + get_name(),
                        string("/etc/") + get_name(),
                        string(PREFIX+string("etc/")+get_name()) };
@@ -54,11 +54,11 @@ conf::conf( string s_conf, map<string,string>* p_start_params ) : name::name( s_
   vector<string> vec_string;
   parse_xml(p_xml, &vec_string);
 
-  shashmap<string>::add_elem_insecure(tool::yhttpd_version(), "yhttpd.version");
+  shashmap<string>::add_elem_insecure(tool::ychat_version(), "ychat.version");
 
-  // Overrides yhttpd.conf values with command line options (yhttpd -o key1 value1 -o key2 value2 ...)
+  // Overrides ychat.conf values with command line options (ychat -o key1 value1 -o key2 value2 ...)
   map<string,string>::iterator iter;
-  for ( iter = p_start_params->begin(); iter != p_start_params->end(); iter++ )
+  for ( iter = p_main_loop_params->begin(); iter != p_main_loop_params->end(); iter++ )
   {
     shashmap<string>::del_elem_insecure(iter->first);
     shashmap<string>::add_elem_insecure(iter->second, iter->first);
@@ -161,11 +161,35 @@ conf::exit_if_xml_error() const
   }
 }
 
+//<<*
+string
+conf::colored_error_msg(string s_key)
+{
+  return "<font color=\"#"
+         + shashmap<string>::get_elem("chat.html.errorcolor")
+         + "\">" + shashmap<string>::get_elem(s_key) + "</font><br>\n";
+}
+//*>>
 
 int
 conf::get_int(string s_key)
 {
-   return tool::string2int(get_elem(s_key));
+  return tool::string2int(get_elem(s_key));
 }
 
+vector<string>
+conf::get_vector(string s_key)
+{
+  vector<string> vec_ret;
+  string s_val = get_elem(s_key);
+
+  for (unsigned i_pos = s_val.find(" "); i_pos != string::npos; i_pos = s_val.find(" "))
+  {
+    vec_ret.push_back(s_val.substr(0, i_pos));
+    s_val = s_val.substr(i_pos+1);
+  }
+
+  vec_ret.push_back(s_val);
+  return vec_ret;
+}
 #endif

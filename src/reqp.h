@@ -24,6 +24,7 @@ private:
   string get_from_header( string s_req, string s_hdr );
 
   int htoi( string *p_str );
+  void run_html_mod( string s_event, map<string,string> &map_params, user* p_user ); //<<
   // Removes double dots ".."
   string remove_dots( string s_req );
 

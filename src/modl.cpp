@@ -1,59 +1,85 @@
-// class modl implementation.
-
-#ifndef MODL_CXX
-#define MODL_CXX
+#ifndef MODL_CPP
+#define MODL_CPP
 
 #include <limits.h>
 #include <stdlib.h>
 #include <dlfcn.h>
 #include <stdio.h>
 
-#include "s_mutx.h"
 #include "modl.h"
+#include "tool/dir.h"
 
 using namespace std;
 
-modl::modl(  )
+modl::modl()
 {
-  map_mods = new hmap<dynmod*,string>(80);
-  pthread_mutex_init( &mut_map_mods, NULL );
+#ifdef NCURSES
+  print_cached( 0 );
+#endif
+
+  if ( wrap::CONF->get_elem( "httpd.modules.preloadcommands" ).compare( "true" ) == 0 )
+    preload_modules( wrap::CONF->get_elem("httpd.modules.commandsdir") );
+
+  if ( wrap::CONF->get_elem( "httpd.modules.preloadhtml" ).compare( "true" ) == 0 )
+    preload_modules( wrap::CONF->get_elem("httpd.modules.htmldir") );
 }
 
 modl::~modl()
 {
-  pthread_mutex_lock   ( &mut_map_mods );
-
   // dlclose all the_module's first!
-  map_mods->run_func   ( &modl::dlclose_ );
+  run_func( &modl::dlclose_ );
 
   // then clean the hash map.
-  map_mods->make_empty (               );
+  unload_modules();
+}
 
-  pthread_mutex_unlock ( &mut_map_mods );
-  pthread_mutex_destroy( &mut_map_mods );
+void
+modl::preload_modules( string s_path )
+{
+  dir* p_dir = new dir();
+  p_dir->open_dir( s_path );
+
+  p_dir->read_dir();
+
+  vector<string> dir_vec = p_dir->get_dir_vec();
+
+  if ( ! dir_vec.empty() )
+  {
+    vector<string>::iterator iter = dir_vec.begin();
+
+    do
+    {
+      if ( iter->length() >= 3 && iter->compare( iter->length()-3, 3, ".so" ) == 0 )
+        cache_module( s_path + *iter, false );
+    }
+    while ( ++iter != dir_vec.end() );
+  }
+
+  dir_vec.clear();
+
+  // This also closes the dir.
+  delete p_dir;
 }
 
 void
 modl::dlclose_( dynmod* mod )
 {
   dlclose( mod->the_module );
+  free   ( mod );
 }
 
 dynmod*
-modl::cache_module( string s_name )
+modl::cache_module( string s_name, bool b_print_sys_msg )
 {
   void     *the_module = NULL;
   function *the_func   = NULL;
 
-  the_module = dlopen( s_name.c_str(), RTLD_NOW );
+  the_module = dlopen( s_name.c_str(), RTLD_LAZY );
+  //the_module = dlopen( s_name.c_str(), RTLD_NOW );
 
   if ( the_module == NULL )
   {
-    pthread_mutex_lock  ( &s_mutx::get
-                            ().mut_stdout );
-    cerr << "dlerror: " << dlerror() << endl;
-    pthread_mutex_unlock( &s_mutx::get
-                            ().mut_stdout );
+    wrap::system_message( dlerror() );
     return NULL;
   }
 
@@ -61,44 +87,85 @@ modl::cache_module( string s_name )
 
   if ( the_func == NULL )
   {
-    pthread_mutex_lock  ( &s_mutx::get
-                            ().mut_stdout );
-    cerr << "dlerror: " << dlerror() << endl;
-    pthread_mutex_unlock( &s_mutx::get
-                            ().mut_stdout );
+    wrap::system_message( dlerror() );
     return NULL;
   }
 
-#ifdef VERBOSE
-  pthread_mutex_lock  ( &s_mutx::get
-                          ().mut_stdout );
-  cout << MODULEC << s_name << endl;
-  pthread_mutex_unlock( &s_mutx::get
-                          ().mut_stdout );
-#endif
+  if ( b_print_sys_msg )
+    wrap::system_message( MODULEC + s_name.substr( s_name.find_last_of("/")+1 ) );
 
   dynmod *mod     = new dynmod; // encapsulates the function and module handler.
   mod->the_func   = the_func  ; // the function to execute
   mod->the_module = the_module; // the module handler to close if function
+
   // is not needed anymore.
-  pthread_mutex_lock  ( &mut_map_mods );
-  map_mods->add_elem  ( mod, s_name  );
-  pthread_mutex_unlock( &mut_map_mods );
+  add_elem( mod, s_name  );
 
   // DO NOT CLOSE AS LONG THERE EXIST A POINTER TO THE FUNCTION
-  // dlclose( module );
+  // dlclose( module ); will be called in modl::~modl()!
+
+#ifdef NCURSES
+
+  print_cached( size() );
+#endif
 
   return mod;
 }
 
 dynmod*
+modl::get_module( string s_name, string s_user )
+{
+  wrap::system_message( MODULER + s_name.substr( s_name.find_last_of("/")+1 ) + " (" + s_user + ")");
+  dynmod* mod = get_elem( s_name );
+  return ! mod ? cache_module( s_name, true ) : mod;
+}
+
+dynmod*
 modl::get_module( string s_name )
 {
-  pthread_mutex_lock  ( &mut_map_mods );
-  dynmod* mod = map_mods->get_elem( s_name );
-  pthread_mutex_unlock( &mut_map_mods );
-
-  return ! mod ? cache_module( s_name ) : mod;
+  wrap::system_message( MODULER + s_name.substr( s_name.find_last_of("/")+1 ) );
+  dynmod* mod = get_elem( s_name );
+  return ! mod ? cache_module( s_name, true ) : mod;
 }
+
+void
+modl::unload_modules()
+{
+  wrap::system_message( MODUNLO );
+
+  // dlclose all the_module's first!
+  run_func( &modl::dlclose_ );
+
+  // then clean the hash map.
+  shashmap<dynmod*>::clear();
+
+#ifdef NCURSES
+
+  print_cached( size() );
+#endif
+
+}
+
+void
+modl::reload_modules()
+{
+  unload_modules();
+
+  wrap::system_message( MODRELO );
+  preload_modules( wrap::CONF->get_elem("httpd.modules.commandsdir") );
+  preload_modules( wrap::CONF->get_elem("httpd.modules.htmldir") );
+}
+
+#ifdef NCURSES
+void
+modl::print_cached( int i_mods )
+{
+  if ( !wrap::NCUR->is_ready() )
+    return;
+
+  mvprintw( NCUR_CACHED_MODS_X, NCUR_CACHED_MODS_Y, "Mods: %d ", i_mods);
+  refresh();
+}
+#endif
 
 #endif

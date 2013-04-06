@@ -15,24 +15,35 @@ private:
   string s_dump;
 
   static const string s_sep;
-  static const int i_max_level; 
+  static const int i_max_level;
 
   virtual void dumpit() = 0;
   void initialize(int i_level);
   void reset();
 
 protected:
-  void add(unsigned i_num) 
-  { add("<unsigned>"); }
+  void add
+    (unsigned i_num)
+  {
+    add
+      ("<unsigned>");
+  }
 
-  void add(int i_num) 
-  { add("<int>"); }
+  void add
+    (int i_num)
+  {
+    add
+      ("<int>");
+  }
 
-  void add(string s_line);
+  void add
+    (string s_line);
   dumpable();
 
-  void next_no_newline() 
-  { b_next_no_nl = true; }
+  void next_no_newline()
+  {
+    b_next_no_nl = true;
+  }
 
 public:
   string dump();

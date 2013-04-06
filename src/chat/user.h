@@ -23,16 +23,19 @@ private:
   // private members:
   string s_mess;   // message string which has to be sent to the user.
 
-  bool   b_online; // true if user is online.
-  bool   b_has_sess; // true if user already has a session!
-  bool   b_is_reg; // true if user is registered
-  bool   b_away;   // true if user is away.
-  bool   b_fake;   // true if user hides his status logo (does not work for guest)
-  bool   b_invisible;   // true if user hides his status logo (does not work for guest)
-  bool             b_set_changed_data; // Only set change data if required!
+  bool b_online; // true if user is online.
+  bool b_has_sess; // true if user already has a session!
+  bool b_is_reg; // true if user is registered
+  bool b_is_gag; // true if user is gagged
+  bool b_away;   // true if user is away.
+  bool b_fake;   // true if user hides his status logo (does not work for guest)
+  bool b_invisible;   // true if user hides his status logo (does not work for guest)
+  bool b_set_changed_data; // Only set change data if required!
 
-  int   i_status;   // user's rang ( see enum rang @ globals.h ).
-  int   i_old_status;   // user's previous status.
+  int i_status;   // user's rang ( see enum rang @ globals.h ).
+  int i_old_status;   // user's previous status.
+  int i_flood_messages; // user's message posts (needed for flood protection, does not need to be syncronized)
+  time_t t_flood_time; // user's time count (needed for flood protection, does not need to be syncronized) 
 
   string s_tmpid;
   string s_agnt;   // user's http user agent.
@@ -55,6 +58,7 @@ private:
   pthread_mutex_t mut_b_invisible;
   pthread_mutex_t mut_b_has_sess;
   pthread_mutex_t mut_b_is_reg;
+  pthread_mutex_t mut_b_is_gag;
   pthread_mutex_t mut_s_pass;
   pthread_mutex_t mut_p_room;
   pthread_mutex_t mut_s_col1;
@@ -94,15 +98,14 @@ public:
   bool  get_invisible();
   bool  get_has_sess();
   bool  get_is_reg();
+  bool  get_is_gag();
   void  set_online( bool b_online );
   void  set_fake( bool b_fake );
   void  set_invisible( bool b_invisible );
   void  set_has_sess( bool b_has_sess );
   void  set_is_reg( bool b_is_reg );
-  void  set_changed_data_on()
-  {
-    b_set_changed_data = 1;
-  }
+  void  set_is_gag( bool b_is_gag );
+  void  set_changed_data_on() { b_set_changed_data = 1; }
   bool  get_away( );
   string  get_away_msg( );
   void  set_away( bool b_away, string s_away );
@@ -122,7 +125,9 @@ public:
   int    get_status( );
   void   set_status( int i_status );
   bool   new_msgs  ( );
+  void   post_action_msg(string s_msgkey);
   void   check_timeout( int* i_idle_timeout );
+  void   renew_timeout();
 
   // executes a command.
   void command( string &s_command );
@@ -142,6 +147,8 @@ public:
   void get_user_list( string &s_list );
   void check_restore_away();
   void reconf();
+  bool same_rooms(user *p_user);
+  string make_colors(string s_msg);
 };
 
 #endif

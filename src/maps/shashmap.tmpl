@@ -43,7 +43,7 @@ shashmap<obj_type, key_type_, hash_type, alloc_type>::get_or_callback_set
 {
   pthread_mutex_lock( &mut_shashmap );
   obj_type t_ret = hashmap<obj_type, key_type_, hash_type, alloc_type>::get_or_callback_set
-	(func, p_void, t_key);
+                   (func, p_void, t_key);
   pthread_mutex_unlock( &mut_shashmap );
   return t_ret;
 }
@@ -144,12 +144,14 @@ template<class obj_type, class key_type_, class hash_type, class alloc_type>
 void
 shashmap<obj_type, key_type_, hash_type, alloc_type>::dumpit()
 {
-  dumpable::add("[shashmap]");
+  dumpable::add
+    ("[shashmap]");
   vector<key_type_>* p_vec = get_key_vector();
 
   typename vector<key_type_>::iterator iter;
   for (iter = p_vec->begin(); iter != p_vec->end(); ++iter)
-    dumpable::add(*iter);
+    dumpable::add
+      (*iter);
 
   delete p_vec;
 }

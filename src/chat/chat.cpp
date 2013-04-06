@@ -170,7 +170,6 @@ chat::login( map<string,string> &map_params )
       map_params["tmpid"] = p_sess->get_tmpid();
       p_user->set_tmpid( map_params["tmpid"] );
       p_user->set_has_sess( true );
-      wrap::system_message("New tmpid: " + map_params["tmpid"] );
     }
   }
   else //  if ( p_user == NULL ) // If not in garbage create a new user!
@@ -224,7 +223,6 @@ chat::login( map<string,string> &map_params )
     sess* p_sess = wrap::SMAN->create_session();
     p_sess->set_user(p_user);
     map_params["tmpid"] = p_sess->get_tmpid();
-    wrap::system_message("New tmpid: " + map_params["tmpid"] );
     p_user->set_tmpid( map_params["tmpid"] );
     p_user->set_col1( map_params["color1"] );
     p_user->set_col2( map_params["color2"] );
@@ -327,6 +325,13 @@ chat::post( user* p_user, map<string,string> &map_params )
   unsigned i_pos = s_msg.find( "/" );
   if ( i_pos == 0 )
     return p_user->command( s_msg );
+
+  if (p_user->get_is_gag())
+  {
+     p_user->msg_post(wrap::CONF->colored_error_msg("chat.msgs.err.gagged"));
+     return;
+  }
+
 
   string_replacer(&s_msg);
   string s_post;

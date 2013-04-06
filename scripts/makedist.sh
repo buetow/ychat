@@ -1,5 +1,5 @@
 #!/bin/sh
-# The yhttpd Project (2005)
+# The yChat Project (2005)
 #
 # This script creates a .tar.bz2 ball. 
 

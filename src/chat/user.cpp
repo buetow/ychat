@@ -25,6 +25,7 @@ user::~user()
   pthread_mutex_destroy( & mut_b_invisible );
   pthread_mutex_destroy( & mut_b_has_sess );
   pthread_mutex_destroy( & mut_b_is_reg );
+  pthread_mutex_destroy( & mut_b_is_gag );
   pthread_mutex_destroy( & mut_s_mess );
   pthread_mutex_destroy( & mut_s_pass );
   pthread_mutex_destroy( & mut_p_room );
@@ -41,11 +42,14 @@ user::~user()
 void
 user::initialize()
 {
+  time(&t_flood_time);
   init_strings(wrap::CONF->get_vector("chat.fields.userstrings"));
   init_ints(wrap::CONF->get_vector("chat.fields.userints"));
   init_bools(wrap::CONF->get_vector("chat.fields.userbools"));
 
+  this -> p_room = 0;
   this -> b_is_reg = false;
+  this -> b_is_gag = false;
   this -> b_set_changed_data = false;
   this -> b_away = false;
   this -> b_fake = false;
@@ -60,6 +64,7 @@ user::initialize()
   pthread_mutex_init( & mut_b_invisible , NULL );
   pthread_mutex_init( & mut_b_has_sess , NULL );
   pthread_mutex_init( & mut_b_is_reg , NULL );
+  pthread_mutex_init( & mut_b_is_gag , NULL );
   pthread_mutex_init( & mut_s_mess , NULL );
   pthread_mutex_init( & mut_s_pass , NULL );
   pthread_mutex_init( & mut_p_room , NULL );
@@ -72,7 +77,6 @@ user::initialize()
   pthread_cond_init ( &cond_message, NULL);
   pthread_mutex_init( &mut_message , NULL);
   renew_timeout();
-
 }
 
 void
@@ -181,10 +185,28 @@ user::get_is_reg( )
   return b_ret;
 }
 
+bool
+user::get_is_gag( )
+{
+  bool b_ret;
+  pthread_mutex_lock  ( &mut_b_is_gag );
+  b_ret = b_is_gag;
+  pthread_mutex_unlock( &mut_b_is_gag );
+  return b_ret;
+}
+
 void
 user::set_is_reg( bool b_is_reg )
 {
   this -> b_is_reg = b_is_reg;
+}
+
+void
+user::set_is_gag( bool b_is_gag )
+{
+  pthread_mutex_lock  ( &mut_b_is_gag );
+  this -> b_is_gag = b_is_gag;
+  pthread_mutex_unlock( &mut_b_is_gag );
 }
 
 void
@@ -489,13 +511,52 @@ user::msg_post( string *p_msg )
 }
 
 void
+user::post_action_msg(string s_msgkey)
+{
+   get_room()->msg_post(wrap::TIMR->get_time()+" "+get_colored_bold_name()+wrap::CONF->get_elem(s_msgkey)+"<br>\n");
+}
+
+void
+user::renew_timeout() 
+{
+  timo::renew_timeout();
+  double d_time_diff = wrap::TIMR->get_time_diff(t_flood_time);
+
+  if (d_time_diff < static_cast<double>(wrap::CONF->get_int("chat.floodprotection.seconds")))
+  {
+    if (++i_flood_messages > static_cast<double>(wrap::CONF->get_int("chat.floodprotection.messages"))) 
+    { 
+       room* p_room = get_room();
+       if (p_room == 0)
+       {
+         i_flood_messages = 0;
+         return;
+       }
+
+       wrap::system_message(CHATFLO+get_name()+","+p_room->get_name()+","+tool::int2string(i_flood_messages)+")");
+       msg_post(wrap::CONF->colored_error_msg("chat.msgs.err.flooding"));
+       if (!get_is_gag())
+       {
+         set_is_gag(true);
+         post_action_msg("chat.msgs.floodgag"); 
+       }
+    } 
+  }
+
+  else
+  {
+    time(&t_flood_time);
+    i_flood_messages = 0;
+  }
+}  
+
+void
 user::check_timeout( int* i_idle_timeout )
 {
-  int i_user_timeout = (int) get_last_activity();
-
-  if ( get_away() ? i_idle_timeout[1] <= i_user_timeout : i_idle_timeout[0] <= i_user_timeout )
+  double d_user_timeout = get_last_activity();
+  if ( get_away() ? i_idle_timeout[1] <= d_user_timeout : i_idle_timeout[0] <= d_user_timeout )
   {
-    wrap::system_message( string(TIMERTO) + "(" + get_name() + "," + tool::int2string(i_user_timeout) + ")");
+    wrap::system_message( string(TIMERTO) + "(" + get_name() + "," + tool::int2string((int)d_user_timeout) + ")");
     string s_quit = "<script language=JavaScript>top.location.href='/"
                     + wrap::CONF->get_elem("httpd.startsite")
                     + "';</script>";
@@ -504,9 +565,9 @@ user::check_timeout( int* i_idle_timeout )
 
     pthread_cond_signal( &cond_message );
   }
-  else if ( ! get_away() && i_idle_timeout[2] <= i_user_timeout )
+  else if ( ! get_away() && i_idle_timeout[2] <= d_user_timeout )
   {
-    wrap::system_message( string(TIMERAT) + "(" + get_name() + "," + tool::int2string(i_user_timeout) + ")");
+    wrap::system_message( string(TIMERAT) + "(" + get_name() + "," + tool::int2string((int)d_user_timeout) + ")");
     string s_msg = wrap::CONF->get_elem("chat.msgs.userautoawaytimeout");
     set_away( true, s_msg );
     string s_msg2 = wrap::TIMR->get_time() + " <b>" + get_colored_name()+ "</b>" + s_msg + "<br>\n";
@@ -599,5 +660,17 @@ user::dumpit()
     ("TempID: " + get_tmpid());
 }
 
+bool
+user::same_rooms(user *p_user)
+{
+  return p_user->get_room()->get_lowercase_name()
+	.compare(this->get_room()->get_lowercase_name()) == 0;
+}
+
+string
+user::make_colors(string s_msg)
+{
+  return "<font color=\"#" + get_col1() + "\">" + s_msg + "</font>";
+}
 
 #endif

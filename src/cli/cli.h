@@ -30,30 +30,30 @@ using namespace std;
 class cli : public thro
 {
 #else
-class cli 
+class cli
 {
 #endif
 private:
   int parse_input(string s_input);
   vector<string> vectorize(string s_param);
-    
+
 public:
-cli( );
-~cli( );
+  cli( );
+  ~cli( );
 
 #ifdef DEBUG
 
-void debug_routine();
+  void debug_routine();
 #endif
 
-void print_rusage();
+  void print_rusage();
 
 #ifndef NCURSES
 
-void start(void* p_void);
+  void start(void* p_void);
 #else
 
-void start();
+  void start();
 #endif
 };
 

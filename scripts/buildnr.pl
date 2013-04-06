@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
-# The yhttpd Project (2003)
+# The yChat Project (2003)
 #
-# This script increases the BUILNR of msgs,h each time the yhttpd
+# This script increases the BUILNR of msgs,h each time the yChat
 # gets recompiled!
 
 use strict;

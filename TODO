@@ -6,7 +6,6 @@ $ Add thread pool decreasing
 $ dir : public vector<string>
 $ Disable /help command for commands wich are not accessible for the
 $ specific user.
-$ Flood protection
 $ Add /nick, /beam, /su
 $  Add / to whisper to the last person to whom the user has been whispered the last time.
 
@@ -16,7 +15,9 @@ $ resolved by implementing last modified and current time/date informations
 $ into the HTTP header.
 
 - To do in general for some later RELEASE -
-$ Use libevent
+$ Use libevent 
+$ Implement MPI support for some nice load balancing stuff
+$ Implement msession support
 $ Implement a switch so that all dynamic dlopen modules can be compiled within the yChat executable not using dlopen. 
 $ Implement dynamic timer
 $ Implement ncurse object browser 

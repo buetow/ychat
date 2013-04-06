@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# The yhttpd Project (2003)
+# The yChat Project (2003)
 #
 # This script sets up some variables in src/glob.h 
 

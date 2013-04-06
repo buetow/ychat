@@ -15,16 +15,49 @@
 #define true   1
 #define false  0
 
+//<<*
+/* FIRST THE YCHAT ONLY OPTIONS */
 
 /* - CONFIG -
- Should yhttpd get compiled with comand line interface support?
+ Should yChat get compiled with database support? Currently MyS-
+ QL only is a supported database. 
+*/
+//#define DATABASE
+
+#ifdef DATABASE
+#define USE_MYSQL
+/* - CONFIG -
+ Should all database queries printed out at the admin interface? 
+ (This option wont take action if database support has not been 
+ chosen) 
+*/
+#define DATA_PRINT_QUERIES
+#endif
+
+/* - CONFIG -
+ Defines the amount of newlines which have to be sent to the clie-
+ nt's chat stream after the first log-in. It prevents a white scr-
+ een because of browser buffers or proxies.
+*/
+#define PUSHSTR 500
+
+/* AFTERWARDS THE YCHAT AND YHTTPD OPTIONS */
+//*>>
+
+/* - CONFIG -
+ Should yChat get compiled with OpenSSL support?
+*/
+//#define OPENSSL
+
+/* - CONFIG -
+ Should yChat get compiled with comand line interface support?
 */
 #define CLI
 
 /* - CONFIG -
  What should be the name of the config file?
 */
-#define CONFILE "yhttpd.conf"
+#define CONFILE "ychat.conf"
 
 /* - DISABLED -
  Enable debugging options. 
@@ -34,18 +67,18 @@
 /* - DISABLED -
  If you want to enable EXPERIMENTAL features, then set this val-
  ue to true. Else use false which is recommended! All experimen-
- al features are marked inside of the running yhttpd!
+ al features are marked inside of the running yChat!
 */
 //#define EXPERIM
 
 /* - CONFIG -
- Should yhttpd get compiled with logging support? 
+ Should yChat get compiled with logging support? 
 */
 #define LOGGING
 
 /* - CONFIG -
  Please enter the highest networking port which is allowed to be 
- used. If yhttpd is unable to create the server socket on a cert-
+ used. If yChat is unable to create the server socket on a cert-
  ain port, it will increment the port number and retries to cre-
  ate another socket on the incremented port number. This proced-
  ure will continue until MAXPORT has been reached.
@@ -63,7 +96,7 @@
 #define MAXLENGTH 1024
 
 /* - CONFIG -
- Should yhttpd get compiled with ncurses support?
+ Should yChat get compiled with ncurses support?
 */
 #define NCURSES
 
@@ -85,7 +118,7 @@
 #define READSOCK 2048
 
 /* - CONFIG -
- In which prefix should yhttpd be installed if typing gmake inst-
+ In which prefix should yChat be installed if typing gmake inst-
  all? 
 */
 #define PREFIX "/usr/local"
@@ -99,7 +132,7 @@
 //#define SERVMSG
 
 /* - CONFIG -
- Set to true if you want yhttpd to catch the SIGSEGV signal. yhttpd
+ Set to true if you want yChat to catch the SIGSEGV signal. yChat
  will print a warning message into the system messages and will 
  not core dump if an error occurs. 
 */
@@ -108,7 +141,7 @@
 /* - CONFIG -
  Please chose if you want to use verbose server outputs or not. 
  The verbose messages will appear in the ncurses menu if ncurses
- is enabled or in the server-window if yhttpd has been compiled 
+ is enabled or in the server-window if yChat has been compiled 
  without ncurses support. This option shows you all incoming
  requests with the client IP and port numbers. You probably want
  this to be turned off if you have heavy server load.
@@ -141,8 +174,8 @@
 #define NCUR_CON_QUEUE_X 23
 #define NCUR_CON_QUEUE_Y 35
 
-#define NCUR_HTTPD_HEADER_X 21
-#define NCUR_HTTPD_HEADER_Y 52
+#define NCUR_CHAT_HEADER_X 21
+#define NCUR_CHAT_HEADER_Y 52
 #define NCUR_NUM_ROOMS_X 22
 #define NCUR_NUM_ROOMS_Y 52
 #define NCUR_SESSION_X 23

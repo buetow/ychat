@@ -5,6 +5,7 @@
 #define HTML_H
 
 #include "maps/shashmap.h"
+#include "chat/user.h"
 #include "name.h"
 
 using namespace std;
@@ -28,6 +29,7 @@ public:
   // used for string substituation.
   string parse( map<string,string> &map_params );
 
+  void online_list( user *p_user, map<string,string> &map_params ); //<<
 #ifdef NCURSES
 
   void print_cached( int i_docs );

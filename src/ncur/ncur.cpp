@@ -38,16 +38,26 @@ ncur::start( void *p_void )
   ncur::init_ncurses();
 
   char *choices[] = {
-                      "                        ",
-                      "                        ",
+                      "Unload all modules      ", //<<
+                      "Reload all modules      ", //<<
+                      //>>"                        ",
+                      //>>"                        ",
                       "Clear template cache    ",
-                      "                        ",
+                      "Run garbage collector   ", //<<
+                      //>>"                        ",
                       "Show max res. set size  ",
                       "Compile changed sources ",
                       "Recompile all sources   ",
                       "Show source stats       ",
                       "Command line interface  ",
-                      "                        ",
+                      //<<*
+#ifdef DATABASE
+                      "Close DB connections    ",
+#else
+                      "			   ",
+#endif
+                      //*>>
+                      //>>"                        ",
                       "Shut down server"
                     };
 
@@ -58,18 +68,23 @@ ncur::start( void *p_void )
   mvwprintw( p_serveroutput, 2, 2, NCURMSG );
   wrefresh ( p_serveroutput );
 
-  print( string("yhttpd ") + VERSION );
+  print( string("yChat ") + VERSION );
 
 
   p_menu = new menu( 1, 1, 30, 19, NCURADM, choices, 11, COLOR_PAIR(1));
 
   mvprintw(NCUR_SERVER_HEADER_X,NCUR_SERVER_HEADER_Y, NCURSE0);
   mvprintw(NCUR_POOL_HEADER_X,NCUR_POOL_HEADER_Y, NCURSE1);
+  mvprintw(NCUR_DATA_HEADER_X,NCUR_DATA_HEADER_Y, NCURSE2); //<<
+  mvprintw(NCUR_CHAT_HEADER_X,NCUR_CHAT_HEADER_Y, NCURSE3); //<<
   mvprintw(NCUR_CACHED_HEADER_X,NCUR_CACHED_HEADER_Y, NCURSE4);
 
   wrap::HTML->print_cached(0);
 
   is_ready(true);
+  wrap::SMAN->print_init_ncurses(); //<<
+  wrap::STAT->print_num_rooms();    //<<
+  wrap::SOCK->print_server_port(); 
 
   p_menu->start( &switch_main_menu_ );
 
@@ -150,12 +165,29 @@ ncur::switch_main_menu_( int i_choice )
   if( i_choice != 0 )
     switch ( i_choice )
     {
+      //<<*
+    case 1:
+      wrap::MODL->unload_modules();
+      mvprintw( 20,2, "Unloaded all modules                             ");
+      refresh();
+      break;
+    case 2:
+      wrap::MODL->reload_modules();
+      mvprintw( 20,2, "Reloaded all modules                            ");
+      refresh();
+      break;
+      //*>>
     case 3:
       wrap::HTML->clear_cache();
       mvprintw( 20,2, "Cleared the template cache                                   ");
       refresh();
       break;
     case 4:
+      //<<*
+      if ( ! wrap::GCOL->remove_garbage() )
+        wrap::NCUR->print( GAROFFNE );
+      mvprintw( 20,2, "Garbage collector activated                                  ");
+      //*>>
       refresh();
       break;
     case 5:
@@ -197,6 +229,7 @@ ncur::switch_main_menu_( int i_choice )
     case 10:
 #ifdef DATABASE
 
+      wrap::DATA->disconnect_all_connections(); 	//<<
 #endif
 
       break;
@@ -222,7 +255,7 @@ ncur::init_ncurses()
   noecho();
   cbreak();       // Line buffering disabled. pass on everything
   init_pair(1, COLOR_BLACK, COLOR_CYAN);
-  mvprintw( 0,2, (char*)(tool::yhttpd_version()).c_str());
+  mvprintw( 0,2, (char*)(tool::ychat_version()).c_str());
   curs_set(0);
   refresh();
 }

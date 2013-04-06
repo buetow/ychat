@@ -81,7 +81,7 @@ logd::flush()
 void
 logd::log_access( map<string,string> &map_request )
 {
-  //static int i_access_lines = wrap::CONF->get_elem("httpd.logging.accesslines");
+  //static int i_access_lines = wrap::CONF->get_elem("httpd.logging.access_lines");
 
   string s_time = get_time_string();
   string s_logstr = map_request["REMOTE_ADDR"] + " - - "+s_time+" \"" + map_request["QUERY_STRING"]+"\" 200 0 \""+map_request["request"]+"\" \""+map_request["User-Agent"]+"\"\n";

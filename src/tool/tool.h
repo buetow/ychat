@@ -23,7 +23,7 @@ public:
   static string to_lower( string s_str );
   static void strip_html( string *p_str );
   static string shell_command( string s_command, method m_method );
-  static string yhttpd_version();
+  static string ychat_version();
 };
 
 #endif

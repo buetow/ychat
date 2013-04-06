@@ -237,6 +237,77 @@ reqp::parse( socketcontainer *p_sock, string s_req, map<string,string> &map_para
 
   string s_rep( "" );
 
+  //<<*
+  // check the event variable.
+  if ( ! s_event.empty() )
+  {
+    // login procedure.
+    if ( s_event == "login" )
+    {
+      wrap::CHAT->login( map_params );
+    }
+    else if ( s_event == "register" )
+    {
+      user* p_user = new user;
+      map_params["INFO"] = "";
+      run_html_mod( s_event, map_params, p_user );
+      wrap::GCOL->add_user_to_garbage( p_user );
+    }
+    else
+    {
+      sess *p_sess = wrap::SMAN->get_session( map_params["tmpid"] );
+      user *p_user = NULL;
+
+      if( p_sess != NULL )
+      {
+        p_user = p_sess->get_user();
+      }
+      else
+      {
+        wrap::system_message(SESSERR);
+        return s_rep;
+      }
+
+      if ( ! p_user )
+      {
+        map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.notonline" );
+        map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
+      }
+      else
+      {
+        map_params["nick"] = p_user->get_name().c_str();
+
+        // if a message input.
+        if ( s_event == "input" )
+        {
+          if ( p_user )
+          {
+            p_user->check_restore_away();
+            wrap::CHAT->post( p_user, map_params );
+          }
+        }
+
+        // if a chat stream
+        else if ( s_event == "stream" )
+        {
+          string s_msg ( wrap::HTML->parse( map_params ) );
+          p_user->msg_post( &s_msg);
+          wrap::SOCK->chat_stream( p_sock, p_user, map_params );
+        }
+
+        // if a request for the online list of the active room.
+        else if ( s_event == "online" )
+        {
+          wrap::HTML->online_list( p_user, map_params );
+        }
+        else //if ( s_event != "input" )
+        {
+          run_html_mod( s_event, map_params, p_user );
+        }
+      }
+    }
+  }
+  //*>>
 
   if ( wrap::CONF->get_elem("httpd.enablecgi").compare("true") == 0 &&
        string::npos != map_params["request"].find(".cgi") )
@@ -269,6 +340,26 @@ reqp::parse( socketcontainer *p_sock, string s_req, map<string,string> &map_para
   return  s_resp;
 }
 
+//<<*
+void
+reqp::run_html_mod( string s_event, map<string,string> &map_params, user* p_user )
+{
+  container *c = new container;
+
+  c->elem[0] = (void*) wrap::WRAP;
+  c->elem[1] = (void*) &map_params;
+  c->elem[2] = (void*) p_user;
+
+  string s_mod = wrap::CONF->get_elem("httpd.modules.htmldir") + "yc_" + s_event + ".so";
+
+  dynmod* p_module = wrap::MODL->get_module( s_mod, p_user->get_name() );
+
+  if ( p_module != NULL )
+    ( *( p_module->the_func ) ) ( static_cast<void*>(c) );
+
+  delete c;
+}
+//*>>
 
 string
 reqp::remove_dots( string s_ret )

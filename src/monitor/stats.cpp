@@ -10,14 +10,17 @@ stats::stats()
   i_rusage_vec_size = tool::string2int(
                         wrap::CONF->get_elem("httpd.stats.rusagehistory"));
 
+  i_num_rooms = 0; //<<
 
   pthread_mutex_init( &mut_vec_rusage, NULL );
+  pthread_mutex_init( &mut_num_rooms, NULL ); //<<
 
 }
 
 stats::~stats()
 {
   pthread_mutex_destroy( &mut_vec_rusage );
+  pthread_mutex_destroy( &mut_num_rooms ); //<<
 }
 
 void
@@ -98,5 +101,50 @@ stats::get_rusage_history( string s_type, string s_seperator )
   return s_ret;
 }
 
+//<<*
+int
+stats::get_num_rooms()
+{
+  pthread_mutex_lock  ( &mut_num_rooms );
+  int i_ret = i_num_rooms;
+  pthread_mutex_unlock( &mut_num_rooms );
+  return i_ret;
+}
+
+void
+stats::increment_num_rooms()
+{
+  pthread_mutex_lock  ( &mut_num_rooms );
+  ++i_num_rooms;
+  pthread_mutex_unlock( &mut_num_rooms );
+#ifdef NCURSES
+
+  print_num_rooms();
+#endif
+}
+void
+stats::decrement_num_rooms()
+{
+  pthread_mutex_lock  ( &mut_num_rooms );
+  --i_num_rooms;
+  pthread_mutex_unlock( &mut_num_rooms );
+#ifdef NCURSES
+
+  print_num_rooms();
+#endif
+}
+
+#ifdef NCURSES
+void
+stats::print_num_rooms()
+{
+  if ( !wrap::NCUR->is_ready() )
+    return;
+
+  mvprintw( NCUR_NUM_ROOMS_X, NCUR_NUM_ROOMS_Y, "Rooms: %d", get_num_rooms());
+  refresh();
+}
+#endif
+//*>>
 
 #endif

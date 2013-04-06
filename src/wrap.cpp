@@ -5,6 +5,15 @@
 
 using namespace std;
 
+//<<*
+chat* wrap::CHAT = NULL;
+#ifdef DATABASE
+data* wrap::DATA = NULL;
+#endif
+gcol* wrap::GCOL = NULL;
+sman* wrap::SMAN = NULL;
+modl* wrap::MODL = NULL;
+//*>>
 
 conf* wrap::CONF = NULL;
 html* wrap::HTML = NULL;
@@ -67,10 +76,20 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
                                 CONF->get_elem("httpd.logging.systemlines") );
 #endif
 
+  //<<*
+  // Init the session manager.
+  WRAP->SMAN = SMAN = new sman;
+  //*>>
   // Init the socket manager.
   int i_port = tool::string2int( wrap::CONF->get_elem( "httpd.serverport" ) );
 
+#ifndef OPENSSL
+
   WRAP->SOCK = SOCK = new sock;
+#else
+
+  WRAP->SOCK = SOCK = new sslsock;
+#endif
 
   // create the server socket and set it up to accept connections.
   if(SOCK->_make_server_socket ( i_port ) <= 0)
@@ -103,10 +122,27 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
   // Init the thread pool
   WRAP->POOL = POOL = new pool;
 
+  //<<*
+  // Init the chat manager.
+  WRAP->CHAT = CHAT = new chat;
+  //*>>
 
   // Init the system timer.
   WRAP->TIMR = TIMR = new timr;
 
+  //<<*
+  // Init the module-loader manager.
+  WRAP->MODL = MODL = new modl;
+
+  // Init the garbage collector
+  WRAP->GCOL = GCOL = new gcol;
+
+  // Init the data manager.
+#ifdef DATABASE
+
+  WRAP->DATA = DATA = new data;
+#endif
+  //*>>
 
   // Run threads
   TIMR->run();

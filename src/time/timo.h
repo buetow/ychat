@@ -16,7 +16,7 @@ public:
   ~timo( );
 
   double get_last_activity();
-  void renew_timeout();
+  virtual void renew_timeout();
 };
 
 #endif

@@ -115,6 +115,22 @@ html::parse( map<string,string> &map_params )
   return s_templ;
 }
 
+//<<*
+void
+html::online_list( user *p_user, map<string,string> &map_params )
+{
+  // prepare user_list.
+  string s_list;
+
+  room* p_room = p_user->get_room();
+
+  p_room->get_user_list( s_list );
+
+  map_params["room"] = p_room->get_name();
+  map_params["topic"] = p_room->get_topic();
+  map_params["userlist"] = s_list;
+}
+//*>>
 
 #ifdef NCURSES
 void

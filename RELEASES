@@ -2,12 +2,15 @@ Release table
 
 Release date	Release name and version	Release focus 
 
+Planing: 	yChat 0.7.9.4-STABLERELEASE	Maintenance
 Planing:	ycurses 0.1-RELEASE________	Initial release
 Planing:	yhttpd 0.8-RELEASE_________	Features
-Planing: 	yChat 0.7.9.4-STABLERELEASE	
-Planing:	yChat 0.8-RELEASE__________	Features
+Planing:	yChat 0.9.0-RELEASE________	Major rewrite	
+Planing:	yChat 0.8.3-RELEASE________	Not yet defined		
 
-May 25th 05:	yChat 0.8-RELEASE		Major features
+Aug 04th 05:	yChat 0.8.2-RELEASE		Minor enhancements	
+Jun 21st 05:	yChat 0.8.1-RELEASE		Major features
+May 25th 05:	yChat 0.8.0-RELEASE		Major features
 May 08th 05:	yChat 0.7.9.3-STABLERELEASE	Security bugfixes
 Apr 11th 05:	yChat 0.5.5-STABLERELEASE__	Minor security fixes
 Apr 10th 05:	yChat 0.7.9.2-RELEASE______	Major security fixes
@@ -37,4 +40,3 @@ Apr 26th 03	yChat 0.4-RELEASE__________
 Mar 30th 03	yChat 0.3-RELEASE__________
 Mar 24th 03	yChat 0.2-RELEASE__________
 Mar 20th 03	yChat 0.1-RELEASE__________	Initial release
- 

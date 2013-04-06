@@ -1,5 +1,5 @@
 /*
- * yhttpd; Contact: www.yChat.org; Mail@yChat.org
+ * yChat; Contact: www.yChat.org; Mail@yChat.org
  * Copyright (C) 2003 Paul C. Buetow, Volker Richter 
  * Copyright (C) 2004 Paul C. Buetow
  * Copyright (C) 2005 EXA Digital Solutions GbR
@@ -37,7 +37,7 @@ parse_argc( int argc, char* argv[] )
   string s_output = "";
 
   // Set to 1 if a config option key has to be read
-  // ( ./yhttpd -o key1 value1 -o key2 value2 ... );
+  // ( ./ychat -o key1 value1 -o key2 value2 ... );
   bool b_conf = 0;
 
   // Will store the key of an additional option value (see also b_conf)
@@ -58,7 +58,7 @@ parse_argc( int argc, char* argv[] )
     else
     {
       if ( string(argv[i]).find("v") != string::npos )
-        s_output.append(tool::yhttpd_version()+"\n");
+        s_output.append(tool::ychat_version()+"\n");
 
       if ( string(argv[i]).find("h") != string::npos )
         s_output.append( YCUSAGE );
@@ -81,7 +81,7 @@ parse_argc( int argc, char* argv[] )
 int
 main(int argc, char* argv[])
 {
-  cout << tool::yhttpd_version() << endl
+  cout << tool::ychat_version() << endl
   << DESCRIP << endl
   << DESCRI2 << endl
   << CONTACT << endl
@@ -89,6 +89,13 @@ main(int argc, char* argv[])
 
   wrap::init_wrapper(parse_argc(argc, argv));
 
+  //<<*
+  // Initialize database connection queue
+#ifdef DATABASE
+
+  wrap::DATA->init_connections();
+#endif
+  //*>>
 
   sign::init_signal_handlers();
 

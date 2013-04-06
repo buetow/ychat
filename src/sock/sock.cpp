@@ -45,6 +45,64 @@ sock::_close(socketcontainer *p_sock)
   delete p_sock;
 }
 
+//<<*
+void
+sock::chat_stream( socketcontainer *p_sock, user *p_user, map<string,string> &map_params )
+{
+  string s_msg( "\n" );
+
+  for ( int i = 0; i < PUSHSTR; i++ )
+    _send(p_sock,s_msg.c_str(), s_msg.size());
+
+  pthread_mutex_t mutex;
+  pthread_mutex_init( &mutex, NULL );
+  pthread_mutex_lock( &mutex );
+
+  do
+  {
+    s_msg = p_user->get_mess( );
+
+    if ( 0 > _send( p_sock, s_msg.c_str(), s_msg.size() ) )
+    {
+      p_user->set_online( false );
+      break;
+    }
+
+    pthread_cond_wait( &(p_user->cond_message), &mutex );
+  }
+  while( p_user->get_online() );
+
+  pthread_mutex_destroy( &mutex );
+
+  // if there is still a message to send:
+  s_msg = p_user->get_mess( );
+
+  if ( ! s_msg.empty() )
+    _send( p_sock, s_msg.c_str(), s_msg.size());
+
+  // remove the user from its room.
+  string s_user( p_user->get_name() );
+  string s_user_lowercase( p_user->get_lowercase_name() );
+
+  p_user->get_room()->del_elem( s_user_lowercase );
+
+  // post the room that the user has left the chat.
+  s_msg = wrap::TIMR->get_time() + " "
+          + p_user->get_colored_bold_name()
+          + wrap::CONF->get_elem( "chat.msgs.userleaveschat" )
+          + "<br>\n";
+
+  p_user->get_room()->msg_post( &s_msg );
+  p_user->get_room()->reload_onlineframe();
+
+#ifdef VERBOSE
+
+  cout << REMUSER << s_user << endl;
+#endif
+
+  wrap::GCOL->add_user_to_garbage( p_user );
+}
+//*>>
 
 int
 sock::_make_server_socket( int i_port )
@@ -331,6 +389,15 @@ sock::_main_loop_init()
   wrap::system_message(SOCKUNS);
 }
 
+#ifdef OPENSSL
+// This method is virtual, and is overloaded by sslsock!
+bool
+sock::_main_loop_do_ssl_stuff(int &i_new_sock)
+{
+  return 0;
+}
+#endif
+
 socketcontainer*
 sock::_create_container(int &i_sock)
 {
@@ -372,8 +439,6 @@ sock::start()
   FD_ZERO (&active_fd_set);
   FD_SET  (i_sock, &active_fd_set);
 
-  print_server_port();
-
   while( b_run )
   {
     // block until input arrives on one or more active sockets.
@@ -402,6 +467,12 @@ sock::start()
           int i_new_sock;
           size = sizeof(clientname);
           i_new_sock = accept (i_sock, (struct sockaddr *) &clientname, &size);
+
+#ifdef OPENSSL
+
+          if (_main_loop_do_ssl_stuff(i_new_sock))
+            continue;
+#endif
 
 #ifdef VERBOSE
 
