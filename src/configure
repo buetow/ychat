@@ -64,75 +64,41 @@ perl -e '
    "/opt/local/lib"
  );
 
- my %dependfiles = (
-   database => ["data"],
-   ycurses => ["curses", "ycui.cpp", "ycui.h"],
-   logging => ["logd.cpp", "logd.h"],
-   cli => ["cli"],
-   opnssl => ["sock/sslsock.cpp", "sock/sslsock.h"]
- );
-
  open FILE, "glob.h" or die "glob.h: $!\n";
- while(<FILE>) {
-  if ( /\/\/#define DATABASE/ ) {
+ while(<FILE>)
+ {
+  if ( /\/\/#define DATABASE/ )
+  {
    remove_from_array("mysql/mysql.h",\@headers);
    remove_from_array("libmysqlclient.so",\@libs);
-   mkdir "../backuped" unless -d "../backuped"; 
-   `mv $_ ../backuped` for @{$dependfiles{database}};
   }
 
-  elsif ( /^#define DATABASE/ && !-d "data") {
-    `mv ../backuped/$_ .` for @{$dependfiles{database}};
+  if ( /\/\/#define NCURSES/ )
+  {
+   remove_from_array("ncurses.h",\@headers);
+   remove_from_array("libncurses.so",\@libs);
   }
 
-  if ( /\/\/#define LOGGING/ ) {
-   mkdir "../backuped" unless -d "../backuped"; 
-   `mv $_ ../backuped` for @{$dependfiles{logging}};
-  }
-
-  elsif ( /^#define LOGGING/ && !-f "logd.cpp") {
-    `mv ../backuped/$_ .` for @{$dependfiles{logging}};
-  }
-
-  if ( /\/\/#define CLI/ ) {
-   mkdir "../backuped" unless -d "../backuped"; 
-   `mv $_ ../backuped` for @{$dependfiles{cli}};
-  }
-
-  elsif ( /^#define CLI/ && !-d "cli") {
-    `mv ../backuped/$_ .` for @{$dependfiles{cli}};
-  }
-
-  if ( /\/\/#define YCURSES/ ) {
-   for ("ncurses", "menu", "panel") {
-     remove_from_array("$_.h",\@headers);
-     remove_from_array("lib$_.so",\@libs);
-   }
-
-   mkdir "../backuped" unless -d "../backuped"; 
-   `mv $_ ../backuped` for @{$dependfiles{ycurses}};
-  }
-  
-  elsif ( /^#define YCURSES/ && !-d "curses") {
-    `mv ../backuped/$_ .` for @{$dependfiles{ycurses}};
-  }
-
-  if ( /\/\/#define OPENSSL/ ) {
+  if ( /\/\/#define OPENSSL/ )
+  {
    remove_from_array("openssl/ssl.h",\@headers);
    remove_from_array("lib$_.so",\@libs) for ("ssl", "crypto");
   }
  }
  close FILE;
 
- if ( defined $ENV{YCHATHEADERPATHS} ) {
-   map { print "Adding $_...\n"; unshift @headerpaths, $_ }
-	split /:/, $ENV{YCHATHEADERPATHS};
+ if ( defined $ENV{YCHATHEADERPATHS} )
+ {
+   map { print "Adding $_...\n";
+   unshift @headerpaths, $_ } split /:/, $ENV{YCHATHEADERPATHS};
  }
 
- if ( defined $ENV{YCHATLIBPATHS} ) {
-   map { print "Adding $_...\n"; unshift @libpaths, $_ }
-	split /:/, $ENV{YCHATLIBPATHS};
+ if ( defined $ENV{YCHATLIBPATHS} )
+ {
+   map { print "Adding $_...\n";
+   unshift @libpaths, $_ } split /:/, $ENV{YCHATLIBPATHS};
  }
+
 
  print "Headers:\n";
 
@@ -148,7 +114,10 @@ perl -e '
  my $incadd = &make_add("-I", \%incadd);
  my $libadd = &make_add("-L", \%libadd);
 
- for ( @libs ) { $libadd .= "-l$_ " if s/^lib// and s/\.so$//; } 
+ for ( @libs ) 
+ {
+  $libadd .= "-l$_ " if s/^lib// and s/\.so$//;
+ } 
 
  print "Incadd: $incadd\n";
  print "Libadd: $libadd\n";
@@ -175,7 +144,8 @@ perl -e '
  chomp $cpp;
  chomp $version;
 
- while (<Fin>) {
+ while (<Fin>)
+ {
    s/^(CC=).*\n/$1$compiler/;
    s/^(SRCS=).*/$1$cpp/;
    s/ -frepo//; # unless $version =~ /3\.4/;
@@ -189,7 +159,8 @@ perl -e '
  my $args = join(" -",@ARGV);
  $args = "-".$args unless $args eq "";
 
- for my $cppfile (split / /, $cpp) {
+ for my $cppfile (split / /, $cpp)
+ {
    my $ofile = $cppfile;
    $ofile =~ s/\.cpp/\.o/;
    print Fout "../obj/$ofile: $cppfile\n";
@@ -198,12 +169,14 @@ perl -e '
    $class =~ s/\.o//; 
 
    my $text;
-   if ( $class =~ /contrib\/.+/ ) {
+   if ( $class =~ /contrib\/.+/ )
+   {
     my $dirname = `dirname $class`;
     $text = "\t\@echo -n \"Contributed class $class  \"\n";
    }
 
-   else {
+   else
+   {
     $text = "\t\@echo -n \"Base class $class  \"\n";	
    }
 
@@ -219,14 +192,16 @@ perl -e '
  unlink("msgs.h");
  open F, ">msgs.h" or die "msgs.h: $!\n";
 
- for (@msgs) {
+ for (@msgs)
+ {
    s/(UNAME)(.+)$/UNAME "$uname"/;
    s/(COMPOPT)(.+)$/COMPOPT "$compopt"/;
    print F; 
  }
  close F;
 
- if ( -d "mods" ) {
+ if ( -d "mods" )
+ {
    chdir("mods");
    my $cflags = "-fno-inline -fno-default-inline";
 
@@ -237,12 +212,15 @@ perl -e '
    chdir("..");
  }
 
- sub remove_from_array {
+ sub remove_from_array
+ {
   my $elem  = shift;
   my $array = shift;
 
-  for ( my $i = 0; $i <= $#$array; ++$i ) {
-   if ( $$array[$i] eq $elem ) {
+  for ( my $i = 0; $i <= $#$array; ++$i )
+  {
+   if ( $$array[$i] eq $elem )
+   {
     splice(@$array,$i,1); 
     last;
    }
@@ -266,18 +244,24 @@ perl -e '
     pop(@_);
   }
 
-  if ($print) {
+  if ($print)
+  {
     print "Checking for $check...";
     print "\n" if $testit;
   }
 
-  for (@_) {
-    if ( -f "$_/$check" ) {
-      if ($testit) {
+  for (@_)
+  {
+    if ( -f "$_/$check" )
+    {
+      if ($testit)
+      {
 	 return $_ if test_include($_, $check);
          return "";
+      }
 
-      } else {
+      else
+      {
         print "OK\n";
         return "" if $_ eq "/usr/lib" or $_ eq "/usr/include"; 
         return $_;
@@ -285,20 +269,23 @@ perl -e '
     }
   }
 
-  for (@_) {
+  for (@_)
+  {
     next unless -d $_;
     opendir D, $_ or warn "$_: $!\n";
     my @dir = readdir(D);
     closedir D;
 
-    for my $dir ( @dir ) {
+    for my $dir ( @dir )
+    {
        next if $dir =~ /^\.+$/ or !-d "$_/$dir";
        my $path = &check($deep-1, $check, "$_/$dir", "subsearch");
        return $path if $path ne "";
     }
   }
 
-  if ($print) {
+  if ($print)
+  {
     print "NOT OK\n";
     print "Please make sure that you have the needed software installed!\n";
     print "If you have a special path for your includes then edit src/configure!\n";
@@ -325,7 +312,8 @@ perl -e '
   return $ret;
  }
 
- sub test_include {
+ sub test_include
+ {
    my $shift = shift;
    my $check = shift;
    my $return = 0;
@@ -336,11 +324,14 @@ perl -e '
    my $cmd = "`tail -n 1 ../g++.version` -I$shift __test.cpp -o /dev/null 2>/dev/null";
    system $cmd;
 
-   unless ($?) {
+   unless ($?)
+   {
      print "OK\n";
      $return = 1;
+   }
 
-   } else {
+   else
+   {
      print "Not OK\n"; 
    }
 

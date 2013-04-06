@@ -123,10 +123,10 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "0.8.2"
+#define VERSION "0.8.1"
 #define BRANCH "RELEASE"
-#define BUILDNR 4003
-#define UNAME "FreeBSD 5.4-RELEASE-p3 i386"
+#define BUILDNR 3962
+#define UNAME "FreeBSD 5.4-RELEASE-p1 i386"
 #define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.2 [FreeBSD] 20040728; 3.4; g++"
 #define YCUSAGE "Usage: ./ychat {h|v}|{o confkey confvalue}\n"
 

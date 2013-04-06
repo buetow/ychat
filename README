@@ -1,4 +1,4 @@
-yChat; Homepage: www.yChat.org; Version 0.8.2-CURRENT
+yChat; Homepage: www.yChat.org; Version 0.8.1-RELEASE
 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
 Copyright (C) 2004 Paul C. Buetow
@@ -118,16 +118,6 @@ etc...
 The short name of the chat is "yC"
 The short name of the httpd is "yh"
 The short name of ycurses is "yu"
-
-- Versioning - 
-In general, versions are made up like X.Y.Z.W. X specifies the major version,
-Y specifies the branch of the major version, Z specifies a sub revision
-of a specific branch. The optional W can be used to specify a maintenance
-revision which only changes small issues. Version numbers can be also normal 
-alphabetic characters. Example: Version 0.7.A follows 0.7.9. Version 0.T.Y.2
-would be also valid. 
-
-Therefore: The lowest value is 0, the highest possible value is Z.
 
 //<<*
 1.2.0 YCHAT FEATURES

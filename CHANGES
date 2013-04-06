@@ -1,13 +1,4 @@
--Changes from 0.8.1-RELEASE to 0.8.2-RELEASE
-$ Fixed some typos
-$ Added the - Versioning - paragraph into the README file
-$ Removed the yc_template command module source file
-$ scripts/config.pl now also accepts q and quit as a command
-$ Minor bugfix in scripts/config.pl 
-$ Some improvements in src/configure
-$ Changed some default values in the src/glob.h
-
--Changes from 0.8-RELEASE to 0.8.1-RELEASE
+-Changes from 0.8-RELEASE to 0.8.1-CURRENT
 $ Fixed a HTML bug in the stream html (h1 should get closed w/ /h1)
 $ Fixed some typos in the README
 $ Fixed a bug in the /q command

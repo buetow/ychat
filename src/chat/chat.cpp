@@ -170,6 +170,7 @@ chat::login( map<string,string> &map_params )
       map_params["tmpid"] = p_sess->get_tmpid();
       p_user->set_tmpid( map_params["tmpid"] );
       p_user->set_has_sess( true );
+      wrap::system_message("New tmpid: " + map_params["tmpid"] );
     }
   }
   else //  if ( p_user == NULL ) // If not in garbage create a new user!
@@ -223,6 +224,7 @@ chat::login( map<string,string> &map_params )
     sess* p_sess = wrap::SMAN->create_session();
     p_sess->set_user(p_user);
     map_params["tmpid"] = p_sess->get_tmpid();
+    wrap::system_message("New tmpid: " + map_params["tmpid"] );
     p_user->set_tmpid( map_params["tmpid"] );
     p_user->set_col1( map_params["color1"] );
     p_user->set_col2( map_params["color2"] );
