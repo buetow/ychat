@@ -1,27 +1,3 @@
-/*:*
- *: File: ./src/sign.cpp
- *: 
- *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
-
 #ifndef SIGN_CPP
 #define SIGN_CPP
 
@@ -52,9 +28,21 @@ sign::sigsev_received(int i_param)
 void
 sign::terminate_received(int i_param)
 {
+
+#ifdef NCURSES
   //<<*
+  if ( ! wrap::GCOL->remove_garbage() )
+    wrap::NCUR->print( GAROFFNE );
+  //*>>
+
+  mvprintw( 21,2, "Good bye !");
+  wrap::NCUR->close_ncurses();
+
+  //<<*
+#else
   wrap::GCOL->remove_garbage();
   //*>>
+#endif
 
   exit(0);
 }
@@ -69,10 +57,8 @@ sign::init_signal_handlers()
   signal(SIGUSR1, clean_template_cache);
   signal(SIGUSR2, reload_dlopen_modules); //<<
 #ifdef CTCSEGV
-
-  signal(SIGSEGV, sigsev_received);
+  signal(SIGSEGV, sigsev_received); 
 #endif
-
   signal(SIGHUP, terminate_received);
   signal(SIGINT, terminate_received);
   signal(SIGTERM, terminate_received);

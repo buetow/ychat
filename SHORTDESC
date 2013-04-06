@@ -1,4 +1,2 @@
-The yChat 0.8 branch is marked as CURRENT. All brand new stuff will go into 
-this branch. 
-
-WWW: http://www.yChat.org
+The yChat 0.7 branch is marked as STABLE and will only get bugfixes and minor 
+improvements. Most of the new stuff will go into the CURRENT branch instead.

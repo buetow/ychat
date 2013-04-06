@@ -1,8 +1,7 @@
 #!/bin/sh
 
-if ! which perl >/dev/null
+if ! ./scripts/checkperl.sh
 then
- echo You need to have Perl in your PATH
  exit 1
 fi
 
@@ -62,7 +61,7 @@ perl -e '
   exit(1);
  }
  
- system("sh -c \"scripts/config.sh\"");
+ system("perl \"scripts/config.pl\"");
  chdir("src");
  system("./configure ".join(" ", @ARGV));
  chdir("..");
@@ -70,4 +69,9 @@ perl -e '
  exit(0);
 ' `echo "$*" | sed "s/-//g"` 
 
-echo You are ready to type gmake now!
+if test -f err
+then
+ rm -f err
+else
+ echo You are ready to type gmake now!
+fi

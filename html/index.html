@@ -7,11 +7,14 @@
 </title>
 <link rel=stylesheet href="style.css" type=text/css>
 </head>
-<body bgcolor=#000000 text=#ffff00>
+<body>
 <table align=center width=500>
 <tr>
-<td align=center><img src="images/y_black.png" alt="yChat"></td>
-<td align=center class=header>%%ychat.version%%<br><br>%%INFO%%</td>
+<td>
+<center>
+%%ychat.version%%<br><br>%%INFO%%
+</center>
+</td>
 </tr>
 <tr>
 <td colspan=2>&nbsp;</td>
@@ -21,22 +24,22 @@
 <form action="frameset.html" method="POST">
  <input type="hidden" name="event" value="login">
 Enter your nick:<br>
- <input type="text"   name="nick" value="%%nick%%" maxlength="%%chat.maxlength.username%%" accesskey="n">
+ <input class="text" type="text"   name="nick" value="%%nick%%" maxlength="%%chat.maxlength.username%%" accesskey="n">
 <br>
 <br>
 Enter your password:<br>
- <input type="password" name="password" value="%%pass%%" maxlength="%%chat.maxlength.password%%" accesskey="p">
+ <input class="text" type="password" name="password" value="%%pass%%" maxlength="%%chat.maxlength.password%%" accesskey="p">
 <br>
 <br>
 Enter your room:<br>
- <input type="text" name="room" value="%%chat.defaultroom%%" maxlength="%%chat.maxlength.roomname%%" accesskey="r">
+ <input class="text" type="text" name="room" value="%%chat.defaultroom%%" maxlength="%%chat.maxlength.roomname%%" accesskey="r">
 <br>
 <br>
  <input type="hidden" name="end" value="end">
  <input type="submit" value="login" accesskey="s">
 </form>
 <br>
-<a href="register.html">Register</a> a new nick
+<a class="fancy" href="register.html">Register</a> a new nick
 <br>
 <br>
 If you don't want to register you may login
@@ -46,6 +49,6 @@ without a password using an unregistered nick.
 </tr>
 </table>
 <br><br>
-<center><span class="signature">yChat is OpenSource - get it at <a target="_blank" href="http://www.yChat.org">http://www.yChat.org</a></span></center>
+<center><span class="signature">yChat is OpenSource - get it at <a class="fancy" target="_blank" href="http://www.yChat.org">http://www.yChat.org</a></span></center>
 </body>
 </html>
