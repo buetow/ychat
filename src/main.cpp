@@ -1,7 +1,7 @@
 /*
- * yChat; Contact: www.yChat.org; Mail@yChat.org
+ * yChatContact: www.yChat.org; Mail@yChat.org
  * Copyright (C) 2003 Paul C. Buetow, Volker Richter 
- * Copyright (C) 2004, 2005 Paul C. Buetow
+ * Copyright (C) 2005 Paul C. Buetow
  * -----------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or
@@ -20,88 +20,78 @@
  *
  */
 
+// needed for ignoring SIGPIPE.
+#include <signal.h>
+
+// include header files which are included from every class too.
 #include "incl.h"
-#include "sign.h"
 
+// include the chat manager.
+#include "s_chat.h"
 
-#include "maps/hashmap.h"
+// include the config manager.
+#include "s_conf.h"
+
+// include the html-template manager.
+#include "s_html.h"
+
+// include the mutex manager for global synchronization.
+#include "s_mutx.h"
+
+// include the socket manager.
+#include "s_sock.h"
+
+// include the language manager
+#include "s_lang.h"
+
+// include the session manager
+#include "s_sman.h"
 
 using namespace std;
 
-map<string,string>*
-parse_argc( int argc, char* argv[] )
+int main()
 {
-  map<string,string>* start_params = new map<string,string>;
+#ifdef VERBOSE
 
-  string s_output = "";
+  cout  <<  "         ___ _           _   "     << endl
+  <<  " _   _  / __\\ |__   __ _| |_ "    << endl
+  <<  "| | | |/ /  | '_ \\ / _` | __|"    << endl
+  <<  "| |_| / /___| | | | (_| | |_ "     << endl
+  <<  " \\__, \\____/|_| |_|\\__,_|\\__|" << endl
+  <<  " |___/ 			"     << endl << endl
 
-  // Set to 1 if a config option key has to be read
-  // ( ./ychat -o key1 value1 -o key2 value2 ... );
-  bool b_conf = 0;
-
-  // Will store the key of an additional option value (see also b_conf)
-  string s_key;
-
-  for (int i=1; argv[i] != 0; i++)
-  {
-    if ( !s_key.empty() )
-    {
-      (*start_params)[s_key] = string(argv[i]);
-      s_key.clear();
-    }
-    else if ( b_conf )
-    {
-      s_key = string(argv[i]);
-      b_conf = 0;
-    }
-    else
-    {
-      if ( string(argv[i]).find("v") != string::npos )
-        s_output.append(tool::ychat_version()+"\n");
-
-      if ( string(argv[i]).find("h") != string::npos )
-        s_output.append( YCUSAGE );
-
-      if ( string(argv[i]).find("o") != string::npos )
-        b_conf = 1;
-    }
-  }
-
-  if ( !s_output.empty() )
-  {
-    cout << s_output;
-    delete start_params;
-    exit(1);
-  }
-
-  return start_params;
-}
-
-int
-main(int argc, char* argv[])
-{
-  cout << tool::ychat_version() << endl
   << DESCRIP << endl
-  << DESCRI2 << endl
+  << VERSION << ", "
   << CONTACT << endl
-  << SEPERAT << endl;
-
-  wrap::init_wrapper(parse_argc(argc, argv));
-
-
-  //<<*
-  // Initialize database connection queue
-#ifdef DATABASE
-  wrap::DATA->init_connections();
+  << SEPERAT << endl
+  << STARTMS << endl ;
 #endif
-  //*>>
 
-  sign::init_signal_handlers();
+  // ignore SIGPIPE. otherwise the server will shut down with "Broken pipe" if
+  // a client unexpected disconnects himself from a SOCK_STREAM.
+  signal( SIGPIPE, SIG_IGN );
+
+  // all the static data classes have to be initialized once. otherwise they will
+  // contain only empty pointers and the chat server won't work correctly.
+  // the order of the initializations is very importand. for example the s_html::init()
+  // invokations assumes an initialized s_conf class.
+  s_mutx::init(); // init the mutex manager.
+  s_conf::init(); // init the config manager.
+  s_html::init(); // init the html-template manager.
+  s_lang::init(); // init the language manager
+  s_sman::init(); // init the session manager.
+  s_sock::init(); // init the socket manager.
+  s_chat::init(); // init the chat manager.
 
   // start the socket manager. this one will listen for incoming http requests and will
   // forward them to the specified routines which will generate a http response.
-  wrap::SOCK->start();
+  s_sock::get
+    ().start();
+
+#ifdef VERBOSE
 
   cout << DOWNMSG << endl;
+#endif
+
   return 0;
 }

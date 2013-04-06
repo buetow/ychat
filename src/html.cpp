@@ -1,88 +1,94 @@
-#ifndef HTML_CPP
-#define HTML_CPP
+// class html implementation.
+
+#ifndef s_html_CXX
+#define s_html_CXX
 
 #include <fstream>
 #include "html.h"
+#include "s_chat.h"
+#include "s_mutx.h"
 
 using namespace std;
 
 html::html( )
 {
-  set_name( wrap::CONF->get_elem( "httpd.templatedir" ) );
+  set_name( s_conf::get
+              ().get_val( "HTMLTEMP" ) );
+  pthread_mutex_init( &mut_map_vals, NULL );
 }
 
 html::~html( )
-{}
+{
+  pthread_mutex_destroy( &mut_map_vals );
+}
 
 void
 html::clear_cache( )
 {
-  clear();
-  wrap::system_message( CLRHTML );
-
-#ifdef NCURSES
-
-  print_cached( 0 );
-#endif
+  pthread_mutex_lock  ( &mut_map_vals );
+  clear_vals();
+  pthread_mutex_unlock( &mut_map_vals );
 }
 
 string
-html::parse( map<string,string> &map_params )
+html::parse( map_string &map_params )
 {
   string s_file = map_params["request"];
 
   // check if s_file is in the container.
-  string s_templ;
+  pthread_mutex_lock  ( &mut_map_vals );
+  string s_templ = get_val( s_file );
+  pthread_mutex_unlock( &mut_map_vals );
 
   // if not, read file.
-  if ( ! shashmap<string>::exists( s_file ) )
+  if ( s_templ.empty() )
   {
-    string   s_path  = get_name();
-    ifstream if_templ( s_path.append( s_file ).c_str(), ios::binary );
+    auto string   s_path  = get_name();
+    auto ifstream fs_templ( s_path.append( s_file ).c_str(), ios::binary );
 
-    if ( ! if_templ )
+    if ( ! fs_templ )
     {
-      wrap::system_message( OFFFOUND + s_path );
-      if(map_params["request"]== wrap::CONF->get_elem( "httpd.html.notfound"  ))
-        return "";
 
-      map_params["request"] = wrap::CONF->get_elem( "httpd.html.notfound" );
+      cerr << "File not found: " << s_file << endl;
+      if(map_params["request"]==s_conf::get
+            ().get_val( "NOTFOUND"  ))
+          return "";
+
+      map_params["request"] = s_conf::get
+                                ().get_val( "NOTFOUND" );
       return parse( map_params );
 
     }
 
-    char c_buf;
-    while( !if_templ.eof() )
+    auto char c_buf;
+    while( !fs_templ.eof() )
     {
-      if_templ.get( c_buf );
-      s_templ += c_buf;
+      fs_templ.get( c_buf );
+      s_templ+=c_buf;
     }
 
-    if ( map_params["content-type"].compare(0,5,"text/") == 0 )
-      s_templ.erase(s_templ.end()-1);
+    fs_templ.close();
 
-    if_templ.close();
+#ifdef VERBOSE
 
-    wrap::system_message( TECACHE + s_path );
-
-    // cache file.
-    shashmap<string>::add_elem(s_templ, s_file);
-#ifdef NCURSES
-
-    print_cached( shashmap<string>::size() );
+    pthread_mutex_lock  ( &s_mutx::get
+                            ().mut_stdout );
+    cout << TECACHE << s_path << endl;
+    pthread_mutex_unlock( &s_mutx::get
+                            ().mut_stdout );
 #endif
 
-  }
-  else
-  {
-    s_templ = shashmap<string>::get_elem( s_file );
+    // cache file.
+    pthread_mutex_lock  ( &mut_map_vals );
+    map_vals[ s_file ] = s_templ;
+    pthread_mutex_unlock( &mut_map_vals );
   }
 
   // find %%KEY%% token and substituate those.
-  unsigned pos[2];
+  auto unsigned int pos[2];
   pos[0] = pos[1] = 0;
 
-  for(;;)
+  do
   {
     pos[0] = s_templ.find( "%%", pos[1] );
 
@@ -96,8 +102,9 @@ html::parse( map<string,string> &map_params )
       break;
 
     // get key and val.
-    string s_key = s_templ.substr( pos[0], pos[1]-pos[0] );
-    string s_val = wrap::CONF->get_elem( s_key );
+    auto string s_key = s_templ.substr( pos[0], pos[1]-pos[0] );
+    auto string s_val = s_conf::get
+                          ().get_val( s_key );
 
     // if s_val is empty use map_params.
     if ( s_val.empty() )
@@ -107,44 +114,34 @@ html::parse( map<string,string> &map_params )
     s_templ.replace( pos[0]-2, pos[1]-pos[0]+4, s_val );
 
     // calculate the string displacement.
-    int i_diff = s_val.length() - ( pos[1] - pos[0] + 4);
+    auto int i_dif = s_val.length() - ( pos[1] - pos[0] + 4);
 
-    pos[1] += 2 + i_diff;
+    pos[1] += 2 + i_dif;
 
-  };
+  }
+  while( true );
 
   return s_templ;
 }
 
-//<<*
 void
-html::online_list( user *p_user, map<string,string> &map_params )
+html::online_list( user *p_user, map_string &map_params )
 {
   // prepare user_list.
-  string s_list;
+  string s_list     ( ""     );
+  string s_seperator( "<br>" );
 
-  room* p_room = p_user->get_room();
+  p_user->get_p_room()->get_user_list( s_list, s_seperator );
 
-  p_room->get_user_list( s_list );
+  // use the collected data as a message in html-templates.
+  map_params["MESSAGE"] = s_list;
 
-  map_params["room"] = p_room->get_name();
-  map_params["topic"] = p_room->get_topic();
-  map_params["userlist"] = s_list;
+  // renew the timestamp.
+  p_user->renew_stamp();
+
+  // send a ping to the client chat stream.
+  p_user->msg_post( new string("\n") );
 }
-//*>>
-
-#ifdef NCURSES
-void
-html::print_cached( int i_docs )
-{
-  if ( !wrap::NCUR->is_ready() )
-    return;
-
-  mvprintw( NCUR_CACHED_DOCS_X, NCUR_CACHED_DOCS_Y, "Docs: %d ", i_docs);
-  refresh();
-}
-
-#endif
 
 #endif
 
