@@ -1,39 +1,11 @@
 BRAIN-STORMING:
 
-bugfixes ( see known bugs ).
-rewrite html::online_list as a dynmod mods/html/yc_online_list.so
-add password nick protection
-add superuser privileges
-add libmysqlclient and ncurses test to the configure script
-completion of the admin ncurses interface.
-user profiles
-security: crypto
-more modules: commands etc..
-irc support
-icq support
+mysql
+security: tempid and crypto
+commands
 hash_map []-operator
 hash_map in cont
-several different html templates
-each user should be able to select his favourite html style
-each user should be able to select his favourite system language
-makefile as a replacement of mods/compile.sh
-kqueue @ freebsd
-dynamic thread pool
-offline messages ( memos )
-The sanction of  HTML tags from the list of the superuser
-
-
-
+several different html templatetes
 
 10: bugfixes
 20: goto 10
-
-Linux bugs:
-- No bugs which only appear on Linux.
-
-FreeBSD bugs:
-- No bugs which only appear on FreeBSD.
-
-Bugs wich appear on both, Linux and FreeBSD:
-- some user do not log out automaticaly ( we have to implement an activity counter ).
-- Segmentation fault if another room is created. multi room usage has not been tested yet but should work without big modifications. 

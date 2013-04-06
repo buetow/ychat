@@ -1,25 +1,28 @@
-AC_INIT(Makefile.in)
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(s_chat.h)
+#AC_INIT_AUTOMAKE(yChat, 0.2)
+dnl Checks for programs.
+
+AC_CYGWIN
+AC_MINGW32
 AC_PROG_CPP
 AC_PROG_CXX
 
-AC_CHECK_EXTRA
+dnl Checks for libraries.
+dnl Replace `main' with a function in -lstdc:
 AC_SEARCH_LIBS(dlopen, dl)
 if test "$ac_cv_search_dlopen" = "-ldl"; then
 LDFLAGS="$ac_cv_search_dlopen"
 fi
-
-
+dnl Checks for header files.
+AC_HEADER_DIRENT
 AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 AC_CHECK_HEADERS(string.h)
-AC_CHECK_HEADERS(pthread.h,,echo "-> Error: pthread.h could not be found. Try --with-extra-includes=<dirs>"; exit 1;)
-AC_CHECK_HEADERS(mysql/mysql.h,,echo "-> Error: mysql.h could not be found. Try --with-extra-includes=<dirs>"; exit 1;)
-AC_CHECK_LIB(mysqlclient,mysql_init,,"-> Error: libmysqlclient could not be found. Try --with-extra-libs=<dirs>"; exit 1;)
-AC_CHECK_HEADERS(netinet/in.h,,echo "-> Error: netinet/in.h could not be found. Try --with-extra-includes=<dirs>"; exit 1;)
-AC_CHECK_HEADERS(sys/time.h,,echo "-> Error: sys/time.h could not be found. Try --with-extra-includes=<dirs>"; exit 1;)
-AC_CHECK_LIB(ncurses,newwin,,"-> Error: libncurses could not be found. Try --with-extra-libs=<dirs>";exit 1;)
-AC_CHECK_HEADERS(ncurses.h,,echo "-> Error ncurses.h could not be found. Try --with-extra-includes=<dirs"; exit1;)
+dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
+
+dnl Checks for library functions.
+
 AC_OUTPUT(Makefile)
-echo "You are now ready to compile. Type make"

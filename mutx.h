@@ -7,15 +7,15 @@
 
 using namespace std;
 
-class mutx
+class mutx 
 {
 public:
-    // this mutex is needed for sync stdout and sdterr of different threads.
-    pthread_mutex_t mut_stdout;
+ // this mutex is needed for sync stdout and sdterr of different threads.
+ pthread_mutex_t mut_stdout;
 
-    // public methods.
-    explicit mutx( ); // simple constructor.
-    ~mutx( ); // simple constructor.
+ // public methods.
+ explicit mutx( ); // simple constructor.
+ ~mutx( ); // simple constructor.
 };
 
 #endif

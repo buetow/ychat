@@ -14,11 +14,11 @@ class conf : public cont, name
 private:
 
 public:
-    // public methods:
-    conf ( string s_conf ); // standard constructor.
-    ~conf(); 		 // standard destructor.
+ // public methods:
+ conf ( string s_conf ); // standard constructor.
+ ~conf(); 		 // standard destructor.
 
-    virtual void parse( );    // parses the config file.
+ virtual void parse( );    // parses the config file.
 };
 
 #endif

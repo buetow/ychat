@@ -1,4 +1,4 @@
-#pragma warning(disable:4786)
+#pragma warning(disable:4786) 
 
 #ifndef hmap_h
 #define hmap_h
@@ -17,107 +17,100 @@ template <class obj_type, class key_type>
 class hmap
 {
 private:
-    enum entry_type
-    {
-        ACTIVE, EMPTY, DELETED
-    };
+ enum entry_type 
+ { 
+  ACTIVE, EMPTY, DELETED
+ };
 
-    struct hash_entry
-    {
-        obj_type   element;
-        key_type   key;
-        entry_type info;
+ struct hash_entry
+ {
+  obj_type   element;
+  key_type   key;
+  entry_type info;
 
-        hash_entry( const obj_type &e = obj_type( ), const key_type &k = key_type( ), entry_type i = EMPTY ) : element( e ), key( k ), info( i )
-        { }
-    }
-    ;
-
-    int occupied;
-
-    virtual bool is_active( int i_current_pos ) const;
-    virtual void rehash( );
-    virtual bool is_prime  ( int n ) const;
-    virtual int  next_prime( int n ) const;
-    double       i_max_occupied_percentage;
+  hash_entry( const obj_type &e = obj_type( ), const key_type &k = key_type( ), entry_type i = EMPTY ) : element( e ), key( k ), info( i ) { }
+ };
+    
+ int occupied;
+	
+ virtual bool isActive( int currentPos ) const;
+ virtual void rehash( );
+ virtual bool isPrime  ( int n ) const;
+ virtual int  nextPrime( int n ) const;
+ double       maxOccupiedPercentage; 
 
 protected:
-    int lookups;
-    unsigned int hash( const string &key ) const;
-    vector<hash_entry> array;
+ int lookups;
+ unsigned int hash( const string &key ) const;
+ vector<hash_entry> array;
 
 public:
-    hmap( double moc );
+ hmap( double moc );
 
-    virtual int  find_pos  ( const key_type &k );
-    virtual void make_empty( );
-    virtual void add_elem ( const obj_type &x, const key_type &k );
-    virtual void del_elem ( const key_type &k );
-    virtual obj_type get_elem ( const key_type &k );
+ virtual int  findPos  ( const key_type &k );
+ virtual void make_empty( );
+ virtual void add_elem ( const obj_type &x, const key_type &k );
+ virtual void del_elem ( const key_type &k );
+ virtual obj_type get_elem ( const key_type &k );
 
-    virtual void  run_func( void (*func)(obj_type) );
-    virtual void  run_func( void (*func)(obj_type, void*), void* v_arg );
+ virtual void  run_func( void (*func)(obj_type) );
+ virtual void  run_func( void (*func)(obj_type, void*), void* v_arg );
 
-    virtual vector<key_type>*  get_key_vector( );
-    
-    // inline:
-    void get_size()
-    {
-        int size = 0;
-        for( int j = 0; j < array.size( ); j++ )
-            if (array[ j ].info == ACTIVE)
-                size++;
-        return size;
-    };
+ // inline:
+ void getSize() 
+ {
+  int size = 0;
+  for( int j = 0; j < array.size( ); j++ )
+   if (array[ j ].info == ACTIVE)
+    size++;
+   return size;	
+ };
 
-    int get_lookups()
-    {
-        return lookups;
-    };
+ int getLookups()
+ {
+  return lookups;
+ };
 
-    int get_capacity()
-    {
-        return array.size();
-    };
+ int getCapacity()
+ {
+  return array.size();
+ };
 
-    double get_lambda()
-    {
-        return static_cast<double>(get_size())/static_cast<double>(get_capacity());
-    }
+ double getLambda()
+ {
+  return static_cast<double>(getSize())/static_cast<double>(getCapacity());
+ }
 
-    obj_type& operator[]( key_type &k )
-    {
-        return get_elem( k );
-    }
+ obj_type& operator[]( key_type &k )
+ {
+  return get_elem( k );
+ }
 
 };
 
 template <class obj_type, class key_type>
-class linearhmap : public hmap<obj_type, key_type>
-{
+class linearhmap : public hmap<obj_type, key_type> {
 public:
-    linearhmap(double moc) : hmap<obj_type, key_type>(moc)
-    {}
-    ;
+ linearhmap(double moc) : hmap<obj_type, key_type>(moc) {};
 
-    virtual int find_pos( const key_type &k )
-    {
-        int i_collision_num = 0;
-        int i_current_pos = hash( k ) % array.size( );
-        lookups++;
+ virtual int findPos( const key_type &k )
+ {
+  int collisionNum = 0;
+  int currentPos = hash( k ) % array.size( );
+  lookups++;
 
-        while( array[ i_current_pos ].info != EMPTY &&
-                array[ i_current_pos ].key  !=  k )
-        {
-            lookups   ++;
-            i_current_pos++;
+  while( array[ currentPos ].info != EMPTY &&
+         array[ currentPos ].key  !=  k )
+  {	
+   lookups   ++;
+   currentPos++; 
 
-            if( i_current_pos >= array.size( ) )
-                i_current_pos -= array.size( );
-        }
+   if( currentPos >= array.size( ) )
+    currentPos -= array.size( );
+  }
 
-        return i_current_pos;
-    }
+  return currentPos;
+ }
 };
 
 #include "hmap.cpp"
