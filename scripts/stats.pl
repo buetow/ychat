@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# The yChat Project (2003 - 2004)
+# The yChat Project (2003 - 2005)
 #
 # This script generates source code and project statistics 
 
@@ -9,6 +9,7 @@ use strict;
 use scripts::modules::file;
 
 my %stats;
+my $param = shift;
 
 &recursive(".");
 
@@ -17,19 +18,16 @@ $stats{"Lines total"} = $stats{"Lines of source"}
                    + $stats{"Lines of text"}   
                    + $stats{"Lines of HTML"};
 
-my $bool = 0;
-foreach ( sort keys %stats )
-{
- if ($bool == 0)
- { 
-  print "$_ = " . $stats{$_} . "\n";
-  $bool = 1;
- }
- else
- {
-  print "$_ = " . $stats{$_} . "\n";
-  $bool = 0;
- }
+unless (defined $param) {
+
+ print "$_ = " . $stats{$_} . "\n"
+  for ( sort keys %stats );
+
+} else {
+
+ print $stats{$_} . " "
+  for sort keys %stats;
+
 }
 
 print "\n";
@@ -73,12 +71,12 @@ sub filestats
  {
   $stats{"Number of gfx files"}++;
  }
- elsif ( $shift =~ /(\.pl|\.sh|configure.*|Makefile.*)$/ )
+ elsif ( $shift =~ /(\.pl|\.pm|\.sh|configure.*|Makefile.*)$/ )
  {
   $stats{"Number of script files"}++;
   $stats{"Lines of scripts"} += countlines($shift);
  }
- elsif ( $shift =~ /(\.txt|README|INSTALL|COPYING|NEWS|SNAPSHOT|ChangeLog)$/ )
+ elsif ( $shift =~ /(\.txt|[A-Z]+)$/ )
  {
   $stats{"Number of text files"}++;
   $stats{"Lines of text"} += countlines($shift);

@@ -1,3 +1,27 @@
+/*:*
+ *: File: ./src/maps/shashmap.tmpl
+ *: 
+ *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: 
+ *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
+ *: Copyright (C) 2004 Paul C. Buetow
+ *: Copyright (C) 2005 EXA Digital Solutions GbR
+ *: 
+ *: This program is free software; you can redistribute it and/or
+ *: modify it under the terms of the GNU General Public License
+ *: as published by the Free Software Foundation; either version 2
+ *: of the License, or (at your option) any later version.
+ *: 
+ *: This program is distributed in the hope that it will be useful,
+ *: but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *: GNU General Public License for more details.
+ *: 
+ *: You should have received a copy of the GNU General Public License
+ *: along with this program; if not, write to the Free Software
+ *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *:*/
+
 template<class obj_type, class key_type_, class hash_type, class alloc_type>
 shashmap<obj_type, key_type_, hash_type, alloc_type>::shashmap()
 {
@@ -43,7 +67,7 @@ shashmap<obj_type, key_type_, hash_type, alloc_type>::get_or_callback_set
 {
   pthread_mutex_lock( &mut_shashmap );
   obj_type t_ret = hashmap<obj_type, key_type_, hash_type, alloc_type>::get_or_callback_set
-                   (func, p_void, t_key);
+	(func, p_void, t_key);
   pthread_mutex_unlock( &mut_shashmap );
   return t_ret;
 }
@@ -144,14 +168,12 @@ template<class obj_type, class key_type_, class hash_type, class alloc_type>
 void
 shashmap<obj_type, key_type_, hash_type, alloc_type>::dumpit()
 {
-  dumpable::add
-    ("[shashmap]");
+  dumpable::add("[shashmap]");
   vector<key_type_>* p_vec = get_key_vector();
 
   typename vector<key_type_>::iterator iter;
   for (iter = p_vec->begin(); iter != p_vec->end(); ++iter)
-    dumpable::add
-      (*iter);
+    dumpable::add(*iter);
 
   delete p_vec;
 }

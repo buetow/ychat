@@ -1,3 +1,27 @@
+/*:*
+ *: File: ./src/data/data.h
+ *: 
+ *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: 
+ *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
+ *: Copyright (C) 2004 Paul C. Buetow
+ *: Copyright (C) 2005 EXA Digital Solutions GbR
+ *: 
+ *: This program is free software; you can redistribute it and/or
+ *: modify it under the terms of the GNU General Public License
+ *: as published by the Free Software Foundation; either version 2
+ *: of the License, or (at your option) any later version.
+ *: 
+ *: This program is distributed in the hope that it will be useful,
+ *: but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *: GNU General Public License for more details.
+ *: 
+ *: You should have received a copy of the GNU General Public License
+ *: along with this program; if not, write to the Free Software
+ *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *:*/
+
 #include "../incl.h"
 #ifdef DATABASE
 
@@ -12,17 +36,17 @@ using namespace std;
 class data : public data_base // data implementation used in data.h
 {
 private:
- MYSQL_RES* select_query( string s_query, string s_where_rule, vector<string>& vec_elements );
- map_string parse_result( MYSQL_RES* p_result, vector<string>& vec_elements );
- void insert_query( string s_query, map_string map_insert );
- string secure_query( string s_mysql_query );
+  MYSQL_RES* select_query( string s_query, string s_where_rule, vector<string>& vec_elements );
+  hashmap<string> parse_result( MYSQL_RES* p_result, vector<string>& vec_elements );
+  void insert_query( string s_query, map<string,string> map_insert );
+  string secure_query( string s_mysql_query );
 public:
-    data( );
-   ~data( );
+  data( );
+  ~data( );
 
- map_string select_user_data( string s_user, string s_query );
- void insert_user_data( string s_user, string s_query, map_string insert_map );
- void update_user_data( string s_user, string s_query, map_string update_map );
+  hashmap<string> select_user_data( string s_user, string s_query );
+  void insert_user_data( string s_user, string s_query, map<string,string> insert_map );
+  void update_user_data( string s_user, string s_query, hashmap<string> update_map );
 };
 
 #endif

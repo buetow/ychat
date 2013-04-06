@@ -1,9 +1,9 @@
-yChat; Homepage: www.yChat.org; Version 0.7.2-RELEASE
+yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
 Copyright (C) 2004 Paul C. Buetow
+Copyright (C) 2005 EXA Digital Solutions GbR
 -----------------------------------------------------------------
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
@@ -21,7 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 YCHAT TABLE OF CONTENTS: 
 
-0.0.0 YCHAT FEATURES //<<
+0.0.0 ABOUT RELEASES 
+0.0.1 YCHAT FEATURES //<<
 1.0.0 REQUIREMENTS
 1.1.0 TESTED PLATFORMS
 1.2.0 IMPORTANT NOTICES
@@ -30,14 +31,76 @@ YCHAT TABLE OF CONTENTS:
 1.3.2 INSTALLATION QUICK-START
 1.3.3 MYSQL SETUP //<<
 1.4.0 HOW TO USE SCREEN WITH YCHAT
+1.4.1 HOW TO USE SIGNALS WITH YCHAT
 1.5.0 CUSTOMIZATION
 1.6.0 FILES
 1.7.0 WRITING BUG REPORTS
 1.8.0 CONTACT
 1.9.0 YHTTPD CODE BASE GENERATION //<<
+2.0.0 CREDITS
+
+0.0.0 ABOUT RELEASES 
+
+There are several projects involved:
+
+- The chat -
+Its a HTTP based chat server written in C++. Clients are normal web browsers 
+such as MSIE or Gecko based browsers using only CSS, HTML and JavaScript.
+
+- The httpd -
+Its a small http server based on the chat's socket and threading engine.
+yhttpd does not have as much features but is easy to use and faster than
+apache. yhttpd is a subset of the chat. It can be generated using the
+srcipts/yhttpdbase.pl script in the chat's source tree.
+
+- The ycurses -
+ycurses is a easy to use and small C++ wrapper of the C ncurses API. 
+
+There are different branches:
+
+- CURRENT - 
+The CURRENT branch is unstable, this is the bleeding developing edge with 
+all the new experimental features.
+
+A RELEASE of CURRENT can be referred as CURRENTRELEASE.
+
+- STABLE -
+The STABLE branch is more stable than CURRENT. This branch may get new
+features as well. But those will be more conservative compared to 
+CURRENT.
+
+A RELEASE of STABLE can be referred as STABLERELEASE.
+
+- BASIC -
+The BASIC branch is a very minimal one. This branch may get bugfixes and
+updates and might get minor improvements. This is a version of yChat
+with only very few features.  
+
+A RELEASE of BASIC can be referred as BASICRELEASE.
+
+- LEGACY -
+The LEGACY branch has no real support. This branch may get bugfixes and
+updates and might get minor improvements. But there is no garuantee to
+be bug free and stable at all. LEGACY versions are of historic meaning. 
+
+- DEVEL -
+DEVEL is only a meta name. If a version is labeled with DEVEL, then its
+currently undefined if this is a CURRENT, STABLE or LEGACY branch. It
+can be everything. Commonly DEVEL versions are CURRENT. 
+
+There are also releases made:
+
+- RELEASE -
+There can be RELEASEs made out of each branch. While a branch can get
+new features, a RELEASE can not. A RELEASE of a branch is just like
+a snapshot. RELEASEs are complete versions to test and use. But keep
+in mind, that a RELEASE of the STABLE branch is recommended over a
+RELEASE of a CURRENT or a LEGACY branch in a production environment.
+RELEASEs of CURRENT are still the bleeding edge and RELEASEs of LEGACY
+may be out of date.
 
 //<<*
-0.0.0 YCHAT FEATURES
+0.0.1 YCHAT FEATURES
 
 - Its free & portable -
 yChat is developed under the GNU general public license and is based on GNU 
@@ -55,7 +118,7 @@ Engine powerd browsers like Mozilla, Firefox, Camino etc.
 yChat runs completely stand alone and does not need another webserver to build
 on like Apache and does not need to be run via any kind of CGI. yChat creates 
 its own socket on a customized port (standard port: 2000) and seems to be a full
-features HTTP web server to the clients (web browsers). 
+featured HTTP web server to the clients (web browsers). 
 
 The yChat code base can be converted to an yhttpd code base automaticaly. yhttpd
 is the webserver subset of yChat which runs completely stand alone and provides
@@ -67,9 +130,8 @@ yChat is written in C++ which is faster than any Java based Chat-Server or any
 server written in a scripting language like PHP, Python or Perl. As the
 internal data structures hash maps are used to garuantee searching certain
 values in O(1) amount of time. If a hash maps gets full, it will be rehashed.
-The maximum usage in % can be redefined too (standard is 90%). Currently, yChat
-has been measured providing over 5000 hits/requests per second (chat message
-postings) on a FreeBSD based server box while using less than 2% of CPU usage
+Currently, yChat has been measured providing over 1000 hits/requests per second 
+on a FreeBSD based server box while using less than 2% of CPU usage
 on a Athlon XP 1900+. Performance seems to be limited by your bandwith only. 
 Also, each user gets its own session id (random string) with a standard length 
 of 50 chars to authenticate each logged in user. The length of the session id 
@@ -115,7 +177,7 @@ well . To improve performance, you can define the logging puffer (standardly
 new logs will be written to disk after each 20 lines). If you want to log
 everything immediately, you can reset this option to 1 in ychat.conf.
 
-- Its modular -
+- Its modular through own command and dynamic HTML engine -
 All chat commands are realized through dynamic loadable module files which can
 be recompiled and reloaded without restarting the whole yChat server. Also 
 HTML-Sites with certain tasks can be compiled as a module like 
@@ -148,14 +210,19 @@ lot of user and room objects are created and destroyed frequently.
 
 1.0.0 REQUIREMENTS: 
 
-- GNU GCC G++ 3.4 or 3.3 or 3.2 or 3.1 
-  The GNU C++ compiler. G++ version 3.0 or 2.x does NOT work.
+- GNU GCC G++  
+  The GNU C++ compiler version 3.1 or up.
 
 - GNU make 3.80 (gmake) or higher
   If you dont have a gmake executable but make is gnu make then you need
   to add a symlink or alias from gmake to make.
   yChat Makefiles only have been tested with GNU make and may not work with
   other make versions.
+
+- SGI STL extension 
+  Includes ext/hash_map which may be already default on every Linux distro.
+  On *BSD you have to install it first before compiling. On FreeBSD
+  /usr/ports/devel/stlport is your friend.
 
 //<<*
 - mysql-client 4.x (3.x may do too but is not supported)
@@ -178,13 +245,18 @@ The following platforms have been tested with success. If you find out that
 a listed platform did not work at all please contact me:
 
   Operating system (arch)	GNU G++		GNU make
+- FreeBSD 5.3-RELEASE (i386)	3.4.2		3.80
+
+  Tested longer time before:
 - FreeBSD 5.2.1-RELEASE (i386)	3.3.3 		3.80		
-- FreeBSD 4.9-RELEASE (i386)	3.3.4		3.80
 - FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
-- Gentoo Linux 2004.2 (i386)	3.3.2		3.80
-- OpenBSD 3.6 MP (i386)		3.3.2		3.80
+- FreeBSD 4.9-RELEASE (i386)	3.3.4		3.80
+- Gentoo Linux 2004 (i386)	3.3.2		3.80
+- OpenBSD 3.6 SMP (i386)	3.3.2		3.80
+- Red Hat Linux 8.0 SMP	(i386)	3.2-7		3.79
 - Slackware Linux 10.0 (i386)	3.4.0		3.80 
-- SUSE Linux 8.0, G (i386)	3.3.1		3.80
+- SUSE Linux 9.0 (i386)		3.3.1		3.80
+- SUSE Linux 8.1 (i386)		3.2		3.79.1
 
 Other platforms like Linux based systems, other BSD-Systems or UNICES
 are very likely to work too. 
@@ -202,27 +274,36 @@ homepage which is located at http://www.yChat.org.
 
 yChat can be downloaded as a source package or through CVS. 
 
-The packages are located at http://www.yChat.org -> Sourcecode -> 
-Packages or go to http://pub.buetow.org/yChat/CPP-yChat .
+The packages are located at http://www.yChat.org -> Release Versions
 
 For CVS download type:
 
-cvs -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot login
+cvs -d:pserver:anonymous@buetow.org:/cvs/cvsroot login
 ( You will be asked for a password. Use "just enter" ).
 
-vs -z3 -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot co ychat
+vs -z3 -d:pserver:anonymous@buetow.org:/cvs/cvsroot co BRANCH
 ( The sources will be copied into your local folder )
 
-cvs -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot logout
+cvs -d:pserver:anonymous@buetow.org:/cvs/cvsroot logout
 ( Logs your CVS session out ).
 
 Now you may continue with the installation.
+
+There are different branches in the CVS:
+
+ychat: This is the latest CURRENT branch of yChat.
+ychat-stable: This is the latest STABLE branch of yChat.
+ychat-X.Y: This is the branch with the specified version prefix.
+yhttpd: This is the latest CURRENT snapshot of yhttpd.
+
+The CURRENT branch of ychat is mostly untested and unstable, so don't 
+cry if you get errors.
 
 1.3.1 INSTALLATION:
 
 Invoke "./configure". Afterwards you will get prompted with the before-compile
 options of yChat. After choosing those options you are ready to type "gmake"
-afterwards. 
+afterwards. See below what gmake is doing. 
 
 //<<*
 If you have choosen MySQL database support, then take a look at section 1.3.2 
@@ -235,23 +316,23 @@ You may also invoke gmake with the following options (the PREFIX can be set
 in the yChat configurator which will be launched by the top configure script
 or gmake config):
 
- gmake or gmake all (compiles everything, also modules)
+ gmake or gmake all (compiles everything, also modules and runs "gmake mail")
  gmake base (only compiles the base)
  gmake base_start (only compiles the base and starts the server)
  gmake clean (cleans everything)
  gmake clean_base (only cleans the base obj and rpo files)
  gmake clean_modules (only cleans the modules .so files) 
+ gmake confdebug (runs ./configure with enabling debugging)
  gmake config (runs yChat configurator)
- gmake deinstall (deinstalls ychat from PREFIX)
+ gmake debug (runs gdb on ./ychat.core)
+ gmake dist (creates a .tar.bz2 ball)
  gmake gpl (shows the GNU General Public License)		
  gmake help (shows all available ychat gmake targets)
- gmake install (installs ychat to PREFIX)
+ gmake mail (sends a mail to the yChat developers containing build opts.)
  gmake modules (only compiles modules)
  gmake mrproper (same as gmake clean plus removing all temp files) 
  gmake setup (runs all configure scripts and afterwards gmake all)
- gmake start (compiles everything and starts the server)
  gmake stats (generates ychat statistics)
- gmake uninstall (same as deinstall)
  gmake version (shows the current version of yChat)
 //<<*
  gmake yhttpdbase (generates an yhttpd code base)
@@ -271,6 +352,7 @@ Aferwards point your webbrowser to http://yourip:port !
 If you in hury, then you may just type gmake setup. In the yChat configurator
 you may just choose all the default values. If done, yChat will get compiled
 and is ready to run with ./bin/ychat! 
+
 
 //<<*
 1.3.3 MYSQL SETUP
@@ -320,6 +402,19 @@ Screen will terminate automaticaly if all processes in its sessions are
 terminated.
 
 For a closer look read the screen manual page ( man screen ). 
+
+1.4.1 HOW TO USE SIGNALS WITH YCHAT:
+
+You can send UNIX signals to yChat. This becomes very interesting if you 
+don't use the command line interface or the ncurses interface and you 
+don't have access to the options below.
+
+Run one of the following commands to send the signal you want: 
+($PID is here the process id of the current yChat process)
+
+kill -USR1 $PID # yChat clears the HTML template cache 
+kill -USR2 $PID # yChat reloads all dynamic loadable modules //<< 
+kill -HUP  $PID # yChat will shutdown savely
 
 1.5.0 CUSTOMIZATION:
 
@@ -376,7 +471,7 @@ src/msgs.h	- Defines some server side messages
 
 How to submit a good bug report?
 
-Send them to Bug@yChat.org.
+Send them to mail at yChat dot org.
 
 First you should give the following information:
 - yChat version, if CVS (or devel. tarball) then which day?
@@ -422,9 +517,7 @@ If you dont get such a gdb output, you need to recompile the yChat using
 debuggig symbols. You can do it this way:
 
 cd ychat
-gmake mrproper
-./configure -g3 -ggdb
-gmake start
+gmake clean confdebug all run
 
 1.8 CONTACT:
 
@@ -432,10 +525,10 @@ You may contact us through the following addresses:
 
 - Homepage
   The yChat homepage is located at http://www.yChat.org
+  The EXA Digital Solutions homepage is located at http://www.exa-ds.com
 
 - E-Mail
-  Paul C. Buetow: Snooper at yChat point org ( core developer )
-  Volker Richter: Rover at yChat dot org ( core developer )
+  Paul C. Buetow: Buetow at yChat point org ( core developer )
   Mail at yChat dot org ( reaches everybody of yChat )
  
 - ICQ
@@ -444,8 +537,24 @@ You may contact us through the following addresses:
 - IRC
   #Ychat and #Coding at irc.german-elite.net  
 
+- EXA Digital Solutions GbR
+  Laubenstr. 16b
+  D-44866 Bochum
+  Germany
+
 //<<*
-1.9 YHTTPD CODE BASE GENERATION
+1.9.0 YHTTPD CODE BASE GENERATION
 
 See docs/yhttpd.txt
 //*>>
+
+2.0.0 CREDITS
+
+Thanks to the following persons. Without them yChat would not be like today:
+
+- Volker Richter <volker at exa-ds dot de> of EXA Digital Solutions GbR
+  (http://www.exa-ds.com) for adding initial MySQL support and lots of more
+  code.
+
+- Joshia Teitelbaum <joshuat at cryptomail.org> of CryptpMail.org for adding
+  lots of security patches in the HTTP header handling.
