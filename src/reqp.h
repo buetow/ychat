@@ -13,6 +13,7 @@ private:
   static const string s_http_stream;
   static const string s_http_colength;
   static const string s_http_cotype;
+  static const string s_http_cotype_add;
 
   // returns the request url from thr client's http request header
   // until the first "?" and stores all request parameter values

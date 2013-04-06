@@ -23,11 +23,6 @@
 #include "incl.h"
 #include "sign.h"
 
-#ifndef NCURSES
-#ifdef CLI
-#include "cli/cli.h"
-#endif
-#endif
 
 #include "maps/hashmap.h"
 
@@ -85,98 +80,18 @@ parse_argc( int argc, char* argv[] )
 int
 main(int argc, char* argv[])
 {
-  map<string,string>* p_start_params = parse_argc( argc, argv );
-
   cout << tool::ychat_version() << endl
   << DESCRIP << endl
   << DESCRI2 << endl
   << CONTACT << endl
   << SEPERAT << endl;
 
-
-  // All the static data classes have to be initialized once. otherwise they will
-  // contain only empty pointers and the chat server won't work correctly.
-  // the order of the initializations is very importand. for example the s_html::init()
-  // invokations assumes an initialized conf class.
-
-  // Init the dynamic wrapper (is needed to pass all wrapped objects through a single pointer).
-  wrap::WRAP = new dynamic_wrap;
-
-  // Init the config manager.
-  wrap::WRAP->CONF = wrap::CONF = new conf( CONFILE, p_start_params );
-  delete p_start_params,
-
-  // Init the statistic manager.
-  wrap::WRAP->STAT = wrap::STAT = new stats;
-
-  // Init the html-template manager.
-  wrap::WRAP->HTML = wrap::HTML = new html;
-
-#ifdef LOGGING
-  // Init the system message logd
-  wrap::WRAP->LOGD = wrap::LOGD = new logd( wrap::CONF->get_elem("httpd.logging.systemfile"),
-                                  wrap::CONF->get_elem("httpd.logging.systemlines") );
-#endif
-  //<<*
-  // Init the session manager.
-  wrap::WRAP->SMAN = wrap::SMAN = new sman;
-  //*>>
-
-
-#ifdef NCURSES
-
-  wrap::WRAP->NCUR = wrap::NCUR = new ncur; 	// init the ncurses admin interface.
-  wrap::NCUR->run();				// run the thread
-
-  // Wait until ncurses interface has been initialized.
-  do {
-    usleep(1000);
-  } while ( ! wrap::NCUR->is_ready() );
-
-  wrap::HTML->print_cached(0);
-#endif
-
-  // Init the thread pool
-  wrap::WRAP->POOL = wrap::POOL = new pool;
-  // Init the socket manager.
-  wrap::WRAP->SOCK = wrap::SOCK = new sock;
-
-  //<<*
-  // Init the chat manager.
-  wrap::WRAP->CHAT = wrap::CHAT = new chat;
-  //*>>
-
-  // Init the system timer.
-  wrap::WRAP->TIMR = wrap::TIMR = new timr;
-  wrap::TIMR->run(); // run the thread
-
-  //<<*
-  // Init the module-loader manager.
-  wrap::WRAP->MODL = wrap::MODL = new modl;
-
-  // Init the garbage collector
-  wrap::WRAP->GCOL = wrap::GCOL = new gcol;
-
-  // Init the data manager.
-#ifdef DATABASE
-
-  wrap::WRAP->DATA = wrap::DATA = new data;
-#endif
-  //*>>
-
-#ifndef NCURSES
-#ifdef CLI
-
-  cli* p_cli = new cli;
-  p_cli->run();
-#endif
-#endif
+  wrap::init_wrapper(parse_argc(argc, argv));
 
   //<<*
   // Initialize database connection queue
 #ifdef DATABASE
-
-  wrap::DATA->initialize_connections();
+  wrap::DATA->init_connections();
 #endif
   //*>>
 

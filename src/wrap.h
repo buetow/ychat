@@ -15,14 +15,21 @@
 //<<*
 #include "modl.h"
 //*>>
+
 #ifdef NCURSES
 #include "ncur/ncur.h"
+#else
+#ifdef CLI
+#include "cli/cli.h"
 #endif
+#endif
+
 #include "chat/sman.h"
 #include "sock/sock.h"
-#include "stats.h"
+#include "monitor/stats.h"
 #include "time/timr.h"
 #include "thrd/pool.h"
+
 
 using namespace std;
 
@@ -72,6 +79,8 @@ public:
   }
 
   static void system_message( string s_message );
+
+  static void init_wrapper(map<string,string>* p_start_params);
 
   //<<*
   static chat* CHAT;

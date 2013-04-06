@@ -1,11 +1,11 @@
 SRCS=yc_admin.cpp yc_colors.cpp yc_help.cpp yc_loggedin.cpp yc_options.cpp yc_register.cpp
 MODS=$(addprefix ../../../mods/html/, $(SRCS:.cpp=.so))
-CC=g++
+CC=g++33
 INCLUDES=`cat ../../includes.add`
 CFLAGS=`cat ../cflags.add`
 all: mods
 $(MODS): 
-	@echo -n "Compiling html module `basename $@` " 
+	@echo -n "Compiling html module `basename $@ | sed s/\.so// | sed s/yc_//` " 
 	@if ! test -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	@$(CC) $(CFLAGS) $(INCLUDES) -shared -s -o $@ `echo $(notdir $@) | sed s/.so/.cpp/`
 	@du -hc $@ | tail -n 1 | sed s/total// | sed "s/ //g"

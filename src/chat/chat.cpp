@@ -165,7 +165,6 @@ chat::login( map<string,string> &map_params )
     else
     {
       sess* p_sess = wrap::SMAN->create_session();
-      //p_sess->set_value( string("nick"), (void *) new string(s_user) );
       p_sess->set_user(p_user);
       map_params["tmpid"] = p_sess->get_tmpid();
       p_user->set_tmpid( map_params["tmpid"] );
@@ -359,6 +358,13 @@ chat::string_replacer(string *p_msg)
          iter-- )
       *p_msg = tool::replace( *p_msg, *iter, wrap::CONF->get_elem(map_replace_strings[*iter]) );
   }
+}
+
+void
+chat::dumpit()
+{
+  dumpable::add("[chat]");
+  base<room>::dumpit();
 }
 
 #endif

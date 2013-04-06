@@ -1,13 +1,19 @@
 - Must do's for next RELEASE -
-$ Add thread pool decreasing
+$ None specific
 
 - Might do's for next RELEASE -
+$ Add CLI dump command (writes internal data structure into file, for debugging)
+$ Add thread pool decreasing
 $ dir : public vector<string>
 $ Disable /help command for commands wich are not accessible for the
 $ specific user.
 $ Flood protection
 $ Add /nick, /beam, /su
 $  Add / to whisper to the last person to whom the user has been whispered the last time.
+
+- Known bugs -
+$ The session manager sometimes does not free a session. The user object might hang.
+$ Using yChat via proxy sometimes causes a white chat stream.
 
 - To do in general for some later RELEASE -
 $ Use libevent

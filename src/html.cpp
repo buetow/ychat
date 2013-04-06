@@ -43,12 +43,11 @@ html::parse( map<string,string> &map_params )
     if ( ! if_templ )
     {
       wrap::system_message( OFFFOUND + s_path );
-      if(map_params["request"]== wrap::CONF->get_elem( "httpd.html.notfound"  ))
+      if(map_params["request"] == wrap::CONF->get_elem( "httpd.html.notfound" ))
         return "";
 
       map_params["request"] = wrap::CONF->get_elem( "httpd.html.notfound" );
       return parse( map_params );
-
     }
 
     char c_buf;

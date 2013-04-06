@@ -23,6 +23,7 @@ thro::run( void *p_void )
 {
   elem.p_thro = this;
   elem.p_void = p_void;
+  //wrap::POOL->add_task(start_, &elem);
   pthread_create( &pthread, NULL, start_, &elem );
 }
 

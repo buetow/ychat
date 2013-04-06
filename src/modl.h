@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class modl : private shashmap<dynmod*>
+class modl : public shashmap<dynmod*>
 {
 private:
   static  void dlclose_( dynmod* mod   );
@@ -24,6 +24,7 @@ public:
   ~modl();
 
   dynmod* get_module( string s_name );
+  dynmod* get_module( string s_name, string s_user );
 
   vector<string>* get_mod_vector()
   {

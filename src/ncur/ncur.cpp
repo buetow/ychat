@@ -212,7 +212,7 @@ ncur::switch_main_menu_( int i_choice )
 
       def_prog_mode();		/* Save the tty modes		  */
       endwin();			/* End curses mode temporarily	  */
-      new cli();		        /* Start CLI mode		  */
+      delete new cli();		        /* Start CLI mode		  */
       reset_prog_mode();		/* Return to the previous tty mode*/
       /* stored by def_prog_mode() 	  */
       refresh();			/* Do refresh() to restore the	  */
@@ -253,8 +253,9 @@ ncur::init_ncurses()
   clear();
   noecho();
   cbreak();       // Line buffering disabled. pass on everything
-  init_pair(1, COLOR_WHITE, COLOR_BLUE);
+  init_pair(1, COLOR_BLACK, COLOR_CYAN);
   mvprintw( 0,2, (char*)(tool::ychat_version()).c_str());
+  curs_set(0);
   refresh();
 }
 

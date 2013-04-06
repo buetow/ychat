@@ -1,11 +1,11 @@
 SRCS=yc_about.cpp yc_all.cpp yc_away.cpp yc_col.cpp yc_compopt.cpp yc_exec.cpp yc_fake.cpp yc_getroom.cpp yc_getrusage.cpp yc_help.cpp yc_invisible.cpp yc_j.cpp yc_ko.cpp yc_m.cpp yc_md5.cpp yc_me.cpp yc_morph.cpp yc_msg.cpp yc_q.cpp yc_reload.cpp yc_ren.cpp yc_s.cpp yc_set.cpp yc_template.cpp yc_time.cpp yc_topic.cpp yc_uptime.cpp yc_users.cpp yc_version.cpp
 MODS=$(addprefix ../../../mods/commands/, $(SRCS:.cpp=.so))
-CC=g++
+CC=g++33
 INCLUDES=`cat ../../includes.add`
 CFLAGS=`cat ../cflags.add`
 all: mods
 $(MODS): 
-	@echo -n "Compiling command module `basename $@` " 
+	@echo -n "Compiling command module `basename $@ | sed s/\.so// | sed s/yc_//` " 
 	@if ! test -d `dirname $@`; then mkdir -p `dirname $@`; fi
 	@$(CC) $(CFLAGS) $(INCLUDES) -shared -s -o $@ `echo $(notdir $@) | sed s/.so/.cpp/`
 	@du -hc $@ | tail -n 1 | sed s/total// | sed "s/ //g"

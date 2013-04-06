@@ -1,6 +1,6 @@
 MAKE=`tail -n 1 make.version`
 PREFIX=`grep "define PREFIX" src/glob.h | cut -d'"' -f2`
-all:    version base modules version 
+all:    version base modules 
 	@echo "Now edit the ychat.conf and run ychat!"
 	@echo "The config file is searched in the following order:"
 	@echo " ./ychat.conf " 
@@ -74,7 +74,7 @@ mrproper: clean
 	@if test -f g++.version; then rm -f g++.version; fi 
 	@if test -f make.version; then rm -f make.version; fi 
 	@if test -f src/Makefile; then rm -f src/Makefile; fi 
-	@if test -f bin/ychat; then find bin/ -name "*ychat" | xargs rm -f; fi
+	@if test -f bin/ychat; then find bin/ -name "*ychat*" | xargs rm -f; fi
 	@if test -d src/mods; then find src/mods/*/ -name Makefile | xargs rm -f; fi
 	@find . -name "*.add" | xargs rm -f
 	@ls | grep core | xargs rm -f
@@ -84,3 +84,5 @@ debug:
 	@gdb bin/ychat ychat.core
 confdebug:
 	./configure -g3 -ggdb
+dist:
+	@./scripts/makedist.sh

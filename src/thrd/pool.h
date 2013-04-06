@@ -10,6 +10,8 @@ using namespace std;
 class pool 
 {
 private:
+  friend class thro;
+
   struct task
   {
     void(*p_func)(void*);

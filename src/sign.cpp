@@ -30,13 +30,18 @@ sign::terminate_received(int i_param)
 {
 
 #ifdef NCURSES
-  if ( ! wrap::GCOL->remove_garbage() ) 	//<<
-    wrap::NCUR->print( GAROFFNE );		//<<
+  //<<*
+  if ( ! wrap::GCOL->remove_garbage() )
+    wrap::NCUR->print( GAROFFNE );
+  //*>>
 
   mvprintw( 21,2, "Good bye !");
   wrap::NCUR->close_ncurses();
+
+  //<<*
 #else
   wrap::GCOL->remove_garbage();
+  //*>>
 #endif
 
   exit(0);

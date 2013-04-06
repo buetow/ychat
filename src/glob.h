@@ -83,7 +83,7 @@
 /* - CONFIG -
  Should yChat get compiled with ncurses support?
 */ 
-//#define NCURSES
+#define NCURSES
 
 /* - CONFIG - 
  Please specify the maximum length of a HTTP post request. 
@@ -121,7 +121,7 @@
  will print a warning message into the system messages and will 
  not core dump if an error occurs. 
 */
-#define CTCSEGV
+//#define CTCSEGV
 
 /* - CONFIG - 
  Please chose if you want to use verbose server outputs or not. 

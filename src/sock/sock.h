@@ -21,7 +21,7 @@
 
 using namespace std;
 
-class sock : protected shashmap
+class sock : public shashmap
 < string, uint32_t, self_hash<uint32_t>, equals_allocator<uint32_t> >
 {
 private:

@@ -306,7 +306,7 @@ sock::clean_ipcache()
   int i_ipcachesize = wrap::CONF->get_int("httpd.ipcachesize");
   int i_currentsize = size();
 
-  if ( i_currentsize > 0 && (i_ipcachesize == 0 || i_ipcachesize >= i_currentsize) )
+  if ( i_currentsize > 0 && (i_ipcachesize == 0 || i_ipcachesize <= i_currentsize) )
   {
     wrap::system_message(
 	SOCKCA2+tool::int2string(i_currentsize)+","+tool::int2string(i_ipcachesize)+")");

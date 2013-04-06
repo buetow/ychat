@@ -4,6 +4,8 @@
 #include <pthread.h>
 #include "hashmap.h"
 
+#include "../monitor/dump.h"
+
 using namespace std;
 
 template
@@ -13,10 +15,14 @@ template
   class hash_type = size_hash<string>,
   class alloc_type = compare_allocator<string>
 >
-class shashmap : protected hashmap<obj_type, key_type_, hash_type, alloc_type>
+class shashmap : protected hashmap<obj_type, key_type_, hash_type, alloc_type>,
+		 public dumpable
 {
 private:
   pthread_mutex_t mut_shashmap;
+
+protected:
+  virtual void dumpit();
 
 public:
   explicit shashmap();
@@ -36,6 +42,7 @@ public:
   virtual inline vector<key_type_>* get_key_vector();
   virtual inline void run_func( void (*func)(obj_type) );
   virtual inline void run_func( void (*func)(obj_type, void*), void* v_arg );
+
 };
 
 #include "shashmap.tmpl"

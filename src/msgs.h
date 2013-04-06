@@ -86,6 +86,7 @@
 #define SESSION "Session: Count "
 #define SESSDMP "Session: Dump of session"
 #define SESSERR "Session: Could not find session "
+#define SESSEXI "Session: New TempID already exists, recalc."
 #define SHELLER "Shell: Could not execute command"
 #define SHELLEX "Shell: Executing the following command:"
 #define SIGSIGV "Signal: SIGV received!"
@@ -112,14 +113,14 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "0.7.8"
+#define VERSION "0.7.9.2"
 #define BRANCH "RELEASE"
-#define BUILDNR 3592
-#define UNAME "FreeBSD 5.3-RELEASE-p5 i386"
-#define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.2 [FreeBSD] 20040728; 3.4; g++"
+#define BUILDNR 3797
+#define UNAME "OpenBSD 3.6 i386"
+#define COMPOPT "Reading specs from /usr/local/lib/gcc-lib/i386-unknown-openbsd3.6/3.3.2/specs; Configured with: /usr/obj/i386/gcc-3.3.2/gcc-3.3.2/configure --verbose --program-transform-name=s,^,e, --disable-nls --with-system-zlib --enable-cpp --enable-languages=c,c++,f77,objc,java --enable-sjlj-exceptions --with-gnu-as --with-gnu-ld --enable-shared --prefix=/usr/local --sysconfdir=/etc; Thread model: single; gcc version 3.3.2; 3.3; g++33"
 #define YCUSAGE "Usage: ./ychat {h|v}|{o confkey confvalue}\n"
 
-#define HEADER1 "HTTP/1.0 200 OK\r\n"
+#define HEADER1 "HTTP/1.1 200 OK\r\n"
 #define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n"
 #define HEADER3 "Cache-control: no-cache\r\n"
 #define HEADER4 "Pragma: no-cache\r\n"
@@ -127,6 +128,7 @@
 #define HEADER6 "Connection: keep-alive\r\n"
 #define HEADER7 "Content-Length: ";
 #define HEADER8 "Content-Type: ";
-#define HEADER9 "Allow: GET\n";
+#define HEADER8b "; charset=ISO-8859-1\r\n";
+#define HEADER9 "Allow: GET\r\n";
 
 #endif

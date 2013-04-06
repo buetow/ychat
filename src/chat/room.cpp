@@ -101,4 +101,14 @@ room::set_name( string s_name )
 #endif
 }
 
+void
+room::dumpit()
+{
+  dumpable::add("[room]");
+  dumpable::add("Name: "+get_name());
+  dumpable::add("Topic: "+get_topic());
+  base<user>::dumpit();
+}
+
+
 #endif

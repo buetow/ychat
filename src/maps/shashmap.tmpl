@@ -139,3 +139,17 @@ shashmap<obj_type, key_type_, hash_type, alloc_type>::run_func( void (*func)(obj
   hashmap<obj_type, key_type_, hash_type, alloc_type>::run_func(func, v_arg);
   pthread_mutex_unlock( &mut_shashmap );
 }
+
+template<class obj_type, class key_type_, class hash_type, class alloc_type>
+void
+shashmap<obj_type, key_type_, hash_type, alloc_type>::dumpit()
+{
+  dumpable::add("[shashmap]");
+  vector<key_type_>* p_vec = get_key_vector();
+
+  typename vector<key_type_>::iterator iter;
+  for (iter = p_vec->begin(); iter != p_vec->end(); ++iter)
+    dumpable::add(*iter);
+
+  delete p_vec;
+}

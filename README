@@ -1,4 +1,4 @@
-yChat; Homepage: www.yChat.org; Version 0.7.8-RELEASE
+yChat; Homepage: www.yChat.org; Version 0.7.9.2-PRERELEASE
 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
 Copyright (C) 2004, 2005 Paul C. Buetow
@@ -50,6 +50,9 @@ Its a small http server based on the chat's socket and threading engine.
 yhttpd does not have as much features but is easy to use and faster than
 apache. yhttpd is a subset of the chat. It can be generated using the
 srcipts/yhttpdbase.pl script in the chat's source tree.
+
+- The ycurses -
+ycurses is a easy to use and small C++ wrapper of the C ncurses API. 
 
 There are different branches:
 
@@ -198,8 +201,8 @@ lot of user and room objects are created and destroyed frequently.
 
 1.0.0 REQUIREMENTS: 
 
-- GNU GCC G++ 3.4
-  The GNU C++ compiler. 
+- GNU GCC G++  
+  The GNU C++ compiler version 3.1 or up.
 
 - GNU make 3.80 (gmake) or higher
   If you dont have a gmake executable but make is gnu make then you need
@@ -314,6 +317,7 @@ or gmake config):
  gmake confdebug (runs ./configure with enabling debugging)
  gmake config (runs yChat configurator)
  gmake debug (runs gdb on ./ychat.core)
+ gmake dist (creates a .tar.bz2 ball)
  gmake gpl (shows the GNU General Public License)		
  gmake help (shows all available ychat gmake targets)
  gmake mail (sends a mail to the yChat developers containing build opts.)
@@ -526,7 +530,8 @@ You may contact us through the following addresses:
   #Ychat and #Coding at irc.german-elite.net  
 
 //<<*
-1.9 YHTTPD CODE BASE GENERATION
+1.9.0 YHTTPD CODE BASE GENERATION
 
 See docs/yhttpd.txt
 //*>>
+

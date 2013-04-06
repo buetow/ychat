@@ -29,8 +29,8 @@ private:
   pthread_mutex_t mut_is_ready;
 
 public:
-  ncur( );      	      // a standard constructor.
-  ~ncur( );
+  ncur();
+  ~ncur();
 
   void start( void *p_void );
   void print( char* c_print );

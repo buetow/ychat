@@ -113,6 +113,14 @@ modl::cache_module( string s_name, bool b_print_sys_msg )
 }
 
 dynmod*
+modl::get_module( string s_name, string s_user )
+{
+  wrap::system_message( MODULER + s_name.substr( s_name.find_last_of("/")+1 ) + " (" + s_user + ")");
+  dynmod* mod = get_elem( s_name );
+  return ! mod ? cache_module( s_name, true ) : mod;
+}
+
+dynmod*
 modl::get_module( string s_name )
 {
   wrap::system_message( MODULER + s_name.substr( s_name.find_last_of("/")+1 ) );

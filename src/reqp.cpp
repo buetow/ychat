@@ -13,6 +13,7 @@ const string reqp::s_http = HEADER;
 const string reqp::s_http_stream = STREAM;
 const string reqp::s_http_colength = HEADER7;
 const string reqp::s_http_cotype = HEADER8;
+const string reqp::s_http_cotype_add = HEADER8b;
 
 reqp::reqp( )
 {}
@@ -338,8 +339,9 @@ reqp::parse( int &i_sock, string s_req, map<string,string> &map_params )
   if ( s_event.compare("stream") == 0 )
     s_resp.append( s_http_stream );
 
-  s_resp.append( s_http_colength + tool::int2string(s_rep.size()) + "\n" +
-                 s_http_cotype + map_params["content-type"] + "\r\n\r\n" );
+  s_resp.append( s_http_colength + tool::int2string(s_rep.size()) + "\r\n" +
+                 s_http_cotype + map_params["content-type"] +
+		 s_http_cotype_add + "\r\n" );
 
   s_resp.append(s_rep);
 
@@ -360,7 +362,7 @@ reqp::run_html_mod( string s_event, map<string,string> &map_params, user* p_user
 
   string s_mod = wrap::CONF->get_elem("httpd.modules.htmldir") + "yc_" + s_event + ".so";
 
-  dynmod* p_module = wrap::MODL->get_module( s_mod );
+  dynmod* p_module = wrap::MODL->get_module( s_mod, p_user->get_name() );
 
   if ( p_module != NULL )
     ( *( p_module->the_func ) ) ( static_cast<void*>(c) );

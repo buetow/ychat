@@ -5,13 +5,14 @@
 
 #include "../name.h"
 #include "../time/timo.h"
+#include "../monitor/dump.h"
 //#include "../memb/memb.h"
 
 class room;
 
 using namespace std;
 
-class user : public name, public timo//, public memb<string>
+class user : public name, public timo, public dumpable //, public memb<string>
 {
 private:
 
@@ -56,7 +57,8 @@ private:
   pthread_mutex_t mut_map_changed_data;
 
   void initialize();
-  void   set_changed_data( string s_varname, string s_value );
+  void set_changed_data( string s_varname, string s_value );
+  void dumpit();
 
 public:
   pthread_cond_t  cond_message;
@@ -67,6 +69,7 @@ public:
   ~user();
 
   void clean();
+  void destroy_session();
 
   // gets specific data of this user und stores it in
   // (*p_map<string,string>)["nick"]. this method will be used

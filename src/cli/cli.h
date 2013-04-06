@@ -22,6 +22,8 @@
 #include "../thrd/thro.h"
 #endif
 
+#include "../monitor/dump.h"
+
 using namespace std;
 
 #ifndef NCURSES
@@ -32,8 +34,9 @@ class cli
 {
 #endif
 private:
-      int parse_input(string s_input);
-
+  int parse_input(string s_input);
+  vector<string> vectorize(string s_param);
+    
 public:
 cli( );
 ~cli( );
@@ -52,7 +55,6 @@ void start(void* p_void);
 
 void start();
 #endif
-
 };
 
 #endif

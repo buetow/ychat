@@ -1,3 +1,25 @@
+-Changes from 0.7.9.1-RELEASE to 0.7.9.2-RELEASE -
+$ Added monitor/dump, and the dump command to the CLI.
+$ Fixed a bug in the session manager. 
+$ Added gmake dist do the README.
+$ Added the charset to the HTTP-header.
+
+-Changes from 0.7.9-RELEASE to 0.7.9.1-RELEASE -
+$ Fixed etc/ychat.conf (Its now valid XML)
+$ Fixed some typos.
+$ Added the scripts/makedist.sh script, which can be invoked by gmake dist. 
+$ yhttpd.org has been renamed to yChat.org. The yhttpd.org SLD will be
+$ canceled! The yhttpd.org Homepage will remain on yChat.org!
+
+-Changes from 0.7.8-RELEASE to 0.7.9-RELEASE -
+$ In the system messages will be the user printed which has requested the
+  specified module.
+$ Removed the cursor from the ncurses interface.
+$ Added wrap::init_wrappers -> The main.cpp is now shorter.
+$ Added some Makefile modifications
+$ Bugfix: cleanipcache shouldn run every minute but every 10!
+$ Bugfix: scripts/stats.pl now counts all text-files properly.
+
 -Changes from 0.7.7.1-RELEASE to 0.7.8-RELEASE -
 $ Updated the yhttpd generation script due new sources in src/memb.
 $ Changd some hashmaps back into simple std::map objects, this might

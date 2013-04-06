@@ -156,15 +156,17 @@ perl -e '
    $ofile =~ s/\.cpp/\.o/;
    print Fout "../obj/$ofile: $cppfile\n";
    print Fout "\t\@if ! test -d `dirname ../obj/$ofile`; then mkdir -p `dirname ../obj/$ofile`; fi\n";
-   if ( $ofile =~ /contrib\/.+/ )
+   my $class = $ofile;
+   $class =~ s/\.o//; 
+   if ( $class =~ /contrib\/.+/ )
    {
-    my $dirname = `dirname $ofile`;
-     print Fout "\t\@echo -n \"Compiling contributed class $ofile \"\n";
+    my $dirname = `dirname $class`;
+     print Fout "\t\@echo -n \"Compiling contributed class $class \"\n";
    }
 
    else
    {
-    print Fout "\t\@echo -n \"Compiling base class $ofile \"\n";	
+    print Fout "\t\@echo -n \"Compiling base class $class \"\n";	
    }
 
    print Fout "\t\@\$(CC) \$(CFLAGS) \$(INCLUDES) $args -c -o ../obj/$ofile $cppfile\n";

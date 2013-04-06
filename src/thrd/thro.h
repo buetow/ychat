@@ -17,7 +17,7 @@ private:
   }
   elem;
 
-  static void* start_( void *p_void );
+  static void *start_( void *p_void );
 
 public:
   thro( );
