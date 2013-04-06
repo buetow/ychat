@@ -53,7 +53,6 @@ public:
  virtual void del_elem ( const key_type &k );
  virtual obj_type get_elem ( const key_type &k );
 
- virtual void  run_func( void (*func)(obj_type) );
  virtual void  run_func( void (*func)(obj_type, void*), void* v_arg );
 
  // inline:
@@ -79,11 +78,6 @@ public:
  double getLambda()
  {
   return static_cast<double>(getSize())/static_cast<double>(getCapacity());
- }
-
- obj_type& operator[]( key_type &k )
- {
-  return get_elem( k );
  }
 
 };

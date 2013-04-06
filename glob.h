@@ -11,7 +11,7 @@
 #define false  0
 
 // config filename.
-#define CONFILE "conf.txt"
+#define s_confILE "conf.txt"
 
 // the highest port which is allowed to use. if ychat is unable to create the server
 // socket it will increment the port number and tries to create another socket.
@@ -24,11 +24,6 @@
 // definition for verbosity level 0 ( normal outputs ). see vmsg.h for custumizing all 
 // the messages. this messages will only printed out by the master thread.
 #define VERBOSE
-
-// Defines the amount of newlines which have to send to the client's
-// chat stream the first log-in. ( prevents white screen because of buffers
-// or proxies ).
-#define PUSHSTR 1000
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -52,17 +47,10 @@ enum rang
 
 // some custom typedefs for datatypes which are needed often.
 typedef map<string, string> map_string;
-typedef int function( void *v_arg );
 
 struct container
 {
  void* elem[3];
-};
-
-struct dynmod
-{
- function *the_func  ;
- void     *the_module;
 };
 
 #endif

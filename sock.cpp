@@ -11,8 +11,7 @@
 #include "s_conf.h"
 #include "s_mutx.h"
 #include "s_tool.h"
-#include "s_lang.h"
-#include "s_sman.h"
+
 #include "chat.h"
 #include "user.h"
 
@@ -24,32 +23,22 @@ sock::sock()
  this->i_req      = 0;
  this->req_parser = new reqp();
  this->thrd_pool  = new pool();
- this->log_daemon = new logd(s_conf::get().get_val( "ACCESS_LOG" ));
 }
 
 void
 sock::chat_stream( int i_sock, user* p_user, map_string &map_params )
 {
- string s_msg( "\n" );
+ string s_msg( "" );
 
  pthread_mutex_lock  ( &(p_user->mut_message) );
 
- for ( int i = 0; i < PUSHSTR; i++ )
-  send( i_sock, s_msg.c_str(), s_msg.size(), 0 );
-
- do
+ while( p_user->get_online() )
  {
+  pthread_cond_wait( &(p_user->cond_message), &(p_user->mut_message) );
   s_msg = p_user->get_mess( );
   if ( 0 > send( i_sock, s_msg.c_str(), s_msg.size(), 0 ) )
    p_user->set_online( false );
-  pthread_cond_wait( &(p_user->cond_message), &(p_user->mut_message) );
- } 
- while( p_user->get_online() );
-
- // if there is still a message to send: 
- s_msg = p_user->get_mess( );
- if ( ! s_msg.empty() )
-  send( i_sock, s_msg.c_str(), s_msg.size(), 0 );
+ }
 
  pthread_mutex_unlock( &(p_user->mut_message) );
 
@@ -58,11 +47,7 @@ sock::chat_stream( int i_sock, user* p_user, map_string &map_params )
  p_user->get_p_room()->del_elem( s_user );
 
  // post the room that the user has left the chat.
- p_user->get_p_room()->msg_post( new string( p_user->get_name().append( s_lang::get().get_val( "USERLEAV" ) ) ) );  
- s_sman::get().destroySession( p_user->get_id() );
- #ifdef VERBOSE
-	cout << s_user << " left | SessionCount: " << s_sman::get().getSessionCount() << endl;
- #endif
+ p_user->get_p_room()->msg_post( new string( p_user->get_name().append( USERLEAV ) ) );  
 
  p_user->~user();
 }
@@ -129,19 +114,10 @@ sock::read_write( thrd* p_thrd, int i_sock )
   // get the s_rep ( s_html response which will be send imediatly to the client
   // and fill map_params with request values. 
   auto string s_temp=(string)c_req;
-  struct sockaddr_in client;
-  size_t size=sizeof(client);
-
-  getpeername( i_sock, (struct sockaddr *)&client, &size);
-  
-  map_params["REMOTE_ADDR"]=inet_ntoa(client.sin_addr);
-  map_params["REMOTE_PORT"]=ntohs( client.sin_port);
-
 
   string s_rep = req_parser->parse( p_thrd, string( c_req ), map_params );
-  // send s_rep to the client.
-  log_daemon->log(map_params);
 
+  // send s_rep to the client.
   send( i_sock, s_rep.c_str(), s_rep.size(), 0 );
 
   // dont need those vals anymore. 

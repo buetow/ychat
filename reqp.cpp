@@ -15,7 +15,7 @@ using namespace std;
 string reqp::HTTP_CODEOK = "HTTP/1.1 200 OK\n";
 string reqp::HTTP_SERVER = "Server: yChat (Unix)\n";
 string reqp::HTTP_CONTAC = "Contact: www.yChat.org\n";
-string reqp::HTTP_CACHEC = "Expires: 0\nCache-control: no-cache\nPragma: no-cache\n";
+string reqp::HTTP_CACHEC = "Cache-control: no-cache\n";
 string reqp::HTTP_CONNEC = "Connection: keep-alive\n";
 string reqp::HTTP_COTYPE = "Content-Type: ";
 
@@ -73,10 +73,7 @@ reqp::get_url( thrd* p_thrd, string s_req, map_string &map_params )
  if ( i_request == RQ_POST && s_params.empty() )
  {
   char c_req[READBUF];
-
-  if ( read ( p_thrd->get_sock() , c_req, READBUF ) <= 0 )
-   return "NOBYTE";
-
+  read ( p_thrd->get_sock() , c_req, READBUF );
   s_params = string( strstr( c_req, "event" ) ); 
  }
 
@@ -115,7 +112,7 @@ reqp::get_url( thrd* p_thrd, string s_req, map_string &map_params )
 }
 
 string
-reqp::get_content_type( string s_file )
+reqp::getContentType( string s_file )
 {
 	string s_ext=s_tool::getExtension( s_file );
 
@@ -124,31 +121,6 @@ reqp::get_content_type( string s_file )
 
 	return s_conf::get().get_val( "CT_"+s_ext );	
 }
-void
-reqp::parse_headers( string s_req, map_string &map_params )
-{
-
-        int pos = s_req.find("\n");
-	map_params["QUERY_STRING"]=s_tool::trim(s_req.substr(0,pos-1));
-        while(pos!=string::npos)
-        {
-                auto string s_line=s_req.substr(0,pos);
-                auto int pos2=s_line.find(":");
-                if(pos2!=string::npos)
-                {
-                        auto string key=s_tool::trim(s_line.substr(0, pos2));
-                        auto string value=s_tool::trim(s_line.substr(pos2+1));
-
-                        map_params[key]=value;
-
-
-                }
-                s_req=s_req.substr(s_line.size()+1);
-                pos=s_req.find("\n");
-        }
-
-}
-
 
 int
 reqp::htoi(string *s)
@@ -215,20 +187,16 @@ reqp::parse( thrd* p_thrd, string s_req, map_string &map_params )
 
  // store all request informations in map_params. store the url in 
  // map_params["request"].
+ get_url( p_thrd, s_req, map_params ); 
 
- if ( get_url( p_thrd, s_req, map_params ).compare("NOBYTE") == 0 )
-   map_params["request"] = s_conf::get().get_val("NOTFOUND");
-
- parse_headers( s_req, map_params );
  // create the http header.
  string s_rep( HTTP_CODEOK ); s_rep.append( HTTP_SERVER );
  s_rep.append( HTTP_CONTAC ); s_rep.append( HTTP_CACHEC );
  s_rep.append( HTTP_CONNEC ); s_rep.append( HTTP_COTYPE );
- s_rep.append( get_content_type( map_params["request"] ) ); 
- s_rep.append("\r\n\r\n");
+ s_rep.append( getContentType( map_params["request"] ) ); s_rep.append("\n\n");
+
 
  // check the event variable.
-
  string s_event( map_params["event"] );
  if ( ! s_event.empty() )
  {
@@ -241,26 +209,17 @@ reqp::parse( thrd* p_thrd, string s_req, map_string &map_params )
   else
   {
    bool b_found;
-   
-//   user* p_user = s_chat::get().get_user( map_params["nick"], b_found );
-	sess *sess_temp=s_sman::get().getSession( map_params["tmpid"] );
-	user *p_user;
-	if(sess_temp!=NULL)
-	{
-		string *s_nick=static_cast<string*>(sess_temp->getValue(string("nick")));
-		p_user = s_chat::get().get_user( *s_nick, b_found);
-	}
-	else
-		return s_rep;
+   user* p_user = s_chat::get().get_user( map_params["nick"], b_found );
+
    if ( ! b_found )
    {
      map_params["INFO"]    = E_NOTONL;
      map_params["request"] = s_conf::get().get_val( "STARTMPL" ); // redirect to the startpage.
    }
+
    // if a message post.
    else if ( s_event == "post" )
     s_chat::get().post( p_user, map_params );
-
 
    // if a chat stream 
    else if ( s_event == "stream" )

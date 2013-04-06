@@ -19,7 +19,7 @@
 #include "reqp.h"
 #include "thrd.h"
 #include "user.h"
-#include "logd.h"
+
 using namespace std;
 
 class sock 
@@ -31,7 +31,7 @@ private:
  bool  b_run;      // true while socket manager is running.
  reqp* req_parser; // parses the http requests from clients.
  pool* thrd_pool;  // the thread pool.
- logd* log_daemon; // the log daemon
+
  // creates a server socket.
  virtual int make_socket( uint16_t port );
 

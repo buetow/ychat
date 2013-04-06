@@ -8,7 +8,7 @@
 
 using namespace std;
 
-conf::conf( string s_conf = CONFILE ) : name( s_conf )
+conf::conf( string s_conf = s_confILE ) : name( s_conf )
 {
  parse( ); // parse the config file. 
 }
@@ -60,7 +60,7 @@ conf::parse()
   string s_val = s_token.substr( ui_pos+1, s_token.length() );
   string s_key = s_token.substr( 0      , --ui_pos          ); 
 
-#ifdef VERBOSE2
+#ifdef VERBOSE
    cout << s_key << "=" << s_val << endl;
 #endif
 

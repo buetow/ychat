@@ -1,6 +1,14 @@
 #ifndef MSGS_H
 #define MSGS_H
 
+// message templates.
+
+// will be posed if a command does not exist for an user.
+#define ERRORCMD " <font color='#FF0000'>No such command!</font><br>\n"
+// will post "nickname enters the chat" into the room.
+#define USERENTR " enters the chat<br>\n"
+// will post "nickname leaves the chat" into the room.
+#define USERLEAV " leaves the chat<br>\n"
 
 // several error messages which will apear by the clients.
 #define E_ALPNUM "The nick you have specified is not alphanumeric, please change that.<br><br>"
@@ -20,7 +28,6 @@
 #define DESCRIP "yChat++ Copyright (C) 2003 Paul C. Buetow, Volker Richer " 
 #define DOWNMSG "Shutting down "
 #define LOGINPR "Login procedure succeeded for nick " 
-#define MODULEC "Caching module "
 #define NEWROOM "Adding room "
 #define REQUEST "Request string "
 #define SEPERAT "----------------------------------------- "
@@ -31,6 +38,6 @@
 #define TECACHE "Caching template "
 #define THREADS "Starting thread job "
 #define THREADE "Exiting thread job "
-#define VERSION "Version: yChat++ Basic 0.5" 
+#define VERSION "Version: CVS" 
 
 #endif

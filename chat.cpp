@@ -47,9 +47,10 @@ chat::get_user( string &s_user, bool &b_found )
 }
 
 void
-chat::get_user_( room *room_obj, void *v_arg )
+chat::get_user_( name *name_obj, void *v_arg )
 {
  container* param = (container*) v_arg;
+ room *room_obj = static_cast<room*>(name_obj); 
  param->elem[2] = (void*)room_obj->get_elem( *((string*)param->elem[0]), *((bool*)param->elem[1]) ); 
 }
 
@@ -106,11 +107,9 @@ chat::login( map_string &map_params )
 
  // add user to the room.
  p_room->add_user( p_user );
- sess *ns =s_sman::get().createSession();
- ns->setValue(string("nick"), (void *)new string(s_user) );
- map_params["tmpid"]=ns->getId();
+
  // post "username enters the chat" into the room.
- p_room->msg_post( new string( s_user.append( s_lang::get().get_val( "USERENTR" ) ) ) );  
+ p_room->msg_post( new string( s_user.append( USERENTR ) ) );  
 
 #ifdef VERBOSE
  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );

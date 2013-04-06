@@ -24,7 +24,7 @@ private:
 		HTTP_CACHEC,
  		HTTP_CONNEC,
  		HTTP_COTYPE;
- 
+
  // returns the request url from thr client's http request header
  // until the first "?" and stores all request parameter values
  // ( behind "?" ) into map_params. 
@@ -40,8 +40,7 @@ public:
  explicit reqp( ); // simple constructor.
  virtual string parse( thrd* p_thrd, string s_req, map_string &map_params ); 
  virtual string url_decode ( string );
- virtual string get_content_type( string );
- virtual void parse_headers( string s_req, map_string &map_params );
+ virtual string getContentType( string );
 };
 
 #endif

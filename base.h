@@ -5,24 +5,25 @@
 
 #include "incl.h"
 #include "hmap.h"
+#include "name.h"
 
 template<class type>
 class base
 {
 private:
- hmap<type*,string>* map_elem;
+ hmap<name*,string>* map_elem;
  pthread_mutex_t mut_map_elem; 
 
 public:
   base();
  ~base();
 
- virtual void  add_elem( type*   p_type );                // add a element.
+ virtual void  add_elem( name*   p_name );                // add a element.
  virtual void  del_elem( string &s_name );                // delete a alement.
- virtual type* get_elem( string &s_name, bool &b_found ); // get a element.
+ virtual name* get_elem( string &s_name, bool &b_found ); // get a element.
 
  // execute func on all elements of map_elem. v_pointer is the argument.
- virtual void  run_func( void (*func)(type*, void*), void* v_arg );
+ virtual void  run_func( void (*func)(name*, void*), void* v_arg );
 
  // chat::msg_post sends to all users of the system a message.
  // room::msg_post sends to all users of the room a message.
@@ -31,9 +32,11 @@ public:
  {
   run_func( &base<type>::msg_post_ , (void*)s_msg );
  }
- static void msg_post_( type* type_obj, void* v_arg )
+ static void msg_post_( name* name_obj, void* v_arg )
  {
    string *p_msg    = (string*) v_arg;
+   type   *type_obj = static_cast<type*>(name_obj);
+
    type_obj -> msg_post( p_msg ); 
  }
 
@@ -41,9 +44,11 @@ public:
  {
   run_func( &base<type>::get_data_ , (void*)p_map_string );
  }
- static void get_data_( type* type_obj, void* v_arg )
+ static void get_data_( name* name_obj, void* v_arg )
  {
    map_string *map_params = (map_string*) v_arg;
+   type       *type_obj   = static_cast<type*>(name_obj);
+
    type_obj -> get_data ( map_params );
  }
 
@@ -59,9 +64,11 @@ public:
 
    run_func( &base<type>::get_user_list_, (void*)&c );
  }
- static void get_user_list_( type* type_obj, void* v_arg )
+ static void get_user_list_( name* name_obj, void* v_arg )
  {
    container *c = (container*) v_arg; 
+   type *type_obj = static_cast<type*>(name_obj);
+
    type_obj -> get_user_list( *((string*)c->elem[0]), *((string*)c->elem[1]) ); 
  } 
 };
