@@ -14,11 +14,11 @@ class lang : public cont, name
 private:
 
 public:
- // public methods:
- lang ( string s_lang ); // standard constructor.
- ~lang(); 		 // standard destructor.
+  // public methods:
+  lang ( string s_lang ); // standard constructor.
+  ~lang(); 		 // standard destructor.
 
- virtual void parse( );    // parses the config file.
+  virtual void parse( );    // parses the config file.
 };
 
 #endif

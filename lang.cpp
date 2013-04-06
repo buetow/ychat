@@ -10,69 +10,70 @@ using namespace std;
 
 lang::lang( string s_lang = "en" ) : name( s_lang )
 {
- parse( ); // parse the config file. 
+  parse( ); // parse the config file.
 }
 
 lang::~lang()
-{
-}
+{}
 
 void
 lang::parse()
 {
 #ifdef VERBOSE
- cout << CFILEOK << get_name() << endl;
+  cout << CFILEOK << get_name() << endl;
 #endif
 
- string filename("lang/");
-	filename.append(get_name());
+  string filename("lang/");
+  filename.append(get_name());
 
- ifstream fs_conf( filename.c_str() );
+  ifstream fs_conf( filename.c_str() );
 
- if ( ! fs_conf ) 
- {
+  if ( ! fs_conf )
+  {
 #ifdef VERBOSE
- cout << CFILENO << get_name() << endl;
+    cout << CFILENO << get_name() << endl;
 #endif
-  return;
- }
 
- char c_buf[READBUF];
+    return;
+  }
 
- while( fs_conf.getline( c_buf, READBUF ) ) 
- {
-  string s_token( c_buf );
-  unsigned int ui_pos = s_token.find( "#", 0 );
-   
-  // if line is commented out:
-  if ( ui_pos == 0 ) 
-   continue;
+  char c_buf[READBUF];
 
-  ui_pos = s_token.find( ";", 0 );
+  while( fs_conf.getline( c_buf, READBUF ) )
+  {
+    string s_token( c_buf );
+    unsigned int ui_pos = s_token.find( "#", 0 );
 
-  // if token has not been found.
-  if ( ui_pos == string::npos )
-   continue;
+    // if line is commented out:
+    if ( ui_pos == 0 )
+      continue;
 
-  s_token = s_token.substr( 0   , --ui_pos );
-  ui_pos  = s_token.find  ( "\"", 0        );   
+    ui_pos = s_token.find( ";", 0 );
 
-  if ( ui_pos == string::npos )
-   continue;
+    // if token has not been found.
+    if ( ui_pos == string::npos )
+      continue;
 
-  string s_val = s_token.substr( ui_pos+1, s_token.length() );
-  string s_key = s_token.substr( 0      , --ui_pos          ); 
+    s_token = s_token.substr( 0   , --ui_pos );
+    ui_pos  = s_token.find  ( "\"", 0        );
+
+    if ( ui_pos == string::npos )
+      continue;
+
+    string s_val = s_token.substr( ui_pos+1, s_token.length() );
+    string s_key = s_token.substr( 0      , --ui_pos          );
 
 #ifdef VERBOSE2
-   cout << s_key << "=" << s_val << endl;
+
+    cout << s_key << "=" << s_val << endl;
 #endif
 
-  // fill the map.
-  map_vals[s_key] = s_val;
- } 
+    // fill the map.
+    map_vals[s_key] = s_val;
+  }
 
- fs_conf.close();
- fs_conf.~ifstream();
+  fs_conf.close();
+  fs_conf.~ifstream();
 }
 
 #endif

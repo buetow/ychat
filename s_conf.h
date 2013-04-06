@@ -5,21 +5,22 @@
 
 using namespace std;
 
-class s_conf 
+class s_conf
 {
 private:
- static conf* obj; 
+  static conf* obj;
 
 public:
- static void init()
- {
-   obj = new conf( CONFILE );
- }
+  static void init()
+  {
+    obj = new conf( CONFILE );
+  }
 
- static conf& get()
- {
-  return *obj;
- }
+  static conf& get
+    ()
+  {
+    return *obj;
+  }
 };
 
 

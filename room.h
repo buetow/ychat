@@ -13,22 +13,22 @@ using namespace std;
 class room : public base<user>, public name
 {
 private:
- 
+
 public:
- void add_user( user* p_user  )
- {
-  p_user->set_p_room( this );
-  add_elem( p_user );
- }
+  void add_user( user* p_user  )
+  {
+    p_user->set_p_room( this );
+    add_elem( p_user );
+  }
 
- user* get_user( string &s_name, bool &b_found )
- {
-  return static_cast<user*>( get_elem( s_name, b_found ) );
- }
+  user* get_user( string &s_name, bool &b_found )
+  {
+    return static_cast<user*>( get_elem( s_name, b_found ) );
+  }
 
- // public methods: 
+  // public methods:
   explicit room( string s_name );      // a constructor.
- ~room();  			       // room destructor.	
+  ~room();  			       // room destructor.
 };
 
 #endif

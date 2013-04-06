@@ -5,21 +5,22 @@
 
 using namespace std;
 
-class s_mutx 
+class s_mutx
 {
 private:
- static mutx* obj; 
+  static mutx* obj;
 
 public:
- static void init()
- {
-   obj = new mutx();
- }
+  static void init()
+  {
+    obj = new mutx();
+  }
 
- static mutx& get()
- {
-  return *obj;
- }
+  static mutx& get
+    ()
+  {
+    return *obj;
+  }
 };
 
 

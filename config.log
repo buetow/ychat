@@ -1,0 +1,71 @@
+This file contains any messages produced by compilers while
+running configure, to aid debugging if configure makes a mistake.
+
+configure:528: checking for Cygwin environment
+configure:544: cc -c   conftest.c 1>&5
+configure: In function `main':
+configure:540: error: `__CYGWIN32__' undeclared (first use in this function)
+configure:540: error: (Each undeclared identifier is reported only once
+configure:540: error: for each function it appears in.)
+configure: failed program was:
+#line 533 "configure"
+#include "confdefs.h"
+
+int main() {
+
+#ifndef __CYGWIN__
+#define __CYGWIN__ __CYGWIN32__
+#endif
+return __CYGWIN__;
+; return 0; }
+configure:561: checking for mingw32 environment
+configure:573: cc -c   conftest.c 1>&5
+configure: In function `main':
+configure:569: error: `__MINGW32__' undeclared (first use in this function)
+configure:569: error: (Each undeclared identifier is reported only once
+configure:569: error: for each function it appears in.)
+configure: failed program was:
+#line 566 "configure"
+#include "confdefs.h"
+
+int main() {
+return __MINGW32__;
+; return 0; }
+configure:590: checking how to run the C preprocessor
+configure:611: cc -E  conftest.c >/dev/null 2>conftest.out
+configure:674: checking for c++
+configure:706: checking whether the C++ compiler (c++  ) works
+configure:722: c++ -o conftest    conftest.C  1>&5
+configure:748: checking whether the C++ compiler (c++  ) is a cross-compiler
+configure:753: checking whether we are using GNU C++
+configure:762: c++ -E conftest.C
+configure:781: checking whether c++ accepts -g
+configure:815: checking for library containing dlopen
+configure:833: cc -o conftest    conftest.c  1>&5
+configure:883: checking for dirent.h that defines DIR
+configure:896: cc -c   conftest.c 1>&5
+configure:921: checking for opendir in -ldir
+configure:940: cc -o conftest    conftest.c -ldir   1>&5
+/usr/bin/ld: cannot find -ldir
+configure: failed program was:
+#line 929 "configure"
+#include "confdefs.h"
+/* Override any gcc2 internal prototype to avoid an error.  */
+/* We use char because int might match the return type of a gcc2
+    builtin and then its argument prototype would still apply.  */
+char opendir();
+
+int main() {
+opendir()
+; return 0; }
+configure:1004: checking for ANSI C header files
+configure:1017: cc -E  conftest.c >/dev/null 2>conftest.out
+configure:1084: cc -o conftest    conftest.c  1>&5
+configure:1111: checking for unistd.h
+configure:1121: cc -E  conftest.c >/dev/null 2>conftest.out
+configure:1151: checking for string.h
+configure:1161: cc -E  conftest.c >/dev/null 2>conftest.out
+configure:1188: checking for working const
+configure:1242: cc -c   conftest.c 1>&5
+configure:1263: checking for inline
+configure:1277: cc -c   conftest.c 1>&5
