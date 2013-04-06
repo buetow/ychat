@@ -16,20 +16,20 @@ using namespace std;
 class dir
 {
 private:
-  bool b_open;
-  DIR *p_d;
-  struct dirent *p_ep;
-  vector<string> vec_dir;
+    bool b_open;
+    DIR *p_d;  	
+    struct dirent *p_ep;
+    vector<string> vec_dir;
 
 public:
-  dir();
-  ~dir();
+    dir();
+    ~dir();
 
-  bool open_dir( char *c_dir );
-  bool open_dir( string &s_dir );
-  void close_dir();
-  void read_dir();
-  vector<string> get_dir_vec();
+   bool open_dir( char *c_dir ); 
+   bool open_dir( string &s_dir ); 
+   void close_dir(); 
+   void read_dir();
+   vector<string> get_dir_vec();
 };
 
 #endif

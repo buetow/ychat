@@ -25,84 +25,72 @@
 
 using namespace std;
 
-class dynamic_wrap
+class dynamic_wrap 
 {
-public:
-  //<<*
-  chat* CHAT;
+ public: 
+    //<<*
+    chat* CHAT;
 #ifdef DATABASE
-
-  data* DATA;
+    data* DATA;
 #endif
+    gcol* GCOL;
+    sman* SMAN;
+    modl* MODL;
+    //*>>
 
-  gcol* GCOL;
-  sman* SMAN;
-  modl* MODL;
-  //*>>
-
-  conf* CONF;
-  html* HTML;
+    conf* CONF;
+    html* HTML;
 #ifdef LOGGING
-
-  logd* LOGD;
+    logd* LOGD;
 #endif
 #ifdef NCURSES
-
-  ncur* NCUR;
+    ncur* NCUR;
 #endif
-
-  sock* SOCK;
-  stats* STAT;
-  timr* TIMR;
+    sock* SOCK;
+    stats* STAT;
+    timr* TIMR;
 };
 
 class wrap
 {
 public:
-  static void system_message( char* c_message )
-  {
-    wrap::system_message( string(c_message) );
-  }
+    static void system_message( char* c_message )
+    { 
+     wrap::system_message( string(c_message) );
+    }
 
-  static void system_message( string* p_message )
-  {
-    wrap::system_message( *p_message );
-  }
+    static void system_message( string* p_message )
+    { 
+     wrap::system_message( *p_message );
+    }
 
-  static void system_message( string s_message );
+    static void system_message( string s_message );
 
-  //<<*
-  static chat* CHAT;
+    //<<*
+    static chat* CHAT;
 #ifdef DATABASE
-
-  static data* DATA;
+    static data* DATA;
 #endif
-
-  static gcol* GCOL;
-  static sman* SMAN;
+    static gcol* GCOL;
+    static sman* SMAN;
 #ifdef IRCBOT
-
-  static ybot* YBOT;
+    static ybot* YBOT;
 #endif
+    static modl* MODL;
+    //*>>
 
-  static modl* MODL;
-  //*>>
-
-  static conf* CONF;
-  static html* HTML;
+    static conf* CONF;
+    static html* HTML;
 #ifdef LOGGING
-
-  static logd* LOGD;
+    static logd* LOGD;
 #endif
 #ifdef NCURSES
-
-  static ncur* NCUR;
+    static ncur* NCUR;
 #endif
-
-  static sock* SOCK;
-  static stats* STAT;
-  static timr* TIMR;
-  static dynamic_wrap* WRAP;
+    static sock* SOCK;
+    static stats* STAT;
+    static timr* TIMR;
+    static dynamic_wrap* WRAP; 
 };
 
 #endif

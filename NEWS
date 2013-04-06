@@ -1,4 +1,3 @@
-::(21.02.05)::Released yChat 0.7.7. A major code cleanup has been made and the ANSI code formating is now being used. Bugfixes in the timer thread have been made and the standard demo HTML style has been renewed. 
 ::(17.02.05)::Released yChat 0.7.6. This release now uses the hash_map class from the SGI STL extension which is more stable then the old Hash Map used by yChat.  
 ::(14.02.05)::Released yChat 0.7.5. The garbage collector will now run once a hour. The dynamic thread pool has been improved. Removed thre equiv-http-refresh meta tag from the online list.  Added a minor bugfix in the /topic command. Implemented an HTML based list of all logged in users and the /users command which does the same. 
 ::(13.02.05)::Released yChat 0.7.4.1 This new version includes a major bugfix made in the new dynamic thread pool which has been introdouced in 0.7.4. The bug resulted in a thread pool dead lock.. Tagged yChat 0.7.5-CURRENT into CVS. 

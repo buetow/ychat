@@ -1,13 +1,13 @@
 template<class obj_type>
 shashmap<obj_type>::shashmap()
 {
-  pthread_mutex_init( &mut_shashmap, NULL );
+ pthread_mutex_init( &mut_shashmap, NULL );
 }
 
 template<class obj_type>
 shashmap<obj_type>::~shashmap()
 {
-  pthread_mutex_destroy( &mut_shashmap );
+ pthread_mutex_destroy( &mut_shashmap );
 }
 
 template<class obj_type>
@@ -17,14 +17,14 @@ shashmap<obj_type>::add_elem(obj_type t_obj, string s_key)
   pthread_mutex_lock( &mut_shashmap );
   (*this)[s_key] = t_obj;
   pthread_mutex_unlock( &mut_shashmap );
-}
+} 
 
 template<class obj_type>
 void
 shashmap<obj_type>::add_elem_insecure(obj_type t_obj, string s_key)
 {
   (*this)[s_key] = t_obj;
-}
+} 
 
 template<class obj_type>
 obj_type
@@ -34,7 +34,7 @@ shashmap<obj_type>::get_set_elem(obj_type t_obj, string s_key)
   obj_type t_ret = hashmap<obj_type>::get_set_elem(t_obj, s_key);
   pthread_mutex_unlock( &mut_shashmap );
   return t_ret;
-}
+} 
 
 template<class obj_type>
 void
@@ -43,17 +43,17 @@ shashmap<obj_type>::set_elem(obj_type t_obj, string s_key)
   pthread_mutex_lock( &mut_shashmap );
   (*this)[s_key] = t_obj;
   pthread_mutex_unlock( &mut_shashmap );
-}
+} 
 
 template<class obj_type>
 obj_type
 shashmap<obj_type>::get_elem(string s_key)
 {
   pthread_mutex_lock( &mut_shashmap );
-  obj_type t_ret = hashmap<obj_type>::get_elem(s_key);
+  obj_type t_ret = hashmap<obj_type>::get_elem(s_key); 
   pthread_mutex_unlock( &mut_shashmap );
   return t_ret;
-}
+} 
 
 template<class obj_type>
 void
@@ -62,14 +62,14 @@ shashmap<obj_type>::del_elem(string s_key)
   pthread_mutex_lock( &mut_shashmap );
   hashmap<obj_type>::erase(s_key);
   pthread_mutex_unlock( &mut_shashmap );
-}
+} 
 
 template<class obj_type>
 void
 shashmap<obj_type>::del_elem_insecure(string s_key)
 {
   hashmap<obj_type>::erase(s_key);
-}
+} 
 
 template<class obj_type>
 vector<string>*
@@ -79,7 +79,7 @@ shashmap<obj_type>::get_key_vector()
   vector<string>* p_vec = hashmap<obj_type>::get_key_vector();
   pthread_mutex_unlock( &mut_shashmap );
   return p_vec;
-}
+} 
 
 template<class obj_type>
 void
@@ -88,7 +88,7 @@ shashmap<obj_type>::clear()
   pthread_mutex_lock( &mut_shashmap );
   hashmap<obj_type>::clear();
   pthread_mutex_unlock( &mut_shashmap );
-}
+} 
 
 template<class obj_type>
 int
@@ -98,7 +98,7 @@ shashmap<obj_type>::size()
   int i_size = hashmap<obj_type>::size();
   pthread_mutex_unlock( &mut_shashmap );
   return i_size;
-}
+} 
 
 template<class obj_type>
 bool
@@ -108,7 +108,7 @@ shashmap<obj_type>::exists(string s_key)
   bool b_ret = hashmap<obj_type>::exists(s_key);
   pthread_mutex_unlock( &mut_shashmap );
   return b_ret;
-}
+} 
 
 template<class obj_type>
 void

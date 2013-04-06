@@ -30,6 +30,7 @@ To do in general for some later RELEASE:
 - Implement several HTML styles, each user can use his favourite style
 - Implement compatibility to Opera, Links, Konqueror and Safari
 - Implement browser side caching for gfx files support 
+- Disable http-refresh of the online frame. Reload it only if there has been s.t. changed.
 - Implement a http:// url detection and make a link out of it!
 - Remove user.cpp member variables as possible and replace them with hash maps 
   for (integer,mutex) and (string,mutex) pairs. Maybe use s.t. like this:

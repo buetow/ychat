@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <iostream>
 #include <string>
-//#include <map>
+#include <map>
 
 #include "glob.h"
 

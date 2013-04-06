@@ -25,51 +25,47 @@ using namespace std;
 class sock
 {
 private:
-  // total number of server requests.
-  unsigned long long i_req;
+    // total number of server requests.
+    unsigned long long i_req;
 
-  bool  b_run;      // true while socket manager is running.
-  reqp *req_parser; // parses the http requests from clients.
-  pool *thrd_pool;  // the thread pool.
+    bool  b_run;      // true while socket manager is running.
+    reqp *req_parser; // parses the http requests from clients.
+    pool *thrd_pool;  // the thread pool.
 #ifdef LOGGING
-
-  logd *log_daemon; // the log daemon
+    logd *log_daemon; // the log daemon
 #endif
+    char *c_buffer;   // char buffer!
+    int   i_threads;  // total amount of threads inside the thread pool.
 
-  char *c_buffer;   // char buffer!
-  int   i_threads;  // total amount of threads inside the thread pool.
-
-  pthread_mutex_t mut_hits;
+    pthread_mutex_t mut_hits;
 
 public:
-  // creates a server socket.
-  int make_server_socket( int i_port );
+    // creates a server socket.
+    int make_server_socket( int i_port );
 
-  // small inline methods:
-  bool get_run() const
-  {
-    return b_run;
-  }
+    // small inline methods:
+    bool get_run() const
+    {
+        return b_run;
+    }
 
-  bool set_run( bool b_run )
-  {
-    this->b_run = b_run;
-  }
+    bool set_run( bool b_run )
+    {
+        this->b_run = b_run;
+    }
 
-  sock( );
-  ~sock( );
+    sock( ); 
+    ~sock( );
 
-  int read_write( int* p_sock );
-  int start();
+    int read_write( int* p_sock );
+    int start();
 
-  // the chat stream there all the chat messages will sent through.
-  static void chat_stream( int i_sock, user* p_user, hashmap<string> &map_params ); //<<
+    // the chat stream there all the chat messages will sent through.
+    static void chat_stream( int i_sock, user* p_user, hashmap<string> &map_params ); //<<
 
 #ifdef NCURSES
-
-  void print_hits();
+    void print_hits();
 #endif
-
 };
 
 #endif

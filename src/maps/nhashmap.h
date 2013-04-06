@@ -8,7 +8,7 @@ using namespace std;
 template<class obj_type>
 struct nhashmap : public shashmap<obj_type>
 {
-  inline obj_type get_elem(string s_key);
+ inline obj_type get_elem(string s_key);
 };
 
 #include "nhashmap.tmpl"

@@ -9,33 +9,37 @@ input {
 	color: #000000;
 	font-family: Verdana, Helvetica, sans-serif;
  	text-decoration: none; 
+	color: #FFFFEF;
+ 	background-color: #000000; 
+ 	border: solid #555555 1px; 
 	font-size: 9pt;
 	padding: 2px;
 }
 
 input.text {
-	background-color: #FFFFEF;
+	background-color: #AA5100;
 }
 
 .fancy {
 	font-family: Verdana, Helvetica, sans-serif;
+ 	text-decoration: none; 
+	color: #FFFFEF;
+ 	background-color: #000000; 
+ 	border: solid #555555 1px; 
 	font-size: 9pt;
- 	color: #FFFFEF; 
 	padding: 2px;
 }
 
 a:hover.fancy { 
  	text-decoration: none; 
  	color: #FFFFEF; 
- 	background-color: #000000; 
+ 	background-color: #323232; 
+ 	border: solid #FFFFEF 1px; 
 } 
 
-h1 {
-	background-color: #ffa500;
-	border: solid #000000 1px; 
-	font-size: 20pt;
-	padding: 13px;
-	font-width: bold;
+b {
+ 	background-color: #323232; 
+ 	border: solid #555555 1px; 
 }
 
 body.stream {

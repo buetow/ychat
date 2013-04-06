@@ -32,15 +32,13 @@ void
 wrap::system_message( string s_message )
 {
 #ifdef NCURSES
-  wrap::NCUR->print( s_message );
+   wrap::NCUR->print( s_message );
 #endif
 #ifdef SERVMSG
-
-  cout << s_message << endl;
+   cout << s_message << endl;
 #endif
 #ifdef LOGGING
-
-  wrap::LOGD->log_simple_line( s_message + "\n" );
+   wrap::LOGD->log_simple_line( s_message + "\n" );
 #endif
 }
 #endif

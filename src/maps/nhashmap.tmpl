@@ -2,10 +2,10 @@ template<class obj_type>
 obj_type
 nhashmap<obj_type>::get_elem(string s_key)
 {
-  typename hashmap<obj_type>::iterator iter = this->find(s_key);
+  typename hashmap<obj_type>::iterator iter = this->find(s_key); 
 
   if ( iter != this->end() )
-    return iter->second;
+    return iter->second; 
 
-  return NULL;
-}
+  return NULL; 
+} 

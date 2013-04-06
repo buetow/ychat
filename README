@@ -1,4 +1,4 @@
-yChat; Homepage: www.yChat.org; Version 0.7.7.1-RELEASE
+yChat; Homepage: www.yChat.org; Version 0.7.6-RELEASE
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
 Copyright (C) 2004, 2005 Paul C. Buetow
 -----------------------------------------------------------------
@@ -112,7 +112,7 @@ well . To improve performance, you can define the logging puffer (standardly
 new logs will be written to disk after each 20 lines). If you want to log
 everything immediately, you can reset this option to 1 in ychat.conf.
 
-- Its modular through own command and dynamic HTML engine -
+- Its modular -
 All chat commands are realized through dynamic loadable module files which can
 be recompiled and reloaded without restarting the whole yChat server. Also 
 HTML-Sites with certain tasks can be compiled as a module like 

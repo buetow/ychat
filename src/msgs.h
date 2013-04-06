@@ -36,7 +36,7 @@
 #define GARROOM "Garbage: Added room "
 #define GARUSER "Garbage: Added user "
 #define GARUSE2 "Garbage: Recycle user "
-#define LISTERR "Sock: Listen error "
+#define LISTERR "Sock: Listen error " 
 #define LOGERR1 "Logging: Could not open logfile "
 #define LOGERR2 "Logging: No filename specified "
 #define LOGINER "Chat: Login failed (password), nick: "
@@ -51,8 +51,8 @@
 #define MODRELO "Modl: Reloading all modules "
 
 #ifdef DATABASE
-#define MYSQLQU "MySQL: "
-#define MYSQLQ2 "MySQL: Adding query "
+#define MYSQLQU "MySQL: " 
+#define MYSQLQ2 "MySQL: Adding query " 
 #define MYSQLE1 "MySQL: Error running mysql_init "
 #endif
 
@@ -61,8 +61,8 @@
 #define NCURSE0 "HTTP server: "
 #define NCURSE1 "Thread pool: "
 #define NCURSE2 "Data stats: "
-#define NCURSE3 "Chat stats: "
-#define NCURSE4 "Caching: "
+#define NCURSE3 "Chat stats: " 
+#define NCURSE4 "Caching: " 
 #define NEWREQU "Sock: New request "
 #define NEWROOM "Chat: New room "
 #define NEWUSER "Chat: New user "
@@ -103,19 +103,19 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "0.7.7.1"
+#define VERSION "0.7.6"
 #define BRANCH "RELEASE"
-#define BUILDNR 3384
+#define BUILDNR 3341
 #define UNAME "FreeBSD 5.3-RELEASE-p5 i386"
 #define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.2 [FreeBSD] 20040728; 3.4; g++"
 #define YCUSAGE "Usage: ./ychat {h|v}|{o confkey confvalue}\n"
 
 #define HEADER1 "HTTP/1.0 200 OK\r\n"
-#define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n"
+#define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n" 
 #define HEADER3 "Cache-control: no-cache\r\n"
-#define HEADER4 "Pragma: no-cache\r\n"
+#define HEADER4 "Pragma: no-cache\r\n" 
 #define HEADER5 "Transfer-Encoding: chunked\r\n"
-#define HEADER6 "Connection: keep-alive\r\n"
+#define HEADER6 "Connection: keep-alive\r\n" 
 #define HEADER7 "Content-Length: ";
 #define HEADER8 "Content-Type: ";
 
