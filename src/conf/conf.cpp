@@ -12,7 +12,7 @@ conf::conf( string s_conf, map<string,string>* p_start_params ) : nmap<string,st
 {
     string s_check[] = { 
      get_name(),
-     string(getenv("HOME"))+string("/.yhttpd/") + get_name(),
+     string(getenv("HOME"))+string("/.ychat/") + get_name(),
      string("./etc/") + get_name(),
      string("/etc/") + get_name(),
      string(PREFIX+string("etc/")+get_name()) };
@@ -56,9 +56,9 @@ conf::conf( string s_conf, map<string,string>* p_start_params ) : nmap<string,st
     vector<string> vec_string; 
     parse_xml(p_xml, &vec_string);
 
-    nmap<string,string>::add_elem_insecure(tool::yhttpd_version(), "yhttpd.version");
+    nmap<string,string>::add_elem_insecure(tool::ychat_version(), "ychat.version");
   
-    // Overrides yhttpd.conf values with command line options (yhttpd -o key1 value1 -o key2 value2 ...)
+    // Overrides ychat.conf values with command line options (ychat -o key1 value1 -o key2 value2 ...)
     map<string,string>::iterator iter; 
     for ( iter = p_start_params->begin(); iter != p_start_params->end(); iter++ )
     {
@@ -151,5 +151,13 @@ conf::exit_if_xml_error() const
        exit(1);		
     }
 }
+
+//<<*
+string
+conf::colored_error_msg(string s_key)
+{
+	return "<font color=\"#" + nmap<string,string>::get_elem("chat.html.errorcolor") + "\">" + nmap<string,string>::get_elem(s_key) + "</font><br>\n"; 	
+}
+//*>>
 
 #endif

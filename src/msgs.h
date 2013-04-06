@@ -4,11 +4,11 @@
 // alphabetical ordered:
 #define ACCPERR "Sock: Accept error "
 #define BINDERR "Sock: Bind error "
-#define HTTPDREP "Chat: Using replacement strings"
-#define HTTPDDOP "Chat: Default operator login "
+#define CHATREP "Chat: Using replacement strings"
+#define CHATDOP "Chat: Default operator login "
 #define CFILEOK "Parsing config file"
 #define CFILEFA "Failed opening config file!"
-#define CONTACT "Contact: http://www.yhttpd.org, Mail@yhttpd.org, ICQ: 11655527"
+#define CONTACT "Contact: http://www.yChat.org, Mail@yChat.org, ICQ: 11655527"
 #define CLRHTML "HTML: Cleared the template cache "
 #define CLIWELC "Command Line Interface (type help for a list of all commands)"
 #define CLIPRMO ">> "
@@ -93,9 +93,10 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "yhttpd 0.7.1"
+#define VERSION "yChat 0.7.2"
 #define BRANCH "RELEASE"
-#define BUILDNR 2885
+#define BUILDNR 2912
 #define UNAME "FreeBSD 5.2.1-RELEASE-p10 i386"
+#define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.3.3 [FreeBSD] 20031106; 3.3; g++"
 
 #endif

@@ -5,6 +5,14 @@
 
 using namespace std;
 
+//<<*
+chat* wrap::CHAT;
+#ifdef DATABASE
+data* wrap::DATA;
+#endif
+gcol* wrap::GCOL;
+sman* wrap::SMAN;
+//*>>
 
 conf* wrap::CONF;
 html* wrap::HTML;

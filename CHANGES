@@ -1,8 +1,23 @@
+Changes from 0.7.1 to 0.7.2 RELEASE
+New features:
+- /morph
+- Added the new standard html template design.
+Bugfixes:
+- /away prints a . instead of a : if no away reason is given.
+- /ko message was wrong. Displayed not room name of the user to be kicked out.
+- /invisible command displayed wrong private messages.
+- /getstatus had no help text.
+- /msg and /s should now print the system time if printalwaystime == true.
+- Added a blank to the /uptime message. 
+- /topic now prints the topic in the user's color.
+- Fixed some typos.
+
+
 Changes from 0.7.0 to 0.7.1 RELEASE
 - Added ${MAKE} to the config file because some Linux distros dont use 
   the "gmake" command for GNU make but just "make"! Modified the
   configure script to generate a make.version file.
-- Removed some typos from the yhttpd.conf.
+- Removed some typos from the ychat.conf.
 - Fixed the auto away message. This one will be posted in the room
   as public rather than only private to the auto-away-user.
 - Fixed some documentation stuff for yhttpd because yhttpd does not
@@ -29,9 +44,9 @@ Changes from 0.6 to 0.7.0 RELEASE
 - Added admin CLI (Command Line Interface) mode 
 - Added memory rusage history which tracks memory usage for the last 10 days 
 - Added HTTP POST request parsing 
-- Made yhttpd more modular so yhttpd can be extracted from it (scripts/makeyhttpd.pl)
+- Made yChat more modular so yhttpd can be extracted from it (scripts/makeyhttpd.pl)
 - Added CGI support
 - Rewrote big parts of the Makefiles and the configure scripts
 - Made it compatible to GNU G++ 3.4, 3.3, 3.2 and 3.1 (3.0 and earlier does not work)
-- XML based configuration file (yhttpd.conf)
+- XML based configuration file (ychat.conf)
 - Added default operator option: chat.defaultop

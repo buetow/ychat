@@ -88,7 +88,7 @@ public:
 
    static string shell_command( string s_command, method m_method );
 
-   static string yhttpd_version()
+   static string ychat_version()
    {
     return string(VERSION) + "-" + string(BRANCH) + " Build " + int2string(BUILDNR);
    }

@@ -21,6 +21,8 @@ private:
  vector< map<string,long> > vec_rusage_history;
  pthread_mutex_t mut_vec_rusage;
 
+ int i_num_rooms; //<<
+ pthread_mutex_t mut_num_rooms; //<<
  
  void set_rusage_vec_size( int i_rusage_vec_size );
 
@@ -28,9 +30,19 @@ public:
    stats( );
   ~stats( );
 
+  //<<*
+  int get_num_rooms();
+  void increment_num_rooms();
+  void decrement_num_rooms();
+  //*>>
   void update_rusage_history();
   string get_rusage_history( string s_type, string s_seperator );
   long get_ru_maxrss();
+  //<<*
+#ifdef NCURSES
+  void print_num_rooms();
+#endif
+  //*>>
 };
 
 #endif

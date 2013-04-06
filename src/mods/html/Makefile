@@ -1,4 +1,4 @@
-SRCS=yc_admin.cpp yc_colors.cpp yc_help.cpp yc_loggedin.cpp yc_options.cpp yc_register.cpp
+SRCS=yc_admin.cpp yc_colors.cpp yc_help.cpp yc_options.cpp yc_register.cpp
 MODS=$(addprefix ../../../mods/html/, $(SRCS:.cpp=.so))
 CC=g++
 INCLUDES=`cat ../../includes.add`
@@ -20,6 +20,5 @@ clean:
 ../../../mods/html/yc_admin.so: yc_admin.cpp
 ../../../mods/html/yc_colors.so: yc_colors.cpp
 ../../../mods/html/yc_help.so: yc_help.cpp
-../../../mods/html/yc_loggedin.so: yc_loggedin.cpp
 ../../../mods/html/yc_options.so: yc_options.cpp
 ../../../mods/html/yc_register.so: yc_register.cpp

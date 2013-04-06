@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# The yhttpd Project (2003 - 2004)
+# The yChat Project (2003 - 2004)
 #
 
 if ! which perl >/dev/null
@@ -26,12 +26,14 @@ perl -e '
  my @headers = (
    "dlfcn.h",
    "pthread.h",
+   "mysql/mysql.h", #//<< Not needed for yhttpd
    "netinet/in.h",
    "time.h",
    "ncurses.h"
  );
 
  my @libs = (
+   "libmysqlclient.so", #//<< Not needed for yhttpd
    "libncurses.so"
  );
 
@@ -89,14 +91,14 @@ perl -e '
    "/opt/local/lib"
  );
 
- if ( defined $ENV{YHTTPDHEADERPATHS} ) {
+ if ( defined $ENV{YCHATHEADERPATHS} ) {
    map { print "Adding $_...\n";
-         unshift @headerpaths, $_ } split /:/, $ENV{YHTTPDHEADERPATHS};
+         unshift @headerpaths, $_ } split /:/, $ENV{YCHATHEADERPATHS};
  }
 
- if ( defined $ENV{YHTTPDLIBPATHS} ) {
+ if ( defined $ENV{YCHATLIBPATHS} ) {
    map { print "Adding $_...\n";
-        unshift @libpaths, $_ } split /:/, $ENV{YHTTPDLIBPATHS};
+        unshift @libpaths, $_ } split /:/, $ENV{YCHATLIBPATHS};
  }
 
  sub check {
@@ -138,8 +140,8 @@ perl -e '
     print "NOT OK\n";
     print "Please make sure that you have the needed software installed!\n";
     print "If you have a special path for your includes then edit src/configure!\n";
-    print "Or set the environment variables YHTTPDHEADERPATHS and YHTTPDLIBPATHS.\n";
-    print " Example: setenv YHTTPDHEADERPATHS \"/your/header/includes:/a/includes\"\n";
+    print "Or set the environment variables YCHATHEADERPATHS and YCHATLIBPATHS.\n";
+    print " Example: setenv YCHATHEADERPATHS \"/your/header/includes:/a/includes\"\n";
     print "(The environment variables have to be seperated by an :)\n"; 
     exit(1);
   }
@@ -188,7 +190,9 @@ perl -e '
  my $compiler = `tail -n 1 ../g++.version`;
  my $version  = `tail -n 2 ../g++.version | head -n 1`;
  my $uname    = `uname -srm`;
+ my $compopt  = join "; ", split /\n/, `cat ../g++.version`;
  chomp $uname;
+ chomp $compopt;
  print "Configuring for $uname...\n";
  chomp $cpp;
  chomp $version;
@@ -230,6 +234,7 @@ perl -e '
  open F, ">msgs.h" or die "msgs.h: $!\n";
  foreach (@msgs) {
    s/(UNAME)(.+)$/UNAME "$uname"/;
+   s/(COMPOPT)(.+)$/COMPOPT "$compopt"/;
    print F; 
  }
  close F;

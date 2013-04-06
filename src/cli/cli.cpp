@@ -38,13 +38,13 @@ cli::parse_input( string s_input )
   cout << CLIPRMO << " (ex)it        - Quits CLI mode and respawns ncurses mode" << endl;
 #endif
   cout << CLIPRMO << " (h)elp        - Prints out this help!" << endl
-       << CLIPRMO << " (m)ysql       - Runs MySQL client on yhttpd DB" << endl;
+       << CLIPRMO << " (m)ysql       - Runs MySQL client on yChat DB" << endl;
   cout << CLIPRMO << " (rel)oad      - Reloads all modules" << endl;
 #ifdef EXPERIM
   cout << CLIPRMO << " (re)conf      - Reloads configuration (EXPERIMENTAL)" << endl;
 #endif
   cout << CLIPRMO << " (r)usage      - Shows current resource usage" << endl
-       << CLIPRMO << " (ru)sageh     - Shows resource usage history (yhttpd needs to run > 1 day)" << endl
+       << CLIPRMO << " (ru)sageh     - Shows resource usage history (yChat needs to run > 1 day)" << endl
        << CLIPRMO << " (set) VAR VAL - Sets configuration value VAR to VAL" << endl
        << CLIPRMO << " (sh)ell       - Runs a system shell" << endl
        << CLIPRMO << " (s)hutdown    - Shuts down the whole server" << endl
@@ -112,7 +112,7 @@ cli::parse_input( string s_input )
 #ifdef EXPERIM
  else if( s_input.compare("reconf") == 0 || s_input.compare("re") == 0 )
  {
-  wrap::HTTPD->reconf();
+  wrap::CHAT->reconf();
   cout << CLIPRMI;
  }
 #endif
@@ -188,7 +188,7 @@ cli::parse_input( string s_input )
  }
  else if( s_input.compare("v") == 0 || s_input.compare("version") == 0 )
  {
-  cout << CLIPRMO  << tool::yhttpd_version() << " " << UNAME << endl; 
+  cout << CLIPRMO  << tool::ychat_version() << " " << UNAME << endl; 
   cout << CLIPRMI;
  }
  else

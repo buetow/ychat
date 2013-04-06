@@ -11,7 +11,7 @@ class modl : private smap<dynmod*,string>
 {
 private:
     static  void dlclose_( dynmod* mod   );
-    dynmod* cache_module ( string s_name );
+    dynmod* cache_module ( string s_name, bool b_print_sys_msg );
     void preload_modules( string s_path );
 
 #ifdef NCURSES

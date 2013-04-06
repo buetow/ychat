@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# The yChat & yhttpd Project (2004, 2005)
+# The yChat & yhttpd Project (2004)
 #
 # This scripts modifies the yChat sources to yhttpd sources.
 
@@ -8,19 +8,18 @@ use strict;
 use scripts::modules::file;
 
 my @delete = ( 
- 'CHANGES',
+ 'ChangeLog',
  'g++.version',
  'TODO',
  'NEWS',
  'docs',
  'src/chat',
- 'src/memb',
  'src/data',
  'src/irc',
  'src/contrib/crypt',
- 'src/modl.h',
- 'src/modl.cpp',
  'src/mods',
+ 'src/mods/commands',
+ 'src/mods/irc',
  'obj',
  'mods',
  'html',
@@ -40,7 +39,6 @@ my %substituate = (
   'yChat' => 'yhttpd',
   'YCHAT' => 'YHTTPD',
   'CHAT' => 'HTTPD',
-  'yhttpd.org' => 'yChat.org',
   '//>>' => ''
 );
 
@@ -77,7 +75,7 @@ foreach (@delete) {
   system("rm -Rf $_"); 
 }
 
-print "\nDeleting CVS directories\n";
+print "Deleting CVS directories\n";
 system("find . -name CVS | xargs rm -Rf");
 
 print "Creating new dirs\n->";
@@ -86,113 +84,50 @@ foreach (@createdir) {
   system("mkdir $_"); 
 }
 
-print "\nRenaming config file\n";
+print "Renaming config file\n";
 system("mv etc/ychat.conf etc/yhttpd.conf");
 
 print "Moving html templates\n";
 system("mv demo.html html/index.html");
 system("mv test.cgi notfound.html style.css html");
 
-print "Editing etc/yhttpd.conf\n";
-&edit_yhttpd_conf();
-print "Removing marked lines of code\n->";
+print "Removing marked lines of code\n ->";
 &remove_marked_lines('.');
-print "\nEdit version numbers\n->";
-&edit_version_numbers('yhttpd/src/msgs.h','yhttpd/README');
 
 sub remove_marked_lines {
  my $dir = shift;
  chdir($dir);
-
- for (&dopen("."))
- {
+ foreach (&dopen(".")) {
    next if /^\.+$/;
    print " $_";
-
-   if ( -f $_ )
-   {
+   if ( -f $_ ) {
      my @newfile;
      my $flag = 0;
-
-     for my $line (fopen($_))
-     {
+     foreach my $line (fopen($_)) {
 	$flag = 1 if $line =~ /\/\/<<\*/;	
         if ($flag == 0 && $line !~ /\/\/<</) {
-          for ( @deletelines )
-          {
-             if ($line =~ /$_/)
-             {
+          foreach ( @deletelines ) {
+             if ($line =~ /$_/) {
                 $flag = 3;
                 last;
              }
           }
-
-          if ($flag != 3 )
-          {
+          if ($flag != 3 ) {
             map { $line =~ s/$_/$substituate{$_}/eg } keys %substituate;
             push @newfile, $line;
-          } 
-
-          else
-          {
+          } else {
             $flag = 0;
           }
         }
 	$flag = 0 if $line =~ /\/\/\*>>/;	
      }
-
      &fwrite($_, @newfile);
-   } 
-
-   elsif ( -d $_ )
-   {
-     # Recursive
+   } elsif ( -d $_ ) {
      &remove_marked_lines($_);
    }
  }
-
  chdir('..');
 }
 
-sub edit_yhttpd_conf
-{
-  my @old = fopen("etc/yhttpd.conf");
-  my @new = @old[0..1];
-
-  my $flag = 0;
-  for (@old)
-  {
-   if ($flag == 0)
-   { 
-     if (/<category name="httpd">/)
-     {
-       $flag = 1;
-       push @new, $_;	
-     }
-   }
-
-   else
-   {
-     push @new, $_;
-   }
-  }
-
-  fwrite("etc/yhttpd.conf", @new); 
-}
-
-sub edit_version_numbers
-{
-  for (@_)
-  {
-    print " $_";
-    my @file = fopen $_;
-    for (@file)
-    {
-      s/([0-9]+\.[0-9]+)\.[0-9]+(-*)/$1$2/g for @file;
-      s/[PRE]{0,3}RELEASE/DEVEL/g;
-    }
-    fwrite($_,@file);
-  }
-}
-
 print "\n";
+
