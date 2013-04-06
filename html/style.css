@@ -1,52 +1,11 @@
-body, div {
+BODY, TD {
 	font-family: Verdana, Helvetica, sans-serif;
-	background-color: #000000;
-	color: #FFFFEF;
 	font-size: 11pt;
 }
-
-input {
-	color: #000000;
-	font-family: Verdana, Helvetica, sans-serif;
- 	text-decoration: none; 
-	color: #FFFFEF;
- 	background-color: #000000; 
- 	border: solid #555555 1px; 
-	font-size: 9pt;
-	padding: 2px;
+A {
+	color: #dddddd;
 }
-
-input.text {
-	background-color: #AA5100;
-}
-
-.fancy {
-	font-family: Verdana, Helvetica, sans-serif;
- 	text-decoration: none; 
-	color: #FFFFEF;
- 	background-color: #000000; 
- 	border: solid #555555 1px; 
-	font-size: 9pt;
-	padding: 2px;
-}
-
-a:hover.fancy { 
- 	text-decoration: none; 
- 	color: #FFFFEF; 
- 	background-color: #323232; 
- 	border: solid #FFFFEF 1px; 
-} 
-
-b {
- 	background-color: #323232; 
- 	border: solid #555555 1px; 
-}
-
-body.stream {
-	background-color: #323232;
-}
-
 .signature {
-	color: #AAAAAA;
+	color: #dddddd;
 	font-size: 9pt;
 }

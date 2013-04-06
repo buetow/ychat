@@ -1,11 +1,3 @@
 ERRORCMD="<font color=#ff0000>Befehl nicht gefunden!</font><br>";
 USERENTR=" betritt den Chat.<br>";
-USERLEAV=" verl&auml;&szlig;t den Chat.<br>";
-
-# Chat-help ( || separiert Befehlssyntax und Befehlsbeschreibung. )
-mods/commands/yc_col.so="/col NICKFARBE TEXTFARBE||Ändern der Farbe";
-mods/commands/yc_me.so="/me AKTIONSTEXT||Schreibt den Text kursiv ( einfarbig )";
-mods/commands/yc_m.so="/m AKTIONSTEXT||Schreibt den Text kursiv ( zweifarbig )";
-mods/commands/yc_version.so="/version||Zeigt die Version des laufenden yChats";
-mods/commands/yc_q.so="/q||Verlassen des Chats";
-
+USERLEAV=" verl&auml;&szlig;t den Chat.<br>"
