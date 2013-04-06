@@ -4,11 +4,11 @@
 #define STATS_H
 
 #include "tool/tool.h"
+
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/resource.h>
-#include <iostream>
 
 using namespace std;
 

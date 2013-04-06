@@ -13,7 +13,6 @@
 template <class obj_type, class key_type>
 class smap : public hmap<obj_type, key_type>
 {
-
  private:
     pthread_mutex_t mut_smap;
 
@@ -53,5 +52,4 @@ class smap : public hmap<obj_type, key_type>
 };
 
 #include "smap.tmpl"
-
 #endif

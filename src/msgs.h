@@ -1,27 +1,3 @@
-/*:*
- *: File: ./src/msgs.h
- *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
-
 #ifndef MSGS_H
 #define MSGS_H
 
@@ -60,8 +36,7 @@
 #define GARROOM "Garbage: Added room "
 #define GARUSER "Garbage: Added user "
 #define GARUSE2 "Garbage: Recycle user "
-#define LISTERR "Sock: Listen error "
-#define LOGGINI "Logging: Init on "
+#define LISTERR "Sock: Listen error " 
 #define LOGERR1 "Logging: Could not open logfile "
 #define LOGERR2 "Logging: No filename specified "
 #define LOGINER "Chat: Login failed (password), nick: "
@@ -70,20 +45,15 @@
 #define LOGINE2 "Chat: Login failed (nick length), nick: "
 #define LOGINE3 "Chat: Login failed (room length), nick/room: "
 #define LOGINE4 "Chat: Login failed (guests disabled), nick: "
-#define LOGINE5 "Chat: Login failed (not enough threads), nick: "
 #define MODULEC "Modl: Caching "
 #define MODULER "Modl: Requesting "
 #define MODUNLO "Modl: Unloading all modules "
 #define MODRELO "Modl: Reloading all modules "
 
 #ifdef DATABASE
-#define MYSQLQU "MySQL: "
-#define MYSQLQ2 "MySQL: Adding query "
+#define MYSQLQU "MySQL: " 
+#define MYSQLQ2 "MySQL: Adding query " 
 #define MYSQLE1 "MySQL: Error running mysql_init "
-#endif
-
-#ifdef CTCSEGV
-#define SIGNSEG "Signal: Received SIGSEGV"
 #endif
 
 #define NCURADM "ADMINISTRATOR's MAIN MENU"
@@ -91,16 +61,16 @@
 #define NCURSE0 "HTTP server: "
 #define NCURSE1 "Thread pool: "
 #define NCURSE2 "Data stats: "
-#define NCURSE3 "Chat stats: "
-#define NCURSE4 "Caching: "
+#define NCURSE3 "Chat stats: " 
+#define NCURSE4 "Caching: " 
 #define NEWREQU "Sock: New request "
 #define NEWROOM "Chat: New room "
 #define NEWUSER "Chat: New user "
 #define OFFFOUND "HTML: File not found "
 #define PERMSTD "Reading standard command exec permissions"
-#define POOLER1 "Pool: Did not allocate all threads ("
+#define POOLERR "Pool: Malloc error "
 #define POOLER2 "Pool: Max pool size reached ("
-#define POOLFLL "Pool: Allocating new threads ("
+#define POOLFLL "Pool: Allocating new thread ("
 #define READERR "Sock: Read error "
 #define REMROOM "Garbage: Removing room "
 #define REMUSER "Garbage: Removing user "
@@ -109,16 +79,11 @@
 #define SEPERAT "-----------------------"
 #define SESSION "Session: Count "
 #define SESSDMP "Session: Dump of session"
-#define SESSERR "Session: Could not find session "
-#define SESSEXI "Session: New TempID already exists, recalc."
 #define SHELLER "Shell: Could not execute command"
 #define SHELLEX "Shell: Executing the following command:"
-#define SIGSIGV "Signal: SIGV received!"
 #define STATUPR "Stats: Updated rusage history"
 #define STATRSS "Stats: Max resident set size "
 #define REUROOM "Garbage: Reusing room object "
-#define SOCKER1 "Sock: Can't create socket, aborting"
-#define SOCKUNS "Sock: Starting hypertext transport [HTTP]"
 #define SOCKCLN "Sock: Initializing a client socket at "
 #define SOCKCON "Sock: Connecting to "
 #define SOCKCRT "Sock: Created socket on "
@@ -126,8 +91,7 @@
 #define SOCKERR "Sock: Can't create socket, trying next port "
 #define SOCKER2 "Sock: Unknown hostname "
 #define SOCKRDY "Sock: Server socket is ready "
-#define SOCKCAC "Sock: Caching IP "
-#define SOCKCA2 "Sock: Cleaning IP cache ("
+#define SSLINIT "SSL: Initializing OpenSSL"
 #define TECACHE "HTML: Caching document "
 #define THRDSTR "Thread: Running"
 #define TIMERAT "Timer: User autoaway timeout "
@@ -139,22 +103,20 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "0.7.9.5"
-#define BRANCH "STABLE"
-#define BUILDNR 3809
-#define UNAME "FreeBSD 6.0-RELEASE i386"
-#define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.4 [FreeBSD] 20050518; 3.4; g++"
+#define VERSION "0.7.5"
+#define BRANCH "RELEASE"
+#define BUILDNR 3213
+#define UNAME "FreeBSD 5.3-RELEASE-p2 i386"
+#define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.2 [FreeBSD] 20040728; 3.4; g++"
 #define YCUSAGE "Usage: ./ychat {h|v}|{o confkey confvalue}\n"
 
-#define HEADER1 "HTTP/1.1 200 OK\r\n"
-#define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n"
+#define HEADER1 "HTTP/1.0 200 OK\r\n"
+#define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n" 
 #define HEADER3 "Cache-control: no-cache\r\n"
-#define HEADER4 "Pragma: no-cache\r\n"
+#define HEADER4 "Pragma: no-cache\r\n" 
 #define HEADER5 "Transfer-Encoding: chunked\r\n"
-#define HEADER6 "Connection: keep-alive\r\n"
+#define HEADER6 "Connection: keep-alive\r\n" 
 #define HEADER7 "Content-Length: ";
 #define HEADER8 "Content-Type: ";
-#define HEADER8b "; charset=ISO-8859-1\r\n";
-#define HEADER9 "Allow: GET\r\n";
 
 #endif

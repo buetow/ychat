@@ -1,4 +1,4 @@
-SRCS=yc_away.cpp yc_col.cpp yc_compopt.cpp yc_exec.cpp yc_fake.cpp yc_getroom.cpp yc_getrusage.cpp yc_getstatus.cpp yc_help.cpp yc_invisible.cpp yc_j.cpp yc_ko.cpp yc_m.cpp yc_md5.cpp yc_me.cpp yc_morph.cpp yc_msg.cpp yc_q.cpp yc_reload.cpp yc_ren.cpp yc_s.cpp yc_set.cpp yc_template.cpp yc_time.cpp yc_topic.cpp yc_uptime.cpp yc_version.cpp
+SRCS=yc_about.cpp yc_all.cpp yc_away.cpp yc_col.cpp yc_compopt.cpp yc_exec.cpp yc_fake.cpp yc_getroom.cpp yc_getrusage.cpp yc_help.cpp yc_invisible.cpp yc_j.cpp yc_ko.cpp yc_m.cpp yc_md5.cpp yc_me.cpp yc_morph.cpp yc_msg.cpp yc_q.cpp yc_reload.cpp yc_ren.cpp yc_s.cpp yc_set.cpp yc_template.cpp yc_time.cpp yc_topic.cpp yc_uptime.cpp yc_users.cpp yc_version.cpp
 MODS=$(addprefix ../../../mods/commands/, $(SRCS:.cpp=.so))
 CC=g++
 INCLUDES=`cat ../../includes.add`
@@ -17,6 +17,8 @@ mods:	infotext $(MODS)
 clean:
 	@echo Cleaning command modules
 	@if test -d ../../../mods/commands; then rm -Rf ../../../mods/commands; fi
+../../../mods/commands/yc_about.so: yc_about.cpp
+../../../mods/commands/yc_all.so: yc_all.cpp
 ../../../mods/commands/yc_away.so: yc_away.cpp
 ../../../mods/commands/yc_col.so: yc_col.cpp
 ../../../mods/commands/yc_compopt.so: yc_compopt.cpp
@@ -24,7 +26,6 @@ clean:
 ../../../mods/commands/yc_fake.so: yc_fake.cpp
 ../../../mods/commands/yc_getroom.so: yc_getroom.cpp
 ../../../mods/commands/yc_getrusage.so: yc_getrusage.cpp
-../../../mods/commands/yc_getstatus.so: yc_getstatus.cpp
 ../../../mods/commands/yc_help.so: yc_help.cpp
 ../../../mods/commands/yc_invisible.so: yc_invisible.cpp
 ../../../mods/commands/yc_j.so: yc_j.cpp
@@ -43,4 +44,5 @@ clean:
 ../../../mods/commands/yc_time.so: yc_time.cpp
 ../../../mods/commands/yc_topic.so: yc_topic.cpp
 ../../../mods/commands/yc_uptime.so: yc_uptime.cpp
+../../../mods/commands/yc_users.so: yc_users.cpp
 ../../../mods/commands/yc_version.so: yc_version.cpp

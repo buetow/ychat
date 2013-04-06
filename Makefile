@@ -1,7 +1,6 @@
 MAKE=`tail -n 1 make.version`
 PREFIX=`grep "define PREFIX" src/glob.h | cut -d'"' -f2`
-HEADER?=docs/header.txt
-all:    version base modules 
+all:    version base modules version 
 	@echo "Now edit the ychat.conf and run ychat!"
 	@echo "The config file is searched in the following order:"
 	@echo " ./ychat.conf " 
@@ -12,7 +11,6 @@ all:    version base modules
 	@echo If you want to help the yChat project please run gmake mail
 	@echo so that the developers receive an email about the platform
 	@echo being used.
-	@echo WARNING! This software is EXPERIMENTAL!
 mail:
 	@echo "VERSION:" > mail.tmp
 	@${MAKE} version >> mail.tmp
@@ -50,6 +48,8 @@ run:
 	./bin/ychat
 base_start: base 
 	./bin/ychat
+start:	base modules 
+	./bin/ychat
 gpl:
 	@more COPYING
 #//<<*
@@ -75,7 +75,6 @@ mrproper: clean
 	@if test -f g++.version; then rm -f g++.version; fi 
 	@if test -f make.version; then rm -f make.version; fi 
 	@if test -f src/Makefile; then rm -f src/Makefile; fi 
-	@if test -f bin/ychat; then find bin/ -name "*ychat*" | xargs rm -f; fi
 	@if test -d src/mods; then find src/mods/*/ -name Makefile | xargs rm -f; fi
 	@find . -name "*.add" | xargs rm -f
 	@ls | grep core | xargs rm -f
@@ -83,16 +82,3 @@ version:
 	@./scripts/version.sh
 debug:
 	@gdb bin/ychat ychat.core
-confdebug:
-	./configure -g3 -ggdb
-dist:
-	@./scripts/makedist.sh
-headers:
-	@find -E ./ -regex '\./src/.*\.(h|(cpp)|(tmpl))' -exec \
-		sh -c 'export FILE={}; ${MAKE} header' \;
-header:
-	@echo "===> Processing ${FILE}"
-	@sed -n '/*:/d; w .tmp' ${FILE} 
-	@header=`sed 's/\(.*\)/ echo " \*: \1"/' ${HEADER}`; \
-		echo '/*:*' > ${FILE}; eval "$$header" >> ${FILE}; \
-		echo ' *:*/' >> ${FILE}; cat .tmp >> ${FILE}; rm -f .tmp

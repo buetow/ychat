@@ -1,7 +1,8 @@
 #!/bin/sh
 
-if ! ./scripts/checkperl.sh
+if ! which perl >/dev/null
 then
+ echo You need to have Perl in your PATH
  exit 1
 fi
 
@@ -61,7 +62,7 @@ perl -e '
   exit(1);
  }
  
- system("perl \"scripts/config.pl\"");
+ system("sh -c \"scripts/config.sh\"");
  chdir("src");
  system("./configure ".join(" ", @ARGV));
  chdir("..");

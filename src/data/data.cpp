@@ -1,27 +1,3 @@
-/*:*
- *: File: ./src/data/data.cpp
- *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
-
 #include "data.h"
 
 #ifdef DATABASE
@@ -36,7 +12,7 @@ data::data()
 data::~data()
 {}
 
-hashmap<string>
+map<string,string>
 data::select_user_data( string s_user, string s_query)
 {
   string s_where_rule = " WHERE nick = \"" + s_user + "\"";
@@ -58,11 +34,11 @@ data::select_query( string s_query, string s_where_rule, vector<string>& vec_ele
   iter++;
 
   while ( iter != vec_elements.end() )
-  {
-    s_mysql_query.append( secure_query(*iter) );
-    if ( ++iter != vec_elements.end() )
-      s_mysql_query.append( ", " );
-  }
+    {
+      s_mysql_query.append( secure_query(*iter) );
+      if ( ++iter != vec_elements.end() )
+        s_mysql_query.append( ", " );
+    }
 
   s_mysql_query.append(" FROM " + s_table + s_where_rule );
   print_query( MYSQLQU + s_mysql_query );
@@ -70,36 +46,37 @@ data::select_query( string s_query, string s_where_rule, vector<string>& vec_ele
   MYSQL_RES* p_result = NULL;
 
   if ( 0 == mysql_query( p_con->p_mysql, (const char*)s_mysql_query.c_str() ) )
-  {
-    p_result = mysql_store_result( p_con->p_mysql );
-    push_con( p_con );
-  }
+    {
+      p_result = mysql_store_result( p_con->p_mysql );
+      push_con( p_con );
+    }
+
   else
-  {
-    wrap::system_message( MYSQLQU + string( mysql_error(p_con->p_mysql) ) );
-    if (p_con != NULL)
-      delete p_con;
-  }
+    {
+      wrap::system_message( MYSQLQU + string( mysql_error(p_con->p_mysql) ) );
+      if (p_con != NULL)
+        delete p_con;
+    }
 
   return p_result;
 }
 
-hashmap<string>
+map<string,string>
 data::parse_result( MYSQL_RES* p_result, vector<string>& vec_elements )
 {
-  hashmap<string> map_ret;
+  map<string,string> map_ret;
   if ( p_result != NULL )
-  {
-    MYSQL_ROW row;
-    vector<string>::iterator vec_iter = vec_elements.begin();
-    vec_iter++;
+    {
+      MYSQL_ROW row;
+      vector<string>::iterator vec_iter = vec_elements.begin();
+      vec_iter++;
 
-    while( (row = mysql_fetch_row(p_result)) )
-      for ( int i=0; i < mysql_num_fields(p_result); i++, vec_iter++ )
-        map_ret[*vec_iter] = string(row[i]);
+      while( (row = mysql_fetch_row(p_result)) )
+        for ( int i=0; i < mysql_num_fields(p_result); i++, vec_iter++ )
+          map_ret[*vec_iter] = string(row[i]);
 
-    mysql_free_result( p_result );
-  }
+      mysql_free_result( p_result );
+    }
   return map_ret;
 }
 
@@ -120,26 +97,26 @@ data::insert_query( string s_query, map<string,string> map_insert )
   string s_mysql_query = "INSERT INTO " + s_table + " (";
 
   while ( iter != vec_elements.end() )
-  {
-    s_mysql_query.append( *iter );
+    {
+      s_mysql_query.append( *iter );
 
-    if ( ++iter != vec_elements.end() )
-      s_mysql_query.append( ", " );
-    else
-      s_mysql_query.append( ") VALUES(" );
-  }
+      if ( ++iter != vec_elements.end() )
+        s_mysql_query.append( ", " );
+      else
+        s_mysql_query.append( ") VALUES(" );
+    }
 
   iter = vec_elements.begin();
   iter++;
 
   while ( iter != vec_elements.end() )
-  {
-    s_mysql_query.append( "\"" + secure_query(map_insert[*iter]) + "\"" );
-    if ( ++iter != vec_elements.end() )
-      s_mysql_query.append( ", " );
-    else
-      s_mysql_query.append( ")" );
-  }
+    {
+      s_mysql_query.append( "\"" + secure_query(map_insert[*iter]) + "\"" );
+      if ( ++iter != vec_elements.end() )
+        s_mysql_query.append( ", " );
+      else
+        s_mysql_query.append( ")" );
+    }
 
   print_query( MYSQLQU + s_mysql_query );
 
@@ -154,7 +131,7 @@ data::insert_query( string s_query, map<string,string> map_insert )
 }
 
 void
-data::update_user_data( string s_user, string s_query, hashmap<string> update_map )
+data::update_user_data( string s_user, string s_query, map<string,string> update_map )
 {
   vector<string> vec_elements = map_queries[s_query];
 
@@ -171,33 +148,33 @@ data::update_user_data( string s_user, string s_query, hashmap<string> update_ma
   bool b_flag = 0;
 
   while ( iter != vec_elements.end() )
-  {
-    if ( update_map[*iter] == "" ) // Dont update data if it has not been changed / if its empty!
     {
+      if ( update_map[*iter] == "" ) // Dont update data if it has not been changed / if its empty!
+        {
+          iter++;
+          continue;
+        }
+
+      if ( iter != iter_second && b_flag )
+        s_mysql_query.append( ", " );
+
+      s_mysql_query.append( *iter + "=\"" + secure_query(update_map[*iter]) + "\"" );
+      b_flag = 1;
       iter++;
-      continue;
     }
 
-    if ( iter != iter_second && b_flag )
-      s_mysql_query.append( ", " );
-
-    s_mysql_query.append( *iter + "=\"" + secure_query(update_map[*iter]) + "\"" );
-    b_flag = 1;
-    iter++;
-  }
-
   if ( b_flag )
-  {
-    s_mysql_query.append( " WHERE nick=\"" + tool::to_lower(s_user) + "\"" );
+    {
+      s_mysql_query.append( " WHERE nick=\"" + tool::to_lower(s_user) + "\"" );
 
-    con* p_con = get_con();
-    print_query( MYSQLQU + s_mysql_query );
+      con* p_con = get_con();
+      print_query( MYSQLQU + s_mysql_query );
 
-    if ( 0 != mysql_query( p_con->p_mysql, (const char*)s_mysql_query.c_str() ) )
-      wrap::system_message( MYSQLQU + string( mysql_error(p_con->p_mysql) ) );
+      if ( 0 != mysql_query( p_con->p_mysql, (const char*)s_mysql_query.c_str() ) )
+        wrap::system_message( MYSQLQU + string( mysql_error(p_con->p_mysql) ) );
 
-    push_con( p_con );
-  }
+      push_con( p_con );
+    }
 }
 
 string
@@ -207,18 +184,18 @@ data::secure_query( string s_mysql_query )
   unsigned i_pos = s_mysql_query.find("\\");
 
   while ( i_pos != string::npos )
-  {
-    s_mysql_query.replace( i_pos, 1, "/" );
-    i_pos = s_mysql_query.find("\\");
-  }
+    {
+      s_mysql_query.replace( i_pos, 1, "/" );
+      i_pos = s_mysql_query.find("\\");
+    }
 
   i_pos = s_mysql_query.find("\"");
 
   while ( i_pos != string::npos )
-  {
-    s_mysql_query.replace( i_pos, 1, "'" );
-    i_pos = s_mysql_query.find("\"");
-  }
+    {
+      s_mysql_query.replace( i_pos, 1, "'" );
+      i_pos = s_mysql_query.find("\"");
+    }
 
   return s_mysql_query;
 }

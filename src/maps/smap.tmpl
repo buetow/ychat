@@ -15,7 +15,6 @@ smap<obj_type, key_type>::~smap()
  pthread_mutex_destroy( &mut_smap );
 }
 
-
 template <class obj_type, class key_type> void
 smap<obj_type, key_type>::lock_mutex() {
  pthread_mutex_lock( &mut_smap );
@@ -165,7 +164,6 @@ void smap<obj_type, key_type>::make_empty_insecure( void (*func)(key_type) )
  hmap<obj_type,key_type>::make_empty( func );
 }
 
-
 template <class obj_type, class key_type>
 void smap<obj_type, key_type>::add_elem_insecure( const obj_type &x, const key_type &k  )
 {
@@ -214,6 +212,4 @@ smap<obj_type, key_type>::get_key_vector_insecure()
  return hmap<obj_type,key_type>::get_key_vector();
 }
 
-
 #endif
-
