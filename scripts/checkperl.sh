@@ -1,5 +1,5 @@
 #!/bin/sh
-# The yChat Project (2005)
+# The yhttpd Project (2005)
 #
 # This scripts checks for a perl installation 
 

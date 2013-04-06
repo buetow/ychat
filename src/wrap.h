@@ -7,25 +7,15 @@
 struct socketcontainer
 {
   int i_sock;
-#ifdef OPENSSL
-  void *p_ssl_context;
-#endif
-
 };
 
 #ifdef DATABASE
-#include "data/data.h"
 #endif
-#include "chat/chat.h"
 #include "conf/conf.h"
-#include "chat/gcol.h"
 #include "html.h"
 #ifdef LOGGING
 #include "logd.h"
 #endif
-//<<*
-#include "modl.h"
-//*>>
 
 #ifdef NCURSES
 #include "ncur/ncur.h"
@@ -35,14 +25,8 @@ struct socketcontainer
 #endif
 #endif
 
-#include "chat/sman.h"
 
-#ifndef OPENSSL
 #include "sock/sock.h"
-#else
-#include "sock/sslsock.h"
-#endif
-
 #include "monitor/stats.h"
 #include "time/timr.h"
 #include "thrd/pool.h"
@@ -54,17 +38,6 @@ using namespace std;
 class dynamic_wrap
 {
 public:
-  //<<*
-  chat* CHAT;
-#ifdef DATABASE
-
-  data* DATA;
-#endif
-
-  gcol* GCOL;
-  sman* SMAN;
-  modl* MODL;
-  //*>>
 
   conf* CONF;
   html* HTML;
@@ -100,22 +73,6 @@ public:
 
   static void init_wrapper(map<string,string>* p_main_loop_params);
 
-  //<<*
-  static chat* CHAT;
-#ifdef DATABASE
-
-  static data* DATA;
-#endif
-
-  static gcol* GCOL;
-  static sman* SMAN;
-#ifdef IRCBOT
-
-  static ybot* YBOT;
-#endif
-
-  static modl* MODL;
-  //*>>
 
   static conf* CONF;
   static html* HTML;

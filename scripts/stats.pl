@@ -76,7 +76,7 @@ sub filestats
   $stats{"Number of script files"}++;
   $stats{"Lines of scripts"} += countlines($shift);
  }
- elsif ( $shift =~ /(\.txt|README|INSTALL|COPYING|NEWS|SNAPSHOT|ChangeLog)$/ )
+ elsif ( $shift =~ /(\.txt|[A-Z]+)$/ )
  {
   $stats{"Number of text files"}++;
   $stats{"Lines of text"} += countlines($shift);

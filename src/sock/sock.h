@@ -11,7 +11,6 @@
 #include <netdb.h>
 
 #include "../reqp.h"
-#include "../chat/user.h"
 
 #include "../thrd/pool.h"
 #include "../maps/shashmap.h"
@@ -71,17 +70,11 @@ public:
   void clean_ipcache();
 
   // the chat stream there all the chat messages will sent through.
-  void chat_stream( socketcontainer* p_sock, user* p_user, map<string,string> &map_params ); //<<
-  virtual int _send(socketcontainer *p_sock, const char *sz, int len);
-  virtual int _read(socketcontainer *p_sock, char *sz, int len);
-  virtual int _close(socketcontainer *p_sock);
+  virtual inline int _send(socketcontainer *p_sock, const char *sz, int len);
+  virtual inline int _read(socketcontainer *p_sock, char *sz, int len);
+  virtual inline int _close(socketcontainer *p_sock);
   virtual void _main_loop_init();
-#ifdef OPENSSL
-
-  virtual bool _main_loop_do_ssl_stuff(int& i_new_sock);
-#endif
-
-  virtual socketcontainer* _create_container(int& i_sock);
+  virtual inline socketcontainer* _create_container(int& i_sock);
   virtual int _make_server_socket(int i_port);
 
 #ifdef NCURSES

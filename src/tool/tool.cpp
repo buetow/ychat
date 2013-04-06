@@ -93,9 +93,9 @@ tool::strip_html( string *p_str)
 }
 
 string
-tool::ychat_version()
+tool::yhttpd_version()
 {
-  return "yChat " + string(VERSION)
+  return "yhttpd " + string(VERSION)
          + "-" + string(BRANCH)
          + " Build " + int2string(BUILDNR);
 }

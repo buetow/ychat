@@ -71,7 +71,7 @@ timr::start( void *v_ptr )
 
     time_now = *localtime( &clock_now );
 
-    // set the current time && the current ychat uptime!
+    // set the current time && the current yhttpd uptime!
     set_time( difftime( clock_now, clock_start ),
               time_now.tm_sec, time_now.tm_min, time_now.tm_hour );
 
@@ -87,31 +87,14 @@ timr::start( void *v_ptr )
 #ifdef SERVMSG
       cout << TIMERUP << get_uptime() << endl;
 #endif
-      //<<*
-      int* p_timeout_settings = new int[3];
-      p_timeout_settings[0] = tool::string2int(wrap::CONF->get_elem("chat.idle.timeout"));
-      p_timeout_settings[1] = tool::string2int(wrap::CONF->get_elem("chat.idle.awaytimeout"));
-      p_timeout_settings[2] = tool::string2int(wrap::CONF->get_elem("chat.idle.autoawaytimeout"));
-      wrap::CHAT->check_timeout( p_timeout_settings );
-      delete p_timeout_settings;
-
-      string s_ping = "<!-- PING! //-->\n";
-      wrap::CHAT->msg_post( &s_ping );
-
-#ifdef DATABASE
-      // Disconnecting idle database conenction
-      wrap::DATA->check_data_con_timeout();
-#endif
-      //*>>
       // Run every ten minutes:
       if ( time_now.tm_min % 10 == 0 )
       {
 
-        wrap::SOCK->clean_ipcache();
+        wrap::SOCK->clean_ipcache(); 
         // Run every hour
         if ( time_now.tm_min % 60 == 0 )
         {
-          wrap::GCOL->remove_garbage(); //<<
 
           // Run every day
           if (time_now.tm_min == 0 || time_now.tm_min == 60 )

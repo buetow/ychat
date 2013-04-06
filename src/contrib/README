@@ -1,5 +1,5 @@
-This directory includes source code which has been included directly into yChat but is not
-programmed by the yChat project explicitly which means the source code here is from extern.
+This directory includes source code which has been included directly into yhttpd but is not
+programmed by the yhttpd project explicitly which means the source code here is from extern.
 
 Used versions:
 tinyxml 2.3.2

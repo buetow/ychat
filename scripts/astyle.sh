@@ -1,6 +1,5 @@
 #!/bin/sh
-
-# The yChat Project (2004, 2005)
+# The yhttpd Project (2004)
 #
 # This uses "astyle" to format C++ code into a specific code style! 
 

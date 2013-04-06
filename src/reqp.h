@@ -1,47 +1,41 @@
-// class reqp declaration. this class parses the client requests.
-
+#include "incl.h"
 #ifndef REQP_H
 #define REQP_H
 
-#define RQ_GET  1
-#define RQ_POST 2
-
-#include <map>
-#include "incl.h"
-#include "thrd.h"
+#include "maps/hashmap.h"
 
 using namespace std;
-
-typedef map<string, string, less<string> > map_string;
 
 class reqp
 {
 private:
-  static string  HTTP_CODEOK,
-  HTTP_CODENF,
-  HTTP_SERVER,
-  HTTP_CONTAC,
-  HTTP_CACHEC,
-  HTTP_CONNEC,
-  HTTP_COTYPE;
+  static const string s_http;
+  static const string s_http_stream;
+  static const string s_http_colength;
+  static const string s_http_cotype;
+  static const string s_http_cotype_add;
 
   // returns the request url from thr client's http request header
   // until the first "?" and stores all request parameter values
   // ( behind "?" ) into map_params.
-  virtual string get_url( thrd* p_thrd, string s_req, map_string &map_params );
+  string get_url( string s_req, map<string,string> &map_params, int& i_postpayloadoffset );
   // returns a specific value of the client's http request header.
   // ( s.t. like the User-Agent, Referer etc... ).
-  virtual string get_from_header( string s_req, string s_hdr );
+  string get_from_header( string s_req, string s_hdr );
 
-  virtual int htoi( string *s );
+  int htoi( string *p_str );
+  // Removes double dots ".."
+  string remove_dots( string s_req );
+
+  // Parses "event=bla?blu=bli&sadasda=asddds ..." string and stores them in the map
+  void get_request_parameters( string s_parameters, map<string,string>& map_params );
 
 public:
-  // public methods.
-  explicit reqp( ); // simple constructor.
-  virtual string parse( thrd* p_thrd, string s_req, map_string &map_params );
-  virtual string url_decode ( string );
-  virtual string get_content_type( string );
-  virtual void parse_headers( string s_req, map_string &map_params );
+  reqp( );
+  string parse( socketcontainer* p_sock, string s_req, map<string,string> &map_params, int &i_postpayloadoffset );
+  string url_decode ( string s_url );
+  string get_content_type( string& s_file );
+  void parse_headers( string s_req, map<string,string> &map_params );
 };
 
 #endif
