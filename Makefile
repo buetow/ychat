@@ -84,3 +84,5 @@ debug:
 	@gdb bin/ychat ychat.core
 confdebug:
 	./configure -g3 -ggdb
+dist:
+	@./scripts/makedist.sh

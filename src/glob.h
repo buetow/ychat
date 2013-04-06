@@ -22,7 +22,7 @@
  Should yChat get compiled with database support? Currently MyS-
  QL only is a supported database. 
 */
-//#define DATABASE
+#define DATABASE
 
 #ifdef DATABASE
 #define USE_MYSQL 

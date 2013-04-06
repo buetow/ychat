@@ -112,10 +112,10 @@
 #define XMLREAD "XML: Reading "
 #define XMLERR "XML Error: "
 #define XMLER1 "XML Error: Unable to load file "
-#define VERSION "0.7.9"
+#define VERSION "0.7.9.1"
 #define BRANCH "RELEASE"
-#define BUILDNR 3624
-#define UNAME "FreeBSD 5.3-RELEASE-p5 i386"
+#define BUILDNR 3632
+#define UNAME "FreeBSD 5.3-RELEASE-p6 i386"
 #define COMPOPT "Using built-in specs.; Configured with: FreeBSD/i386 system compiler; Thread model: posix; gcc version 3.4.2 [FreeBSD] 20040728; 3.4; g++"
 #define YCUSAGE "Usage: ./ychat {h|v}|{o confkey confvalue}\n"
 
@@ -127,6 +127,6 @@
 #define HEADER6 "Connection: keep-alive\r\n"
 #define HEADER7 "Content-Length: ";
 #define HEADER8 "Content-Type: ";
-#define HEADER9 "Allow: GET\n";
+#define HEADER9 "Allow: GET\r\n";
 
 #endif

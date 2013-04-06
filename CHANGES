@@ -1,3 +1,10 @@
+-Changes from 0.7.9-RELEASE to 0.7.9.1-RELEASE -
+$ Fixed etc/ychat.conf (Its now valid XML)
+$ Fixed some typos.
+$ Added the scripts/makedist.sh script, which can be invoked by gmake dist. 
+$ yhttpd.org has been renamed to yChat.org. The yhttpd.org SLD will be
+$ canceled! The yhttpd.org Homepage will remain on yChat.org!
+
 -Changes from 0.7.8-RELEASE to 0.7.9-RELEASE -
 $ In the system messages will be the user printed which has requested the
   specified module.
