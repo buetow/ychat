@@ -11,6 +11,22 @@
 
 #include "tool.h"
 
+list<string>
+tool::split_string(string s_string, string s_split) {
+    list<string> list_ret;
+    unsigned i_pos, i_len = s_split.length();     
+
+    while ( (i_pos = s_string.find(s_split)) != string::npos )
+    {
+     list_ret.push_back( s_string.substr(0, i_pos) );
+     s_string = s_string.substr( i_pos + i_len );
+    }
+
+    list_ret.push_back( s_string );
+
+    return list_ret;
+}
+
 string
 tool::trim( string s_str )
 {

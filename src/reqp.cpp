@@ -7,8 +7,8 @@
 using namespace std;
 
 string reqp::HTTP_CODEOK = "HTTP/1.1 200 OK\r\n";
-string reqp::HTTP_SERVER = "Server: yhttpd (Unix)\r\n";
-string reqp::HTTP_CONTAC = "Contact: www.yhttpd.org\r\n";
+string reqp::HTTP_SERVER = "Server: yChat (Unix)\r\n";
+string reqp::HTTP_CONTAC = "Contact: www.yChat.org\r\n";
 string reqp::HTTP_EXPIRE = "Expires: 0\r\n";
 string reqp::HTTP_CACHEC = "Cache-control: no-cache\r\nPragma: no-cache\r\n";
 string reqp::HTTP_CONNEC = "Connection: keep-alive\r\n";
@@ -28,8 +28,8 @@ reqp::get_request_parameters( string s_parameters, map_string& map_params )
      {
       s_tmp = s_parameters.substr(0, i_pos );
 
-      if ( (i_pos2 = s_tmp.find("=")) != string::npos )
-       map_params[ s_tmp.substr(0, i_pos2) ] = s_tmp.substr( i_pos2+1 ); 
+      if ( (i_pos2 = s_tmp.find("=")) != string::npos ) 
+       map_params[ s_tmp.substr(0, i_pos2) ] = tool::replace( s_tmp.substr( i_pos2+1 ), "\\AND", "&"); 
 
       s_parameters = s_parameters.substr( i_pos + 1 );
      }
@@ -261,6 +261,85 @@ reqp::parse( thrd* p_thrd, string s_req, map_string &map_params )
     s_rep.append( get_content_type( map_params["request"] ) );
     s_rep.append("\r\n\r\n");
 
+    //<<*
+    // check the event variable.
+    if ( ! s_event.empty() )
+      {
+        // login procedure.
+        if ( s_event == "login" )
+        {
+            wrap::CHAT->login( map_params );
+        }
+
+        else if ( s_event == "register" )
+        {
+          user* p_user = new user;
+          map_params["INFO"] = "";
+          run_html_mod( s_event, map_params, p_user );
+          wrap::GCOL->add_user_to_garbage( p_user );
+        }
+
+        else
+        {
+            bool b_found;
+
+            //   user* p_user = s_chat::get().get_user( map_params["nick"], b_found );
+            sess *sess_temp = wrap::SMAN->get_session( map_params["tmpid"] );
+
+            user *p_user;
+            if( sess_temp != NULL )
+            {
+                string s_nick = sess_temp->get_name();
+                p_user = wrap::CHAT->get_user( s_nick, b_found);
+            }
+
+            else
+            {
+                return s_rep;
+            }
+
+            if ( ! b_found )
+            {
+                map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.notonline" );
+                map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
+            }
+
+            else
+            {
+             map_params["nick"] = p_user->get_name().c_str();
+
+             // if a message input.
+             if ( s_event == "input" )
+             {
+                if ( p_user )
+                {
+                 p_user->check_restore_away();
+                 wrap::CHAT->post( p_user, map_params );
+                }
+             }
+
+             // if a chat stream
+             else if ( s_event == "stream" )
+             {
+                string s_msg ( wrap::HTML->parse( map_params ) );
+                p_user->msg_post( &s_msg);
+                wrap::SOCK-> chat_stream( p_thrd->get_sock(), p_user, map_params );
+             }
+
+             // if a request for the online list of the active room.
+             else if ( s_event == "online" )
+             {
+                wrap::HTML->online_list( p_user, map_params );
+             }
+
+             else if ( s_event != "input" ) 
+             {
+	      run_html_mod( s_event, map_params, p_user );  
+             }
+            }
+        }
+    } 
+    //*>>
  
     if ( wrap::CONF->get_elem("httpd.enablecgi").compare("true") == 0 && 
          string::npos != map_params["request"].find(".cgi") )
@@ -281,6 +360,26 @@ reqp::parse( thrd* p_thrd, string s_req, map_string &map_params )
     return  s_rep;
 }
 
+//<<*
+void 
+reqp::run_html_mod( string s_event, map_string &map_params, user* p_user )
+{
+    container *c = new container;
+
+    c->elem[0] = (void*) wrap::WRAP;
+    c->elem[1] = (void*) &map_params;
+    c->elem[2] = (void*) p_user;
+
+    string s_mod = wrap::CONF->get_elem("httpd.modules.htmldir") + "yc_" + s_event + ".so";
+
+    dynmod* p_module = wrap::MODL->get_module( s_mod );
+    
+    if ( p_module != NULL )
+      ( *( p_module->the_func ) ) ( (void*) c ); 
+
+    delete c;
+}
+//*>>
 
 string
 reqp::remove_dots( string s_ret )

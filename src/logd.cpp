@@ -88,6 +88,10 @@ logd::log_access( map_string request )
 void
 logd::log_simple_line( string s_line )
 {
+    // Dont log empty lines!	
+    if (s_line.empty())
+     return;	
+
     string s_time = get_time_string();
     string s_logstr = s_time + " " + s_line;
 

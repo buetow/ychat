@@ -13,6 +13,7 @@
 #include "../thrd/pool.h"
 #include "../thrd/thrd.h"
 #include "../reqp.h"
+#include "../chat/user.h"
 #include "../logd.h"
 
 using namespace std;
@@ -55,6 +56,7 @@ public:
     virtual int  start();
 
     // the chat stream there all the chat messages will sent through.
+    static void chat_stream( int i_sock, user* p_user, map_string &map_params ); //<<
 
     void increase_num_threads();
     void decrease_num_threads();

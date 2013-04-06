@@ -6,6 +6,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include "sock.h"
+#include "../chat/chat.h"
+#include "../chat/user.h"
 
 using namespace std;
 
@@ -27,6 +29,56 @@ sock::~sock()
     pthread_mutex_destroy( &mut_threads );
 }
 
+//<<*
+void
+sock::chat_stream( int i_sock, user* p_user, map_string &map_params )
+{
+    string s_msg( "\n" );
+
+    for ( int i = 0; i < PUSHSTR; i++ )
+     send( i_sock, s_msg.c_str(), s_msg.size(), 0 );
+
+    pthread_mutex_t mutex;
+    pthread_mutex_init( &mutex, NULL ); 
+    pthread_mutex_lock( &mutex );
+
+    do
+    {
+        s_msg = p_user->get_mess( );
+        if ( 0 > send( i_sock, s_msg.c_str(), s_msg.size(), 0 ) )
+            p_user->set_online( false );
+        pthread_cond_wait( &(p_user->cond_message), &mutex );
+    }
+    while( p_user->get_online() );
+
+    pthread_mutex_destroy( &mutex );
+ 
+    // if there is still a message to send:
+    s_msg = p_user->get_mess( );
+    if ( ! s_msg.empty() )
+        send( i_sock, s_msg.c_str(), s_msg.size(), 0 );
+
+    // remove the user from its room.
+    string s_user( p_user->get_name() );
+    string s_user_lowercase( p_user->get_lowercase_name() );
+    p_user->get_room()->del_elem( s_user_lowercase );
+
+    // post the room that the user has left the chat.
+    s_msg = wrap::TIMR->get_time() + " " 
+          + p_user->get_colored_bold_name()
+          + wrap::CONF->get_elem( "chat.msgs.userleaveschat" )
+          + "<br>\n";
+
+    p_user->get_room()->msg_post( &s_msg );
+    p_user->get_room()->reload_onlineframe();
+
+#ifdef VERBOSE
+    cout << REMUSER << s_user << endl;
+#endif
+
+    wrap::GCOL->add_user_to_garbage( p_user );
+}
+//*>>
 
 int
 sock::make_server_socket( int i_port )

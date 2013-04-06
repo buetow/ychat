@@ -1,3 +1,3 @@
 #!/bin/sh
 
-screen -S yhttpd ./bin/yhttpd
+screen -S ychat ./bin/ychat

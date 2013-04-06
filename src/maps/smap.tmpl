@@ -77,6 +77,14 @@ smap<obj_type, key_type>::del_elem( const key_type & k )
  pthread_mutex_unlock( &mut_smap );
 }
 
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::rename_key( const key_type & k1, const key_type & k2 )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::rename_key( k1, k2 );
+ pthread_mutex_unlock( &mut_smap );
+}
+
 
 template <class obj_type, class key_type>
 obj_type smap<obj_type, key_type>::get_elem( const key_type &k )

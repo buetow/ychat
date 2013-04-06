@@ -1,5 +1,5 @@
 /*
- * yhttpd++; Contact: www.yhttpd.org; Mail@yhttpd.org
+ * yChat++; Contact: www.yChat.org; Mail@yChat.org
  * Copyright (C) 2003 Paul C. Buetow, Volker Richter 
  * Copyright (C) 2004 Paul C. Buetow
  * -----------------------------------------------------------------
@@ -39,7 +39,7 @@ parse_argc( int argc, char* argv[] )
 
  string s_output = "";
 
- // Set to 1 if a config option key has to be read ( ./yhttpd -o key1 value1 -o key2 value2 ... );
+ // Set to 1 if a config option key has to be read ( ./ychat -o key1 value1 -o key2 value2 ... );
  bool b_conf = 0;
 
  // Will store the key of an additional option value (see also b_conf)
@@ -62,9 +62,9 @@ parse_argc( int argc, char* argv[] )
   else
   {
    if ( string(argv[i]).find("v") != string::npos )
-    s_output.append(tool::yhttpd_version()+"\n");
+    s_output.append(tool::ychat_version()+"\n");
    if ( string(argv[i]).find("h") != string::npos )
-    s_output.append( "Usage: ./yhttpd {h|v}|{o confkey confvalue}\n" );
+    s_output.append( "Usage: ./ychat {h|v}|{o confkey confvalue}\n" );
    if ( string(argv[i]).find("o") != string::npos )
     b_conf = 1;
   }
@@ -85,7 +85,7 @@ main(int argc, char* argv[])
 {
  map<string,string>* p_start_params = parse_argc( argc, argv );
 
-    cout << tool::yhttpd_version() << endl 
+    cout << tool::ychat_version() << endl 
          << DESCRIP << endl
     	 << DESCRI2 << endl
          << CONTACT << endl
@@ -118,6 +118,10 @@ main(int argc, char* argv[])
     // init the system message logd 
     wrap::WRAP->LOGD = wrap::LOGD = new logd( wrap::CONF->get_elem("httpd.logging.systemfile"),
                                               wrap::CONF->get_elem("httpd.logging.systemlines") );
+    //<<*
+    // init the session manager.
+    wrap::WRAP->SMAN = wrap::SMAN = new sman; 
+    //*>>
     
 
     // init the socket manager.
@@ -132,6 +136,10 @@ main(int argc, char* argv[])
      usleep(1000);
 #endif
 
+    //<<*
+    // init the chat manager.
+    wrap::WRAP->CHAT = wrap::CHAT = new chat; 
+    //*>>
 
     // init the system timer.
     wrap::WRAP->TIMR = wrap::TIMR = new timr; 
@@ -140,6 +148,15 @@ main(int argc, char* argv[])
     // init the module-loader manager.
     wrap::WRAP->MODL = wrap::MODL = new modl; 
 
+    //<<*
+    // init the garbage collector 
+    wrap::WRAP->GCOL = wrap::GCOL = new gcol; 
+
+    // init the data manager. 
+#ifdef DATABASE
+    wrap::WRAP->DATA = wrap::DATA = new data; 
+#endif
+    //*>>
 
 #ifndef NCURSES
 #ifdef CLI
@@ -148,6 +165,12 @@ main(int argc, char* argv[])
 #endif
 #endif
 
+    //<<*	
+    // Initialize database connection queue
+#ifdef DATABASE
+    wrap::DATA->initialize_connections();
+#endif
+    //*>>
 
     // start the socket manager. this one will listen for incoming http requests and will
     // forward them to the specified routines which will generate a http response.

@@ -9,7 +9,7 @@ fi
 perl -e '
  use strict;
  $|=1;
- sub check {
+ sub check_gcc {
    my $f = shift;
    my $s = shift; 
    my $r = 0;
@@ -29,10 +29,32 @@ perl -e '
    print "GNU G++ $f.$s found!\n";
    return $r;
  }
+ sub check_make {
+  print "Checking for GNU make\n";
+  my $err = "No GNU make found.\nPlease install a version of GNU make!\n";
+  my $make;
+  if (`which gmake`) {
+   $make = "gmake"; 
+  } elsif ( `which make` ) {
+   $make = "make";
+  } else {
+   print $err;
+   exit(1); 
+  }
+
+  `sh -c "$make -v > make.version 2>/dev/null"`;
+  if ( `cat make.version` =~ /GNU Make/ ) {
+   `echo $make >> make.version`; 
+  } else {
+   print $err;
+   exit(1); 
+  } 
+ }
+ &check_make;
  print "Checking compiler version\n";
  my $r = 0;
  for (my $i = 4; $i > 0 && $r == 0; --$i ) {
-    $r = &check(3,$i);
+    $r = &check_gcc(3,$i);
  }
  if ($r == 0) {
   print "No suitable g++ compiler found!\n"; 
@@ -49,3 +71,4 @@ perl -e '
 ' `echo "$*" | sed "s/-//g"` 
 
 echo You are ready to type gmake now!
+echo Please read the README first in order to know what gmake is doing!

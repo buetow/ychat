@@ -38,17 +38,20 @@ ncur::start( void *p_void )
                           "Unload all modules      ",
                           "Reload all modules      ",
                           "Clear template cache    ",
-               		  "                        ", 
+                          "Run garbage collector   ", //<<
+               		  //>>"                        ", 
                           "Show max res. set size  ",
                           "Compile changed sources ",
                           "Recompile all sources   ",
                           "Show source stats       ",
                           "Command Line Interface  ",
 #ifdef DATABASE
+                          "Disconnect from DB      ", //<<
 #else
+                          "			   ", //<<
 #endif
 
-               		  "                        ", 
+               		  //>>"                        ", 
                           "Shut down server"
                       };
 
@@ -67,11 +70,15 @@ ncur::start( void *p_void )
     mvprintw( NCUR_SERVER_HEADER_X,NCUR_SERVER_HEADER_Y, "HTTP server:");
     mvprintw( NCUR_POOL_HEADER_X,NCUR_POOL_HEADER_Y, "Thread pool:");
 #ifdef DATABASE
+    mvprintw( NCUR_DATA_HEADER_X,NCUR_DATA_HEADER_Y, "Data stats:"); //<<
 #endif
+    mvprintw( NCUR_CHAT_HEADER_X,NCUR_CHAT_HEADER_Y, "Chat stats:"); //<<
     mvprintw( NCUR_CACHED_HEADER_X,NCUR_CACHED_HEADER_Y, "Caching:"); 
     wrap::HTML->print_cached(0);
 
     is_ready( true );
+    wrap::SMAN->print_init_ncurses(); //<<
+    wrap::STAT->print_num_rooms();    //<<
 
     p_menu->start( &switch_main_menu_ );
 
@@ -166,6 +173,11 @@ ncur::switch_main_menu_( int i_choice )
             refresh();
             break;
         case 4:
+            //<<*
+            if ( ! wrap::GCOL->remove_garbage() )
+             wrap::NCUR->print( GAROFFNE );
+            mvprintw( 20,2, "Garbage collector activated                                  ");
+            //*>>
             refresh();
             break;
         case 5:
@@ -203,10 +215,13 @@ ncur::switch_main_menu_( int i_choice )
             break;
         case 10:
 #ifdef DATABASE
+            wrap::DATA->disconnect_all_connections(); 	//<<
 #endif
             break;
 
         case 11: // Shut down server
+            if ( ! wrap::GCOL->remove_garbage() ) 	//<<
+             wrap::NCUR->print( GAROFFNE );		//<<
             mvprintw( 21,2, "Good bye !");
             close_ncurses();
             exit(0);
@@ -229,7 +244,7 @@ ncur::init_ncurses()
     noecho();
     cbreak();       // Line buffering disabled. pass on everything
     init_pair(1, COLOR_WHITE, COLOR_BLUE);
-    mvprintw( 0,2, (char*)(tool::yhttpd_version()).c_str());
+    mvprintw( 0,2, (char*)(tool::ychat_version()).c_str());
     refresh();
 }
 

@@ -8,31 +8,32 @@
 <link rel=stylesheet href="style.css" type=text/css>
  <script language="JavaScript">
   var scrolling;
-  var ison;
-  function autoscroll()
+  var isOn;
+  function autoScroll()
   {
-   if(!ison){
+   if(!isOn)
+   {
     scrolling = window.setInterval("window.scroll(1,1606682)",70);
-    ison = true;
+    isOn = true;
    }
   }
-  function stopscroll()
+
+  function stopScroll()
   {
-   if(ison)
+   if(isOn)
    {
-    window.clearInterval(scrolling);
-    ison = false;
+    window.clearInterval(scrolling); 
+    isOn=false;
    }
   }
  </script>
 </head>
 <body class="stream">
-<h1>Engine: %%ychat.version%%</h2>
-<script language="JavaScript">
- autoscroll();
+<script>
+autoScroll();
 </script>
 
- Welcome to the chat, %%nick%%!
+ Welcome to yChat %%nick%%!
  <br>
  <br>
 

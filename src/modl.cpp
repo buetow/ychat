@@ -17,7 +17,6 @@ modl::modl(  ) : smap<dynmod*,string>(HMAPOCC)
 #ifdef NCURSES
     print_cached( 0 );
 #endif
-    
     if ( wrap::CONF->get_elem( "httpd.modules.preloadcommands" ).compare( "true" ) == 0 )
      preload_modules( wrap::CONF->get_elem("httpd.modules.commandsdir") );
 
@@ -51,7 +50,7 @@ modl::preload_modules( string s_path )
   do
   {
    if ( iter->length() >= 3 && iter->compare( iter->length()-3, 3, ".so" ) == 0 )
-    cache_module( s_path + *iter );
+    cache_module( s_path + *iter, false );
   }
   while ( ++iter != dir_vec.end() );
  }
@@ -70,7 +69,7 @@ modl::dlclose_( dynmod* mod )
 }
 
 dynmod*
-modl::cache_module( string s_name )
+modl::cache_module( string s_name, bool b_print_sys_msg )
 {
     void     *the_module = NULL;
     function *the_func   = NULL;
@@ -92,8 +91,8 @@ modl::cache_module( string s_name )
         return NULL;
     }
 
-    wrap::system_message( MODULEC + s_name.substr( s_name.find_last_of("/")+1 ) ); 
-
+    if ( b_print_sys_msg )
+     wrap::system_message( MODULEC + s_name.substr( s_name.find_last_of("/")+1 ) ); 
 
     dynmod *mod     = new dynmod; // encapsulates the function and module handler.
     mod->the_func   = the_func  ; // the function to execute
@@ -117,7 +116,7 @@ modl::get_module( string s_name )
 {
     wrap::system_message( MODULER + s_name.substr( s_name.find_last_of("/")+1 ) ); 
     dynmod* mod = get_elem( s_name );
-    return ! mod ? cache_module( s_name ) : mod;
+    return ! mod ? cache_module( s_name, true ) : mod;
 }
 
 void

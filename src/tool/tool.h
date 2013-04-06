@@ -3,16 +3,19 @@
 
 #include "../incl.h"
 
+#include <list>
+
 using namespace std;
 
 class tool
 {
 public:
+    static list<string> split_string(string s_string, string s_split);
+
     static bool is_alpha_numeric( string &s_digit )
     {
-     auto const char *digit = s_digit.c_str();
-     auto int   i_len = strlen( digit );
-     
+     const char *digit = s_digit.c_str();
+     int   i_len = strlen( digit );
 
      for( int i=0; i<i_len; i++ )
      {
@@ -27,6 +30,7 @@ public:
     static char* clean_char( char* c_str);
     static string trim( string s_str );
     static string replace( string s_string, string s_search, string s_replace );
+
     static string int2string( int i_int )
     {
      char buffer[64];
@@ -84,7 +88,7 @@ public:
 
    static string shell_command( string s_command, method m_method );
 
-   static string yhttpd_version()
+   static string ychat_version()
    {
     return string(VERSION) + "-" + string(BRANCH) + " Build " + int2string(BUILDNR);
    }

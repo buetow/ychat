@@ -1,4 +1,4 @@
-All scripts should be run from the yhttpd main directory, example:
+All scripts should be run from the yChat main directory, example:
 
 ./scripts/makeyhttpd.pl
 
