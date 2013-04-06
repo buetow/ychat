@@ -1,7 +1,6 @@
 #include "../incl.h"
 
 #ifdef NCURSES
-
 #ifndef MENU_H
 #define MENU_H
 
@@ -28,11 +27,7 @@ public:
 
     void display();
     void start( void (*swich_case_menu_action)(int) );
-
-    void activate_menu_win()
-    { 
-	keypad(win, 1);
-    }
+    void activate_menu_win() { keypad(win, 1); }
 };
 
 #endif

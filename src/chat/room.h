@@ -19,9 +19,7 @@ class room : public base<user>, public name
 private:
     string s_topic;
     pthread_mutex_t mut_s_topic;
-#ifdef LOGGING
     logd* p_logd; 
-#endif
 
 public:
     room( string s_name );
@@ -56,9 +54,7 @@ public:
     }
     void msg_post( string *p_msg )
     {
-#ifdef LOGGING
      p_logd->log_simple_line( logd::remove_html_tags(*p_msg) );
-#endif
      base<user>::msg_post( p_msg );
     } 
 
@@ -68,10 +64,9 @@ public:
     }
 
     virtual void set_name( string s_name );
-    string get_topic();
-    void set_topic( string s_topic );
-    void set_topic( string s_topic, string s_color );
-    void clean_room();
+    virtual string get_topic();
+    virtual void set_topic( string s_topic );
+    virtual void clean_room();
 
  
 

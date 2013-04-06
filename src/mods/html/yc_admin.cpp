@@ -21,7 +21,7 @@ extern "C" {
         dynamic_wrap* p_wrap = (dynamic_wrap*) c->elem[0];
         user* 	   p_user    = (user*) c->elem[2];
         conf*      p_conf    = (conf*) p_wrap->CONF; 
-        string*    p_content = &(*((map<string,string>*) c->elem[1]))["content"];
+        string*    p_content = &(*((map_string*) c->elem[1]))["content"];
 
          vector<string>* p_vec_keys = p_conf->get_key_vector();
 	 sort(p_vec_keys->begin(), p_vec_keys->end());
@@ -62,8 +62,6 @@ extern "C" {
          } // while
 
          p_content->append( "</table>\n<br>\n" );
-
-	return 0;
  }
 }
 

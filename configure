@@ -70,9 +70,4 @@ perl -e '
  exit(0);
 ' `echo "$*" | sed "s/-//g"` 
 
-if test -f err
-then
- rm -f err
-else
- echo You are ready to type gmake now!
-fi
+echo You are ready to type gmake now!

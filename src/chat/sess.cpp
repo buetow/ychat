@@ -3,55 +3,27 @@
 
 #include "sess.h"
 
-sess::sess( string s_tmpid )
+sess::sess( string s_id )
 {
-    this->p_user = NULL; 
-    this->s_tmpid = s_tmpid;
+    this->sess_id=s_id;
 }
 
 sess::~sess()
 {
+    
 }
 
 string
-sess::get_tmpid()
+sess::get_id()
 {
-    return s_tmpid;
-}
-
-string
-sess::get_name()
-{
-    if ( p_user = NULL )
-	return "";
-
-    return p_user->get_name();
-}
-
-void
-sess::set_name(string s_name)
-{
-    if ( p_user != NULL )
-	p_user->set_name(s_name);
-}
-
-user*
-sess::get_user()
-{
-    return p_user;
-}
-
-void
-sess::set_user(user* p_user)
-{
-    this->p_user = p_user;
+    return this->sess_id;
 }
 
 
 void
 sess::invalidate()
 {
-    this->s_tmpid = "0";
+    this->sess_id = "0";
 }
 
 #endif

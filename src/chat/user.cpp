@@ -97,7 +97,7 @@ user::get_colored_name()
 }
 
 void
-user::get_data( map<string,string> *p_map_data )
+user::get_data( map_string *p_map_data )
 {
     string s_req = (*p_map_data)["!get"];
 
@@ -490,8 +490,6 @@ user::check_timeout( int* i_idle_timeout )
                 + "';</script>";
   msg_post( &s_quit ); 
   set_online( false );
-
-  pthread_cond_signal( &cond_message );
  }
 
  else if ( ! get_away() && i_idle_timeout[2] <= i_user_timeout )

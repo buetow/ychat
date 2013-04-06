@@ -26,10 +26,10 @@ public:
     ~timr();
 
     bool get_timer_active() const;
-    void start( void *v_ptr );
+    void start( void *v_pointer );
 
 #ifdef NCURSES
-    void print_time();
+    void print_time( );
 #endif
 
     void set_time( double d_uptime, int i_cur_seconds, int i_cur_minutes, int i_cur_hours );
@@ -56,8 +56,8 @@ public:
      return s_ret;
     }
 
-    int get_offset();
-    double get_time_diff( time_t &clock_diff );
+    virtual int get_offset();
+    virtual double get_time_diff( time_t& clock_diff );
 };
 
 #endif

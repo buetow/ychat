@@ -17,8 +17,6 @@ extern "C" {
 
         p_user->get_room()->reload_onlineframe();
         p_user->msg_post ( &s_msg  );
-
-	return 0;
  }
 }
 

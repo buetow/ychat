@@ -19,7 +19,7 @@ sman::~sman()
     pthread_mutex_destroy( &mut_i_session_count );
 }
 
-string sman::generate_id( int i_len )
+string sman::generate_id( int len )
 {
     string valid_chars = wrap::CONF->get_elem("chat.session.validchars");
     string s_ret = "";
@@ -27,7 +27,7 @@ string sman::generate_id( int i_len )
     srand(time(0)+tool::string2int(wrap::CONF->get_elem("chat.session.kloakkey")));
     int i_char;
 
-    for (int i = 0; i < i_len; i++)
+    for (int i = 0; i < len; i++)
     {
      i_char = rand() % 64;
      s_ret += valid_chars[i_char];
@@ -45,9 +45,9 @@ string sman::generate_id( int i_len )
 
 sess *sman::create_session( )
 {
-    string s_tmpid = generate_id( tool::string2int( wrap::CONF->get_elem( "chat.session.length" ) ) );
+    string s_id = generate_id( tool::string2int( wrap::CONF->get_elem( "chat.session.length" ) ) );
 
-    sess* p_sess = new sess( s_tmpid );
+    sess* p_sess = new sess( s_id );
 
     pthread_mutex_lock( &mut_i_session_count );
     i_session_count++;
@@ -56,8 +56,7 @@ sess *sman::create_session( )
 #endif
     pthread_mutex_unlock( &mut_i_session_count );
 
-    //????
-    add_elem( p_sess, s_tmpid );
+    add_elem( p_sess, s_id );
 
     return p_sess;
 }

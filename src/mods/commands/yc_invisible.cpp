@@ -15,16 +15,14 @@ extern "C" {
         bool b_invisible = p_user->get_invisible(); 
  
         string s_msg = b_invisible
-                     ? p_conf->get_elem("chat.msgs.setmodeinvisible") 
+                     ? p_conf->get_elem("chat.msgs.setmodeaway") 
                      + "<br>\n"
-                     : p_conf->get_elem("chat.msgs.unsetmodeinvisible") 
+                     : p_conf->get_elem("chat.msgs.unsetmodeaway") 
                      + "<br>\n"; 
 
         p_user->set_invisible( !b_invisible );
         p_user->get_room()->reload_onlineframe();
         p_user->msg_post ( &s_msg  );
-
-	return 0;
  }
 }
 

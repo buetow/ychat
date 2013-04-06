@@ -49,8 +49,6 @@ extern "C" {
                        );  
 
         p_user->msg_post( new string( c_msg ) );
-
-	return 0;
  }
 }
 

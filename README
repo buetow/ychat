@@ -1,7 +1,7 @@
-yChat; Homepage: www.yChat.org; Version 0.7.4.1-RELEASE
+yChat; Homepage: www.yChat.org; Version 0.7.1-RELEASE
 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
-Copyright (C) 2004, 2005 Paul C. Buetow
+Copyright (C) 2004 Paul C. Buetow
 -----------------------------------------------------------------
 
 This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ Engine powerd browsers like Mozilla, Firefox, Camino etc.
 yChat runs completely stand alone and does not need another webserver to build
 on like Apache and does not need to be run via any kind of CGI. yChat creates 
 its own socket on a customized port (standard port: 2000) and seems to be a full
-featured HTTP web server to the clients (web browsers). 
+features HTTP web server to the clients (web browsers). 
 
 The yChat code base can be converted to an yhttpd code base automaticaly. yhttpd
 is the webserver subset of yChat which runs completely stand alone and provides
@@ -178,16 +178,13 @@ The following platforms have been tested with success. If you find out that
 a listed platform did not work at all please contact me:
 
   Operating system (arch)	GNU G++		GNU make
-- FreeBSD 5.3-RELEASE (i386)	3.4.2		3.80
 - FreeBSD 5.2.1-RELEASE (i386)	3.3.3 		3.80		
-- FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
 - FreeBSD 4.9-RELEASE (i386)	3.3.4		3.80
-- Gentoo Linux 2004 (i386)	3.3.2		3.80
-- OpenBSD 3.6 SMP (i386)	3.3.2		3.80
-- Red Hat Linux 8.0 SMP	(i386)	3.2-7		3.79
+- FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
+- Gentoo Linux 2004.2 (i386)	3.3.2		3.80
+- OpenBSD 3.6 MP (i386)		3.3.2		3.80
 - Slackware Linux 10.0 (i386)	3.4.0		3.80 
-- SUSE Linux 9.0 (i386)		3.3.1		3.80
-- SUSE Linux 8.1 (i386)		3.2		3.79.1
+- SUSE Linux 8.0, G (i386)	3.3.1		3.80
 
 Other platforms like Linux based systems, other BSD-Systems or UNICES
 are very likely to work too. 
@@ -197,11 +194,11 @@ are very likely to work too.
 Before you compile the source you have to be sure to use at least GCC
 version 3.1 with pthreads enabled. ( Type gcc -v to check it ).
 GCC 2.95 and 3.0 did not work while testing and WON'T BE SUPPORTED!
-If you like to support yChat, please write us an email and tell what 
-you can/like/would help ;-]. Please also take a look at the yChat
+If you like to support yChat++, please write us an email and tell what 
+you can/like/would help ;-]. Please also take a look at the yChat++
 homepage which is located at http://www.yChat.org.
 
-1.3.0 HOW TO OBTAIN YCHAT:
+1.3.0 HOW TO OBTAIN YCHAT++:
 
 yChat can be downloaded as a source package or through CVS. 
 
@@ -225,7 +222,7 @@ Now you may continue with the installation.
 
 Invoke "./configure". Afterwards you will get prompted with the before-compile
 options of yChat. After choosing those options you are ready to type "gmake"
-afterwards. See below what gmake is doing. 
+afterwards. 
 
 //<<*
 If you have choosen MySQL database support, then take a look at section 1.3.2 
@@ -238,7 +235,7 @@ You may also invoke gmake with the following options (the PREFIX can be set
 in the yChat configurator which will be launched by the top configure script
 or gmake config):
 
- gmake or gmake all (compiles everything, also modules and runs "gmake mail")
+ gmake or gmake all (compiles everything, also modules)
  gmake base (only compiles the base)
  gmake base_start (only compiles the base and starts the server)
  gmake clean (cleans everything)
@@ -249,7 +246,6 @@ or gmake config):
  gmake gpl (shows the GNU General Public License)		
  gmake help (shows all available ychat gmake targets)
  gmake install (installs ychat to PREFIX)
- gmake mail (sends a mail to the yChat developers containing build opts.)
  gmake modules (only compiles modules)
  gmake mrproper (same as gmake clean plus removing all temp files) 
  gmake setup (runs all configure scripts and afterwards gmake all)
@@ -275,7 +271,6 @@ Aferwards point your webbrowser to http://yourip:port !
 If you in hury, then you may just type gmake setup. In the yChat configurator
 you may just choose all the default values. If done, yChat will get compiled
 and is ready to run with ./bin/ychat! 
-
 
 //<<*
 1.3.3 MYSQL SETUP

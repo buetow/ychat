@@ -1,3 +1,5 @@
+// class conf implementation.
+
 #ifndef CONF_CPP
 #define CONF_CPP
 
@@ -17,7 +19,7 @@ conf::conf( string s_conf, map<string,string>* p_start_params ) : nmap<string,st
 
     string s_config;
 
-    for ( int i = 0; i < 4; ++i )
+    for ( int i = 0; i<4; i++ )
     {
      cout << "Checking for " << s_check[i];
      ifstream if_check( s_check[i].c_str() );
@@ -77,14 +79,14 @@ conf::parse_xml(TiXmlNode* p_node, vector<string>* p_vec)
   {
    //cout << p_vec->size() << ": (Value:" << p_child->Value() << ") (Type:" << p_child->Type() << ")" << endl;
 
-   if ( strcmp(p_child->Value(),"category") == 0 )
+   if ( strcmp(p_child->Value(),"category") == 0)
    {
     p_vec->push_back(p_child->ToElement()->Attribute("name"));	
     parse_xml(p_child, p_vec);
     p_vec->pop_back();
    }
 
-   else if ( strcmp(p_child->Value(),"option") == 0 )
+   else if ( strcmp(p_child->Value(),"option") == 0)
    {
     string s_option_name = "";
 
@@ -149,15 +151,5 @@ conf::exit_if_xml_error() const
        exit(1);		
     }
 }
-
-//<<*
-string
-conf::colored_error_msg(string s_key)
-{
-    return "<font color=\"#" 
-	+ nmap<string,string>::get_elem("chat.html.errorcolor") 
-	+ "\">" + nmap<string,string>::get_elem(s_key) + "</font><br>\n"; 	
-}
-//*>>
 
 #endif

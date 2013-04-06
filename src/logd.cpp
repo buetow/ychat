@@ -1,12 +1,8 @@
-
 #ifndef LOGD_CPP
 #define LOGD_CPP
 
-#include "logd.h"
-
-#ifdef LOGGING
-
 #include <fstream>
+#include "logd.h"
 
 logd::logd( string s_filename, string s_log_lines )
 {
@@ -77,36 +73,28 @@ logd::flush()
 }
 
 void
-logd::log_access( map<string,string> request )
+logd::log_access( map_string request )
 {
     string s_time = get_time_string();
     string s_logstr = request["REMOTE_ADDR"] + " - - "+s_time+" \"" + request["QUERY_STRING"]+"\" 200 0 \""+request["request"]+"\" \""+request["User-Agent"]+"\"\n";
 
     pthread_mutex_lock ( &mut_s_logging );
     s_queue.push(s_logstr);
-
     if ( s_queue.size() > i_lines )
      flush();
-
     pthread_mutex_unlock( &mut_s_logging );
 }
 
 void
 logd::log_simple_line( string s_line )
 {
-    // Dont log empty lines!	
-    if (s_line.empty())
-     return;	
-
     string s_time = get_time_string();
     string s_logstr = s_time + " " + s_line;
 
     pthread_mutex_lock  ( &mut_s_logging );
     s_queue.push(s_logstr);
-
     if ( s_queue.size() > i_lines )
      flush();	
-
     pthread_mutex_unlock( &mut_s_logging );
 }
 
@@ -114,7 +102,7 @@ void
 logd::set_logfile( string s_path, string s_filename )
 {
     // Remove "/" from filename!
-    unsigned i_pos = s_filename.find( "/" );
+    unsigned int i_pos = s_filename.find( "/" );
     while ( i_pos != string::npos )
     {
      s_filename.replace( i_pos, 1, "SLASH" );
@@ -166,7 +154,4 @@ logd::set_lines( const int i_lines )
 {
     this->i_lines = i_lines;
 }
-
-#endif
-
 #endif

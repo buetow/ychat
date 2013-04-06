@@ -15,7 +15,7 @@ extern "C" {
         modl*      p_modl    = (modl*) p_wrap->MODL; 
         conf*      p_conf    = (conf*) p_wrap->CONF; 
         chat*      p_chat    = (chat*) p_wrap->CHAT; 
-        string*    s_content = &(*((map<string,string>*) c->elem[1]))["content"];
+        string*    s_content = &(*((map_string*) c->elem[1]))["content"];
 
         vector<string>* p_vec_keys = p_modl->get_mod_vector();
           
@@ -41,8 +41,6 @@ extern "C" {
          }
          p_vec_keys_iter++;
         }
-
-	return 0;
  }
 }
 

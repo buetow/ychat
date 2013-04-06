@@ -1,6 +1,6 @@
-MAKE=`tail -n 1 make.version`
+MAKE=`tail -1 make.version`
 PREFIX=`grep "define PREFIX" src/glob.h | cut -d'"' -f2`
-all:    version base modules version 
+all:    base modules version
 	@echo "Now edit the ychat.conf and run ychat!"
 	@echo "The config file is searched in the following order:"
 	@echo " ./ychat.conf " 
@@ -8,24 +8,7 @@ all:    version base modules version
 	@echo " ./etc/ychat.conf "
 	@echo " /etc/ychat.conf "
 	@echo " $(PREFIX)/etc/ychat.conf "
-	@echo If you want to help the yChat project please run gmake mail
-	@echo so that the developers receive an email about the platform
-	@echo being used.
-mail:
-	@echo "VERSION:" > mail.tmp
-	@${MAKE} version >> mail.tmp
-	@echo >> mail.tmp
-	@echo "UNAME:" >> mail.tmp
-	@uname -a >> mail.tmp
-	@echo >> mail.tmp
-	@echo "DATE:" >> mail.tmp
-	@date >> mail.tmp
-	@echo >> mail.tmp
-	@echo "COMPILER AND MAKE:" >> mail.tmp
-	@cat g++.version make.version >> mail.tmp
-	@cat mail.tmp | mail -s "Successfull build of yChat" successfullbuild@yhttpd.org
-	@rm -f mail.tmp 
-install: deinstall
+install:	deinstall
 	@echo "Instaling ychat to $(PREFIX)"
 	@cp bin/ychat $(PREFIX)/bin 
 	@if ! test -d $(PREFIX)/lib/ychat; then mkdir -p $(PREFIX)/lib/ychat; fi
@@ -33,10 +16,13 @@ install: deinstall
 	@if ! test -d $(PREFIX)/etc; then mkdir $(PREFIX)/etc; fi
 	@if test -d mods; then cp -Rp mods $(PREFIX)/lib/ychat/mods; fi
 	@cp -Rp html $(PREFIX)/share/ychat/html
+	@cp -Rp lang $(PREFIX)/share/ychat/lang
 	@if test -f $(PREFIX)/etc/ychat.conf; then mv $(PREFIX)/etc/ychat.conf $(PREFIX)/etc/ychat.conf.bak; fi
 	@cp etc/ychat.conf etc/ychat.conf.tmp
 	@sed "s#mods/#$(PREFIX)/lib/ychat/mods/#" etc/ychat.conf.tmp > etc/ychat.conf.tmp.2 && mv etc/ychat.conf.tmp.2 etc/ychat.conf.tmp 
 	@sed "s#\"log/#\"$(PREFIX)/share/ychat/log/#" etc/ychat.conf.tmp > etc/ychat.conf.tmp.2 && mv etc/ychat.conf.tmp.2 etc/ychat.conf.tmp 
+	@sed "s#LANGUAGE_DIR=\"lang/#LANGUAGE_DIR=\"$(PREFIX)/share/ychat/lang/#" etc/ychat.conf.tmp > etc/ychat.conf.tmp.2 && mv etc/ychat.conf.tmp.2 etc/ychat.conf.tmp 
+	@sed "s#HTML_TEMPLATE_DIR=\"html/#HTML_TEMPLATE_DIR=\"$(PREFIX)/share/ychat/html/#" etc/ychat.conf.tmp > etc/ychat.conf.tmp.2 && mv etc/ychat.conf.tmp.2 etc/ychat.conf.tmp 
 	@mv etc/ychat.conf.tmp $(PREFIX)/etc/ychat.conf
 	@echo "yChat configuration file can be found under"
 	@echo " $(PREFIX)/etc/ychat.conf"
@@ -46,9 +32,6 @@ install: deinstall
 	@echo "The most secure would be an additional user 'ychat'!"
 uninstall: deinstall
 deinstall:
-	@echo Install/deinstall is currently not working!
-	@echo Start yChat with ./bin/ychat instead! 
-	@exit 1
 	@echo "Deinstalling ychat from $(PREFIX)"
 	@if test -f $(PREFIX)/bin/ychat; then rm -f $(PREFIX)/bin/ychat; fi
 	@if test -d $(PREFIX)/lib/ychat; then rm -Rf $(PREFIX)/lib/ychat; fi
@@ -102,6 +85,6 @@ mrproper: clean
 	@find . -name "*.add" | xargs rm -f
 	@ls | grep core | xargs rm -f
 version:
-	@./scripts/version.sh
+	@echo "`grep VERSION src/msgs.h | cut -d'"' -f2`-`grep BRANCH src/msgs.h| cut -d'"' -f2` Build `grep BUILD src/msgs.h| cut -d' ' -f3`" 
 debug:
 	@gdb bin/ychat ychat.core

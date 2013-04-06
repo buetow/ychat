@@ -16,13 +16,11 @@ cli::cli( )
 cli::~cli()
 {
 }
-
 int
 cli::parse_input( string s_input )
 {
  string s_param = "";
  unsigned i_pos = s_input.find_first_of(" ");
-
  if ( i_pos != string::npos ) {
   s_param = s_input.substr(i_pos+1);
   s_input = s_input.substr(0, i_pos);
@@ -31,7 +29,6 @@ cli::parse_input( string s_input )
  if ( s_input.compare("help") == 0 || s_input.compare("h") == 0)
  {
   cout << CLIPRMO << "COMMAND LINE INTERFACE HELP MENU" << endl;
-  cout << CLIPRMO << " !command      - Uses system to run a command" << endl;
 #ifdef DEBUG
   cout << CLIPRMO << " (d)ebug       - Starts debug routine (cli.cpp)" << endl;
 #endif
@@ -40,11 +37,9 @@ cli::parse_input( string s_input )
 #ifdef NCURSES
   cout << CLIPRMO << " (ex)it        - Quits CLI mode and respawns ncurses mode" << endl;
 #endif
-  cout << CLIPRMO << " (h)elp        - Prints out this help!" << endl;
-  //<<*
-  cout << CLIPRMO << " (m)ysql       - Runs MySQL client on yChat DB" << endl
-       << CLIPRMO << " (rel)oad      - Reloads all modules" << endl; 
-  //*>>
+  cout << CLIPRMO << " (h)elp        - Prints out this help!" << endl
+       << CLIPRMO << " (m)ysql       - Runs MySQL client on yChat DB" << endl;
+  cout << CLIPRMO << " (rel)oad      - Reloads all modules" << endl;
 #ifdef EXPERIM
   cout << CLIPRMO << " (re)conf      - Reloads configuration (EXPERIMENTAL)" << endl;
 #endif
@@ -53,18 +48,13 @@ cli::parse_input( string s_input )
        << CLIPRMO << " (set) VAR VAL - Sets configuration value VAR to VAL" << endl
        << CLIPRMO << " (sh)ell       - Runs a system shell" << endl
        << CLIPRMO << " (s)hutdown    - Shuts down the whole server" << endl
-       << CLIPRMO << " (t)ime        - Prints out time and uptime" << endl;
-  cout << CLIPRMO << " (unl)oad      - Unloads all loaded modules" << endl;//<<
-  cout << CLIPRMO << " (u)nset VAR   - Deletes configuration value VAR" << endl
+       << CLIPRMO << " (t)ime        - Prints out time and uptime" << endl
+       << CLIPRMO << " (unl)oad      - Unloads all loaded modules" << endl
+       << CLIPRMO << " (u)nset VAR   - Deltetes configuration value VAR" << endl
        << CLIPRMO << " (v)ersion     - Prints out version" << endl;
   cout << CLIPRMI;
  }
 
- else if( s_input.at(0) == '!' )
- {
-  system( s_input.substr(1).c_str() ); 
-  cout << CLIPRMI;
- }
 #ifdef DEBUG
  else if( s_input.compare("d") == 0 || s_input.compare("debug") == 0 )
  {
@@ -75,7 +65,6 @@ cli::parse_input( string s_input )
  else if( s_input.compare("echo") == 0 || s_input.compare("e") == 0 )
  {
    string s_val;
-
    // Check wildcards
    unsigned i_pos = s_param.find("*");
    if ( i_pos != string::npos )
@@ -84,13 +73,11 @@ cli::parse_input( string s_input )
     vector<string>* p_vec = wrap::CONF->get_key_vector(); 
     sort(p_vec->begin(), p_vec->end());
     vector<string>::iterator iter;
-
     for ( iter = p_vec->begin(); iter != p_vec->end(); iter++ )
      if ( iter->find(s_param) == 0 )
       s_val.append( *iter + " := " +  wrap::CONF->get_elem(*iter) + "\n" + CLIPRMO );
     delete p_vec;
    }
-
    else
    {
     s_val = wrap::CONF->get_elem(s_param);
@@ -98,41 +85,30 @@ cli::parse_input( string s_input )
 
    if( s_val.empty() ) 
     s_val = "Value not set";
-
    cout << CLIPRMO << s_val << endl;
    cout << CLIPRMI;
  }
-
- //<<*
  else if( s_input.compare("mysql") == 0 || s_input.compare("m") == 0 )
  {
   cout << CLIPRMO << CLIMSQL << endl;
-
   system((wrap::CONF->get_elem("chat.system.mysqlclient") + " -p -h " + 
           wrap::CONF->get_elem("chat.database.serverhost") + " -u " +
           wrap::CONF->get_elem("chat.database.user") ).c_str());
-
   cout << CLIPRMO << CLIWELC << endl;
   cout << CLIPRMI;
  }
- //*>>
-
 #ifdef NCURSES
  else if( s_input.compare("exit") == 0 || s_input.compare("ex") == 0 )
  {
   return 0;
  }
 #endif
-
- //<<*
  else if( s_input.compare("reload") == 0 || s_input.compare("rel") == 0 )
  {
   cout << CLIPRMO;
   wrap::MODL->reload_modules();
   cout << CLIPRMI;
  }
- //*>>
-
 #ifdef EXPERIM
  else if( s_input.compare("reconf") == 0 || s_input.compare("re") == 0 )
  {
@@ -140,47 +116,38 @@ cli::parse_input( string s_input )
   cout << CLIPRMI;
  }
 #endif
-
  else if( s_input.compare("rusage") == 0 || s_input.compare("r") == 0 )
  {
   print_rusage();
   cout << CLIPRMI;
  }
-
  else if( s_input.compare("ru") == 0 || s_input.compare("rusageh") == 0 )
  {
   cout << wrap::STAT->get_rusage_history( "ru_maxrss", string(CLIPRMO) + " " ); 
   cout << CLIPRMI;
  }
-
  else if( s_input.compare("set") == 0 )
  {
   string s_varname = "";
   i_pos = s_param.find_first_of(" ");
-
   if ( i_pos != string::npos ) {
     s_varname = s_param.substr(0, i_pos);
-
     if ( s_param.length() > i_pos+1 )
       s_param = s_param.substr(i_pos+1);
-
     else
       s_param = "";
   }
 
   string s_old_val = wrap::CONF->get_elem(s_varname);
-
   if ( !s_old_val.empty() )
   {
    cout << CLIPRMO << "Old value: " << s_old_val << endl;
    wrap::CONF->del_elem(s_varname);
   }
-
   wrap::CONF->add_elem(s_param, s_varname);
   cout << CLIPRMO << "New value: " << s_param << endl;
   cout << CLIPRMI;
  }
-
  else if( s_input.compare("shell") == 0 || s_input.compare("sh") == 0 )
  {
   cout << CLIPRMO << CLISHEL << endl;
@@ -188,26 +155,20 @@ cli::parse_input( string s_input )
   cout << CLIPRMO << CLIWELC << endl;
   cout << CLIPRMI;
  }
-
  else if( s_input.compare("shutdown") == 0 || s_input.compare("s") == 0 )
  {
   exit(0);
  }
-
  else if( s_input.compare("t") == 0 || s_input.compare("time") == 0 ) {
   cout << CLIPRMO  << "Time:   " << wrap::TIMR->get_time() << endl 
        << CLIPRMO  << "Uptime: " << wrap::TIMR->get_uptime() << endl; 
   cout << CLIPRMI;
  }
-
- //<<*
  else if( s_input.compare("unl") == 0 || s_input.compare("unload") == 0 ) {
   cout << CLIPRMO;
   wrap::MODL->unload_modules();
   cout << CLIPRMI;
  }
- //*>>
-
  else if( s_input.compare("u") == 0 || s_input.compare("unset") == 0 )
  {
   if (!s_param.empty())
@@ -225,13 +186,11 @@ cli::parse_input( string s_input )
    cout << CLIPRMI;
   }
  }
-
  else if( s_input.compare("v") == 0 || s_input.compare("version") == 0 )
  {
   cout << CLIPRMO  << tool::ychat_version() << " " << UNAME << endl; 
   cout << CLIPRMI;
  }
-
  else
  {
   cout << CLIPRMO << CLIHELP << "\"" << s_input << "\"" << endl;

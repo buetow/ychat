@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# The yChat & yhttpd Project (2004, 2005)
+# The yChat & yhttpd Project (2004)
 #
 # This scripts modifies the yChat sources to yhttpd sources.
 
@@ -17,8 +17,6 @@ my @delete = (
  'src/data',
  'src/irc',
  'src/contrib/crypt',
- 'src/modl.h',
- 'src/modl.cpp',
  'src/mods',
  'src/mods/commands',
  'src/mods/irc',
@@ -77,7 +75,7 @@ foreach (@delete) {
   system("rm -Rf $_"); 
 }
 
-print "\nDeleting CVS directories\n";
+print "Deleting CVS directories\n";
 system("find . -name CVS | xargs rm -Rf");
 
 print "Creating new dirs\n->";
@@ -86,14 +84,14 @@ foreach (@createdir) {
   system("mkdir $_"); 
 }
 
-print "\nRenaming config file\n";
+print "Renaming config file\n";
 system("mv etc/ychat.conf etc/yhttpd.conf");
 
 print "Moving html templates\n";
 system("mv demo.html html/index.html");
 system("mv test.cgi notfound.html style.css html");
 
-print "Removing marked lines of code\n->";
+print "Removing marked lines of code\n ->";
 &remove_marked_lines('.');
 
 sub remove_marked_lines {

@@ -6,19 +6,20 @@
 
 using namespace std;
 
-#define HEADER HEADER1 HEADER2 HEADER3 HEADER4
-#define STREAM HEADER5 HEADER6
-
-const string reqp::s_http = HEADER;
-const string reqp::s_http_stream = STREAM; 
-const string reqp::s_http_colength = HEADER7; 
-const string reqp::s_http_cotype = HEADER8; 
+string reqp::HTTP_CODEOK = "HTTP/1.1 200 OK\r\n";
+string reqp::HTTP_SERVER = "Server: yChat (Unix)\r\n";
+string reqp::HTTP_CONTAC = "Contact: www.yChat.org\r\n";
+string reqp::HTTP_EXPIRE = "Expires: 0\r\n";
+string reqp::HTTP_CACHEC = "Cache-control: no-cache\r\nPragma: no-cache\r\n";
+string reqp::HTTP_CONNEC = "Connection: keep-alive\r\n";
+string reqp::HTTP_CHUNKE = "Transfer-Encoding: chunked\r\n";
+string reqp::HTTP_COTYPE = "Content-Type: ";
 
 reqp::reqp( )
 {}
 
 void
-reqp::get_request_parameters( string s_parameters, map<string,string>& map_params )
+reqp::get_request_parameters( string s_parameters, map_string& map_params )
 {
      string s_tmp; 
      unsigned i_pos, i_pos2;
@@ -27,8 +28,8 @@ reqp::get_request_parameters( string s_parameters, map<string,string>& map_param
      {
       s_tmp = s_parameters.substr(0, i_pos );
 
-      if ( (i_pos2 = s_tmp.find("=")) != string::npos ) 
-       map_params[ s_tmp.substr(0, i_pos2) ] = tool::replace( s_tmp.substr( i_pos2+1 ), "\\AND", "&"); 
+      if ( (i_pos2 = s_tmp.find("=")) != string::npos )
+       map_params[ s_tmp.substr(0, i_pos2) ] = s_tmp.substr( i_pos2+1 ); 
 
       s_parameters = s_parameters.substr( i_pos + 1 );
      }
@@ -36,14 +37,14 @@ reqp::get_request_parameters( string s_parameters, map<string,string>& map_param
      // Get the last request parameter, which does not have a "&" on the end!
      if( (i_pos = s_parameters.find("=")) != string::npos ) 
       map_params[ s_parameters.substr(0, i_pos) ] = s_parameters.substr( i_pos+1 );
-
-    //map<string,string>::iterator iter;
-    //for ( iter = map_params.begin(); iter != map_params.end(); ++iter )
-    //cout << ">>>" << iter->first << "=" << iter->second << endl;
+   
+ //    map_string::iterator iter;
+ //    for ( iter = map_params.begin(); iter != map_params.end(); ++iter )
+ //      cout << ">>>" << iter->first << "=" << iter->second << endl;
 }
 
 string
-reqp::get_url( int &i_sock, string s_req, map<string,string> &map_params )
+reqp::get_url( thrd* p_thrd, string s_req, map_string &map_params )
 {
     unsigned i_pos, i_pos2;
     string s_vars( "" );
@@ -101,7 +102,7 @@ reqp::get_url( int &i_sock, string s_req, map<string,string> &map_params )
        if ( (i_pos = s_req.find("event=")) == string::npos)
        {
         char c_req[POSTBUF];
-        i_len = read(i_sock, c_req, POSTBUF);
+        i_len = read(p_thrd->get_sock(), c_req, POSTBUF);
         s_req = c_req;
         s_req = s_req.substr(0, i_len);
 
@@ -143,7 +144,7 @@ reqp::get_content_type( string s_file )
 }
 
 void
-reqp::parse_headers( string s_req, map<string,string> &map_params )
+reqp::parse_headers( string s_req, map_string &map_params )
 {
     int pos = s_req.find("\n");
 
@@ -151,11 +152,10 @@ reqp::parse_headers( string s_req, map<string,string> &map_params )
     {
      map_params["QUERY_STRING"] = tool::trim(s_req.substr(0,pos-1));
 
-     int pos2;
      do
      {
        string s_line( s_req.substr(0, pos) );
-       pos2 = s_line.find(":");
+       int pos2 = s_line.find(":");
 
        if (pos2 != string::npos && s_line.length() > pos2+1)
         map_params[ tool::trim(s_line.substr(0, pos2)) ] = tool::trim(s_line.substr(pos2+1));
@@ -168,17 +168,19 @@ reqp::parse_headers( string s_req, map<string,string> &map_params )
 }
 
 int
-reqp::htoi(string *p_str)
+reqp::htoi(string *s)
 {
-    int value, c;
-    c = p_str->at(0);
+    int value;
+    int c;
+
+    c = s->at(0);
 
     if( isupper(c) )
      c = tolower(c);
 
     value = (c >= '0' && c <= '9' ? c - '0' : c - 'a' + 10) * 16;
 
-    c = p_str->at(1);
+    c = s->at(1);
 
     if( isupper(c) )
      c = tolower(c);
@@ -189,32 +191,31 @@ reqp::htoi(string *p_str)
 }
 
 string
-reqp::url_decode( string s_url )
+reqp::url_decode( string s_str )
 {
     string s_dest = "";
-    int i_len = s_url.size();
+    int i_len = s_str.size();
     int i_prv = i_len - 2;
 
-    char c;
     for( int i = 0; i < i_len; ++i)
     {
-        c = s_url.at(i);
-        if( c == '+' )
+        char ch = s_str.at(i);
+        if( ch == '+' )
         {
             s_dest += " ";
         }
 
-        else if (c == '%' && i < i_prv)
+        else if (ch == '%' && i < i_prv)
         {
-            string s_tmp = s_url.substr(i+1, 2);
-            c = (char) htoi(&s_tmp);
-            s_dest += c;
+            string s_tmp = s_str.substr(i+1, 2);
+            ch = (char) htoi(&s_tmp);
+            s_dest += ch;
             i += 2;
         }
 
         else
 	{
-            s_dest += c;
+            s_dest += ch;
 	}
     }
 
@@ -231,23 +232,34 @@ reqp::get_from_header( string s_req, string s_hdr )
     if ( (i_pos[1] = s_req.find( "\n", i_pos[0]) ) == string::npos )
      return "";
 
-    unsigned i_len = s_hdr.length();
+    int i_len = s_hdr.length();
     return s_req.substr( i_pos[0] + i_len, i_pos[1] - i_pos[0] - i_len - 1 );
 }
 
 string
-reqp::parse( int &i_sock, string s_req, map<string,string> &map_params )
+reqp::parse( thrd* p_thrd, string s_req, map_string &map_params )
 {
     // store all request informations in map_params. store the url in
     // map_params["request"].
-    get_url( i_sock, s_req, map_params );
+    get_url( p_thrd, s_req, map_params );
 
     parse_headers( s_req, map_params );
     string s_event( map_params["event"] );
 
-    map_params["content-type"] = get_content_type( map_params["request"] );
+    // create the http header.
+    string s_rep( HTTP_CODEOK );
+    s_rep.append( HTTP_SERVER );
+    s_rep.append( HTTP_CONTAC );
+    s_rep.append( HTTP_EXPIRE );
+    s_rep.append( HTTP_CACHEC );
+    s_rep.append( HTTP_CONNEC );
 
-    string s_rep( "" );
+    if ( s_event.compare("stream") == 0 )
+     s_rep.append( HTTP_CHUNKE );
+
+    s_rep.append( HTTP_COTYPE );
+    s_rep.append( get_content_type( map_params["request"] ) );
+    s_rep.append("\r\n\r\n");
 
     //<<*
     // check the event variable.
@@ -269,12 +281,16 @@ reqp::parse( int &i_sock, string s_req, map<string,string> &map_params )
 
         else
         {
-            sess *p_sess = wrap::SMAN->get_session( map_params["tmpid"] );
-            user *p_user = NULL;
+            bool b_found;
 
-            if( p_sess != NULL )
+            //   user* p_user = s_chat::get().get_user( map_params["nick"], b_found );
+            sess *sess_temp = wrap::SMAN->get_session( map_params["tmpid"] );
+
+            user *p_user;
+            if( sess_temp != NULL )
             {
-                p_user = p_sess->get_user();
+                string s_nick = sess_temp->get_name();
+                p_user = wrap::CHAT->get_user( s_nick, b_found);
             }
 
             else
@@ -282,7 +298,7 @@ reqp::parse( int &i_sock, string s_req, map<string,string> &map_params )
                 return s_rep;
             }
 
-            if ( ! p_user )
+            if ( ! b_found )
             {
                 map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.notonline" );
                 map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
@@ -307,7 +323,7 @@ reqp::parse( int &i_sock, string s_req, map<string,string> &map_params )
              {
                 string s_msg ( wrap::HTML->parse( map_params ) );
                 p_user->msg_post( &s_msg);
-                wrap::SOCK->chat_stream( i_sock, p_user, map_params );
+                wrap::SOCK-> chat_stream( p_thrd->get_sock(), p_user, map_params );
              }
 
              // if a request for the online list of the active room.
@@ -340,25 +356,13 @@ reqp::parse( int &i_sock, string s_req, map<string,string> &map_params )
       s_rep.append( wrap::HTML->parse( map_params ) );
     }
 
-    // create the http header.
-	
-    string s_resp(s_http);
-    if ( s_event.compare("stream") == 0 )
-     s_resp.append( s_http_stream );
-
-    s_resp.append( s_http_colength + tool::int2string(s_rep.size()) + "\n"
-	+ map_params["content-type"] + "\r\n\r\n" );
-
-    s_resp.append(s_rep);
-
-
     // return the parsed html-template.
-    return  s_resp;
+    return  s_rep;
 }
 
 //<<*
 void 
-reqp::run_html_mod( string s_event, map<string,string> &map_params, user* p_user )
+reqp::run_html_mod( string s_event, map_string &map_params, user* p_user )
 {
     container *c = new container;
 

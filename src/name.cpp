@@ -1,3 +1,5 @@
+// class name implementation.
+
 #ifndef NAME_CPP
 #define NAME_CPP
 
@@ -10,7 +12,6 @@ name::name()
 {
     pthread_mutex_init( &mut_s_name, NULL);
 }
-
 name::name( string s_name )
 {
     pthread_mutex_init( &mut_s_name, NULL);
@@ -45,5 +46,6 @@ name::set_name( string s_name )
     this->s_name = s_name;
     pthread_mutex_unlock( &mut_s_name );
 }
+
 
 #endif

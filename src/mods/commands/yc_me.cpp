@@ -37,8 +37,6 @@ extern "C" {
         s_msg.append( "</font></i><br>\n" );
         p_user->get_room()->msg_post( &s_msg );
 
-	return 0;
-
  }
 }
 

@@ -12,9 +12,9 @@ extern "C" {
 	container* c          = (container*) v_arg;
         dynamic_wrap* p_wrap = (dynamic_wrap*) c->elem[0];
         conf*      p_conf    = (conf*) p_wrap->CONF; 
-        string*    p_col1     = &(*((map<string,string>*) c->elem[1]))["col1"];
-        string*    p_col2     = &(*((map<string,string>*) c->elem[1]))["col2"];
-        string*    p_flag     = &(*((map<string,string>*) c->elem[1]))["flag"];
+        string*    p_col1     = &(*((map_string*) c->elem[1]))["col1"];
+        string*    p_col2     = &(*((map_string*) c->elem[1]))["col2"];
+        string*    p_flag     = &(*((map_string*) c->elem[1]))["flag"];
         user*      p_user     = (user*) c->elem[2];
 
         p_col1->erase(0);
@@ -25,11 +25,9 @@ extern "C" {
 
         if ( *p_flag == "submit" )
         {
-         string*  p_msgs  = &(*((map<string,string>*) c->elem[1]))["msgs"];
+         string*  p_msgs  = &(*((map_string*) c->elem[1]))["msgs"];
          p_msgs->append( p_conf->get_elem( "chat.msgs.optionschanged" ) );
         }
-
-	return 0;
  } 
 }
 

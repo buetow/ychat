@@ -145,7 +145,6 @@ perl -e '
     print "(The environment variables have to be seperated by an :)\n"; 
     exit(1);
   }
-  `touch ../err`;
   return "";
  }
 
@@ -191,16 +190,14 @@ perl -e '
  my $compiler = `tail -n 1 ../g++.version`;
  my $version  = `tail -n 2 ../g++.version | head -n 1`;
  my $uname    = `uname -srm`;
- my $compopt  = join "; ", split /\n/, `cat ../g++.version`;
  chomp $uname;
- chomp $compopt;
  print "Configuring for $uname...\n";
  chomp $cpp;
  chomp $version;
  while (<Fin>) {
    s/^(CC=).*\n/$1$compiler/;
    s/^(SRCS=).*/$1$cpp/;
-   s/ -frepo//; # unless $version =~ /3\.4/;
+   s/ -frepo// unless $version =~ /3\.4/;
    if ( $uname !~ /Linux/i ) {
      print "Disabling -ldl flag...\n" if s/ -ldl//;
    }
@@ -235,7 +232,6 @@ perl -e '
  open F, ">msgs.h" or die "msgs.h: $!\n";
  foreach (@msgs) {
    s/(UNAME)(.+)$/UNAME "$uname"/;
-   s/(COMPOPT)(.+)$/COMPOPT "$compopt"/;
    print F; 
  }
  close F;
@@ -243,9 +239,7 @@ perl -e '
  if ( -d "mods" ) {
    chdir("mods");
    my $cflags = "-fno-inline -fno-default-inline";
-   $cflags .= " -nostdlib" 
-	if $uname =~ /FreeBSD/i 
-	&& `uname -r` =~ /^4\./;
+   $cflags .= " -nostdlib" if $uname !~ /Linux/i;
    system("echo $cflags > cflags.add");
    system("./configure");
    chdir("..");

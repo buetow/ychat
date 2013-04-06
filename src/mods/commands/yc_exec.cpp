@@ -59,8 +59,6 @@ extern "C" {
          p_user->msg_post( &s_output );
          pclose(file);
        }
-
-       return 0;
  }
 }
 
