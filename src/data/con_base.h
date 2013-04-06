@@ -9,11 +9,11 @@
 using namespace std;
 
 class con_base : public timo
-  {
-  public:
+{
+public:
     con_base( );
     ~con_base( );
-  };
+};
 
 #endif
 #endif

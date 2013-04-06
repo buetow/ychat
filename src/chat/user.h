@@ -34,7 +34,7 @@ private:
     string s_pass;   // password
     room*  p_room;   // pointer to the user's room.
 
-    map<string,string> map_changed_data; // Needed to tell yChat which data to change after user is removed!
+    map_string map_changed_data; // Needed to tell yChat which data to change after user is removed!
     bool             b_set_changed_data; // Only set change data if required! 
 
     // Modules which are allowed to be executed by the user.
@@ -72,10 +72,10 @@ private:
     void clean();
 
     // gets specific data of this user und stores it in
-    // (*p_map<string,string>)["nick"]. this method will be used
+    // (*p_map_string)["nick"]. this method will be used
     // every time data has to be got from every user of a room
     // or even of the system.
-    void get_data( map<string,string> *p_map_data );
+    void get_data( map_string *p_map_data );
 
     string get_colored_name();
     string get_colored_bold_name()

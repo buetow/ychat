@@ -15,15 +15,13 @@ extern "C" {
         bool b_fake = p_user->get_fake(); 
  
         string s_msg = (b_fake == 1
-                        ? p_conf->get_elem("chat.msgs.unsetmodefake") + "<br>\n" 
-                        : p_conf->get_elem("chat.msgs.setmodefake") + "<br>\n"); 
+                        ? p_conf->get_elem("chat.msgs.setmodefake") + "<br>\n" 
+                        : p_conf->get_elem("chat.msgs.unsetmodefake") + "<br>\n"); 
                      
 
         p_user->set_fake( !b_fake );
         p_user->get_room()->reload_onlineframe();
         p_user->msg_post ( &s_msg  );
-	
-	return 0;
  }
 }
 

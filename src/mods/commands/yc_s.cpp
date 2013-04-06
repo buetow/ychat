@@ -22,14 +22,11 @@ extern "C" {
 	vector<string> *params= (vector<string>*) c->elem[2];	// param array
 
         conf* p_conf = (conf*) ((dynamic_wrap*)c->elem[3])->CONF; 
-        timr* p_timr = (timr*) ((dynamic_wrap*)c->elem[3])->TIMR; 
 
-        string s_time = "";
-        if ( p_conf->get_elem("chat.printalwaystime") == "true" )
-         s_time = p_timr->get_time() + " ";
-
-        string s_msg = s_time + "<i>" + p_user->get_colored_name() + " " + p_conf->get_elem("chat.msgs.scream") + " <font color=\"#" + p_user->get_col2() + "\"><b>";
-
+        string s_msg = "<i>" + p_user->get_colored_name() + " "
+                       + p_conf->get_elem("chat.msgs.scream")
+                       + " <font color=\"#" + p_user->get_col2() 
+                       + "\"><b>";
         if ( ! params->empty() )
         {
          vector<string>::iterator iter = params->begin();
@@ -39,8 +36,6 @@ extern "C" {
 
         s_msg.append( "</b></font></i><br>\n" );
         p_user->get_room()->msg_post( &s_msg );
-
-	return 0;
 
  }
 }

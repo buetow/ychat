@@ -21,7 +21,7 @@ using namespace std;
 class chat : public base<room>, public perm
 {
 private:
-    map<string,string> map_replace_strings; 
+    map_string map_replace_strings; 
     vector<string> vec_replace_keys;
 
 public:
@@ -46,10 +46,10 @@ public:
     static void get_user_( room* room_obj, void *v_arg   );
 
     // will be called every time a user tries to login.
-    void login( map<string,string> &map_params );
+    void login( map_string &map_params );
 
     // will be called if a user posts a message.
-    void post ( user* u_user, map<string,string> &map_params );
+    void post ( user* u_user, map_string &map_params );
 
     void del_elem( string s_name )
     {
@@ -57,6 +57,5 @@ public:
     }
 
     void reconf();	
-    void string_replacer(string *p_msg);
 };
 #endif

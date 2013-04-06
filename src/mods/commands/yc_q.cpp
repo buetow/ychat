@@ -22,8 +22,6 @@ extern "C" {
 
 	p_user->msg_post( &s_quit );
         p_user->set_online(false);
-
-	return 0;
  }
 }
 

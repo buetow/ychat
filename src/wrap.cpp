@@ -12,14 +12,12 @@ data* wrap::DATA;
 #endif
 gcol* wrap::GCOL;
 sman* wrap::SMAN;
-modl* wrap::MODL;
 //*>>
 
 conf* wrap::CONF;
 html* wrap::HTML;
-#ifdef LOGGING
 logd* wrap::LOGD;
-#endif
+modl* wrap::MODL;
 #ifdef NCURSES
 ncur* wrap::NCUR;
 #endif
@@ -37,8 +35,6 @@ wrap::system_message( string s_message )
 #ifdef SERVMSG
    cout << s_message << endl;
 #endif
-#ifdef LOGGING
    wrap::LOGD->log_simple_line( s_message + "\n" );
-#endif
 }
 #endif

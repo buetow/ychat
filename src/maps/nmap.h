@@ -19,4 +19,7 @@ class nmap : public smap<obj_type, key_type>
 };
 
 #include "nmap.tmpl"
+
 #endif 
+
+

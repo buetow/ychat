@@ -10,14 +10,11 @@ timr::timr()
 {
   wrap::system_message( TIMERIN );
   b_timer_active = true;
-
   pthread_mutex_init( &mut_s_time, NULL);
   pthread_mutex_init( &mut_s_uptime, NULL);
   pthread_mutex_init( &mut_i_offset, NULL);
-
   i_time_offset = tool::string2int( wrap::CONF->get_elem("chat.timeoffset") ); 
   wrap::system_message( TIMEROF + tool::int2string( i_time_offset ) );
-
   s_time = "00:00:00";
   s_uptime = "00:00:00";
 }
@@ -45,8 +42,10 @@ timr::get_offset()
 }
 
 void
-timr::start( void *v_ptr )
+timr::start( void *v_pointer )
 {
+//    timr* p_timer = this; //static_cast<timr*>(this);
+
     wrap::system_message( TIMERTH );
 
 #ifdef NCURSES
@@ -59,7 +58,6 @@ timr::start( void *v_ptr )
     time( &clock_start );
     tm time_start = *localtime( &clock_start );
     tm time_now;
-
     while ( get_timer_active() )
     {
      // sleep a second!
@@ -73,12 +71,10 @@ timr::start( void *v_ptr )
      // set the current time && the current ychat uptime!
      set_time( difftime( clock_now, clock_start ),
                         time_now.tm_sec, time_now.tm_min, time_now.tm_hour );
-
 #ifdef NCURSES
      if (wrap::NCUR->is_ready())
       print_time( );
 #endif      
-
      // run every minute:
      if ( time_now.tm_sec == 0 )
      { 
@@ -86,12 +82,12 @@ timr::start( void *v_ptr )
       cout << TIMERUP << get_uptime() << endl;
 #endif
       //<<*
-      int* p_timeout_settings = new int[3];
-      p_timeout_settings[0] = tool::string2int(wrap::CONF->get_elem("chat.idle.timeout"));
-      p_timeout_settings[1] = tool::string2int(wrap::CONF->get_elem("chat.idle.awaytimeout"));
-      p_timeout_settings[2] = tool::string2int(wrap::CONF->get_elem("chat.idle.autoawaytimeout"));
-      wrap::CHAT->check_timeout( p_timeout_settings );
-      delete p_timeout_settings;
+      int* i_timeout_settings = new int[3];
+      i_timeout_settings[0] = tool::string2int(wrap::CONF->get_elem("chat.idle.timeout"));
+      i_timeout_settings[1] = tool::string2int(wrap::CONF->get_elem("chat.idle.awaytimeout"));
+      i_timeout_settings[2] = tool::string2int(wrap::CONF->get_elem("chat.idle.autoawaytimeout"));
+      wrap::CHAT->check_timeout( i_timeout_settings );
+      delete i_timeout_settings;
 
       string s_ping = "<!-- PING! //-->\n"; 
       wrap::CHAT->msg_post( &s_ping );
@@ -105,11 +101,11 @@ timr::start( void *v_ptr )
       // run every ten minutes: 
       if ( time_now.tm_min % 10 == 0 )
       {
+       wrap::GCOL->remove_garbage(); //<<
+
        // run every hour
        if ( time_now.tm_hour % 60 == 0 )
        {
-        wrap::GCOL->remove_garbage(); //<<
-
         // run every day
         if (time_now.tm_min == 0 || time_now.tm_min == 60 )
          if (time_now.tm_hour == 0 || time_now.tm_hour == 24)
@@ -139,7 +135,6 @@ timr::set_time( double d_uptime, int i_cur_seconds, int i_cur_minutes, int i_cur
 
     int i_hours = (int) d_uptime / 3600; 
     int i_minutes = (int) d_uptime / 60; 
-
     while ( i_minutes >= 60 )
      i_minutes -= 60;
 
@@ -148,8 +143,7 @@ timr::set_time( double d_uptime, int i_cur_seconds, int i_cur_minutes, int i_cur
 
     // Calculate offset time
     i_cur_hours += get_offset(); 
-
-    for ( int i = 24-i_cur_hours; i < 0; i = 24-i_cur_hours )
+    for (int i = 24 - i_cur_hours; i < 0; i = 24 - i_cur_hours)
      i_cur_hours =- i; 
 
     if (i_cur_hours == 24)
@@ -181,11 +175,10 @@ timr::add_zero_to_front( string s_time )
 }
 
 double
-timr::get_time_diff( time_t &clock_diff )
+timr::get_time_diff( time_t& clock_diff )
 {
     time_t clock_now;
     time( &clock_now );
-
-    return difftime(clock_now, clock_diff);
+    return difftime( clock_now, clock_diff );
 }
 #endif

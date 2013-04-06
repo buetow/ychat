@@ -5,6 +5,7 @@
  gmake config in the main directory!
 */
 
+
 #include <map>
 
 // global variables.
@@ -31,7 +32,7 @@
  Should yChat get compiled with database support? Currently MyS-
  QL only is a supported database. 
 */
-#define DATABASE
+//#define DATABASE
 
 #ifdef DATABASE
 /* - CONFIG - 
@@ -64,7 +65,7 @@
  Please specify the size of a temporary buffer. (Will be used f-
  or different tasks) 
 */
-#define READBUF 2048
+#define READBUF 1024
 
 /* - CONFIG - 
  Please specify the maximum length of a HTTP post request. 
@@ -83,7 +84,7 @@
  is enabled or in the server-window if yChat has been compiled 
  without ncurses support. This option shows you all incoming
  requests with the client IP and port numbers. You probably want
- this to be turned off if you have heavy server load.
+ this to be turned of if you have heavy server load.
 */
 //#define VERBOSE
 
@@ -93,11 +94,6 @@
  al features are marked inside of the running yChat!
 */
 //#define EXPERIM
-
-/* - CONFIG -
- Should yChat get compiled with logging support? 
-*/ 
-#define LOGGING
 
 /* - CONFIG -
  Should yChat get compiled with ncurses support?
@@ -183,6 +179,8 @@
 
 using namespace std;
 
+// some custom typedefs for datatypes which are needed often.
+typedef map<string, string> map_string;
 typedef int function( void *v_arg );
 
 struct container

@@ -27,7 +27,7 @@ html::clear_cache( )
 }
 
 string
-html::parse( map<string,string> &map_params )
+html::parse( map_string &map_params )
 {
     string s_file = map_params["request"];
 
@@ -37,10 +37,10 @@ html::parse( map<string,string> &map_params )
     // if not, read file.
     if ( ! smap<string,string>::is_avail( s_file ) )
     {
-        string   s_path  = get_name();
-        ifstream if_templ( s_path.append( s_file ).c_str(), ios::binary );
+        auto string   s_path  = get_name();
+        auto ifstream fs_templ( s_path.append( s_file ).c_str(), ios::binary );
 
-        if ( ! if_templ )
+        if ( ! fs_templ )
         {
     	    wrap::system_message( OFFFOUND + s_path );
             if(map_params["request"]== wrap::CONF->get_elem( "httpd.html.notfound"  ))
@@ -51,17 +51,14 @@ html::parse( map<string,string> &map_params )
 
         }
 
-        char c_buf;
-        while( !if_templ.eof() )
+        auto char c_buf;
+        while( !fs_templ.eof() )
         {
-            if_templ.get( c_buf );
-            s_templ += c_buf;
+            fs_templ.get( c_buf );
+            s_templ+=c_buf;
         }
 
-	if ( map_params["content-type"].compare(0,5,"text/") == 0 )
-          s_templ.erase(s_templ.end()-1); 
-
-        if_templ.close();
+        fs_templ.close();
 
 	wrap::system_message( TECACHE + s_path );
 
@@ -78,7 +75,7 @@ html::parse( map<string,string> &map_params )
     }
 
     // find %%KEY%% token and substituate those.
-    unsigned pos[2];
+    auto unsigned int pos[2];
     pos[0] = pos[1] = 0;
 
     for(;;)
@@ -95,8 +92,8 @@ html::parse( map<string,string> &map_params )
             break;
 
         // get key and val.
-        string s_key = s_templ.substr( pos[0], pos[1]-pos[0] );
-        string s_val = wrap::CONF->get_elem( s_key );
+        auto string s_key = s_templ.substr( pos[0], pos[1]-pos[0] );
+        auto string s_val = wrap::CONF->get_elem( s_key );
 
         // if s_val is empty use map_params.
         if ( s_val.empty() )
@@ -106,9 +103,9 @@ html::parse( map<string,string> &map_params )
         s_templ.replace( pos[0]-2, pos[1]-pos[0]+4, s_val );
 
         // calculate the string displacement.
-        int i_diff = s_val.length() - ( pos[1] - pos[0] + 4);
+        auto int i_dif = s_val.length() - ( pos[1] - pos[0] + 4);
 
-        pos[1] += 2 + i_diff;
+        pos[1] += 2 + i_dif;
 
     };
 
@@ -117,7 +114,7 @@ html::parse( map<string,string> &map_params )
 
 //<<*
 void
-html::online_list( user *p_user, map<string,string> &map_params )
+html::online_list( user *p_user, map_string &map_params )
 {
     // prepare user_list.
     string s_list;
@@ -142,7 +139,6 @@ html::print_cached( int i_docs )
     mvprintw( NCUR_CACHED_DOCS_X, NCUR_CACHED_DOCS_Y, "Docs: %d ", i_docs);
     refresh();
 }
-
 #endif
 
 #endif

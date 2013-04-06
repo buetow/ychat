@@ -5,11 +5,11 @@
 #include <iostream>
 #include <vector>
 
-#ifndef	RUSAGE_SELF
-#define RUSAGE_SELF 0
+#ifndef	  RUSAGE_SELF
+#define   RUSAGE_SELF     0
 #endif
-#ifndef	RUSAGE_CHILDREN
-#define RUSAGE_CHILDREN -1
+#ifndef	  RUSAGE_CHILDREN
+#define   RUSAGE_CHILDREN     -1
 #endif
 
 #include "../incl.h"
@@ -30,7 +30,7 @@ class cli
 #endif
 {
 private:
- int parse_input(string s_input);
+ int parse_input( string s_input );
 
 public:
  cli( );
@@ -47,6 +47,7 @@ public:
 #else
  void start(); 
 #endif
+
 };
 
 #endif

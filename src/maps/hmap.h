@@ -9,6 +9,11 @@
 
 using namespace std;
 
+// void add_elem( obj_type x, key_type k )       --> Insert x
+// void del_elem( key_type k )       --> Remove x
+// obj_type get_elem( key_type k )  --> Return item that matches x
+// void make_empty( )      --> Remove all items
+
 template <class obj_type, class key_type>
 class hmap
 {
@@ -72,7 +77,6 @@ public:
     virtual void make_empty( );
     virtual void make_empty( void (*func)(key_type) );
     virtual void del_elem ( const key_type &k );
-    virtual void rename_key ( const key_type &k1, const key_type &k2 );
     virtual obj_type set_elem ( const obj_type &x, const key_type &k );
 
     virtual void  run_func( void (*func)(obj_type) );

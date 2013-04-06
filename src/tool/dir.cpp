@@ -12,7 +12,7 @@ dir::dir()
 
 dir::~dir()
 {
- vec_dir.clear();
+ dir_vec.clear();
  close_dir();
 }
 
@@ -29,9 +29,9 @@ dir::open_dir( string &s_dir )
  if ( b_open )
   return false;
 
- p_d = opendir( s_dir.c_str() );
+ dp = opendir( s_dir.c_str() );
 
- if ( p_d == NULL )
+ if ( dp == NULL )
   return false; // Could not open dir.
 
  b_open = true;
@@ -42,9 +42,9 @@ dir::open_dir( string &s_dir )
 void
 dir::close_dir()
 {
- if ( b_open && p_d != NULL )
+ if ( b_open && dp != NULL )
  {
-  closedir( p_d );
+  closedir( dp );
   b_open = false;
  }
 }
@@ -52,15 +52,15 @@ dir::close_dir()
 void
 dir::read_dir()
 {
- if ( p_d != NULL )
-  while( p_ep = readdir( p_d ) )
-   vec_dir.push_back( string( p_ep->d_name ) ); 
+ if ( dp != NULL )
+  while( ep = readdir( dp ) )
+   dir_vec.push_back( string( ep->d_name ) ); 
 }
 
 vector<string> 
 dir::get_dir_vec()
 {
- return vec_dir;
+ return dir_vec;
 }
 
 #endif

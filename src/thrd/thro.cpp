@@ -16,7 +16,7 @@ thro::~thro()
 void
 thro::run()
 {
- void *p_void;
+ void* p_void;
  run( p_void );
 }
 
@@ -40,5 +40,6 @@ thro::start( void *p_void )
 {
  wrap::system_message( THRDSTR );
 }
+
 
 #endif

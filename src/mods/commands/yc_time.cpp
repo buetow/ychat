@@ -14,8 +14,6 @@ extern "C" {
         string s_msg = p_conf->get_elem("chat.msgs.servertime") + p_timr->get_time() + "<br>\n"; 
 
         p_user->msg_post( &s_msg );
-
-	return 0;
  }
 }
 

@@ -35,10 +35,8 @@ ncur::start( void *p_void )
     ncur::init_ncurses();
 
     char *choices[] = {
-                          "Unload all modules      ", //<<
-                          "Reload all modules      ", //<<
-               		  //>>"                        ", 
-               		  //>>"                        ", 
+                          "Unload all modules      ",
+                          "Reload all modules      ",
                           "Clear template cache    ",
                           "Run garbage collector   ", //<<
                		  //>>"                        ", 
@@ -46,14 +44,13 @@ ncur::start( void *p_void )
                           "Compile changed sources ",
                           "Recompile all sources   ",
                           "Show source stats       ",
-                          "Command line interface  ",
-			  //<<*
+                          "Command Line Interface  ",
 #ifdef DATABASE
-                          "Close DB connections    ", 
+                          "Disconnect from DB      ", //<<
 #else
-                          "			   ", 
+                          "			   ", //<<
 #endif
-			  //*>>
+
                		  //>>"                        ", 
                           "Shut down server"
                       };
@@ -65,20 +62,21 @@ ncur::start( void *p_void )
     mvwprintw( p_serveroutput, 2, 2, NCURMSG );
     wrefresh ( p_serveroutput );
 
-    print( string("yChat ") + VERSION );
+    print( VERSION );
 
 
     p_menu = new menu( 1, 1, 30, 19, NCURADM, choices, 11, COLOR_PAIR(1));
 
-    mvprintw(NCUR_SERVER_HEADER_X,NCUR_SERVER_HEADER_Y, NCURSE0);
-    mvprintw(NCUR_POOL_HEADER_X,NCUR_POOL_HEADER_Y, NCURSE1); 
-    mvprintw(NCUR_DATA_HEADER_X,NCUR_DATA_HEADER_Y, NCURSE2); //<<
-    mvprintw(NCUR_CHAT_HEADER_X,NCUR_CHAT_HEADER_Y, NCURSE3); //<<
-    mvprintw(NCUR_CACHED_HEADER_X,NCUR_CACHED_HEADER_Y, NCURSE4); 
-
+    mvprintw( NCUR_SERVER_HEADER_X,NCUR_SERVER_HEADER_Y, "HTTP server:");
+    mvprintw( NCUR_POOL_HEADER_X,NCUR_POOL_HEADER_Y, "Thread pool:");
+#ifdef DATABASE
+    mvprintw( NCUR_DATA_HEADER_X,NCUR_DATA_HEADER_Y, "Data stats:"); //<<
+#endif
+    mvprintw( NCUR_CHAT_HEADER_X,NCUR_CHAT_HEADER_Y, "Chat stats:"); //<<
+    mvprintw( NCUR_CACHED_HEADER_X,NCUR_CACHED_HEADER_Y, "Caching:"); 
     wrap::HTML->print_cached(0);
 
-    is_ready(true);
+    is_ready( true );
     wrap::SMAN->print_init_ncurses(); //<<
     wrap::STAT->print_num_rooms();    //<<
 
@@ -121,10 +119,8 @@ ncur::print( char* c_print )
     int i;
     char* c_temp = new char[i_message_length];
     memcpy( c_temp, c_print, strlen(c_print) );
-
-    for ( i = strlen(c_print); i < i_message_length; ++i )
+    for ( i = strlen(c_print); i < i_message_length; i++ )
         c_temp[i] = ' ';
-
     c_temp[i] = '\0';
 
     pthread_mutex_lock( &mut_messages );
@@ -133,7 +129,7 @@ ncur::print( char* c_print )
     {
         char* c_front = p_messagelist->front();
         p_messagelist->pop_front();
-        free(c_front);
+        free( c_front );
     }
 
     p_messagelist->push_back( c_temp );
@@ -144,7 +140,7 @@ ncur::print( char* c_print )
      list<char*>::iterator iter;
      iter = p_messagelist->begin();
      
-     for ( i = 4; i < 18 && iter != p_messagelist->end(); ++i, ++iter )
+     for ( i=4; i<18 && iter != p_messagelist->end(); i++, iter++ )
       mvwprintw( p_serveroutput, i, 2, *iter );
 
      wrefresh ( p_serveroutput );
@@ -161,7 +157,6 @@ ncur::switch_main_menu_( int i_choice )
     if( i_choice != 0 )
         switch ( i_choice )
         {
-        //<<*
         case 1:
             wrap::MODL->unload_modules();
             mvprintw( 20,2, "Unloaded all modules                             ");
@@ -172,7 +167,6 @@ ncur::switch_main_menu_( int i_choice )
             mvprintw( 20,2, "Reloaded all modules                            ");
             refresh();
             break;
-	//*>>
         case 3:
             wrap::HTML->clear_cache();
             mvprintw( 20,2, "Cleared the template cache                                   ");
@@ -280,6 +274,5 @@ ncur::is_ready()
  pthread_mutex_unlock( &mut_is_ready );
  return b_ret;
 }
-
 #endif
 #endif

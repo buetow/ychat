@@ -33,7 +33,7 @@ extern "C" {
                        + p_conf->get_elem( "chat.msgs.userkicksout1" )
                        + p_searched_user->get_colored_bold_name()
                        + p_conf->get_elem( "chat.msgs.userkicksout2" )
-                       + p_searched_user->get_room()->get_bold_name()
+                       + p_user->get_room()->get_bold_name()
 	               + "<br>\n";
 
           room* p_room1 = p_user->get_room();
@@ -64,8 +64,6 @@ extern "C" {
           p_user->msg_post( &s_msg ); 
          }
         }
-
-	return 0;
  }
 
 }

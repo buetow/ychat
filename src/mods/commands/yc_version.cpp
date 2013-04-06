@@ -14,9 +14,7 @@ extern "C" {
  {
 	container *c=(container *)v_arg;
 	user *p_user = (user*)c->elem[1];		// the corresponding user
- 	p_user->msg_post( tool::ychat_version() + "<br>\n");
-
-	return 0;
+ 	p_user->msg_post( tool::ychat_version() + " " + UNAME + "<br>\n");
  }
 }
 

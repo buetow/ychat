@@ -66,8 +66,6 @@ extern "C" {
           p_room->reload_onlineframe();
          }
 	}
-
-	return 0;
  }
 
 }

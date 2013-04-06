@@ -2,6 +2,7 @@
 #define WRAP_H
 
 #include "incl.h"
+
 #ifdef DATABASE
 #include "data/data.h"
 #endif
@@ -9,12 +10,8 @@
 #include "conf/conf.h"
 #include "chat/gcol.h"
 #include "html.h"
-#ifdef LOGGING
 #include "logd.h"
-#endif
-//<<*
 #include "modl.h"
-//*>>
 #ifdef NCURSES
 #include "ncur/ncur.h"
 #endif
@@ -35,14 +32,12 @@ class dynamic_wrap
 #endif
     gcol* GCOL;
     sman* SMAN;
-    modl* MODL;
     //*>>
 
     conf* CONF;
     html* HTML;
-#ifdef LOGGING
     logd* LOGD;
-#endif
+    modl* MODL;
 #ifdef NCURSES
     ncur* NCUR;
 #endif
@@ -76,14 +71,12 @@ public:
 #ifdef IRCBOT
     static ybot* YBOT;
 #endif
-    static modl* MODL;
     //*>>
 
     static conf* CONF;
     static html* HTML;
-#ifdef LOGGING
     static logd* LOGD;
-#endif
+    static modl* MODL;
 #ifdef NCURSES
     static ncur* NCUR;
 #endif
@@ -92,5 +85,6 @@ public:
     static timr* TIMR;
     static dynamic_wrap* WRAP; 
 };
+
 
 #endif

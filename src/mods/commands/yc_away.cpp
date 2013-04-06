@@ -31,21 +31,11 @@ extern "C" {
               + p_conf->get_elem("chat.msgs.setmodeaway")
               + "<font color=" + p_user->get_col2() + ">"; 
 
-	if ( params->size() > 0 )
+        for ( iter = params->begin(); iter != params->end(); iter++ )
         {
-         s_msg.append(": ");
-         for ( iter = params->begin(); iter != params->end(); iter++ )
-         {
-          s_msg.append( " " + *iter );
-          s_away.append( *iter + " " );
-         }
+         s_msg.append( " " + *iter );
+         s_away.append( *iter + " " );
         }
-
-        else
-	{
-	 s_msg.append(".");
-	}
-
         s_msg.append( "</font><br>\n" );
 
         room* p_room = p_user->get_room();
@@ -63,8 +53,6 @@ extern "C" {
         p_user->set_away( true, s_away );
         p_room->reload_onlineframe();
         p_room->msg_post ( &s_msg  );
-
-	return 0;
  }
 }
 

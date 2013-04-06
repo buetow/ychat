@@ -14,12 +14,12 @@ extern "C" {
         dynamic_wrap* p_wrap  = (dynamic_wrap*) c->elem[0];
         conf*      p_conf     = (conf*) p_wrap->CONF; 
         data*      p_data     = (data*) p_wrap->DATA; 
-        string*    p_msgs     = &(*((map<string,string>*) c->elem[1]))["INFO"];
-        string*    p_nick     = &(*((map<string,string>*) c->elem[1]))["nick"];
-        string*    p_email    = &(*((map<string,string>*) c->elem[1]))["email"];
-        string*    p_pass     = &(*((map<string,string>*) c->elem[1]))["pass"];
-        string*    p_pass2    = &(*((map<string,string>*) c->elem[1]))["pass2"];
-        string*    p_request  = &(*((map<string,string>*) c->elem[1]))["request"];
+        string*    p_msgs     = &(*((map_string*) c->elem[1]))["INFO"];
+        string*    p_nick     = &(*((map_string*) c->elem[1]))["nick"];
+        string*    p_email    = &(*((map_string*) c->elem[1]))["email"];
+        string*    p_pass     = &(*((map_string*) c->elem[1]))["pass"];
+        string*    p_pass2    = &(*((map_string*) c->elem[1]))["pass2"];
+        string*    p_request  = &(*((map_string*) c->elem[1]))["request"];
         user*      p_user     = (user*) c->elem[2];
         string     s_nick     = *p_nick;
 
@@ -57,7 +57,7 @@ extern "C" {
 
 	else
 	{
-	 map<string,string> result_map = p_data->select_user_data( *p_nick, "selectnick" ); 
+	 map_string result_map = p_data->select_user_data( *p_nick, "selectnick" ); 
 	 if (result_map["nick"] == *p_nick)
          {
           p_msgs->append( p_conf->get_elem( "chat.msgs.err.registerexists" ) );
@@ -69,7 +69,7 @@ extern "C" {
           p_msgs->append( p_conf->get_elem( "chat.msgs.registernick" ) );
           p_request->replace( 0, p_request->length(), p_conf->get_elem("httpd.startsite") );
 
-          map<string,string> map_insert = *((map<string,string>*) c->elem[1]);
+          map_string map_insert = *((map_string*) c->elem[1]);
           map_insert["password"] = *p_pass;
           map_insert["color1"] = p_conf->get_elem("chat.html.user.color1");
           map_insert["color2"] = p_conf->get_elem("chat.html.user.color2");
@@ -85,8 +85,6 @@ extern "C" {
           p_data->insert_user_data( *p_nick, "registernick", map_insert );
          }
 	}	
-
-	return 0;
 #endif
  } 
 }

@@ -6,7 +6,6 @@
 #include "chat.h"
 #include "../tool/tool.h"
 #include "../maps/mtools.h"
-#include <list>
 
 using namespace std;
 
@@ -65,15 +64,13 @@ void
 chat::get_user_( room *room_obj, void *v_arg )
 {
     container* param = (container*) v_arg;
-
     if ( *((bool*)param->elem[1]) )
      return; 
-
     param->elem[2] = (void*)room_obj->get_elem( *((string*)param->elem[0]), *((bool*)param->elem[1]) );
 }
 
 void
-chat::login( map<string,string> &map_params )
+chat::login( map_string &map_params )
 {
     string s_user = map_params["nick"];
 
@@ -156,8 +153,8 @@ chat::login( map<string,string> &map_params )
      { 
       sess* p_sess = wrap::SMAN->create_session();
       //p_sess->set_value( string("nick"), (void *) new string(s_user) );
-      p_sess->set_user(p_user);
-      map_params["tmpid"] = p_sess->get_tmpid();
+      p_sess->set_name(s_user);
+      map_params["tmpid"] = p_sess->get_id();
       p_user->set_tmpid( map_params["tmpid"] );
       p_user->set_has_sess( true );
      } 
@@ -167,9 +164,9 @@ chat::login( map<string,string> &map_params )
     {
      p_user = new user( s_user );
 
-     // prove if nick is registered, else create a guest chatter.
+     // prove if nick is registered
 #ifdef DATABASE
-     map<string,string> map_results = wrap::DATA->select_user_data( tool::to_lower(s_user), "selectlogin");
+     map_string map_results = wrap::DATA->select_user_data( tool::to_lower(s_user), "selectlogin");
 
      if ( map_results["nick"] == tool::to_lower(s_user) )
      { 
@@ -194,23 +191,15 @@ chat::login( map<string,string> &map_params )
      }
      else
 #endif
-     { // If not registered prove if guest chatting is enabled.
-      if (wrap::CONF->get_elem("chat.enableguest") != "true") {
-        map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.noguest" );
-        map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
-        wrap::system_message( LOGINE4 + s_user );
-        return;
-      }
-
-      // Guest chatter are enabled, use standard font colors
+     { // If not registered use standard font colors
       map_params["color1"] = wrap::CONF->get_elem( "chat.html.user.color1" );
       map_params["color2"] = wrap::CONF->get_elem( "chat.html.user.color2" );
       map_params["status"] = wrap::CONF->get_elem( "chat.defaultrang" );
      }
 
      sess* p_sess = wrap::SMAN->create_session();
-     p_sess->set_user(p_user);
-     map_params["tmpid"] = p_sess->get_tmpid();
+     p_sess->set_name(s_user);
+     map_params["tmpid"] = p_sess->get_id();
      p_user->set_tmpid( map_params["tmpid"] );
      p_user->set_col1( map_params["color1"] );
      p_user->set_col2( map_params["color2"] );
@@ -267,7 +256,7 @@ chat::login( map<string,string> &map_params )
 }
 
 void
-chat::post( user* p_user, map<string,string> &map_params )
+chat::post( user* p_user, map_string &map_params )
 {
     p_user->renew_timeout();
 
@@ -284,37 +273,22 @@ chat::post( user* p_user, map<string,string> &map_params )
                        + wrap::CONF->get_elem( "chat.msgs.err.messagelength" ) + "</font><br>\n";
      p_user->msg_post( &s_private );
     } 
-  
-    int i_max_word_length = tool::string2int(wrap::CONF->get_elem( "chat.maxlength.word" )); 
-
-    // Check max word length
-    list<string> list_msg = tool::split_string( s_msg, " "); 
-    list<string>::iterator iter = list_msg.begin();
-
-    for ( s_msg = ""; iter != list_msg.end(); ++iter )
-    {
-     if ( iter->length() > i_max_word_length ) 
-     {
-      string s_tmp[] = { iter->substr(0, i_max_word_length ), iter->substr(i_max_word_length) };
-      iter = list_msg.erase( iter ); 
-      iter = list_msg.insert( iter, s_tmp[1] );
-      iter = list_msg.insert( iter, s_tmp[0] );
-      --iter;
-     }
-     else
-     {
-      s_msg.append(*iter + " "); 
-     }    
-    }
-  
+    
     if ( wrap::CONF->get_elem( "chat.html.tagsallow" ) != "true" )
         tool::strip_html( &s_msg );
 
-    unsigned i_pos = s_msg.find( "/" );
+    auto unsigned i_pos = s_msg.find( "/" );
     if ( i_pos == 0 )
         return p_user->command( s_msg );
 
-    string_replacer(&s_msg);
+    if ( wrap::CONF->get_elem( "chat.html.replace.activate" ) == "true" )
+    {
+     for (vector<string>::iterator iter = vec_replace_keys.end()-1;
+          iter != vec_replace_keys.begin();
+          iter-- )
+      s_msg = tool::replace( s_msg, *iter, wrap::CONF->get_elem(map_replace_strings[*iter]) );
+    }  
+
     string s_post;
 
     if ( wrap::CONF->get_elem( "chat.printalwaystime" ) == "true" )
@@ -336,17 +310,6 @@ chat::post( user* p_user, map<string,string> &map_params )
 void
 chat::reconf()
 {
-}
-
-void
-chat::string_replacer(string *p_msg) {
-    if ( wrap::CONF->get_elem( "chat.html.replace.activate" ) == "true" )
-    {
-     for (vector<string>::iterator iter = vec_replace_keys.end()-1;
-          iter != vec_replace_keys.begin();
-          iter-- )
-      *p_msg = tool::replace( *p_msg, *iter, wrap::CONF->get_elem(map_replace_strings[*iter]) );
-    }  
 }
 
 #endif

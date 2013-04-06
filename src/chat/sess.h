@@ -3,29 +3,24 @@
 #ifndef SESS_H
 #define SESS_H
 
+#include <map>
 #include <string>
-#include "user.h"
 
 class cont;
 
 using namespace std;
 
-class sess 
+class sess : public name
 {
+
 private:
-    string s_tmpid;
-    user  *p_user;	
+    string sess_id;
 
 public:
-    sess(string s_tmpid);
+    sess(string s_id);
     ~sess();
 
-    string get_tmpid();
-
-    void set_user(user* p_user);
-    user* get_user();
-    void set_name(string s_name);
-    string get_name();
+    string get_id();
     void invalidate();
 };
 #endif

@@ -64,8 +64,6 @@ extern "C" {
 		p_user->set_col1(s_color);
 		p_user->set_col2(s_color2);
 	}
-
-	return 0;
  }
  int valid_color( string s_color ){
 	

@@ -1,6 +1,5 @@
 #include "incl.h"
 
-#ifdef LOGGING
 #ifndef LOGD_H
 #define LOGD_H
 
@@ -9,6 +8,7 @@
 
 class logd
 {
+
 private:
     string s_logfile;
     queue<string> s_queue;
@@ -26,12 +26,11 @@ public:
     ~logd();
 
     void set_logfile( string s_path, string s_filename );
-    void log_access( map<string,string> request );
+    void log_access( map_string request );
     void log_simple_line( string s_line );
     void flush_logs();
     static string remove_html_tags( string s_log );
 };
 
-#endif
-#endif
 
+#endif

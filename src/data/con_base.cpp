@@ -8,11 +8,12 @@ using namespace std;
 
 con_base::con_base()
 {
-  renew_timeout( );
+ renew_timeout( );
 }
 
 con_base::~con_base()
-{}
+{
+}
 
 
 #endif

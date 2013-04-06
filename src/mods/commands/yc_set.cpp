@@ -94,8 +94,6 @@ extern "C" {
                        + "</font><br>\n";
           p_user->msg_post( &s_msg ); 
         }
-
-	return 0;
  }
 }
 

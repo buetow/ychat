@@ -6,9 +6,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
-
 #include <vector>
-
 #include "../incl.h"
 
 using namespace std;
@@ -17,9 +15,9 @@ class dir
 {
 private:
     bool b_open;
-    DIR *p_d;  	
-    struct dirent *p_ep;
-    vector<string> vec_dir;
+    DIR *dp;  	
+    struct dirent *ep;
+    vector<string> dir_vec;
 
 public:
     dir();

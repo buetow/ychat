@@ -1,7 +1,7 @@
 /*
  * yChat++; Contact: www.yChat.org; Mail@yChat.org
  * Copyright (C) 2003 Paul C. Buetow, Volker Richter 
- * Copyright (C) 2004, 2005 Paul C. Buetow
+ * Copyright (C) 2004 Paul C. Buetow
  * -----------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or
@@ -19,9 +19,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *
  */
-
-#ifndef MAIN_CPP
-#define MAIN_CPP
 
 #include <unistd.h>
 #include <signal.h>
@@ -42,8 +39,7 @@ parse_argc( int argc, char* argv[] )
 
  string s_output = "";
 
- // Set to 1 if a config option key has to be read
- // ( ./ychat -o key1 value1 -o key2 value2 ... );
+ // Set to 1 if a config option key has to be read ( ./ychat -o key1 value1 -o key2 value2 ... );
  bool b_conf = 0;
 
  // Will store the key of an additional option value (see also b_conf)
@@ -51,12 +47,12 @@ parse_argc( int argc, char* argv[] )
 
  for (int i=1; argv[i] != 0; i++)
  {
+
   if ( !s_key.empty() )
   {
    (*start_params)[s_key] = string(argv[i]);
    s_key.clear();
   }
-
   else if ( b_conf )
   {
    s_key = string(argv[i]);
@@ -67,20 +63,18 @@ parse_argc( int argc, char* argv[] )
   {
    if ( string(argv[i]).find("v") != string::npos )
     s_output.append(tool::ychat_version()+"\n");
-
    if ( string(argv[i]).find("h") != string::npos )
-    s_output.append( YCUSAGE );
-
+    s_output.append( "Usage: ./ychat {h|v}|{o confkey confvalue}\n" );
    if ( string(argv[i]).find("o") != string::npos )
     b_conf = 1;
   }
  }
 
- if ( !s_output.empty() )
+ if ( s_output.compare("") != 0 )
  {
   cout << s_output;
   delete start_params;
-  exit(1);
+  exit(0);
  }
 
  return start_params;
@@ -121,11 +115,9 @@ main(int argc, char* argv[])
     // init the html-template manager.
     wrap::WRAP->HTML = wrap::HTML = new html; 
 
-#ifdef LOGGING
     // init the system message logd 
     wrap::WRAP->LOGD = wrap::LOGD = new logd( wrap::CONF->get_elem("httpd.logging.systemfile"),
                                               wrap::CONF->get_elem("httpd.logging.systemlines") );
-#endif
     //<<*
     // init the session manager.
     wrap::WRAP->SMAN = wrap::SMAN = new sman; 
@@ -142,8 +134,6 @@ main(int argc, char* argv[])
     // wait until ncurses interface has been initialized.
     while ( ! wrap::NCUR->is_ready() )
      usleep(1000);
-
-    wrap::HTML->print_cached(0);
 #endif
 
     //<<*
@@ -155,10 +145,10 @@ main(int argc, char* argv[])
     wrap::WRAP->TIMR = wrap::TIMR = new timr; 
     wrap::TIMR->run(); // run the thread
 
-    //<<*
     // init the module-loader manager.
     wrap::WRAP->MODL = wrap::MODL = new modl; 
 
+    //<<*
     // init the garbage collector 
     wrap::WRAP->GCOL = wrap::GCOL = new gcol; 
 
@@ -187,7 +177,6 @@ main(int argc, char* argv[])
     wrap::SOCK->start();
 
     cout << DOWNMSG << endl;
+
     return 0;
 }
-
-#endif

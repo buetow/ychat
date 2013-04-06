@@ -57,14 +57,14 @@ public:
         type_obj -> reconf ();
     }
 
-    void get_data( map<string,string> *p_map_string )
+    void get_data( map_string *p_map_string )
     {
         smap<type*,string>::run_func( &base<type>::get_data_ , (void*)p_map_string );
     }
 
     static void get_data_( type* type_obj, void* v_arg )
     {
-        type_obj -> get_data ( (map<string,string>*) v_arg );
+        type_obj -> get_data ( (map_string*) v_arg );
     }
 
 

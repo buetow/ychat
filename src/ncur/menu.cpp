@@ -6,9 +6,8 @@
 #ifndef MENU_CPP
 #define MENU_CPP
 
-using namespace std; 
 
-menu::menu( int i_startx, int i_starty, int i_width, int i_height, char *c_header, char **choices, int i_numchoices, const chtype ch )
+using namespace std; menu::menu( int i_startx, int i_starty, int i_width, int i_height, char *c_header, char **choices, int i_numchoices, const chtype ch )
 {
     this->i_startx = i_startx;
     this->i_starty = i_starty;
@@ -51,17 +50,16 @@ menu::display()
     box( win, 0, 0 );
     mvwprintw( win, y++, x, "%s", c_header );
 
-    for( i = 0; i < i_numchoices; i++ )
+    for( i=0; i<i_numchoices; i++ )
     {
-        ++y;
+        y++;
 
-        if( i_highlight == i+1 ) // Highlight the current selection. 
+        if( i_highlight == i + 1 ) /* High light the present choice */
         {
             wattron( win, A_REVERSE);
             mvwprintw( win, y, x, "%d. %s", i, choices[i]);
             wattroff( win, A_REVERSE);
         }
-
         else
         {
             mvwprintw( win, y, x, "%d. %s", i, choices[i]);
@@ -108,6 +106,7 @@ menu::start( void (*swich_case_menu_action)(int) )
             refresh();
             break;
         }
+
 
         // Menu action.
         ( *swich_case_menu_action ) ( i_choice );

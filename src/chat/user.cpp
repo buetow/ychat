@@ -97,7 +97,7 @@ user::get_colored_name()
 }
 
 void
-user::get_data( map<string,string> *p_map_data )
+user::get_data( map_string *p_map_data )
 {
     string s_req = (*p_map_data)["!get"];
 
@@ -393,8 +393,8 @@ user::command( string &s_command )
 {
     check_restore_away();
 
-    unsigned pos = s_command.find( "/" );
-    unsigned pos2 = s_command.find( " " );
+    auto unsigned int pos = s_command.find( "/" );
+    auto unsigned int pos2 = s_command.find( " " );
     if( pos != string::npos )
     {
         s_command.replace( pos, 1, "" );
@@ -490,8 +490,6 @@ user::check_timeout( int* i_idle_timeout )
                 + "';</script>";
   msg_post( &s_quit ); 
   set_online( false );
-
-  pthread_cond_signal( &cond_message );
  }
 
  else if ( ! get_away() && i_idle_timeout[2] <= i_user_timeout )
@@ -500,7 +498,7 @@ user::check_timeout( int* i_idle_timeout )
   string s_msg = wrap::CONF->get_elem("chat.msgs.userautoawaytimeout");
   set_away( true, s_msg );
   string s_msg2 = wrap::TIMR->get_time() + " <b>" + get_colored_name()+ "</b>" + s_msg + "<br>\n";
-  get_room()->msg_post( &s_msg2 ); 
+  msg_post( &s_msg2 ); 
   get_room()->reload_onlineframe();
  }
 }
@@ -534,7 +532,7 @@ user::get_user_list( string &s_list  )
     }
     else if ( get_status() != tool::string2int( wrap::CONF->get_elem("chat.defaultrang") ) && ! get_fake() )
     {
-     string s_status = "rang" + tool::int2string( get_status() );
+     string s_status = "RANG" + tool::int2string( get_status() );
      string s_msgs = wrap::CONF->get_elem( "chat.msgs." + s_status ); 
      s_list.append("<img src=\"" + wrap::CONF->get_elem("chat.html.rangimages.location") +  tool::to_lower(s_status) + ".png\"" )
            .append( " alt='" )

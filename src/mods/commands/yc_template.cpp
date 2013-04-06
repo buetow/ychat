@@ -17,8 +17,6 @@ extern "C" {
 	
   	string *quitstring=new string("Text to send<br>");
 	p_user->msg_post( quitstring );
-
-	return 0;
  }
 }
 
