@@ -12,17 +12,17 @@ using namespace std;
 class data : public data_base // data implementation used in data.h
 {
 private:
- MYSQL_RES* select_query( string s_query, string s_where_rule, vector<string>& vec_elements );
- map_string parse_result( MYSQL_RES* p_result, vector<string>& vec_elements );
- void insert_query( string s_query, map_string map_insert );
- string secure_query( string s_mysql_query );
+  MYSQL_RES* select_query( string s_query, string s_where_rule, vector<string>& vec_elements );
+  hashmap<string> parse_result( MYSQL_RES* p_result, vector<string>& vec_elements );
+  void insert_query( string s_query, hashmap<string> map_insert );
+  string secure_query( string s_mysql_query );
 public:
-    data( );
-   ~data( );
+  data( );
+  ~data( );
 
- map_string select_user_data( string s_user, string s_query );
- void insert_user_data( string s_user, string s_query, map_string insert_map );
- void update_user_data( string s_user, string s_query, map_string update_map );
+  hashmap<string> select_user_data( string s_user, string s_query );
+  void insert_user_data( string s_user, string s_query, hashmap<string> insert_map );
+  void update_user_data( string s_user, string s_query, hashmap<string> update_map );
 };
 
 #endif

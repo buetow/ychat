@@ -7,45 +7,46 @@
 
 using namespace std;
 
-extern "C" {
- int extern_function(void *v_arg)
- {
-	container *c=(container *)v_arg;
-	
-	user *p_user = (user*) c->elem[1];		// the corresponding user
-	vector<string> *params = (vector<string>*) c->elem[2];	// param array
-        conf* p_conf = (conf*) ((dynamic_wrap*)c->elem[3])->CONF; 
-	string s_msg = "";	
+extern "C"
+{
+  int extern_function(void *v_arg)
+  {
+    container *c=(container *)v_arg;
 
-        if (params->size() >= 1)
-        {
-	  vector<string>::iterator iter = params->begin();
+    user *p_user = (user*) c->elem[1];		// the corresponding user
+    vector<string> *params = (vector<string>*) c->elem[2];	// param array
+    conf* p_conf = (conf*) ((dynamic_wrap*)c->elem[3])->CONF;
+    string s_msg = "";
 
-	  string s_help = p_conf->get_elem("chat.msgs.help." + *iter);
+    if (params->size() >= 1)
+    {
+      vector<string>::iterator iter = params->begin();
 
-          if ( s_help != "" ) {
-           s_msg.append("<b>" + *iter + ":</b> " + s_help + "<br>\n");
-           p_user->msg_post( &s_msg ); 
-	   return 0;
-          }
+      string s_help = p_conf->get_elem("chat.msgs.help." + *iter);
 
-	  s_msg.append(*iter + " " + p_conf->get_elem("chat.msgs.err.notavailable"));
-         }
- 
-         else
-         {
-          s_msg.append(p_conf->get_elem("chat.msgs.err.wrongcommandusage"));
-         }
+      if ( s_help != "" )
+      {
+        s_msg.append("<b>" + *iter + ":</b> " + s_help + "<br>\n");
+        p_user->msg_post( &s_msg );
+        return 0;
+      }
 
-         s_msg = "<font color=\"#" 
-                       + p_conf->get_elem("chat.html.errorcolor")
-                       + "\"> "
-                       + s_msg
-                       + "</font><br>\n";
+      s_msg.append(*iter + " " + p_conf->get_elem("chat.msgs.err.notavailable"));
+    }
+    else
+    {
+      s_msg.append(p_conf->get_elem("chat.msgs.err.wrongcommandusage"));
+    }
 
-         p_user->msg_post( &s_msg ); 
+    s_msg = "<font color=\"#"
+            + p_conf->get_elem("chat.html.errorcolor")
+            + "\"> "
+            + s_msg
+            + "</font><br>\n";
 
-	return 0;
- }
+    p_user->msg_post( &s_msg );
+
+    return 0;
+  }
 }
 

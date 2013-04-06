@@ -1,9 +1,7 @@
-yChat; Homepage: www.yChat.org; Version 0.7.3-RELEASE
-
+yChat; Homepage: www.yChat.org; Version 0.7.7.1-RELEASE
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
-Copyright (C) 2004 Paul C. Buetow
+Copyright (C) 2004, 2005 Paul C. Buetow
 -----------------------------------------------------------------
-
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
 as published by the Free Software Foundation; either version 2
@@ -55,7 +53,7 @@ Engine powerd browsers like Mozilla, Firefox, Camino etc.
 yChat runs completely stand alone and does not need another webserver to build
 on like Apache and does not need to be run via any kind of CGI. yChat creates 
 its own socket on a customized port (standard port: 2000) and seems to be a full
-features HTTP web server to the clients (web browsers). 
+featured HTTP web server to the clients (web browsers). 
 
 The yChat code base can be converted to an yhttpd code base automaticaly. yhttpd
 is the webserver subset of yChat which runs completely stand alone and provides
@@ -67,9 +65,8 @@ yChat is written in C++ which is faster than any Java based Chat-Server or any
 server written in a scripting language like PHP, Python or Perl. As the
 internal data structures hash maps are used to garuantee searching certain
 values in O(1) amount of time. If a hash maps gets full, it will be rehashed.
-The maximum usage in % can be redefined too (standard is 90%). Currently, yChat
-has been measured providing over 5000 hits/requests per second (chat message
-postings) on a FreeBSD based server box while using less than 2% of CPU usage
+Currently, yChat has been measured providing over 1000 hits/requests per second 
+on a FreeBSD based server box while using less than 2% of CPU usage
 on a Athlon XP 1900+. Performance seems to be limited by your bandwith only. 
 Also, each user gets its own session id (random string) with a standard length 
 of 50 chars to authenticate each logged in user. The length of the session id 
@@ -115,7 +112,7 @@ well . To improve performance, you can define the logging puffer (standardly
 new logs will be written to disk after each 20 lines). If you want to log
 everything immediately, you can reset this option to 1 in ychat.conf.
 
-- Its modular -
+- Its modular through own command and dynamic HTML engine -
 All chat commands are realized through dynamic loadable module files which can
 be recompiled and reloaded without restarting the whole yChat server. Also 
 HTML-Sites with certain tasks can be compiled as a module like 
@@ -157,6 +154,11 @@ lot of user and room objects are created and destroyed frequently.
   yChat Makefiles only have been tested with GNU make and may not work with
   other make versions.
 
+- SGI STL extension 
+  Includes ext/hash_map which may be already default on every Linux distro.
+  On *BSD you have to install it first before compiling. On FreeBSD
+  /usr/ports/devel/stlport is your friend.
+
 //<<*
 - mysql-client 4.x (3.x may do too but is not supported)
   Includes libmysqlclient and the mysql.h header files.
@@ -179,13 +181,15 @@ a listed platform did not work at all please contact me:
 
   Operating system (arch)	GNU G++		GNU make
 - FreeBSD 5.3-RELEASE (i386)	3.4.2		3.80
-- FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
 - FreeBSD 5.2.1-RELEASE (i386)	3.3.3 		3.80		
+- FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
 - FreeBSD 4.9-RELEASE (i386)	3.3.4		3.80
-- Gentoo Linux 2004.2 (i386)	3.3.2		3.80
-- OpenBSD 3.6 MP (i386)		3.3.2		3.80
+- Gentoo Linux 2004 (i386)	3.3.2		3.80
+- OpenBSD 3.6 SMP (i386)	3.3.2		3.80
+- Red Hat Linux 8.0 SMP	(i386)	3.2-7		3.79
 - Slackware Linux 10.0 (i386)	3.4.0		3.80 
-- SUSE Linux 8.0 (i386)		3.3.1		3.80
+- SUSE Linux 9.0 (i386)		3.3.1		3.80
+- SUSE Linux 8.1 (i386)		3.2		3.79.1
 
 Other platforms like Linux based systems, other BSD-Systems or UNICES
 are very likely to work too. 
@@ -243,17 +247,14 @@ or gmake config):
  gmake clean_base (only cleans the base obj and rpo files)
  gmake clean_modules (only cleans the modules .so files) 
  gmake config (runs yChat configurator)
- gmake deinstall (deinstalls ychat from PREFIX)
  gmake gpl (shows the GNU General Public License)		
  gmake help (shows all available ychat gmake targets)
- gmake install (installs ychat to PREFIX)
  gmake mail (sends a mail to the yChat developers containing build opts.)
  gmake modules (only compiles modules)
  gmake mrproper (same as gmake clean plus removing all temp files) 
  gmake setup (runs all configure scripts and afterwards gmake all)
  gmake start (compiles everything and starts the server)
  gmake stats (generates ychat statistics)
- gmake uninstall (same as deinstall)
  gmake version (shows the current version of yChat)
 //<<*
  gmake yhttpdbase (generates an yhttpd code base)

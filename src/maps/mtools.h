@@ -1,7 +1,6 @@
 #ifndef MTOOLS_H
 #define MTOOLS_H
 
-
 template <class type_>
 struct mtools
 {
@@ -9,7 +8,4 @@ struct mtools
 };
 
 #include "mtools.tmpl"
-
-#endif 
-
-
+#endif

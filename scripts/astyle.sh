@@ -8,7 +8,7 @@ do
  for i in `find . -name "*.$f"`
  do
   echo $i
-  astyle --style=gnu $i
+  astyle --style=ansi -s2 $i
   rm -f $i.orig
  done
 done

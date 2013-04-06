@@ -1,4 +1,40 @@
-Changes from 0.7.2 to 0.7.3 RELEASE
+Changes from 0.7.6-RELEASE to 0.7.7-RELEASE
+- Major code cleanup
+- Bugfix in /col 
+- Bugfix in gcol #1 (destroy session also if no database is used)
+- Bugfix in gcol #2 (now runs each hour not once a day)
+- Renew the style.css and stream.html
+
+Changes from 0.7.5-RELEASE to 0.7.6-RELEASE 
+- Removed the old hash maps and included the SGI C++ STL extenstion
+  hash_map.
+
+Changes from 0.7.4.1-RELEASE to 0.7.5-RELEASE 
+- Garbage collector will now run once a hour rather than each ten minutes.
+- Dynamic thread pool improvements.
+- Removed equiv-http-refresh meta tag from the online list. 
+- Minor bugfix in the /topic command.
+- Implemented "User list"
+
+Changes from 0.7.4-RELEASE to 0.7.4.1-RELEASE: 
+- Dynamic thread pool bugfix (dead lock)
+
+Changes from 0.7.3-RELEASE to 0.7.4-RELEASE: 
+- Code cleanup.
+- Made the thread pool increasing dynamic. 
+- Added some thread pool optimazions.
+- Added some more ${MAKE} vars to the Makefiles.
+- Added Content-length to the HTTPD header.
+- Added the !command to the command line interface.
+- Added Content-type text/plain.
+- Added scrolling checkbox to input.html
+- Removed modl from yhttpd. Dynamic modules are not needed in yhttpd yet.
+- Improved session engine.
+- Fixed auto logout bug.
+- Fixed newline bug (one \n too much for each html template)
+- Logging can now be completely disabled.
+
+Changes from 0.7.2 to 0.7.3-RELEASE:
 - Added FreeBSD 5.3-RELEASE support.
 - Added chat.enableguest option. 
 - Added the /all command (Global system message)
@@ -8,7 +44,7 @@ Changes from 0.7.2 to 0.7.3 RELEASE
 - Fixed the /msg bug (In /msg the string replacer should be activated).
 - Fixed logging bug (do not log any timestamps if there are no messages).
 
-Changes from 0.7.1 to 0.7.2 RELEASE
+Changes from 0.7.1 to 0.7.2-RELEASE:
 New features:
 - /morph
 - Added the new standard html template design.
@@ -22,7 +58,7 @@ Bugfixes:
 - /topic now prints the topic in the user's color.
 - Fixed some typos.
 
-Changes from 0.7.0 to 0.7.1 RELEASE
+Changes from 0.7.0 to 0.7.1-RELEASE:
 - Added ${MAKE} to the config file because some Linux distros dont use 
   the "gmake" command for GNU make but just "make"! Modified the
   configure script to generate a make.version file.
@@ -33,7 +69,7 @@ Changes from 0.7.0 to 0.7.1 RELEASE
   need MySQL at all.
 - Added the chat.maxlength.word option.
 
-Changes from 0.6 to 0.7.0 RELEASE
+Changes from 0.6 to 0.7.0-RELEASE:
 - Better stability 
 - Better performance (using more hmaps) 
 - HTML color switcher menu 

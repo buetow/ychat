@@ -29,7 +29,8 @@ perl -e '
    "mysql/mysql.h", #//<< Not needed for yhttpd
    "netinet/in.h",
    "time.h",
-   "ncurses.h"
+   "ncurses.h",
+   "ext/hash_map"
  );
 
  my @libs = (
@@ -75,6 +76,7 @@ perl -e '
    "/include",
    "/usr/include",
    "/usr/local/include",
+   "/usr/lib/",
    "/usr/pkg/include",
    "/opt/include",
    "/opt/local/include"
@@ -143,14 +145,19 @@ perl -e '
     print "Or set the environment variables YCHATHEADERPATHS and YCHATLIBPATHS.\n";
     print " Example: setenv YCHATHEADERPATHS \"/your/header/includes:/a/includes\"\n";
     print "(The environment variables have to be seperated by an :)\n"; 
+    print "PS: You may use the locate and/or find command to search for files.\n"; 
     exit(1);
   }
+  `touch ../err`;
   return "";
  }
+
+ print "Headers:\n";
 
  map { $incadd{&check($deepness, $_, @headerpaths)}++ } 
   @headers;
 
+ print "Libraries:\n";
  map { $libadd{&check($deepness, $_, @libpaths)}++ } 
   @libs;
 
