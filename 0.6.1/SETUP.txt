@@ -1,0 +1,146 @@
+############################## yChat.de SETUP ###############################
+##      Copyright by Paul C. Bütow 2000 -  2001 (mail@paulbuetow.de)       ##
+#############################################################################
+
+yChat findest Du im Internet unter der Adresse www.yChat.de. Bei Kritik,
+Anregungen oder Fragen bitte in das dort vorhandene Board posten oder eine
+E-Mail an die oben stehende Adresse senden. Ich bemühe mich, yChat so gut wie
+möglich zu machen und bin über Ratschläge immer sehr erfreut :-) ...
+
+Die Installation kann auf Unix-Systemen voll automatisch duchgeführt werden.
+Allerdings ist dafür ein Telnet-Zugang notwendig. Kopiere alle vorhandenen
+Dateien in das Verzeichnis cgi-bin/yChat und führe dann das Shellskript
+setup.sh mit dem Befehl ./setup.sh aus. Alle Verzeichnisse werden
+automatisch erstellt. Dies wurde allerdings nur auf SuSE Linux Systemen
+mit root-Zugriff getestet. Solltest Du ein anderes System verwenden oder
+den Chat auf einen virtuellen Webserver installieren wollen, dann mußt Du
+unter Umständen das Verzeichnis "../../htdocs/yChat" nach "../../yChat"
+in der setup.sh umbenennen. Ansonsten werden die dazugehörigen Grafikdateien
+falsch oder garnicht kopiert.
+
+Wenn Du keinen Telnet-Zugang hast, kannst Du hier die Verzeichnisse manuell
+einrichten:
+
+Folgende Basis-Dateien sind im Chat enthalten und müssen in das cgi-bin
+Verzeichnis kopiert werden. Z.B. nach ./cgi-bin/yChat/:
+
+config.pm       => Configurationsdatei ("Shared subs")
+htdocs.pl       => Generiert dynamische HTML-Inhalte
+index.pl        => Startskript (Registrierung, Login, Chatframeset)
+input.pl        => Skript für das Chateingabeframe
+main.pl         => Hauptskript (Alle Hauptfunktionen des Chats)
+main2.pl        => Skript für editieren der Benutzerdaten etc
+online.pl       => Anzeige und Überprüfung der eingelogten Benutzer
+push.pl         => Server-Push-Routine
+setup.sh        => Dient zur automatischen Einrichtung des Chats
+stat.pl         => Erstellt diverse Statistiken
+README.txt      => Beinhaltet wichtige Informationen
+UPDATES.txt     => Updateliste der verschiedenen Versionen
+CREDITS.txt     => Personen, die geolfen haben yChat zu proggen
+SETUP.txt       => Dieses Dokument
+chatiq.sno      => Datei beinhaltet die Chatiquette
+colors.sno      => Datei beinhaltet alle Farben in hex. für die Chatoptionen
+help.sno        => Datei beinhaltet alle Chatbefehle
+
+Folgende Verzeichnisse müssen erstellt werden (chmod 777 sollte
+funktionieren):
+
+- Hier befinden sich alle für den Chat notwenidgen Daten:
+   ./cgi-bin/yChat/data/*
+
+- Hier befinden sich alle Logdateien, die vom Chat erstellt werden:
+   ./cgi-bin/yChat/data/logs/*
+
+- Hier befinden sich die Message-Dateien der eingelogten Benutzer:
+   ./cgi-bin/yChat/data/msgs/*
+
+- Hier befinden sich alle Daten der registrierten Benutzer:
+   ./cgi-bin/yChat/data/user/*
+
+- Hier wird abgespeichert, wie oft ein Benutzerprofil insgesant schon
+  aufgerufen wurde und wie lange die Chatter schon online waren:
+   ./cgi-bin/yChat/data/user/counts/*
+
+- Hier werden alle Memos abgespeichert.
+   ./cgi-bin/yChat/data/user/memos/*
+
+- Hier befinden sich alle Chat-Optionen und Passwörter der registrierten
+  Benutzer:
+   ./cgi-bin/yChat/data/user/options/*
+
+- Hier befinden sich alle Benutzerprofile der Benutzer:
+   ./cgi-bin/yChat/data/user/profiles/*
+
+- Hier befinden sich alle Gästebucheinträge der Benutzer:
+   ./cgi-bin/yChat/data/user/gbooks/*
+
+- Hier wird abgespeichert, wann der der jew. benutzer zum letzten mal das
+  System betreten hat.
+   ./cgi-bin/yChat/data/user/lastlogin/*
+
+- Hier befinden sich alle Daten zu den aktuellen Chaträumen und User die
+  online sind
+   ./cgi-bin/yChat/data/online/*
+
+- Verzeichnis für die Raumstatusdateien. Hier wird abgespeichert:
+  Raumbesetzer, Away (inkl. Away-Nachricht)und das Raumthema.
+   ./cgi-bin/yChat/data/online/rstat/*
+
+   - Hier befinden sich die Chatter, die sich in den jew. Räumen befinden. Die
+  Verzeichnisse der Räume werden automatisch erstellt.
+   ./cgi-bin/yChat/data/online/rooms/*
+
+- Hier befinden sich alle PIDs (Process IDs) der Chatter in den jew. Räumen.
+   ./cgi-bin/yChat/data/online/pids/*
+
+- Hier befinden sich alle Chatter, die sich z.Z. im System befinden
+   ./cgi-bin/yChat/data/online/users/*
+
+- Hier befinden sich alle IP-Nummern und TempIDs der eingeloggten Chatter
+   ./cgi-bin/yChat/data/online/ident/*
+
+ - Hier befinden sichTempIDs der eingeloggten Chatter
+  ./cgi-bin/yChat/data/online/tmpid/*
+
+Alle Grafik- und Multimediadateien (*.gif, *.jpg, *.swf) sollten in ein
+nicht-CGI-BIN-Verzeichnis
+ kopiert werden. Z.B. nach ./yChat/.
+
+Zum schluß sollte die config.pm-Datei nach wünschen editiert werden.
+Allerdings sollten die Copyright Hinweise und die Versionsnummern nicht
+manipuliert werden.
+
+Jetzt einfach die Datei index.pl vom Browser ausführen lassen :-)
+
+
+Im Folgendem werde ich ein wenig auf die im yChat-Sourcecode oft verwendeten .
+Variablen eingehen:
+
+ $var           => Sagt dem Skript, wie es gestartet werden soll.
+ $alias         => Teilt dem Skript den Benutzername mit.
+ $tmpid         => Beim einloggen in den Chat wird für den Benutzer eine
+                   temporäre ID generiert. Diese wird so wohl in der Variable
+                   $tmpid als auch in eine Datei geschrieben. Handelt der
+                   Benutzer, so wird vom Skript die  Variable $tmpid mit dem
+                   Eintrag in der Datei verglichen. Sind beide  Werte
+                   identisch, dann wird die Handlung des Benutzers
+                   ausgeführt.  Stimmen die Werte nicht überein, dann wird
+                   die Fehlermeldung, daß der Benutzer die falsche $tmpid hat
+                   um mit $alias zu handeln,ausgegeben und das Skript beendet
+                   sich. Dies ist eine Sicherheitsmaßnahme welche verbietet,
+                   mit fremden Benutzernamen im  System zu handeln.
+ $room          => Sagt dem Skript, wie der aktuelle Raumname lautet.
+ $col           => Sagt dem Skript, wie die aktuelle Chatfarbe des Nicks von
+                   $alias lautet.
+ $seccol        => Sagt dem Skript, wie die aktuelle Chatfarbe der Schrift von
+                   $alias lautet.
+ $msg           => Beinhaltet den von $alias zu postenden Text im Chat.
+                   Hiervon wird auch  in den Benutzergästebüchern und im
+                   Benutzerboard Gebrauch gemacht.
+ $whisper        => Beinhaltet den Benutzernamen, zu dem $alias zuletzt
+                   geflüstert hat.
+ $id und $tmp   => Temporäre Variablen zwecks Übermittlung diverser Daten.
+ $pw            => Wird im Skript index.pl verwendet um das Zugangspassword
+                   zu übermitteln.
+
+Viel Spaß beim Chatten ...

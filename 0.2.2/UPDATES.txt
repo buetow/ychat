@@ -1,0 +1,22 @@
+########################### yChat.de UPDATE LIST  ###########################
+##    Copyright by Paul C. Bütow aka Snooper 2000 (paul@buetow.oxg.de)     ##
+#############################################################################
+Hier sind alle Erneuerungen der Versionen dokumentiert:
+
+Update von 0.2.1 nach 0.2.2 vom 23.11.2k
+        - Einige Bugs wurden entfernt.
+        - Geschwindigkeit des Chats wurde optimiert.
+        - Eine Liste aller eingelogten Benutzer erscheint am Rand. Hierfür
+          wurde die Datei online.pl eingeführt. Sie aktuallisiert sich alle
+          20 Sekunden.
+        - Die UPDATES.txt wurde eingeführt.
+
+Update von 0.2.0 nach 0.2.1
+        - Einige Bugs wurden entfernt.
+        - Die IP# der eingelogten Benutzer werden
+          nun anders verwaltet.
+
+Update von Alpha XVIII nach 0.2.0
+        - Die Handhabung der eingelogten Benutzer im System wurde komplett neu
+          konzeptiert.
+        - Neue Versionsnumern wurden eingeführt.

@@ -1,0 +1,32 @@
+############################## yChat.de TODO ################################
+##      Copyright by Paul C. Bütow 2000 -  2001 (mail@paulbuetow.de)       ##
+#############################################################################
+
+Folgende Funktionen werden demnächst evtl. in yChat integriert:
+
+ - OOP bei den HTML-Eingabeformularen und dem Menü.
+
+ - Kein CGI.pm im main.pl und config.pm.
+
+ - Die Schlucht (Ein Raum wo Chatter hineingeworfen werden,
+   die sich nicht benehmen und noch nicht aus dem Chat
+   katapultiert werden sollen).
+
+ - IP-Adressen ver-/entbannen.
+
+ - E-Mail zusendung bei verlorenem Passwort.
+
+ - Unter "Benutzer" sollen Chatter über eine Eingabemaske nach dem
+   Anfangsbuchstaben gesucht werden können (vergl. Kilahu).
+
+ - Linux- und Windows-yChat-Client soll programmiert werden. Mit diesem läßt
+   sich dann im yChat chatten, ohne sich über http://www.yChat.de eingelogt zu
+   haben. Der Client soll gleicheitig auch als Messenger (ICQ-Like) fungieren
+   können (yChat-Messenger bzw. yCM).
+
+ - Der Cybarkeeper (künstlich intilligenter Chatroboter, der
+   sich im Hauptraum Cyberbar aufhält, virtuelle Drinks verteilt
+   und von Real-Chattern übernommen werden kann. (Zukunftsmusik)
+
+Für weitere Vorschläge bitte in das yChat-Board unter www.yChat.de
+texten oder eine E-Mail an mail@paulbuetow.de :-)

@@ -1,0 +1,60 @@
+<div>
+ Alle Chat-Befehle:
+</div>
+<hr>
+<table border=1>
+<tr><th><div>SU</div></th><th><div>Befehl</div></th><th><div>Beschreibung</div></th></tr>
+<tr><td><div>NC</div></td><td><div>/about</div></td><td><div>Zeigt aktuelle Version und andere Infos  der Community an</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/away <font color=red>Nachricht</font></div></td><td><div>Abmelden mit einer<font color=red>Abmeldenachricht</font></div></td></tr>
+<tr><td><div>NC</div></td><td><div>/clear</div></td><td><div>Bildschirm wird gelöscht</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/col <font color=red>XXXXXX</font> <font color=ffa500>XXXXXX</font></div></td><td><div>Farbe/n (<font color=red>Namensfarbe</font> / <font color=ffa500>Textfarbe</font>) wechseln. Angabe in Hexadezimal.</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/date</div></td><td><div>Zeigt aktuelles Datum und Urzeit an</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/j <font color=red>Raumname</font></div></td><td><div>Raum wechseln/erstellen</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/ju <font color=red>Alias</font></div></td><td><div>In den Raum wechseln/folgen, wo sich <font color=red>Alias</font> befindet.</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/m <font color=red>Aktion</font></div></td><td><div>Handeln mit 2 Farben</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/me <font color=red>Aktion</font></div></td><td><div>Handeln mit einer Farbe</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/memo <font color=red>Alias</font> <font color=ffa500>Nachricht</font></div></td><td><div><font color=red>Alias</font> eine <font color=ffa500>Memonachricht</font> hinterlassen</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/msg <font color=red>Alias</font> <font color=ffa500>Nachricht</font></div></td><td><div><font color=red>Alias</font> eine private <font color=ffa500>Nachricht</font> flüstern</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/ <font color=ffa500>Nachricht</font></div></td><td><div>Eine private <font color=ffa500>Nachricht</font> demjenigen flüstern, dem zuletzt eine geflüstert wurde</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/online <font color=red>Alias</font></div></td><td><div>Zeigt Onlineminuten von <font color=red>Alias</font> an</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/q</div></td><td><div>Chat verlassen</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/rmgb</div></td><td><div>Das eigene Gästebuch komplett weglöschen</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/s <font color=red>Nachricht</font></div></td><td><div><font color=red>Nachricht</font> schreien</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/seen <font color=red>Alias</font></div></td><td><div>Zeigt an, vor wieviel Stunden sich <font color=red>Nachricht</font> zum letzten Mal in das System eingelogt hat</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/w</div></td><td><div>Zeigt an, wer sich im aktuellen Raum befindet</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/wc <font color=red>Raum</font></div></td><td><div>Zeigt an, wer sich im <font color=red>Raum</font> befindet. Wird kein Raum angegeben, dann wird ledeglich angezeigt, wer sich im System befindet</div></td></tr>
+<tr><td><div>NC</div></td><td><div>/wc/</div></td><td><div>Zeigt alle offenen Räume und deren Chatter an</div></td></tr>
+<tr><td><div>NC</div></td><td> <div>/wj <font color=red>Alias</font></div></td><td><div>Zeigt an, in welchen Raum sich <font color=red>Alias</font> befindet</div></td></tr>
+<tr><td><div><font color=778899>RB</font></div></td><td><div>/l</div></td><td><div>Der aktuelle Raum wird ab- bzw. aufgesperrt</div></td></tr>
+<tr><td><div><font color=778899>RB</font></div></td><td><div>/rsu <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> die Raumbesetzerrechte entnehmen</div></td></tr>
+<tr><td><div><font color=778899>RB</font></div></td><td><div>/su <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> zum Raumbesetzer ernennen</div></td></tr>
+<tr><td><div><font color=778899>RB</font></div></td><td><div>/t <font color=red>Thema</font></div></td><td><div>Dem aktuellen Raum wird ein <font color=red>Thema</font> gegeben</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/ban</div></td><td><div>Zeigt alle verbannten Benutzer an</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/ban <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> verbannen</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/rban <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> "entbannen"</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/ip <font color=red>Alias</font></div></td><td><div>Zeigt die IP-Nummer von <font color=red>Alias</font> an</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/k <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> wird aus dem Chat katapultiert!</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/sl <font color=red>Raum</font></div></td><td><div>Einen anderen <font color=ffa500>Raum</font> absperren</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/ss <font color=red>Raum</font> <font color=ffa500>Nachricht</font></div></td><td><div>Eine <font color=ffa500>Nachricht</font> in <font color=red>Raum</font> hinüber rufen</div></td></tr>
+<tr><td><div><font color=ffa500>WÄ</font></div></td><td><div>/st <font color=red>Raum</font> <font color=ffa500>Thema</font></div></td><td><div>Einem anderen <font color=ffa500>Raum</font> ein <font color=ffa500>Thema</font > geben</div></td></tr>
+<tr><td><div><font color=green>OW</font></div></td><td><div>/banip <font color=red>Alias</font></div></td><td><div>Die IP-Nummer von <font color=red>Alias</font> verbannen</div></td></tr>
+<tr><td><div><font color=green>OW</font></div></td><td><div>/rbanip ip://<font color=red>x.x.x.x</font></div></td><td><div>Die IP-Nummer <font color=red>x.x.x.x</font> "entbannen"</div></td></tr>
+<tr><td><div><font color=green>OW</font></div></td><td><div>/kill <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> wird ganz und gar aus dem System entfernt</div></td></tr>
+<tr><td><div><font color=green>OW</font></div></td><td><div>/wa <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> zum Wächter ernennen</div></td></tr>
+<tr><td><div><font color=green>OW</font></div></td><td><div>/rwa <font color=red>Alias</font></div></td><td><div><font color=red>Alias</font> vom Wächter zum normalen Chatter degradieren</div></td></tr>
+<tr><td><div><font color=green>OW</font></div></td><td><div>/sys <font color=red>Nachricht</font></div></td><td><div>Systemnachricht schreiben. (Erscheint in allen existierenden Räumen)</div></td></tr>
+</table><hr>
+<div>
+ Zur Erklärung: NC steht für "Normale Chatter", RB für "Raumbesetzer", WÄ für "Wächter" und OW für "Oberwächter".
+ Obrige Befehle können nur von der/den jeweiligen Benutzergruppe/n werden.<br><br>
+ Allerdings gibt es folgendes zu beachten: Oberwächter verfügen über alle Chatbefehle. Normale Wächter über alle Chatbefehle, außer über die der Oberwächter.
+ Raumbesetzer können nur Raumbesetzerbefehle und die Befehle der normalen Chatter durchführen. Normale Chatter haben jedeglich die Standardbefehle zu verwenden.<br><br>
+ Weitere Besonderheiten der Wächter und Oberwächter:<br><br>
+  Wächter und Oberwächter können ....<br>
+  ... abgesperrte Chaträume problemlos betreten.<br>
+  ... nicht gekickt, verbannt oder gekillt werden.<br><br>
+  Nur Oberwächer können Logdateien der Cyberbar lesen!<br><br>
+ Oberwächter ernennt nur der Systemadministrator!
+</div>
+</body>
+</html>

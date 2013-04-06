@@ -1,0 +1,25 @@
+Folgende Funktionen werden demnächst in yChat integriert:
+
+ - Die Schlucht (Ein Raum wo Chatter hineingeworfen werden,
+   die sich nicht benehmen und noch nicht aus dem Chat
+   katapultiert werden sollen).
+
+ - Löschung aller Chatter, die sich seit 60 Tagen nicht mehr
+   eingelogt haben.
+
+ - IP-Adressen ver-/entbannen.
+
+ - E-Mail zusendung bei verlorenem Passwort.
+
+ - Totale Onlinezeit der einzelnen Chatter soll protokolliert
+   werden. Daraus wird dann eine Top20 der Chatter erstellt.
+
+ - Unter "Benutzer" sollen Chatter über eine Eingabemaske nach
+   dem Anfangsbuchstaben gesucht werden können (vergl. Kilahu).
+
+ - Der Cybarkeeper (künstlich intilligenter Chatroboter, der
+   sich im Hauptraum Cyberbar aufhält, virtuelle Drinks verteilt
+   und von Real-Chattern übernommen werden kann. (Zukunftsmusik)
+
+Für weitere Vorschläge bitte in das yChat-Board unter www.yChat.de
+texten oder eine E-Mail an paul@buetow.oxg.de :-)

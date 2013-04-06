@@ -1,0 +1,63 @@
+So wird der Perl yChat Version 0.8.0 installiert:
+
+1. Die tar.gz Datei in ein beliebiges Verzeichnis entpacken und
+dort hineinwechseln. Am besten einen neuen Benutzer yC anlegen
+und das Archiv dorthinein entpacken.
+
+2. In das entpackte Verzeichnis wechseln. Dort finden Sie die
+Shell-Datei setup.sh. Öffnen Sie diese und editieren sie dort
+den letzten Befehl
+chmod yC * -R
+so, daß yC durch den Usernamen ersetzt wird, unter dem der yChat
+letzendlich gestartet werden soll.
+
+3. Wenn sie auf dem Server Root-Zugriff haben, dann können sie
+den Chat über Ramdisk (schneller) laufen lassen. Wechseln
+Sie deshalb den user nach root und führen Sie dann das Shell
+Skript mit ./setup.sh aus. 
+Wenn sie kein Root-Zugriff haben, können sie das Skript
+auch ausführen, wobei keine Ramdisks angelegt werden.
+
+4. Kopieren sie den Unterordner "yC-web-docs" in ein Verzeichnis
+auf das öffentlich via HTTP zugegriffen wird (z.B. htdocs 
+von Apache).
+
+5. Nun hat das Skript alle Unterverzeichnisse erstellt. Jetzt
+müssen Sie die Datei config.pm öffnen und dort die Variablen
+$localport, $localhost und $gfxpath editieren. Hierbei setzen 
+Sie den Localport auf den Port über den der yChat-Server laufen 
+soll und den Localhost auf die IP-Nummer Ihren Servers. Bei
+FX-Path geben sie die URL an, unter der sie auf die Grafiken
+via HTTP zugreifen können.
+
+6. Nun können sie den Chat starten. Dafür geben sie lediglich
+ein:
+perl ychatd.pl &
+Achten sie darauf, daß sie dies nicht als root- sondern als 
+einen anderen User tun (z.B. user yC den Sie angelegt haben 
+sollten, wenn Sie sich an meinen Vorschlag gehalten haben).
+Wenn Sie den Chat gestartet haben, können sie ihn via einem
+beliebigen Webbrowser unter http://ihrlocalhost:ihrlocalport
+erreichen.
+
+7. Wenn sie sich einen Nick registriert haben, können sie sich
+zum Administrator machen indem Sie die Datei data/hierachie 
+anlegen und dort in die erste Zeile folgendes schreiben:
+ihrnick<;9
+
+Die weiteren Befehle finden sie im Chat wenn sie den Befehl
+/menu eingeben und dann auf "Befehle" klicken.
+
+Bei Fragen Mail an snooper@ychat.de,
+MfG,
+Paul.
+
+
+PS: Ich werde nicht mehr sehr viel am Perl yChat programmieren.
+Geplant ist eine evtl. 0.8.1er Release, in der man nicht mehr
+auf die Groß- und Kleinschreibung der Nicks achten muß.
+
+Des Weiteren programmiere ich ein neues Chat-System, welches
+vollständig auf Java basiert. Wenn der Server gerade gehen sollte,
+dann ist eine Beta stets unter www.yChat.org einsehbar. Unter
+www.yChat.de läuft der Perl yChat weiter.
