@@ -11,12 +11,12 @@
 using namespace std;
 
 class con : public con_base
-  {
-  public:
-    MYSQL* p_mysql;
-    con( );
-    ~con( );
-  };
+{
+public:
+  MYSQL* p_mysql;
+  con( );
+  ~con( );
+};
 
 #endif
 #endif

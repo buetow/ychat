@@ -8,13 +8,13 @@ using namespace std;
 const string dumpable::s_sep = "->";
 const int dumpable::i_max_level = 100;
 
-dumpable::dumpable() 
+dumpable::dumpable()
 {
   initialize(0);
 }
 
 void
-dumpable::initialize(int i_level) 
+dumpable::initialize(int i_level)
 {
   this->i_level = i_level;
   this->i_lined = i_level;
@@ -24,13 +24,13 @@ dumpable::initialize(int i_level)
 }
 
 string
-dumpable::dump() 
+dumpable::dump()
 {
   return dump(0);
 }
 
 string
-dumpable::dump(int i_level) 
+dumpable::dump(int i_level)
 {
   initialize(i_level);
   dumpit();
@@ -38,34 +38,37 @@ dumpable::dump(int i_level)
 }
 
 void
-dumpable::add(string s_line) 
+dumpable::add
+  (string s_line)
 {
   if ( i_lined > i_max_level )
     i_lined = i_max_level;
 
-  if (!b_lined) 
+  if (!b_lined)
     s_dump.append(s_sep);
 
-  else for ( int i = 0; i < i_lined; ++i ) 
-    s_dump.append(" ");
+  else
+    for ( int i = 0; i < i_lined; ++i )
+      s_dump.append(" ");
 
   s_dump.append(s_line);
 
-  if (b_next_no_nl) 
+  if (b_next_no_nl)
     b_next_no_nl = false;
 
   else
     s_dump.append("\n");
 
-  if (!b_lined) {
+  if (!b_lined)
+  {
     b_lined = true;
     i_lined = i_level + s_sep.length();
   }
 }
 
 int
-dumpable::get_level() const 
-{ 
+dumpable::get_level() const
+{
   return i_lined;
 }
 

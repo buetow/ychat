@@ -15,40 +15,39 @@ data_base::data_base( )
 
   // Reads all DATA_ elements of conf.txt!
   for ( iter = vec_keys.begin(); iter != vec_keys.end(); iter++ )
+  {
+    if ( iter->length() > 20
+         && iter->compare(0, 19, "chat.database.mysql") == 0
+         && iter->find(".descr") == string::npos )
     {
-      if ( iter->length() > 20
-           && iter->compare(0, 19, "chat.database.mysql") == 0
-           && iter->find(".descr") == string::npos )
+      vector<string> vec_tokens;
+      string s_element = wrap::CONF->get_elem(*iter);
+      unsigned i_pos = 0;
+
+      for ( bool b_find = 1; b_find; )
+      {
+        i_pos = s_element.find_first_of( " ", 0 );
+
+        if ( i_pos != string::npos )
         {
-          vector<string> vec_tokens;
-          string s_element = wrap::CONF->get_elem(*iter);
-          unsigned i_pos = 0;
-
-          for ( bool b_find = 1; b_find; )
-            {
-              i_pos = s_element.find_first_of( " ", 0 );
-
-              if ( i_pos != string::npos )
-                {
-                  vec_tokens.push_back( s_element.substr(0, i_pos) );
-                  s_element = s_element.substr( i_pos+1 );
-                }
-
-              else
-                {
-                  vec_tokens.push_back( s_element );
-                  b_find = 0;
-                }
-            }
-
-          string s_mysqlquery = iter->substr(20);
-          wrap::system_message(MYSQLQ2 + s_mysqlquery);
-          map_queries[s_mysqlquery] = vec_tokens;
+          vec_tokens.push_back( s_element.substr(0, i_pos) );
+          s_element = s_element.substr( i_pos+1 );
         }
+        else
+        {
+          vec_tokens.push_back( s_element );
+          b_find = 0;
+        }
+      }
+
+      string s_mysqlquery = iter->substr(20);
+      wrap::system_message(MYSQLQ2 + s_mysqlquery);
+      map_queries[s_mysqlquery] = vec_tokens;
     }
+  }
 }
 
-void data_base::initialize_connections()
+void data_base::init_connections()
 {
   int i_min_con = tool::string2int( wrap::CONF->get_elem("chat.database.mincon") ),
                   i_max_con = tool::string2int( wrap::CONF->get_elem("chat.database.maxcon") );
@@ -113,19 +112,18 @@ data_base::get_con()
   pthread_mutex_lock( &mut_con );
 
   if ( empty() )
-    {
-      wrap::system_message( DATANEW + string("(") + tool::int2string(size()+1) + ")" );
-      pthread_mutex_unlock( &mut_con );
-      return new con;
-    }
-
+  {
+    wrap::system_message( DATANEW + string("(") + tool::int2string(size()+1) + ")" );
+    pthread_mutex_unlock( &mut_con );
+    return new con;
+  }
   else if ( size() > i_max_con-1 )
-    {
-      wrap::system_message( DATAMAX + string("(") + tool::int2string(i_max_con) + ")" );
-      usleep( 5000000 );
-      pthread_mutex_unlock( &mut_con );
-      return get_con();
-    }
+  {
+    wrap::system_message( DATAMAX + string("(") + tool::int2string(i_max_con) + ")" );
+    usleep( 5000000 );
+    pthread_mutex_unlock( &mut_con );
+    return get_con();
+  }
 
 
   con* p_con = *begin();
@@ -162,10 +160,10 @@ void
 data_base::print_queue_size()
 {
   if ( wrap::NCUR->is_ready() )
-    {
-      mvprintw( NCUR_CON_QUEUE_X,NCUR_CON_QUEUE_Y, "Con. queue: %d ", size());
-      refresh();
-    }
+  {
+    mvprintw( NCUR_CON_QUEUE_X,NCUR_CON_QUEUE_Y, "Con. queue: %d ", size());
+    refresh();
+  }
 }
 #endif
 
@@ -176,11 +174,11 @@ data_base::disconnect_all_connections()
   pthread_mutex_lock( &mut_con );
 
   while ( !empty() )
-    {
-      con* p_con = *begin();
-      pop_front();
-      delete p_con;
-    }
+  {
+    con* p_con = *begin();
+    pop_front();
+    delete p_con;
+  }
 
   pthread_mutex_unlock( &mut_con );
 #ifdef NCURSES
@@ -200,18 +198,18 @@ data_base::check_data_con_timeout()
   list< list<con*>::iterator > erase_list;
   for ( list<con*>::iterator iter = begin();
         iter != end(); iter++ )
+  {
+    i_last_activity = (int) (*iter)->get_last_activity();
+    if ( i_timeout_time <= i_last_activity )
     {
-      i_last_activity = (int) (*iter)->get_last_activity();
-      if ( i_timeout_time <= i_last_activity )
-        {
-          con* p_con = *iter;
-          erase_list.push_back(iter);
-          delete p_con;
-          wrap::system_message(DATADI2 + tool::int2string(size()-erase_list.size()+1) + ","
-                               + tool::int2string(i_timeout_time) + ","
-                               + tool::int2string(i_last_activity) + ")");
-        }
+      con* p_con = *iter;
+      erase_list.push_back(iter);
+      delete p_con;
+      wrap::system_message(DATADI2 + tool::int2string(size()-erase_list.size()+1) + ","
+                           + tool::int2string(i_timeout_time) + ","
+                           + tool::int2string(i_last_activity) + ")");
     }
+  }
   for ( list< list<con*>::iterator >::iterator erase_iter = erase_list.begin();
         erase_iter != erase_list.end(); erase_iter++ )
     erase( *erase_iter );

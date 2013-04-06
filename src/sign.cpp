@@ -40,6 +40,7 @@ sign::terminate_received(int i_param)
 
   //<<*
 #else
+
   wrap::GCOL->remove_garbage();
   //*>>
 #endif
@@ -57,8 +58,10 @@ sign::init_signal_handlers()
   signal(SIGUSR1, clean_template_cache);
   signal(SIGUSR2, reload_dlopen_modules); //<<
 #ifdef CTCSEGV
-  signal(SIGSEGV, sigsev_received); 
+
+  signal(SIGSEGV, sigsev_received);
 #endif
+
   signal(SIGHUP, terminate_received);
   signal(SIGINT, terminate_received);
   signal(SIGTERM, terminate_received);

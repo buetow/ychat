@@ -2,6 +2,17 @@
 #define WRAP_H
 
 #include "incl.h"
+
+
+struct socketcontainer
+{
+  int i_sock;
+#ifdef OPENSSL
+  void *p_ssl_context;
+#endif
+
+};
+
 #ifdef DATABASE
 #include "data/data.h"
 #endif
@@ -15,82 +26,114 @@
 //<<*
 #include "modl.h"
 //*>>
+
 #ifdef NCURSES
 #include "ncur/ncur.h"
+#else
+#ifdef CLI
+#include "cli/cli.h"
 #endif
+#endif
+
 #include "chat/sman.h"
+
+#ifndef OPENSSL
 #include "sock/sock.h"
-#include "stats.h"
+#else
+#include "sock/sslsock.h"
+#endif
+
+#include "monitor/stats.h"
 #include "time/timr.h"
+#include "thrd/pool.h"
+
 
 using namespace std;
 
-class dynamic_wrap 
-{
- public: 
-    //<<*
-    chat* CHAT;
-#ifdef DATABASE
-    data* DATA;
-#endif
-    gcol* GCOL;
-    sman* SMAN;
-    modl* MODL;
-    //*>>
 
-    conf* CONF;
-    html* HTML;
+class dynamic_wrap
+{
+public:
+  //<<*
+  chat* CHAT;
+#ifdef DATABASE
+
+  data* DATA;
+#endif
+
+  gcol* GCOL;
+  sman* SMAN;
+  modl* MODL;
+  //*>>
+
+  conf* CONF;
+  html* HTML;
 #ifdef LOGGING
-    logd* LOGD;
+
+  logd* LOGD;
 #endif
 #ifdef NCURSES
-    ncur* NCUR;
+
+  ncur* NCUR;
 #endif
-    sock* SOCK;
-    stats* STAT;
-    timr* TIMR;
+
+  sock* SOCK;
+  stats* STAT;
+  timr* TIMR;
+  pool* POOL;
 };
 
 class wrap
 {
 public:
-    static void system_message( char* c_message )
-    { 
-     wrap::system_message( string(c_message) );
-    }
+  static void system_message( char* c_message )
+  {
+    wrap::system_message( string(c_message) );
+  }
 
-    static void system_message( string* p_message )
-    { 
-     wrap::system_message( *p_message );
-    }
+  static void system_message( string* p_message )
+  {
+    wrap::system_message( *p_message );
+  }
 
-    static void system_message( string s_message );
+  static void system_message( string s_message );
 
-    //<<*
-    static chat* CHAT;
+  static void init_wrapper(map<string,string>* p_main_loop_params);
+
+  //<<*
+  static chat* CHAT;
 #ifdef DATABASE
-    static data* DATA;
-#endif
-    static gcol* GCOL;
-    static sman* SMAN;
-#ifdef IRCBOT
-    static ybot* YBOT;
-#endif
-    static modl* MODL;
-    //*>>
 
-    static conf* CONF;
-    static html* HTML;
+  static data* DATA;
+#endif
+
+  static gcol* GCOL;
+  static sman* SMAN;
+#ifdef IRCBOT
+
+  static ybot* YBOT;
+#endif
+
+  static modl* MODL;
+  //*>>
+
+  static conf* CONF;
+  static html* HTML;
 #ifdef LOGGING
-    static logd* LOGD;
+
+  static logd* LOGD;
 #endif
 #ifdef NCURSES
-    static ncur* NCUR;
+
+  static ncur* NCUR;
 #endif
-    static sock* SOCK;
-    static stats* STAT;
-    static timr* TIMR;
-    static dynamic_wrap* WRAP; 
+
+  static sock* SOCK;
+  static stats* STAT;
+  static timr* TIMR;
+  static pool* POOL;
+  static dynamic_wrap* WRAP;
 };
+
 
 #endif

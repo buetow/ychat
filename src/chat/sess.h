@@ -10,22 +10,22 @@ class cont;
 
 using namespace std;
 
-class sess 
+class sess
 {
 private:
-    string s_tmpid;
-    user  *p_user;	
+  string s_tmpid;
+  user  *p_user;
 
 public:
-    sess(string s_tmpid);
-    ~sess();
+  sess(string s_tmpid);
+  ~sess();
 
-    string get_tmpid();
+  string get_tmpid();
 
-    void set_user(user* p_user);
-    user* get_user();
-    void set_name(string s_name);
-    string get_name();
-    void invalidate();
+  void set_user(user* p_user);
+  user* get_user();
+  void set_name(string s_name);
+  string get_name();
+  void invalidate();
 };
 #endif

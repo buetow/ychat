@@ -13,7 +13,9 @@ class tupel
 private:
   pthread_mutex_t mut_tupel;
   obj_type t_obj;
+
 public:
+
   tupel();
   tupel(obj_type t_obj);
   ~tupel();
