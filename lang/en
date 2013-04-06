@@ -1,3 +1,10 @@
 ERRORCMD=" <font color='#FF0000'>No such command!</font><br>";
 USERENTR=" enters the chat<br>";
 USERLEAV=" leaves the chat<br>";
+
+# Chat-Hilfe ( || seperates command syntax and command description. )
+mods/commands/yc_col.so="/col NICKCOLOR TEXTCOLOR||Changing the color";
+mods/commands/yc_me.so="/me ACTIONTEXT||Writes the text italic ( one color )";
+mods/commands/yc_m.so="/m ACTIONTEXT||Writes the text italic ( two colors )";
+mods/commands/yc_version.so="/version||Shows version of the running yChat";
+mods/commands/yc_q.so="/q||Leaving the chat";

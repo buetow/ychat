@@ -1,6 +1,5 @@
-yChat; Homepage: www.yChat.org; Version 0.5.4-RELEASE
+yChat++; Homepage: www.yChat.org; Version 0.6 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
-Copyright (C) 2005 Paul C. Buetow
 -----------------------------------------------------------------
 
 This program is free software; you can redistribute it and/or
@@ -19,73 +18,122 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 -----------------------------------------------------------------
 
-0.0.0 LEGACY YCHAT 0.5 TABLE OF CONTENTS 
+0.0.0 YCHAT++ TABLE OF CONTENTS 
 1.0.0 REQUIREMENTS
 1.1.0 TESTED PLATFORMS
 1.2.0 IMPORTANT NOTES
-1.3.0 HOW TO OBTAIN YCHAT
+1.3.0 HOW TO OBTAIN YCHAT++ 
 1.3.1 INSTALLATION
+1.4.0 HOW TO USE SCREEN WITH YCHAT++
 1.5.0 CUSTOMIZATION
 1.6.0 FILES
-1.7.0 WRITING BUG REPORTS
 1.8.0 CONTACT
 
 1.0.0 REQUIREMENTS: 
 
-- gcc 3.x
+- gcc 3.2
   The GNU C++ compiler.
+
+- mysql-client 4.x ( 3.x may do too )
+  Includes libmysqlclient and the mysql.h header files.
+
+- ncurses 5.x   
+  Includes libncurses and the ncurses.h header files.
+
+- screen
+  Only needed if yChat should run in background with
+  ncurses enabled.
 
 1.1.0 TESTED PLATFORMS:
 
 The following platforms have been tested with success:
 
 - Linux with GCC 3.2.0, GNU make 3.79.1
-- FreeBSD 5.1-RELEASE-p2, GCC 3.2.2, GNU make 3.80 
-- FreeBSD 5.3-RELEASE, GCC 3.4, GNU make 3.80
+- FreeBSD 5.1-RELEASE-p2, GCC 3.2.2, GNU make 3.80 ( standard make does not seem work on FreeBSD ). 
 
 1.2.0 IMPORTANT NOTES:
 
 Before you compile the source you have to be sure to use at least GCC
 version 3.x with pthreads enabled. ( Type gcc -v to check it ).
 GCC 2.95 did not work while testing on linux and WON'T BE SUPPORTED!
-If you like to support yChat please write us an email and tell what 
-you can/like/would help ;-]. Please also take a look at the yChat
+If you like to support yChat++, please write us an email and tell what 
+you can/like/would help ;-]. Please also take a look at the yChat++
 homepage which is located at http://www.yChat.org.
 
-1.3.0 HOW TO OBTAIN YCHAT:
+1.3.0 HOW TO OBTAIN YCHAT++:
 
 yChat can be downloaded as a source package or through CVS. 
 
 The packages are located at http://www.yChat.org -> Sourcecode -> 
 Packages or go to http://programming.buetow.org/CPP-yChat .
 
-For CVS download type also look at the homepage please.
+For CVS download type:
+
+cvs -d:pserver:anonymous@cvs.ychat.berlios.de:/cvsroot/ychat login
+( You will be asked for a password. Use "just enter" ).
+
+cvs -z3 -d:pserver:anonymous@cvs.ychat.berlios.de:/cvsroot/ychat co \
+ ychat
+( The sources will be copied into your local folder. However, if you 
+  want to obtain the yChat++ Basic sources then replace "ychat"
+  "ychat-basic" ).
+
+cvs -d:pserver:anonymous@cvs.ychat.berlios.de:/cvsroot/ychat logout
+( Logs your CVS session out ).
+
+Now you may continue with the installation.
 
 1.3.1 INSTALLATION:
 
-Invoke "./configure" and afterwards "make", edit the conf.txt. 
+If you dont want to use yChat's ncurses based administration interface 
+you may remove the #define NCURSES line in the glob.h and enable
+#define SERVMSG and #define VERBOSE instead.
+
+Now invoke "./configure" and afterwards "make", edit the conf.txt ( be 
+sure to enter a valid mysql account ) host.
 
 Now we want to compile all the dynamic loadable modules of ychat.
-Invoke "cd cmnd && ./compile.sh && cd -". All command modules should get
+Invoke "cd mods && ./compile.sh && cd -". All modules should get
 compiled.
 
 Now its time to run the server with ./ychat.
-Then point your webbrowser to http://yourip:port !
-
+Then point your webbrowser to http://yourip:port/index.html ( ignoring
+the index.html on the end of the url will not work! ). 
 ... have fun :-).
+
+
+1.4.0 HOW TO USE SCREEN WITH YCHAT++:
+
+If you are running yChat in ncurses mode you might want to install
+the tool which is called "screen". This will enable you putting the
+ncurses interface into the background, closing the terminal session
+and reusing the interface later through another terminal. 
+
+Just do:
+ 
+ screen -S ychat ./ychat ( creates a new session and starts ychat in it )
+ strg+d+a ( will detach the ychat session )
+ ( closing the terminal )
+ ( opening a new terminal )
+ screen -r ychat ( will return you to the ychat process )
+
+Screen will terminate automaticaly if all processes in its sessions are 
+terminated.
+
+For a closer look read the screen manual page ( man screen ). 
 
 1.5.0 CUSTOMIZATION:
 
 If you like to customize the design/layout/language of yChat, you will have 
 to edit msgs.h and glob.h before you compile the sources. Afterwards you can
-change the html-template files which are placed in the html/ subdirectory.
-Dynamic loadable modules can be found in the cmnd/ subdirectory. 
+change the html-template files which are placed in the html/ subdirectory and
+the language-template files which are placed in the lang/ subdirectory.
+Dynamic loadable modules can be found in the mods/ subdirectory. ( chat 
+commands are realized through modules too ).
 
 1.6.0 FILES: ( This list is not complete )
 
 conf.txt - The yChat configuration file. ( read by conf.cpp ).
-
-Files in ./src:
 
 base.cpp - Encapsulates vector fields of room's or user ( may be later
            hash_maps ) and provides methods for manipulating data
@@ -202,44 +250,6 @@ The basic class structure:
    /    \
   /      \
 conf     html
-
-1.7 WRITING BUG REPORTS
-
-How to submit a good bug report?
-
-Send them to Bug@yChat.org.
-
-First you should give the following information:
-- yChat version, if CVS (or devel. tarball) then which day?
-- operating system / distribution and it's version
-- when did it crash? did you do something? can you reproduce the crash?
-
-Getting backtrace of the crash also helps a lot, especially if yChat crashes randomly. If after crash you see text:
-
- "segmentation fault (core dumped)" 
-
-It writes a file named "core" or "ychat.core" depending on your OS to directory where you started yChat. If it doesn't print the "(core dumped)" or you can't find the core file, you'll have to raise the limit for max. core file size before running yChat. To do this, say:
-
- ulimit -c unlimited 
-
-So, if you have the core file and GNU debugger (gdb), you can get the backtrace with:
-
- gdb ychat core 
- bt 
-
-Paste all the lines starting from line having #0 at the beginning.
-
-Here's an example session:
-
- in reqp::parse(thrd*, std::string, std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >&) ()
- (gdb) bt
- #0 0x0805c287 in reqp::parse(thrd*, std::string, std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >&) ()
- #1 0x0806060f in sock::read_write(thrd*, int) ()
- #2 0x080612ba in thrd::run() ()
- #3 0x0805a3b8 in pool::run_func(void*) ()
- #4 0x0805a375 in pool::tpool_thread(void*) ()
- #5 0x281d44ae in _thread_start () from /usr/lib/libc_r.so.5
- (gdb) 
 
 1.8 CONTACT:
 
