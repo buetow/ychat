@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 
-# The yChat Project (2003)
+# The yhttpd Project (2003)
 #
-# This script increases the BUILNR of msgs,h each time the yChat
+# This script increases the BUILNR of msgs,h each time the yhttpd
 # gets recompiled!
 
 use strict;
@@ -13,7 +13,7 @@ close MSGS;
 
 foreach (@msgs)
 {
- if ( /define BUILDNR/ )
+ if ( /BUILDNR/ )
  {
   s/(BUILDNR )(.+)$/$1.($2+1)/e;
   print;

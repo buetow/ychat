@@ -7,60 +7,60 @@ using namespace std;
 
 dir::dir()
 {
-  b_open = false;
+ b_open = false;
 }
 
 dir::~dir()
 {
-  vec_dir.clear();
-  close_dir();
+ dir_vec.clear();
+ close_dir();
 }
 
 bool
 dir::open_dir( char *c_dir )
 {
-  string s_dir( c_dir );
-  return open_dir( s_dir  );
+ string s_dir( c_dir );
+ return open_dir( s_dir  );
 }
 
 bool
 dir::open_dir( string &s_dir )
 {
-  if ( b_open )
-    return false;
+ if ( b_open )
+  return false;
 
-  p_d = opendir( s_dir.c_str() );
+ dp = opendir( s_dir.c_str() );
 
-  if ( p_d == NULL )
-    return false; // Could not open dir.
+ if ( dp == NULL )
+  return false; // Could not open dir.
 
-  b_open = true;
+ b_open = true;
 
-  return true; // Could open dir with success.
+ return true; // Could open dir with success.
 }
 
 void
 dir::close_dir()
 {
-  if ( b_open && p_d != NULL )
-  {
-    closedir( p_d );
-    b_open = false;
-  }
+ if ( b_open && dp != NULL )
+ {
+  closedir( dp );
+  b_open = false;
+ }
 }
 
 void
 dir::read_dir()
 {
-  if ( p_d != NULL )
-    while( p_ep = readdir( p_d ) )
-      vec_dir.push_back( string( p_ep->d_name ) );
+ if ( dp != NULL )
+  while( ep = readdir( dp ) )
+   dir_vec.push_back( string( ep->d_name ) ); 
 }
 
-vector<string>
+vector<string> 
 dir::get_dir_vec()
 {
-  return vec_dir;
+ return dir_vec;
 }
 
 #endif

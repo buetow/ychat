@@ -3,52 +3,74 @@
 #ifndef POOL_H
 #define POOL_H
 
-#include <queue>
-
 using namespace std;
 
 class pool
 {
 private:
-  friend class thro;
-
-  struct task
-  {
-    void(*p_func)(void*);
-    void *p_void;
-
-    task(void(*p_func)(void*), void *p_void)
+    typedef struct tpool_work
     {
-      this->p_func = p_func;
-      this->p_void = p_void;
+        void (*routine)(void*); ///
+        void *arg;
+        struct tpool_work *next;
     }
-  };
+    tpool_work_t;
 
-  pthread_mutex_t mut_threads;
-  pthread_mutex_t mut_queue_tasks;
-  pthread_mutex_t mut_num_avail_threads;
-  pthread_cond_t cond_new_task;
+    typedef struct tpool
+    {
+        // pool characteristics:
+        int num_threads;
+        int max_queue_size;
+        int do_not_block_when_full;
 
-  int i_num_avail_threads;
-  int i_num_total_threads;
+        // pool state
+        pthread_t *threads;
+        int cur_queue_size;
 
-  queue<task*> queue_tasks;
+        tpool_work_t *queue_head;
+        tpool_work_t *queue_tail;
 
-  int increase_pool(int i_num);
-  void add_task( void(*p_func)(void*), void* p_void );
-  static void* wait_for_task(void *p_void);
-  static void run_func(void *p_void);
+        pthread_mutex_t queue_lock;
+        pthread_cond_t  queue_not_empty;
+        pthread_cond_t  queue_not_full;
+        pthread_cond_t  queue_empty;
 
+        int queue_closed;
+        int shutdown;
+    }
+    *tpool_t;
+
+    int i_thrd_pool_size;
+    int i_thrd_pool_queue;
+
+    tpool_t thread_pool;
+
+    void
+    tpool_init( tpool_t *tpoolp, int num_worker_threads, int max_queue_size, int do_not_block_when_full );
+
+    int
+    tpool_add_work( tpool_t tpool, void(*routine)(void*), void* arg );
+
+    // virtual void
+    // tpool_destroy( tpool_t tpoolp, int finish );
+
+    static void*
+    tpool_thread( void* arg);
+
+    static void
+    run_func( void *v_pointer );
+
+    // public methods:
 public:
-  pool();
-  ~pool();
+    pool( );
 
-  void run(void* p_void);
-  bool allow_user_login();
-
+    // inline (speed)!
+    void run( void *arg )
+    {
+        tpool_add_work( thread_pool, run_func, arg );
+    }
 #ifdef NCURSES
-
-  void print_pool_size();
+    void print_pool_size();
 #endif
 };
 

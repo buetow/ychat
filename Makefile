@@ -1,43 +1,46 @@
-MAKE=`tail -n 1 make.version`
+MAKE=`tail -1 make.version`
 PREFIX=`grep "define PREFIX" src/glob.h | cut -d'"' -f2`
-all:    version base modules 
-	@echo "Now edit the ychat.conf and run ychat!"
+all:    base modules version
+	@echo "Now edit the yhttpd.conf and run yhttpd!"
 	@echo "The config file is searched in the following order:"
-	@echo " ./ychat.conf " 
-	@echo " ~/.ychat/ychat.conf "
-	@echo " ./etc/ychat.conf "
-	@echo " /etc/ychat.conf "
-	@echo " $(PREFIX)/etc/ychat.conf "
-	@echo If you want to help the yChat project please run gmake mail
-	@echo so that the developers receive an email about the platform
-	@echo being used.
-	@echo WARNING! This software is EXPERIMENTAL!
-mail:
-	@echo "VERSION:" > mail.tmp
-	@${MAKE} version >> mail.tmp
-	@echo >> mail.tmp
-	@echo "UNAME:" >> mail.tmp
-	@uname -a >> mail.tmp
-	@echo >> mail.tmp
-	@echo "DATE:" >> mail.tmp
-	@date >> mail.tmp
-	@echo >> mail.tmp
-	@echo "COMPILER AND MAKE:" >> mail.tmp
-	@cat g++.version make.version >> mail.tmp
-	@cat mail.tmp | mail -s "Successfull build of yChat" successfullbuild@yhttpd.org
-	@rm -f mail.tmp 
-install: deinstall
+	@echo " ./yhttpd.conf " 
+	@echo " ~/.yhttpd/yhttpd.conf "
+	@echo " ./etc/yhttpd.conf "
+	@echo " /etc/yhttpd.conf "
+	@echo " $(PREFIX)/etc/yhttpd.conf "
+install:	deinstall
+	@echo "Instaling yhttpd to $(PREFIX)"
+	@cp bin/yhttpd $(PREFIX)/bin 
+	@if ! test -d $(PREFIX)/lib/yhttpd; then mkdir -p $(PREFIX)/lib/yhttpd; fi
+	@if ! test -d $(PREFIX)/share/yhttpd/log/rooms; then mkdir -p $(PREFIX)/share/yhttpd/log/rooms; fi
+	@if ! test -d $(PREFIX)/etc; then mkdir $(PREFIX)/etc; fi
+	@if test -d mods; then cp -Rp mods $(PREFIX)/lib/yhttpd/mods; fi
+	@cp -Rp lang $(PREFIX)/share/yhttpd/lang
+	@if test -f $(PREFIX)/etc/yhttpd.conf; then mv $(PREFIX)/etc/yhttpd.conf $(PREFIX)/etc/yhttpd.conf.bak; fi
+	@cp etc/yhttpd.conf etc/yhttpd.conf.tmp
+	@sed "s#mods/#$(PREFIX)/lib/yhttpd/mods/#" etc/yhttpd.conf.tmp > etc/yhttpd.conf.tmp.2 && mv etc/yhttpd.conf.tmp.2 etc/yhttpd.conf.tmp 
+	@sed "s#\"log/#\"$(PREFIX)/share/yhttpd/log/#" etc/yhttpd.conf.tmp > etc/yhttpd.conf.tmp.2 && mv etc/yhttpd.conf.tmp.2 etc/yhttpd.conf.tmp 
+	@sed "s#LANGUAGE_DIR=\"lang/#LANGUAGE_DIR=\"$(PREFIX)/share/yhttpd/lang/#" etc/yhttpd.conf.tmp > etc/yhttpd.conf.tmp.2 && mv etc/yhttpd.conf.tmp.2 etc/yhttpd.conf.tmp 
+	@mv etc/yhttpd.conf.tmp $(PREFIX)/etc/yhttpd.conf
+	@echo "yhttpd configuration file can be found under"
+	@echo " $(PREFIX)/etc/yhttpd.conf"
+	@echo "Copy it to ~/.yhttpd/yhttpd.conf to use local settings :-)"
+	@echo "Be sure that $(PREFIX)/share/yhttpd/logs is writable by your user or modify "
+	@echo "logging dirs in the yhttpd.conf to a local directory."
+	@echo "The most secure would be an additional user 'yhttpd'!"
 uninstall: deinstall
 deinstall:
-	@echo Install/deinstall is not supported!
-	@echo Start yChat with ./bin/ychat instead! 
-	@exit 1
+	@echo "Deinstalling yhttpd from $(PREFIX)"
+	@if test -f $(PREFIX)/bin/yhttpd; then rm -f $(PREFIX)/bin/yhttpd; fi
+	@if test -d $(PREFIX)/lib/yhttpd; then rm -Rf $(PREFIX)/lib/yhttpd; fi
+	@if test -d $(PREFIX)/share/yhttpd; then rm -Rf $(PREFIX)/share/yhttpd; fi
+	@echo "Done. Please remove manually $(PREFIX)/etc/yhttpd.conf to complete"
 modules:
 	@if test -d ./src/mods; then ${MAKE} -C ./src/mods; fi 
 clean_modules:
 	@if test -d ./src/mods; then ${MAKE} -C ./src/mods clean; fi
 base:	
-	@if test -f bin/ychat; then echo "Backing up old binary";if test -f bin/ychat.old; then rm -f bin/ychat.old; fi; mv bin/ychat bin/ychat.old; fi
+	@if test -f bin/yhttpd; then echo "Backing up old binary";if test -f bin/yhttpd.old; then rm -f bin/yhttpd.old; fi; mv bin/yhttpd bin/yhttpd.old; fi
 	@perl ./scripts/buildnr.pl 
 	@perl ./scripts/setglobvals.pl
 	@${MAKE} -C ./src 
@@ -46,21 +49,18 @@ clean_base:
 stats:
 	@perl scripts/stats.pl
 run: 
-	./bin/ychat
+	./bin/yhttpd
 base_start: base 
-	./bin/ychat
+	./bin/yhttpd
+start:	base modules 
+	./bin/yhttpd
 gpl:
 	@more COPYING
-#//<<*
-yhttpdbase:
-	@perl scripts/makeyhttpd.pl || echo "You need to have perl to do this!"
-	@echo yhttpd code base has been generated in ../yhttpd	
-#//*>>
 clean:	clean_base clean_modules
 help:
 	@echo "You may run ${MAKE} with the following parameters:"
 	@grep "^ ${MAKE} " README 
-	@echo "For more questions read the README file or contact mail@ychat.org!"
+	@echo "For more questions read the README file or contact mail@yhttpd.org!"
 setup:
 	@./configure
 	@${MAKE}
@@ -74,22 +74,10 @@ mrproper: clean
 	@if test -f g++.version; then rm -f g++.version; fi 
 	@if test -f make.version; then rm -f make.version; fi 
 	@if test -f src/Makefile; then rm -f src/Makefile; fi 
-	@if test -f bin/ychat; then find bin/ -name "*ychat*" | xargs rm -f; fi
 	@if test -d src/mods; then find src/mods/*/ -name Makefile | xargs rm -f; fi
 	@find . -name "*.add" | xargs rm -f
 	@ls | grep core | xargs rm -f
 version:
-	@./scripts/version.sh
+	@echo "`grep VERSION src/msgs.h | cut -d'"' -f2`-`grep BRANCH src/msgs.h| cut -d'"' -f2` Build `grep BUILD src/msgs.h| cut -d' ' -f3`" 
 debug:
-	@gdb bin/ychat ychat.core
-confdebug:
-	./configure -g3 -ggdb
-dist:
-	@./scripts/makedist.sh
-ssltest:
-	openssl genrsa -des3 -out privkey.pem 2048
-	openssl req -new -x509 -key privkey.pem -out cert.pem -days 1095
-	@mv -f privkey.pem cert.pem etc
-
-
-		
+	@gdb bin/yhttpd yhttpd.core

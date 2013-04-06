@@ -1,5 +1,5 @@
 #!/bin/sh
-# The yChat Project (2004)
+# The yhttpd Project (2004)
 #
 # This script modifues the src/glob.h file.
 
@@ -15,11 +15,11 @@ perl -e '
  use scripts::modules::file;
 
 print <<END;
-Welcome to the yChat configurator!
+Welcome to the yhttpd configurator!
 You may also edit the src/glob.h file manually instead of using 
 this configurator option. Please also notice that this are only
 before-compile options. All setups which can be made after com-
-iling are placed in the yChat configuration file. 
+iling are placed in the yhttpd configuration file. 
 END
  
  my $sep = "================================================================\n"; my $stdin;

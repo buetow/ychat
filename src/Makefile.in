@@ -6,16 +6,16 @@ LDFLAGS=$(LIBADD) -lstdc++
 LDADD=-pthread -D_THREAD_SAFE -export-dynamic -ldl
 INCLUDES=`cat includes.add`
 CFLAGS=-fno-inline -fno-default-inline -frepo 
-all: ychat	
+all: yhttpd	
 $(SRCS):
 	$(CC) $(INCLUDES) $(CFLAGS) -c $*.cpp 
 infotext:
 	@echo Compiling base
-ychat:  infotext $(OBJS) 
+yhttpd:  infotext $(OBJS) 
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDADD) 
-	@mv ychat ../bin
+	@mv yhttpd ../bin
 	@echo -n "Size of linked executable: " 
-	@du -hc ../bin/ychat | tail -n 1
+	@du -hc ../bin/yhttpd | tail -n 1
 clean: 
 	@echo Cleaning base obj
 	@if test -d ../obj; then rm -Rf ../obj; fi

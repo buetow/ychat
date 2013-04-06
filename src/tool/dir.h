@@ -6,9 +6,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <dirent.h>
-
 #include <vector>
-
 #include "../incl.h"
 
 using namespace std;
@@ -16,20 +14,20 @@ using namespace std;
 class dir
 {
 private:
-  bool b_open;
-  DIR *p_d;
-  struct dirent *p_ep;
-  vector<string> vec_dir;
+    bool b_open;
+    DIR *dp;  	
+    struct dirent *ep;
+    vector<string> dir_vec;
 
 public:
-  dir();
-  ~dir();
+    dir();
+    ~dir();
 
-  bool open_dir( char *c_dir );
-  bool open_dir( string &s_dir );
-  void close_dir();
-  void read_dir();
-  vector<string> get_dir_vec();
+   bool open_dir( char *c_dir ); 
+   bool open_dir( string &s_dir ); 
+   void close_dir(); 
+   void read_dir();
+   vector<string> get_dir_vec();
 };
 
 #endif
