@@ -7,36 +7,39 @@
 
 using namespace std;
 
-extern "C" {
- int valid_color( string );
- 
- int extern_function(void *v_arg)
- {
-	container *c=(container *)v_arg;
-	
-	user *p_user = (user*) c->elem[1];		// the corresponding user
-	vector<string> *params= (vector<string>*) c->elem[2];	// param array
-        timr* p_timr = (timr*) ((dynamic_wrap*)c->elem[3])->TIMR; 
-        conf* p_conf = (conf*) ((dynamic_wrap*)c->elem[3])->CONF; 
+extern "C"
+{
+  int valid_color( string );
 
-	string s_msg = "";
+  int extern_function(void *v_arg)
+  {
+    container *c=(container *)v_arg;
 
-        if ( p_conf->get_elem("chat.printalwaystime") == "true" )
-         s_msg = p_timr->get_time() + " ";
+    user *p_user = (user*) c->elem[1];		// the corresponding user
+    vector<string> *params= (vector<string>*) c->elem[2];	// param array
+    timr* p_timr = (timr*) ((dynamic_wrap*)c->elem[3])->TIMR;
+    conf* p_conf = (conf*) ((dynamic_wrap*)c->elem[3])->CONF;
 
-        s_msg.append(  "<i><font color=\"#" +p_user->get_col1() + "\">"
-                       + p_user->get_name() + " ");
+    string s_msg = "";
 
-        if ( ! params->empty() )
-        {
-         vector<string>::iterator iter = params->begin();
-         for ( iter = params->begin(); iter != params->end(); iter++ )
-          s_msg.append( *iter + " " );
-        }
+    if ( p_conf->get_elem("chat.printalwaystime") == "true" )
+      s_msg = p_timr->get_time() + " ";
 
-        s_msg.append( "</font></i><br>\n" );
-        p_user->get_room()->msg_post( &s_msg );
+    s_msg.append(  "<i><font color=\"#" +p_user->get_col1() + "\">"
+                   + p_user->get_name() + " ");
 
- }
+    if ( ! params->empty() )
+    {
+      vector<string>::iterator iter = params->begin();
+      for ( iter = params->begin(); iter != params->end(); iter++ )
+        s_msg.append( *iter + " " );
+    }
+
+    s_msg.append( "</font></i><br>\n" );
+    p_user->get_room()->msg_post( &s_msg );
+
+    return 0;
+
+  }
 }
 

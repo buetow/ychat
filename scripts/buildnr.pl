@@ -13,7 +13,7 @@ close MSGS;
 
 foreach (@msgs)
 {
- if ( /BUILDNR/ )
+ if ( /define BUILDNR/ )
  {
   s/(BUILDNR )(.+)$/$1.($2+1)/e;
   print;
