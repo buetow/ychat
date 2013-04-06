@@ -1,4 +1,4 @@
-yChat; Homepage: www.yChat.org; Version 0.7.9.3-RELEASES
+yChat; Homepage: www.yChat.org; Version 0.7.8-RELEASE
 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
 Copyright (C) 2004, 2005 Paul C. Buetow
@@ -36,7 +36,6 @@ YCHAT TABLE OF CONTENTS:
 1.7.0 WRITING BUG REPORTS
 1.8.0 CONTACT
 1.9.0 YHTTPD CODE BASE GENERATION //<<
-2.0.0 CREDITS
 
 0.0.0 ABOUT RELEASES 
 
@@ -51,9 +50,6 @@ Its a small http server based on the chat's socket and threading engine.
 yhttpd does not have as much features but is easy to use and faster than
 apache. yhttpd is a subset of the chat. It can be generated using the
 srcipts/yhttpdbase.pl script in the chat's source tree.
-
-- The ycurses -
-ycurses is a easy to use and small C++ wrapper of the C ncurses API. 
 
 There are different branches:
 
@@ -202,8 +198,8 @@ lot of user and room objects are created and destroyed frequently.
 
 1.0.0 REQUIREMENTS: 
 
-- GNU GCC G++  
-  The GNU C++ compiler version 3.1 or up.
+- GNU GCC G++ 3.4
+  The GNU C++ compiler. 
 
 - GNU make 3.80 (gmake) or higher
   If you dont have a gmake executable but make is gnu make then you need
@@ -267,7 +263,7 @@ homepage which is located at http://www.yChat.org.
 yChat can be downloaded as a source package or through CVS. 
 
 The packages are located at http://www.yChat.org -> Sourcecode -> 
-Packages or go to http://pub.buetow.org/yChat/yChat .
+Packages or go to http://pub.buetow.org/yChat/CPP-yChat .
 
 For CVS download type:
 
@@ -318,7 +314,6 @@ or gmake config):
  gmake confdebug (runs ./configure with enabling debugging)
  gmake config (runs yChat configurator)
  gmake debug (runs gdb on ./ychat.core)
- gmake dist (creates a .tar.bz2 ball)
  gmake gpl (shows the GNU General Public License)		
  gmake help (shows all available ychat gmake targets)
  gmake mail (sends a mail to the yChat developers containing build opts.)
@@ -464,7 +459,7 @@ src/msgs.h	- Defines some server side messages
 
 How to submit a good bug report?
 
-Send them to mail at yChat dot org.
+Send them to Bug@yChat.org.
 
 First you should give the following information:
 - yChat version, if CVS (or devel. tarball) then which day?
@@ -520,7 +515,8 @@ You may contact us through the following addresses:
   The yChat homepage is located at http://www.yChat.org
 
 - E-Mail
-  Paul C. Buetow: Buetow at yChat point org ( core developer )
+  Paul C. Buetow: Snooper at yChat point org ( core developer )
+  Volker Richter: Rover at yChat dot org ( core developer )
   Mail at yChat dot org ( reaches everybody of yChat )
  
 - ICQ
@@ -530,18 +526,7 @@ You may contact us through the following addresses:
   #Ychat and #Coding at irc.german-elite.net  
 
 //<<*
-1.9.0 YHTTPD CODE BASE GENERATION
+1.9 YHTTPD CODE BASE GENERATION
 
 See docs/yhttpd.txt
 //*>>
-
-2.0.0 CREDITS
-
-Thanks to the following persons. Without them yChat would not be like today:
-
-- Volker Richter <volker at exa-ds dot de> of EXA Digital Solutions GbR
-  (http://www.exa-ds.com) for adding initial MySQL support and lots of more
-  code.
-
-- Joshia Teitelbaum <joshuat at cryptomail.org> of CryptpMail.org for adding
-  lots of security patches in the HTTP header handling.

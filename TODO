@@ -1,18 +1,13 @@
 - Must do's for next RELEASE -
-$ None specific
+$ Add thread pool decreasing
 
 - Might do's for next RELEASE -
-$ Add thread pool decreasing
 $ dir : public vector<string>
 $ Disable /help command for commands wich are not accessible for the
 $ specific user.
 $ Flood protection
 $ Add /nick, /beam, /su
 $  Add / to whisper to the last person to whom the user has been whispered the last time.
-
-- Known bugs -
-$ Using yChat via proxy sometimes causes a white chat stream.
-$ yhttpd cant serve very large html files.
 
 - To do in general for some later RELEASE -
 $ Use libevent

@@ -13,7 +13,6 @@ const string reqp::s_http = HEADER;
 const string reqp::s_http_stream = STREAM;
 const string reqp::s_http_colength = HEADER7;
 const string reqp::s_http_cotype = HEADER8;
-const string reqp::s_http_cotype_add = HEADER8b;
 
 reqp::reqp( )
 {}
@@ -44,7 +43,7 @@ reqp::get_request_parameters( string s_parameters, map<string,string>& map_param
 }
 
 string
-reqp::get_url( string s_req, map<string, string> &map_params, int& i_postpayloadoffset )
+reqp::get_url( int &i_sock, string s_req, map<string, string> &map_params )
 {
   unsigned i_pos, i_pos2;
   string s_vars( "" );
@@ -89,20 +88,31 @@ reqp::get_url( string s_req, map<string, string> &map_params, int& i_postpayload
   {
     if ( (i_pos2 = s_req.find("HTTP")) != string::npos )
     {
-      if (i_pos2 > 13)
+      if ( 13 < i_pos2 )
       {
         s_ret = url_decode( s_req.substr(6,i_pos2-7) );
 
-        //wrap::system_message(s_req);
-        //wrap::system_message(string("data offset=") + tool::int2string(i_postpayloadoffset)); 
-        i_pos = s_req.find("event=",i_postpayloadoffset );
-        if(i_pos != string::npos)
+        int i_len  = s_ret.length();
+        int i_len2 = s_req.length()-1;
+
+        s_req = s_req.substr( i_len < i_len2 ? i_len : i_len2 );
+
+        if ( (i_pos = s_req.find("event=")) == string::npos)
         {
-          get_request_parameters( url_decode( s_req.substr(i_pos) ), map_params);
+          char c_req[POSTBUF];
+          i_len = read(i_sock, c_req, POSTBUF);
+          s_req = c_req;
+          s_req = s_req.substr(0, i_len);
+
+          if ( (i_pos = s_req.find("event=")) != string::npos )
+            get_request_parameters( url_decode( s_req.substr(i_pos) ), map_params );
+        }
+        else
+        {
+          get_request_parameters( url_decode( s_req.substr(i_pos) ), map_params );
         }
       }
     }
-
   }
 
 #ifdef VERBOSE
@@ -121,7 +131,7 @@ reqp::get_url( string s_req, map<string, string> &map_params, int& i_postpayload
 }
 
 string
-reqp::get_content_type(string &s_file)
+reqp::get_content_type( string s_file )
 {
   string s_ext(tool::get_extension( s_file ));
 
@@ -223,12 +233,11 @@ reqp::get_from_header( string s_req, string s_hdr )
 }
 
 string
-reqp::parse( socketcontainer *p_sock, string s_req, map<string,string> &map_params, int &i_postpayloadoffset )
+reqp::parse( int &i_sock, string s_req, map<string,string> &map_params )
 {
-
   // store all request informations in map_params. store the url in
   // map_params["request"].
-  get_url( s_req, map_params, i_postpayloadoffset );
+  get_url( i_sock, s_req, map_params );
 
   parse_headers( s_req, map_params );
   string s_event( map_params["event"] );
@@ -264,7 +273,7 @@ reqp::parse( socketcontainer *p_sock, string s_req, map<string,string> &map_para
       }
       else
       {
-        wrap::system_message(SESSERR);
+	wrap::system_message(SESSERR);
         return s_rep;
       }
 
@@ -292,7 +301,7 @@ reqp::parse( socketcontainer *p_sock, string s_req, map<string,string> &map_para
         {
           string s_msg ( wrap::HTML->parse( map_params ) );
           p_user->msg_post( &s_msg);
-          wrap::SOCK->chat_stream( p_sock, p_user, map_params );
+          wrap::SOCK->chat_stream( i_sock, p_user, map_params );
         }
 
         // if a request for the online list of the active room.
@@ -329,9 +338,8 @@ reqp::parse( socketcontainer *p_sock, string s_req, map<string,string> &map_para
   if ( s_event.compare("stream") == 0 )
     s_resp.append( s_http_stream );
 
-  s_resp.append( s_http_colength + tool::int2string(s_rep.size()) + "\r\n" +
-                 s_http_cotype + map_params["content-type"] +
-                 s_http_cotype_add + "\r\n" );
+  s_resp.append( s_http_colength + tool::int2string(s_rep.size()) + "\n" +
+                 s_http_cotype + map_params["content-type"] + "\r\n\r\n" );
 
   s_resp.append(s_rep);
 
@@ -352,7 +360,7 @@ reqp::run_html_mod( string s_event, map<string,string> &map_params, user* p_user
 
   string s_mod = wrap::CONF->get_elem("httpd.modules.htmldir") + "yc_" + s_event + ".so";
 
-  dynmod* p_module = wrap::MODL->get_module( s_mod, p_user->get_name() );
+  dynmod* p_module = wrap::MODL->get_module( s_mod );
 
   if ( p_module != NULL )
     ( *( p_module->the_func ) ) ( static_cast<void*>(c) );
@@ -365,10 +373,10 @@ string
 reqp::remove_dots( string s_ret )
 {
   // remove ".." from the request.
-  unsigned i_pos;
+  unsigned pos;
 
-  if ( (i_pos = s_ret.find( ".." )) != string::npos )
-    return remove_dots(s_ret.substr(0, i_pos));
+  if( (pos = s_ret.find( ".." )) != string::npos)
+    return s_ret.substr(0, pos);
 
   return s_ret;
 }

@@ -103,11 +103,11 @@ timr::start( void *v_ptr )
       wrap::DATA->check_data_con_timeout();
 #endif
       //*>>
+      wrap::SOCK->clean_ipcache(); 
+
       // Run every ten minutes:
       if ( time_now.tm_min % 10 == 0 )
       {
-
-        wrap::SOCK->clean_ipcache(); 
         // Run every hour
         if ( time_now.tm_min % 60 == 0 )
         {

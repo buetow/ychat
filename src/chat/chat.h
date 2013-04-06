@@ -23,7 +23,6 @@ class chat : public base<room>, public perm
 private:
   map<string,string> map_replace_strings;
   vector<string> vec_replace_keys;
-  void dumpit();
 
 public:
   virtual room* get_room( string s_name )

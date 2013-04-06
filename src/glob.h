@@ -1,11 +1,11 @@
 /*
  Notice: 
- 
+
  All #defines which start with an CONFIG can be edited through
  gmake config in the main directory!
 */
 
-#include "maps/hashmap.h"
+#include "maps/hashmap.h" 
 
 // global variables.
 #ifndef GLOB_H
@@ -18,15 +18,15 @@
 //<<*
 /* FIRST THE YCHAT ONLY OPTIONS */
 
-/* - CONFIG -
+/* - CONFIG - 
  Should yChat get compiled with database support? Currently MyS-
  QL only is a supported database. 
 */
 //#define DATABASE
 
 #ifdef DATABASE
-#define USE_MYSQL
-/* - CONFIG -
+#define USE_MYSQL 
+/* - CONFIG - 
  Should all database queries printed out at the admin interface? 
  (This option wont take action if database support has not been 
  chosen) 
@@ -54,12 +54,12 @@
 */
 #define CONFILE "ychat.conf"
 
-/* - DISABLED -
+/* - DISABLED - 
  Enable debugging options. 
 */
 //#define DEBUG
 
-/* - DISABLED -
+/* - DISABLED - 
  If you want to enable EXPERIMENTAL features, then set this val-
  ue to true. Else use false which is recommended! All experimen-
  al features are marked inside of the running yChat!
@@ -68,7 +68,7 @@
 
 /* - CONFIG -
  Should yChat get compiled with logging support? 
-*/
+*/ 
 #define LOGGING
 
 /* - CONFIG -
@@ -80,33 +80,23 @@
 */
 #define MAXPORT 65535
 
-/* Specifies the max amount of lines to read from a HTTP request 
-   header
-*/
-#define MAXLINES 30
-
-/* Specifies the max length of a lines to read from a HTTP request 
-   header
-*/
-#define MAXLENGTH 1024
-
 /* - CONFIG -
  Should yChat get compiled with ncurses support?
-*/
-#define NCURSES
+*/ 
+//#define NCURSES
 
-/* - CONFIG -
+/* - CONFIG - 
  Please specify the maximum length of a HTTP post request. 
 */
 #define POSTBUF 512
 
-/* - CONFIG -
+/* - CONFIG - 
  Please specify the size of a temporary buffer. (Will be used f-
  or different tasks) 
 */
 #define READBUF 2048
 
-/* - CONFIG -
+/* - CONFIG - 
  Please specify the maximum length of a line read from a socket 
  or a file. ( config-file, html-template )
 */
@@ -131,9 +121,9 @@
  will print a warning message into the system messages and will 
  not core dump if an error occurs. 
 */
-//#define CTCSEGV
+#define CTCSEGV
 
-/* - CONFIG -
+/* - CONFIG - 
  Please chose if you want to use verbose server outputs or not. 
  The verbose messages will appear in the ncurses menu if ncurses
  is enabled or in the server-window if yChat has been compiled 
@@ -149,42 +139,42 @@
 // The following values define the positions of the data stats in the NCURSES interface.
 #ifdef NCURSES
 #define NCUR_SERVER_HEADER_X 21
-#define NCUR_SERVER_HEADER_Y 2
+#define NCUR_SERVER_HEADER_Y 2 
 #define NCUR_PORT_X 22
 #define NCUR_PORT_Y 2
 #define NCUR_HITS_X 23
 #define NCUR_HITS_Y 2
 
 #define NCUR_POOL_HEADER_X 21
-#define NCUR_POOL_HEADER_Y 16
+#define NCUR_POOL_HEADER_Y 16 
 #define NCUR_POOL_WAIT_X 22
-#define NCUR_POOL_WAIT_Y 16
+#define NCUR_POOL_WAIT_Y 16 
 #define NCUR_POOL_RUNNING_X 23
-#define NCUR_POOL_RUNNING_Y 16
+#define NCUR_POOL_RUNNING_Y 16 
 
 #define NCUR_DATA_HEADER_X 21
-#define NCUR_DATA_HEADER_Y 35
+#define NCUR_DATA_HEADER_Y 35 
 #define NCUR_GARBAGE_X 22
 #define NCUR_GARBAGE_Y 35
-#define NCUR_CON_QUEUE_X 23
+#define NCUR_CON_QUEUE_X 23 
 #define NCUR_CON_QUEUE_Y 35
 
 #define NCUR_CHAT_HEADER_X 21
 #define NCUR_CHAT_HEADER_Y 52
 #define NCUR_NUM_ROOMS_X 22
-#define NCUR_NUM_ROOMS_Y 52
+#define NCUR_NUM_ROOMS_Y 52 
 #define NCUR_SESSION_X 23
-#define NCUR_SESSION_Y 52
+#define NCUR_SESSION_Y 52 
 
 #define NCUR_CACHED_HEADER_X 21
-#define NCUR_CACHED_HEADER_Y 68
+#define NCUR_CACHED_HEADER_Y 68 
 #define NCUR_CACHED_DOCS_X 22
-#define NCUR_CACHED_DOCS_Y 68
-#define NCUR_CACHED_MODS_X 23
-#define NCUR_CACHED_MODS_Y 68
+#define NCUR_CACHED_DOCS_Y 68 
+#define NCUR_CACHED_MODS_X 23 
+#define NCUR_CACHED_MODS_Y 68 
 
 #define NCUR_MENU_CHAR_X 0
-#define NCUR_MENU_CHAR_Y 33
+#define NCUR_MENU_CHAR_Y 33 
 #define NCUR_UPTIME_X 0
 #define NCUR_UPTIME_Y 44
 #define NCUR_TIME_X 0
@@ -202,13 +192,13 @@ typedef int function( void *v_arg );
 
 struct container
 {
-  void* elem[4];
+    void* elem[4];
 };
 
 struct dynmod
 {
-  function *the_func  ;
-  void     *the_module;
+    function *the_func  ;
+    void     *the_module;
 };
 
 typedef enum method_ {

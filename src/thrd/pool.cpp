@@ -14,7 +14,7 @@ pool::pool()
 
   i_num_total_threads = 0;
   i_num_avail_threads = tool::string2int( wrap::CONF->get_elem( "httpd.thread.initpoolsize" ) );
-  increase_pool(i_num_avail_threads);
+  increase_pool(i_num_avail_threads); 
 }
 
 pool::~pool()
@@ -91,10 +91,10 @@ pool::wait_for_task( void* p_void )
     }
     pthread_mutex_unlock(&p_pool->mut_num_avail_threads);
 
-    pthread_mutex_lock(&p_pool->mut_queue_tasks);
+    pthread_mutex_lock(&p_pool->mut_queue_tasks); 
     task* p_task = p_pool->queue_tasks.front();
     p_pool->queue_tasks.pop();
-    pthread_mutex_unlock(&p_pool->mut_queue_tasks);
+    pthread_mutex_unlock(&p_pool->mut_queue_tasks); 
 
     pthread_mutex_unlock(&p_pool->mut_threads);
 
@@ -118,8 +118,9 @@ pool::run(void* p_void)
 void
 pool::run_func(void *p_void)
 {
-  socketcontainer* p_sock = static_cast<socketcontainer*>(p_void);
+  int* p_sock = static_cast<int*>(p_void);
   wrap::SOCK->read_write(p_sock);
+  delete p_sock;
 }
 
 bool

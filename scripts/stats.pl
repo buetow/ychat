@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# The yhttpd Project (2003 - 2004)
+# The yChat Project (2003 - 2004)
 #
 # This script generates source code and project statistics 
 
@@ -76,7 +76,7 @@ sub filestats
   $stats{"Number of script files"}++;
   $stats{"Lines of scripts"} += countlines($shift);
  }
- elsif ( $shift =~ /(\.txt|[A-Z]+)$/ )
+ elsif ( $shift =~ /(\.txt|README|INSTALL|COPYING|NEWS|SNAPSHOT|ChangeLog)$/ )
  {
   $stats{"Number of text files"}++;
   $stats{"Lines of text"} += countlines($shift);

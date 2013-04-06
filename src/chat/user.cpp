@@ -73,27 +73,23 @@ user::initialize()
 void
 user::clean()
 {
-  destroy_session();
+
+  // If this user has a session
+  if ( get_has_sess() )
+  {
+#ifdef DATABASE
+    // Store all changed data into the mysql table if this user is registered:
+    if ( b_is_reg )
+      wrap::DATA->update_user_data( get_name(), "savechangednick", map_changed_data );
+#endif
+
+    wrap::SMAN->destroy_session( get_tmpid() );
+    // wrap::system_message( SESSION + tool::int2string( wrap::SMAN->get_session_count() ) );
+  }
+
   set_fake( false );
   set_invisible( false );
   set_away( false, "" );
-}
-
-void
-user::destroy_session()
-{
-  if ( !get_has_sess() )
-    return;
-
-#ifdef DATABASE
-  // Store all changed data into the mysql table if this user is registered:
-  if ( b_is_reg )
-    wrap::DATA->update_user_data( get_name(), "savechangednick", map_changed_data );
-#endif
-
-  set_has_sess(false);
-  wrap::SMAN->destroy_session(get_tmpid());
-  set_tmpid("");
 }
 
 string
@@ -415,7 +411,7 @@ user::command( string &s_command )
   string s_command2 = s_command.substr(0, pos2-1);
   s_mod.append( s_command2  ).append( ".so" );
 
-  dynmod *mod = wrap::MODL->get_module( s_mod, get_name() );
+  dynmod *mod = wrap::MODL->get_module( s_mod );
 
   if ( mod == NULL ||
        wrap::CHAT->get_command_disabled( s_command2 ) ||
@@ -580,16 +576,5 @@ user::check_restore_away()
 void
 user::reconf()
 {}
-
-void
-user::dumpit()
-{
-  dumpable::add("[user]");
-  dumpable::add("Name: " + get_name() +
-	"; Room: " + get_room()->get_name() +
-	"; Status: " + tool::int2string(get_status())); 
-  dumpable::add("TempID: " + get_tmpid());
-}
-
 
 #endif

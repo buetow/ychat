@@ -21,33 +21,23 @@ sman::~sman()
 
 string sman::generate_id( int i_len )
 {
-  string s_valid = wrap::CONF->get_elem("chat.session.validchars");
+  string valid_chars = wrap::CONF->get_elem("chat.session.validchars");
   string s_ret = "";
 
   srand(time(0)+tool::string2int(wrap::CONF->get_elem("chat.session.kloakkey")));
   int i_char;
 
-
   for (int i = 0; i < i_len; i++)
   {
-    i_char = rand() % s_valid.length();
-    s_ret += s_valid[i_char];
+    i_char = rand() % 64;
+    s_ret += valid_chars[i_char];
   }
 
   if ( wrap::CONF->get_elem("chat.session.md5hash") == "true" )
   {
     string s_salt = wrap::CONF->get_elem("chat.session.md5salt");
-    string s_hash(md5::MD5Crypt(s_ret.c_str(), s_salt.c_str()));
-    s_ret.append(s_hash.substr(s_ret.find(s_salt) + s_salt.length() + 3));
-  }
-
-  // Prove, if the TempID already exists
-  sess* p_sess = get_elem(s_ret);
-
-  if (p_sess) 
-  {
-    wrap::system_message(SESSEXI);
-    return generate_id(i_len);
+    s_ret = string(md5::MD5Crypt(s_ret.c_str(), s_salt.c_str()));
+    return s_ret.substr(s_ret.find(s_salt) + s_salt.length() + 3);
   }
 
   return s_ret;

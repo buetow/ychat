@@ -9,9 +9,6 @@
 template<class type>
 class base : public nhashmap<type*>
 {
-protected:
-  void dumpit();
-
 public:
   base();
   ~base();
@@ -25,7 +22,6 @@ public:
   }
 
   virtual type* get_elem( string s_name, bool &b_found ); // get a element.
-  virtual type* get_elem( string s_name );
   virtual void  add_elem( type*   p_type );                // add a element.
 
   // chat::msg_post sends to all users of the system a message.
