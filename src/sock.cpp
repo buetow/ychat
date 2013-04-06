@@ -24,6 +24,8 @@ sock::sock()
   this->i_req      = 0;
   this->req_parser = new reqp();
   this->thrd_pool  = new pool();
+  this->log_daemon = new logd(s_conf::get
+                                ().get_val( "ACCESS_LOG" ));
 }
 
 void
@@ -82,7 +84,7 @@ sock::make_socket( uint16_t i_port )
   {
     cerr << "Sock: socket error" << endl;
 
-    if ( ((int)++i_port) > MAXPORT )
+    if ( ++i_port > MAXPORT )
       exit(-1);
 
     cerr << SOCKERR << i_port << endl;
@@ -142,6 +144,9 @@ sock::read_write( thrd* p_thrd, int i_sock )
 
 
     string s_rep = req_parser->parse( p_thrd, string( c_req ), map_params );
+    // send s_rep to the client.
+    log_daemon->log(map_params);
+
     send( i_sock, s_rep.c_str(), s_rep.size(), 0 );
 
     // dont need those vals anymore.

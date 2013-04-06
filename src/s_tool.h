@@ -15,7 +15,6 @@ public:
   static long unixtime();
   static void strip_html( string *s_str);
   static string getExtension( string s_file );
-  static string replace( string s_string, string s_search, string s_replace );
 };
 
 #endif

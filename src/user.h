@@ -86,6 +86,9 @@ public:
   virtual int   get_sock  ( );
   virtual void  set_sock  ( int i_sock );
 
+  // executes a command.
+  virtual void command( string &s_command );
+
   // gets the message and clears s_mess;
   virtual string get_mess();
 

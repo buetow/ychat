@@ -12,7 +12,6 @@ sman::~sman()
 {
   delete this->sessions;
 }
-
 string sman::generateId( int len )
 {
   string valid_chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
@@ -30,17 +29,10 @@ sess *sman::createSession( )
   string new_id=this->generateId(s_tool::string2int( s_conf::get
                                    ().get_val( "SESSION_LENGTH" ) ) );
 
-  sess* p_sess = getSession(new_id);
-
-  // Prove if session id already exists.
-  if (p_sess) 
-    return createSession();
-
   sess *new_sess= new sess( new_id  );
 
   this->sessioncount++;
   this->sessions->add_elem( new_sess, new_id );
-
 
   return new_sess;
 }

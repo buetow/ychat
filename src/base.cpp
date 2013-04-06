@@ -4,7 +4,7 @@
 	$Author: buetow $
 	$Date: 2005/03/02 12:57:41 $
 	
-	$Header: /usr/home/cvs/cvsroot/ychat-stable/src/base.cpp,v 1.1 2005/03/02 12:57:41 buetow Exp $
+	$Header: /usr/home/cvs/cvsroot/ychat-0.5/src/base.cpp,v 1.1 2005/03/02 12:57:41 buetow Exp $
 */
 // template class data implementation;
 

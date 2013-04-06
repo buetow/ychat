@@ -1,5 +1,6 @@
-yChat++; Homepage: www.yChat.org; Version CVS 
+yChat; Homepage: www.yChat.org; Version 0.5.3-RELEASE
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
+Copyright (C) 2005 Paul C. Buetow
 -----------------------------------------------------------------
 
 This program is free software; you can redistribute it and/or
@@ -18,39 +19,73 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 -----------------------------------------------------------------
 
-Notes: I programmed this on FreeBSD but should also compile without 
-big problems on Linux or other UNIX-like systems.
-If you have tested one of those then pleace write me the name of the OS,
-kernel version, make version and compiler & version. I will list it
-right here:
+0.0.0 LEGACY YCHAT 0.5 TABLE OF CONTENTS 
+1.0.0 REQUIREMENTS
+1.1.0 TESTED PLATFORMS
+1.2.0 IMPORTANT NOTES
+1.3.0 HOW TO OBTAIN YCHAT
+1.3.1 INSTALLATION
+1.5.0 CUSTOMIZATION
+1.6.0 FILES
+1.7.0 WRITING BUG REPORTS
+1.8.0 CONTACT
+
+1.0.0 REQUIREMENTS: 
+
+- gcc 3.x
+  The GNU C++ compiler.
+
+1.1.0 TESTED PLATFORMS:
 
 The following platforms have been tested with success:
 
-- FreeBSD 5.0-RELEASE, GCC 3.2.1, FreeBSD 5.0 make and GNU make 3.80
+- Linux with GCC 3.2.0, GNU make 3.79.1
+- FreeBSD 5.1-RELEASE-p2, GCC 3.2.2, GNU make 3.80 
+- FreeBSD 5.3-RELEASE, GCC 3.4, GNU make 3.80
 
-- Linux Kernel 2.4.19, GCC 3.2.0, GNU make 3.79.1
+1.2.0 IMPORTANT NOTES:
 
 Before you compile the source you have to be sure to use at least GCC
 version 3.x with pthreads enabled. ( Type gcc -v to check it ).
-GCC 2.95 did not work while testing on linux and won't be supported!
+GCC 2.95 did not work while testing on linux and WON'T BE SUPPORTED!
+If you like to support yChat please write us an email and tell what 
+you can/like/would help ;-]. Please also take a look at the yChat
+homepage which is located at http://www.yChat.org.
 
-If you like to support yChat++, please write me an email and tell me
-what you can/like/would help ;-]. Please also take a look at the
-yChat++ homepage ( www.yChat.org ).
+1.3.0 HOW TO OBTAIN YCHAT:
 
-Installation: Just invoke "./configure" and afterwards "make", edit the 
-conf.txt and run the server with ./ychat. Then point your webbrowser
-to http://yourip:port/index.html
-( ignoring the index.html on the end of the url will not work! ).
+yChat can be downloaded as a source package or through CVS. 
+
+The packages are located at http://www.yChat.org -> Sourcecode -> 
+Packages or go to http://programming.buetow.org/CPP-yChat .
+
+For CVS download type also look at the homepage please.
+
+1.3.1 INSTALLATION:
+
+Invoke "./configure" and afterwards "make", edit the conf.txt. 
+
+Now we want to compile all the dynamic loadable modules of ychat.
+Invoke "cd cmnd && ./compile.sh && cd -". All command modules should get
+compiled.
+
+Now its time to run the server with ./ychat.
+Then point your webbrowser to http://yourip:port !
+
 ... have fun :-).
 
-If you like customizing the design/layout/language of yChat, you will have 
+1.5.0 CUSTOMIZATION:
+
+If you like to customize the design/layout/language of yChat, you will have 
 to edit msgs.h and glob.h before you compile the sources. Afterwards you can
 change the html-template files which are placed in the html/ subdirectory.
+Dynamic loadable modules can be found in the cmnd/ subdirectory. 
 
-Files: 
+1.6.0 FILES: ( This list is not complete )
 
 conf.txt - The yChat configuration file. ( read by conf.cpp ).
+
+Files in ./src:
 
 base.cpp - Encapsulates vector fields of room's or user ( may be later
            hash_maps ) and provides methods for manipulating data
@@ -61,6 +96,10 @@ hmap.cpp - The hash map implementation which is a very fast data
 
 main.cpp - This includes the required manager headers for starting 
            the server and finally regulates the correct starting.
+
+modl.cpp - The module loader. Stores pointers of all dynamic loaded
+           yChat modules in a hash map object and loads new modules
+           if desired or returns their pointers.
 
 pool.cpp - The implementation of the thread pool. all threads are stored 
            in a queue. Each thread will be reused if the assigned job is 
@@ -116,7 +155,7 @@ sock.cpp - The socket manager. Manages the socket connections. There
            are multiplexed sockets. For each requests a new POSIX thread
            will be created.
 
-Files written in capital letters contain static C++ classes
+Files with a leading s_ contain static C++ classes
 
 s_chat.cpp - Static wrapper for the dynamic chat class. holds one global 
            reachable instance of chat until the program shuts down. 
@@ -151,7 +190,6 @@ msgs.h  -  Defines console output messages for verbosity level 0 ( see
            all the system messages. you may edit this file for translating
            the system user language.
 
-
 The basic class structure:
 
  base<room> base<user>
@@ -165,11 +203,58 @@ The basic class structure:
   /      \
 conf     html
 
-Version  Lines of code
- 0.1     2402
- 0.2     2377
+1.7 WRITING BUG REPORTS
 
-New in 0.2:
- - POST request now work.
- - Thread pool ( pool.cpp ).
- - Bugfixes 
+How to submit a good bug report?
+
+Send them to Bug@yChat.org.
+
+First you should give the following information:
+- yChat version, if CVS (or devel. tarball) then which day?
+- operating system / distribution and it's version
+- when did it crash? did you do something? can you reproduce the crash?
+
+Getting backtrace of the crash also helps a lot, especially if yChat crashes randomly. If after crash you see text:
+
+ "segmentation fault (core dumped)" 
+
+It writes a file named "core" or "ychat.core" depending on your OS to directory where you started yChat. If it doesn't print the "(core dumped)" or you can't find the core file, you'll have to raise the limit for max. core file size before running yChat. To do this, say:
+
+ ulimit -c unlimited 
+
+So, if you have the core file and GNU debugger (gdb), you can get the backtrace with:
+
+ gdb ychat core 
+ bt 
+
+Paste all the lines starting from line having #0 at the beginning.
+
+Here's an example session:
+
+ in reqp::parse(thrd*, std::string, std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >&) ()
+ (gdb) bt
+ #0 0x0805c287 in reqp::parse(thrd*, std::string, std::map<std::string, std::string, std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >&) ()
+ #1 0x0806060f in sock::read_write(thrd*, int) ()
+ #2 0x080612ba in thrd::run() ()
+ #3 0x0805a3b8 in pool::run_func(void*) ()
+ #4 0x0805a375 in pool::tpool_thread(void*) ()
+ #5 0x281d44ae in _thread_start () from /usr/lib/libc_r.so.5
+ (gdb) 
+
+1.8 CONTACT:
+
+You may contact us through the following addresses:
+
+- Homepage
+  The yChat homepage is located at http://www.yChat.org
+
+- E-Mail
+  Paul C. Buetow: Snooper@yChat.org ( core developer )
+  Volker Richter: Rover@yChat.org ( core developer )
+  Mail@yChat.org ( reaches everybody of yChat )
+ 
+- ICQ
+  Paul C. Buetow: 11655527
+
+- IRC
+  #ychat at irc.german-elite.net  

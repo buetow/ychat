@@ -1,13 +1,23 @@
-# Generated automatically from Makefile.in by configure.
-SRCS=base.cpp chat.cpp s_chat.cpp cmnd.cpp conf.cpp s_conf.cpp cont.cpp html.cpp s_html.cpp main.cpp mutx.cpp s_mutx.cpp name.cpp pool.cpp reqp.cpp room.cpp sock.cpp s_sock.cpp thrd.cpp s_tool.cpp user.cpp 
-OBJS=$(SRCS:.cpp=.o)
-CC=g++
-LDFLAGS=-ldl -lstdc++ -g
-LDADD=-pthread -D_THREAD_SAFE
-all: ychat	
-$(SRCS):
-	$(CC) $(CFLAGS) -c $*.cpp
-ychat:  $(OBJS)
-	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDADD)
-clean:
-	rm *.o
+MAKE=gmake
+all:    base 
+	@echo "Now edit the ./conf.txt file and run ./ychat!"
+	@echo WARNING! This software is EXPERIMENTAL!
+install: deinstall
+uninstall: deinstall
+deinstall:
+	@echo Install/deinstall is not supported!
+	@echo Start yChat with ./ychat instead! 
+	@exit 1
+base:	
+	@${MAKE} -C ./src 
+clean_base:
+	@${MAKE} -C ./src clean
+stats:
+	@perl scripts/stats.pl
+run: 
+	./ychat
+gpl:
+	@more COPYING
+clean:	clean_base 
+debug:
+	@gdb ./ychat ychat.core

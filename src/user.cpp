@@ -5,6 +5,7 @@
 
 #include "user.h"
 #include "s_conf.h"
+#include "s_modl.h"
 #include "s_tool.h"
 
 using namespace std;
@@ -110,6 +111,34 @@ user::set_sock( int i_sock )
   pthread_mutex_lock  ( &mut_i_sock );
   this -> i_sock = i_sock;
   pthread_mutex_unlock( &mut_i_sock );
+}
+
+void
+user::command( string &s_command )
+{
+
+  auto unsigned int pos = s_command.find( "/" );
+  while( pos != string::npos )
+  {
+    s_command.replace( pos, 1, "" );
+    pos = s_command.find( "/" );
+  }
+
+  string s_mod( "cmnd/yc_" );
+  s_mod.append( s_command  ).append( ".so" );
+
+  dynmod *mod = s_modl::get
+                  ().get_module( s_mod );
+
+  if ( mod == NULL )
+  {
+    msg_post( new string( s_lang::get
+                            ().get_val( "ERRORCMD" ) ) );
+    return;
+  }
+
+  // execute the module.
+  ( *(mod->the_func) ) ( (void*) this );
 }
 
 void

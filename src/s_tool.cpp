@@ -116,24 +116,7 @@ s_tool::strip_html( string *s_str )
       return;
 
   }
+
+
 }
-
-string
-s_tool::replace( string s_string, string s_search, string s_replace )
-{
-  unsigned i_pos[2];
-
-  for ( i_pos[0]  = s_string.find( s_search );
-        i_pos[0] != string::npos;
-        i_pos[0]  = s_string.find( s_search, i_pos[1] ) )
-  {
-    s_string.replace( i_pos[0], s_search.length(), s_replace );
-    i_pos[1] = i_pos[0] + s_replace.length();
-  }
-
-  return s_string;
-}
-
-
-
 #endif
