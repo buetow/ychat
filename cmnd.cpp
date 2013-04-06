@@ -4,7 +4,7 @@
 #define CMND_CXX
 
 #include "cmnd.h"
-#include "MUTX.h"
+#include "s_mutx.h"
 
 using namespace std;
 

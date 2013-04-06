@@ -4,6 +4,7 @@
 #define CONT_H
 
 #include "incl.h"
+#include "hmap.h"
 
 using namespace std;
 

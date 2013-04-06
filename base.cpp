@@ -1,3 +1,11 @@
+/*
+	This file is part of yChat
+
+	$Author: snooper $
+	$Date: 2003/04/02 10:50:18 $
+	
+	$Header: /cvsroot/ychat/ychat/base.cpp,v 1.8 2003/04/02 10:50:18 snooper Exp $
+*/
 // template class data implementation;
 
 #ifndef BASE_CPP
@@ -5,84 +13,53 @@
 
 #include "base.h"
 
-base::base()
+template<class type>
+base<type>::base()
 {
- pthread_mutex_init (&mut_vec_elem, NULL ); 
+ map_elem = new hmap<type*,string>(80);
+ pthread_mutex_init (&mut_map_elem, NULL ); 
 }
 
-base::~base( )
+template<class type>
+base<type>::~base( )
 {
- pthread_mutex_destroy( &mut_vec_elem );
+ pthread_mutex_destroy( &mut_map_elem );
 }
 
-void
-base::add_elem( name* p_name )
+template<class type> void
+base<type>::add_elem( type* p_type )
 {
- pthread_mutex_lock  ( &mut_vec_elem   );
- vec_elem.push_back  ( p_name          ); 
- pthread_mutex_unlock( &mut_vec_elem   );
+ pthread_mutex_lock  ( &mut_map_elem   );
+ map_elem->add_elem  ( p_type, p_type->get_name()); 
+ pthread_mutex_unlock( &mut_map_elem   );
 }
 
-bool
-base::del_elem( string &s_name )
+template<class type> void
+base<type>::del_elem( string &s_name )
 {
- vector<name*>::iterator iter;
- pthread_mutex_lock  ( &mut_vec_elem );
-
- iter = vec_elem.begin();
- while( iter != vec_elem.end() )
- {
-   if ( (*iter)->get_name() == s_name ) 
-   {
-    vec_elem.erase( iter );
-    pthread_mutex_unlock( &mut_vec_elem );
-    return true;
-   }
-   iter++;
- }
-
- pthread_mutex_unlock( &mut_vec_elem );
- return false;
+ pthread_mutex_lock  ( &mut_map_elem );
+ map_elem->del_elem  ( s_name	     ); 
+ pthread_mutex_unlock( &mut_map_elem );
 }
 
-name*
-base::get_elem( string &s_name, bool &b_found )
+template<class type> type*
+base<type>::get_elem( string &s_name, bool &b_found )
 {
- vector<name*>::iterator iter;
- pthread_mutex_lock  ( &mut_vec_elem );
+ pthread_mutex_lock  ( &mut_map_elem );
+ type* p_type = map_elem->get_elem( s_name ); 
+ pthread_mutex_unlock( &mut_map_elem );
 
- iter = vec_elem.begin();
- while( iter != vec_elem.end() )
- {
-   if ( (*iter)->get_name() == s_name ) 
-   {
-    b_found = true;
-    pthread_mutex_unlock( &mut_vec_elem );
-    return (*iter);
-   }
-   iter++;
- }
+ b_found = p_type == NULL ?  false : true;
 
- pthread_mutex_unlock( &mut_vec_elem );
-
- b_found = false;
-
- return new name(); 
+ return p_type; 
 }
 
-void
-base::run_func( void (*func)(name*, void*), void* v_arg )
+template<class type> void
+base<type>::run_func( void (*func)(type*, void*), void* v_arg )
 {
- vector<name*>::iterator iter;
- pthread_mutex_lock  ( &mut_vec_elem );
-
- // execute func foreach element of vec_elem with 
- // 1st argument: a pointer of a element of vec_elem.
- // 2nd argument: a void pointer of a object.
- for( iter = vec_elem.begin(); iter != vec_elem.end(); iter++ )
-   ( *func ) ( (*iter), v_arg );
- 
- pthread_mutex_unlock( &mut_vec_elem );
+ pthread_mutex_lock  ( &mut_map_elem );
+ map_elem->run_func( func, v_arg ); 
+ pthread_mutex_unlock( &mut_map_elem );
 }
 
 #endif

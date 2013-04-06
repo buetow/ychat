@@ -27,4 +27,6 @@ name::set_name( string s_name )
 {
  this->s_name = s_name;
 }
+
+
 #endif

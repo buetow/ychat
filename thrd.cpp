@@ -4,7 +4,7 @@
 #define THRD_CXX
 
 #include "thrd.h"
-#include "SOCK.h"
+#include "s_sock.h"
 
 using namespace std;
 
@@ -16,12 +16,13 @@ thrd::thrd( int i_sock )
 thrd::~thrd()
 {
   shutdown ( get_sock() , 2 );
+  close    ( get_sock()     );
 }
 
 void
 thrd::run()
 {
- SOCK::get().read_write( this, i_sock );
+ s_sock::get().read_write( this, i_sock );
 }
 
 #endif

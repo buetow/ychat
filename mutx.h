@@ -1,7 +1,7 @@
 // class mutx declaration.
 
-#ifndef MUTX_H
-#define MUTX_H
+#ifndef s_mutx_H
+#define s_mutx_H
 
 #include "incl.h"
 

@@ -1,18 +1,18 @@
 // class html implementation.
 
-#ifndef HTML_CXX
-#define HTML_CXX
+#ifndef s_html_CXX
+#define s_html_CXX
 
 #include <fstream>
 #include "html.h"
-#include "CHAT.h"
-#include "MUTX.h"
+#include "s_chat.h"
+#include "s_mutx.h"
 
 using namespace std;
 
 html::html( )
 {
- set_name( CONF::get().get_val( "HTMLTEMP" ) );
+ set_name( s_conf::get().get_val( "HTMLTEMP" ) );
  pthread_mutex_init( &mut_map_vals, NULL );
 }
 
@@ -43,25 +43,33 @@ html::parse( map_string &map_params )
  if ( s_templ.empty() )
  {
   auto string   s_path  = get_name();
-  auto ifstream fs_templ( s_path.append( s_file ).c_str() );
+  auto ifstream fs_templ( s_path.append( s_file ).c_str(), ios::binary );
 
   if ( ! fs_templ ) 
   {
-   map_params["request"] = CONF::get().get_val( "NOTFOUND" );
+  
+   cerr << "File not found: " << s_file << endl;
+   if(map_params["request"]==s_conf::get().get_val( "NOTFOUND"  ))
+	return "";
+   
+   map_params["request"] = s_conf::get().get_val( "NOTFOUND" );
    return parse( map_params );
+ 
   }
 
-  auto char c_buf[READBUF];
-
-  while( fs_templ.getline( c_buf, READBUF ) ) 
-   s_templ.append( string( c_buf ).append( "\n" ) ); 
-
+  auto char c_buf;
+  while( !fs_templ.eof() )
+  {
+  	fs_templ.get( c_buf );
+  	s_templ+=c_buf;	
+  }
+  
   fs_templ.close();
 
-#ifdef _VERBOSE
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+#ifdef VERBOSE
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cout << TECACHE << s_path << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
 #endif
 
   // cache file. 
@@ -89,7 +97,7 @@ html::parse( map_string &map_params )
 
   // get key and val.
   auto string s_key = s_templ.substr( pos[0], pos[1]-pos[0] );
-  auto string s_val = CONF::get().get_val( s_key );
+  auto string s_val = s_conf::get().get_val( s_key );
 
   // if s_val is empty use map_params.
   if ( s_val.empty() )

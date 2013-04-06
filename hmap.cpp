@@ -1,6 +1,7 @@
 #ifndef hmap_cpp
 #define hmap_cpp
 
+
 #include "hmap.h"
 
 using namespace std;
@@ -159,6 +160,14 @@ int hmap<obj_type, key_type>::nextPrime( int n ) const
 
  return n;
 }
+template<class obj_type, class key_type> void
+hmap<obj_type, key_type>::run_func( void (*func)(obj_type) )
+{
+ for( int i = 0; i < array.size( ); i++ )
+  if ( array[i].info == ACTIVE )
+   ( *func ) ( array[i].element );
+}
+
 template<class obj_type, class key_type> void
 hmap<obj_type, key_type>::run_func( void (*func)(obj_type, void*), void* v_arg )
 {

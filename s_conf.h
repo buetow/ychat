@@ -13,7 +13,7 @@ private:
 public:
  static void init()
  {
-   obj = new conf( s_confILE );
+   obj = new conf( CONFILE );
  }
 
  static conf& get()

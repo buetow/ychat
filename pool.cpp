@@ -5,17 +5,17 @@
 
 #include "pool.h"
 
-#include "CONF.h"
-#include "MUTX.h"
-#include "TOOL.h"
+#include "s_conf.h"
+#include "s_mutx.h"
+#include "s_tool.h"
 #include "thrd.h"
 
 using namespace std;
 
 pool::pool()
 {
- i_thrd_pool_size  = TOOL::string2int( CONF::get().get_val( "THRDPOOL" ) );
- i_thrd_pool_queue = TOOL::string2int( CONF::get().get_val( "THRDQUEU" ) );
+ i_thrd_pool_size  = s_tool::string2int( s_conf::get().get_val( "THRDPOOL" ) );
+ i_thrd_pool_queue = s_tool::string2int( s_conf::get().get_val( "THRDQUEU" ) );
 
  tpool_init( &thread_pool, i_thrd_pool_size, i_thrd_pool_queue, 0 );
 }
@@ -34,9 +34,9 @@ pool::tpool_init( tpool_t *tpoolp, int num_worker_threads, int max_queue_size, i
  // allocate a pool data structure
  if (( tpool = (tpool_t) malloc( sizeof( struct tpool ) ) ) == NULL )
  {
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cerr << "malloc" << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
   exit(-1);
  }
 
@@ -47,9 +47,9 @@ pool::tpool_init( tpool_t *tpoolp, int num_worker_threads, int max_queue_size, i
 
  if ( ( tpool->threads = (pthread_t*) malloc( sizeof( pthread_t ) *num_worker_threads ) ) == NULL )
  {
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cerr << "malloc" << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
   exit(-1);
  }
 
@@ -61,33 +61,33 @@ pool::tpool_init( tpool_t *tpoolp, int num_worker_threads, int max_queue_size, i
 
  if ( ( rtn = pthread_mutex_init( &(tpool->queue_lock), NULL ) ) != 0 )
  {
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cerr << "pthread_mutex_init " << strerror( rtn ) << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
   exit(-1);
  }
 
  else if ( ( rtn = pthread_cond_init( &(tpool->queue_not_empty), NULL ) ) != 0 )
  {
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cerr << "pthread_cond_init " << strerror( rtn ) << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
   exit(-1);
  }
 
  else if ( ( rtn = pthread_cond_init( &(tpool->queue_not_full), NULL ) ) != 0 )
  {
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cerr << "pthread_cond_init " << strerror( rtn ) << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
   exit(-1);
  }
 
  else if ( ( rtn = pthread_cond_init( &(tpool->queue_empty), NULL ) ) != 0 )
  {
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cerr << "pthread_cond_init " << strerror( rtn ) << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
   exit(-1);
  }
  // create threads
@@ -140,10 +140,10 @@ pool::tpool_thread( void* arg )
 
 void pool::run_func( void *v_pointer )
 {
-#ifdef _VERBOSE
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+#ifdef VERBOSE
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cout << THREADS << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
 #endif
 
   // recasting the client thread object.
@@ -157,10 +157,10 @@ void pool::run_func( void *v_pointer )
 
   free(v_pointer);
 
-#ifdef _VERBOSE
-  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+#ifdef VERBOSE
+  pthread_mutex_lock  ( &s_mutx::get().mut_stdout );
   cout << THREADE << endl;
-  pthread_mutex_unlock( &MUTX::get().mut_stdout );
+  pthread_mutex_unlock( &s_mutx::get().mut_stdout );
 #endif
 }
 
@@ -197,7 +197,6 @@ pool::tpool_add_work( tpool_t tpool, void(*routine)(void*), void* arg ) ///
  if( tpool->cur_queue_size == 0 )
  {
   tpool->queue_tail = tpool->queue_head = workp;
-  pthread_cond_signal( &(tpool->queue_not_empty) );
  } 
 
  else
@@ -207,6 +206,7 @@ pool::tpool_add_work( tpool_t tpool, void(*routine)(void*), void* arg ) ///
  } 
 
  tpool->cur_queue_size++;
+ pthread_cond_signal( &(tpool->queue_not_empty) );
  pthread_mutex_unlock( &(tpool->queue_lock) );
  return 1;
 }

@@ -1,11 +1,11 @@
 // class html declaration. this class manages the html-template files.
 
-#ifndef HTML_H
-#define HTML_H
+#ifndef s_html_H
+#define s_html_H
 
 #include "incl.h"
 #include "cont.h"
-#include "CONF.h"
+#include "s_conf.h"
 #include "user.h"
 #include "name.h"
 

@@ -4,16 +4,17 @@
 #define USER_CXX
 
 #include "user.h"
-#include "CONF.h"
-#include "TOOL.h"
+#include "s_conf.h"
+#include "s_modl.h"
+#include "s_tool.h"
 
 using namespace std;
 
 user::user( string s_name ) : name( s_name )
 {
  this -> b_online = true; 
- this -> l_time   = TOOL::unixtime();
- this -> s_col1   = CONF::get().get_val( "USERCOL1" );
+ this -> l_time   = s_tool::unixtime();
+ this -> s_col1   = s_conf::get().get_val( "USERCOL1" );
 
  pthread_mutex_init( &mut_b_online, NULL);
  pthread_mutex_init( &mut_i_sock  , NULL);
@@ -112,10 +113,36 @@ user::set_sock( int i_sock )
 }
 
 void
+user::command( string &s_command )
+{
+
+ auto unsigned int pos = s_command.find( "/" );
+ while( pos != string::npos )
+ {
+  s_command.replace( pos, 1, "" );
+  pos = s_command.find( "/" ); 
+ }
+ 
+ string s_mod( "cmnd/yc_" );
+ s_mod.append( s_command  ).append( ".so" );
+
+ dynmod *mod = s_modl::get().get_module( s_mod );
+
+ if ( mod == NULL ) 
+ {
+  msg_post( new string( s_lang::get().get_val( "ERRORCMD" ) ) ); 
+  return;
+ }
+
+ // execute the module.
+ ( *(mod->the_func) ) ( (void*) this );
+}
+
+void
 user::renew_stamp( )
 {
  pthread_mutex_lock  ( &mut_l_time );
- l_time = TOOL::unixtime();
+ l_time = s_tool::unixtime();
  pthread_mutex_unlock( &mut_l_time );
 }
 

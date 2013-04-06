@@ -1,6 +1,6 @@
 /*
- * yChat++; Homepage: www.yChat.org
- * Copyright (C) 2003 Paul C. Buetow ( Snooper@yChat.org, ICQ: 11655527 )
+ * yChat++; Contact: www.yChat.org; Mail@yChat.org
+ * Copyright (C) 2003 Paul C. Buetow, Volker Richter 
  * -----------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or
@@ -26,25 +26,34 @@
 #include "incl.h"
 
 // include the chat manager.
-#include "CHAT.h"
+#include "s_chat.h"
 
 // include the config manager.
-#include "CONF.h"
+#include "s_conf.h"
 
 // include the html-template manager.
-#include "HTML.h"
+#include "s_html.h"
 
 // include the mutex manager for global synchronization.
-#include "MUTX.h"
+#include "s_mutx.h"
+
+// include the module loader manager for global synchronization.
+#include "s_modl.h"
 
 // include the socket manager.
-#include "SOCK.h"
+#include "s_sock.h"
+
+// include the language manager
+#include "s_lang.h"
+
+// include the session manager
+#include "s_sman.h"
 
 using namespace std;
 
 int main()
 {
-#ifdef _VERBOSE
+#ifdef VERBOSE
 
 cout  <<  "         ___ _           _   "     << endl
       <<  " _   _  / __\\ |__   __ _| |_ "    << endl
@@ -66,19 +75,22 @@ cout  <<  "         ___ _           _   "     << endl
 
  // all the static data classes have to be initialized once. otherwise they will
  // contain only empty pointers and the chat server won't work correctly. 
- // the order of the initializations is very importand. for example the HTML::init()
- // invokations assumes an initialized CONF class.
- MUTX::init(); // init the mutex manager.
- CONF::init(); // init the config manager.
- HTML::init(); // init the html-template manager. 
- SOCK::init(); // init the socket manager. 
- CHAT::init(); // init the chat manager. 
-
+ // the order of the initializations is very importand. for example the s_html::init()
+ // invokations assumes an initialized s_conf class.
+ s_mutx::init(); // init the mutex manager.
+ s_conf::init(); // init the config manager.
+ s_html::init(); // init the html-template manager. 
+ s_lang::init(); // init the language manager
+ s_sman::init(); // init the session manager.
+ s_modl::init(); // init the module-loader manager. 
+ s_sock::init(); // init the socket manager. 
+ s_chat::init(); // init the chat manager.
+ 
  // start the socket manager. this one will listen for incoming http requests and will
  // forward them to the specified routines which will generate a http response.
- SOCK::get().start();
+ s_sock::get().start();
 
-#ifdef _VERBOSE
+#ifdef VERBOSE
  cout << DOWNMSG << endl;
 #endif
 

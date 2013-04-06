@@ -1,7 +1,7 @@
 // class conf implementation.
 
-#ifndef CONF_CXX
-#define CONF_CXX
+#ifndef s_conf_CXX
+#define s_conf_CXX
 
 #include <fstream>
 #include "conf.h"
@@ -20,7 +20,7 @@ conf::~conf()
 void
 conf::parse()
 {
-#ifdef _VERBOSE
+#ifdef VERBOSE
  cout << CFILEOK << get_name() << endl;
 #endif
 
@@ -28,7 +28,7 @@ conf::parse()
 
  if ( ! fs_conf ) 
  {
-#ifdef _VERBOSE
+#ifdef VERBOSE
  cout << CFILENO << get_name() << endl;
 #endif
   return;
@@ -60,7 +60,7 @@ conf::parse()
   string s_val = s_token.substr( ui_pos+1, s_token.length() );
   string s_key = s_token.substr( 0      , --ui_pos          ); 
 
-#ifdef VERBOSE
+#ifdef VERBOSE2
    cout << s_key << "=" << s_val << endl;
 #endif
 

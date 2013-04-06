@@ -1,7 +1,7 @@
 // class mutx implementation. 
 
-#ifndef MUTX_CXX
-#define MUTX_CXX
+#ifndef s_mutx_CXX
+#define s_mutx_CXX
 
 #include "mutx.h"
 

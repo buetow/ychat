@@ -20,6 +20,34 @@ s_tool::is_alpha_numeric( string &s_digit )
 
  return true;
 }
+string
+s_tool::trim( string s_str )
+{
+        if(s_str.empty())return "";
+        char c_cur=s_str[0];
+        auto int pos=0;
+// left trim
+        while(c_cur==' ' || c_cur == '\n' || c_cur == '\r')
+        {
+                s_str.erase(pos,1);
+
+                c_cur=s_str[++pos];
+
+        }
+// right trim
+
+        pos=s_str.size();
+        c_cur=s_str[s_str.size()];
+
+        while(c_cur==' ' || c_cur == '\n' || c_cur == '\0' || c_cur == '\r')
+        {
+                s_str.erase(pos,1);
+                c_cur=s_str[--pos];
+
+        }
+        return s_str;
+}
+
 string 
 s_tool::getExtension( string s_file )
 {

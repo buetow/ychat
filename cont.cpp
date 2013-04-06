@@ -4,7 +4,7 @@
 #define CONT_CXX
 
 #include "cont.h"
-#include "MUTX.h"
+#include "s_mutx.h"
 
 using namespace std;
 
