@@ -5,7 +5,8 @@
  gmake config in the main directory!
 */
 
-#include "maps/hashmap.h" 
+
+#include <map>
 
 // global variables.
 #ifndef GLOB_H
@@ -18,36 +19,18 @@
 /* - CONFIG -
  What should be the name of the config file?
 */
-#define CONFILE "ychat.conf"
+#define CONFILE "yhttpd.conf"
 
 /* - CONFIG -
- In which prefix should yChat be installed if typing gmake inst-
+ In which prefix should yhttpd be installed if typing gmake inst-
  all? 
 */
 #define PREFIX "/usr/local"
 
-//<<*
-/* - CONFIG - 
- Should yChat get compiled with database support? Currently MyS-
- QL only is a supported database. 
-*/
-//#define DATABASE
-
-#ifdef DATABASE
-/* - CONFIG - 
- Should all database queries printed out at the admin interface? 
- (This option wont take action if database support has not been 
- chosen) 
-*/
-#define DATA_PRINT_QUERIES
-
-#define USE_MYSQL 
-#endif
-//*>>
 
 /* - CONFIG -
  Please enter the highest networking port which is allowed to be 
- used. If yChat is unable to create the server socket on a cert-
+ used. If yhttpd is unable to create the server socket on a cert-
  ain port, it will increment the port number and retries to cre-
  ate another socket on the incremented port number. This proced-
  ure will continue until MAXPORT has been reached.
@@ -64,7 +47,7 @@
  Please specify the size of a temporary buffer. (Will be used f-
  or different tasks) 
 */
-#define READBUF 2048
+#define READBUF 1024
 
 /* - CONFIG - 
  Please specify the maximum length of a HTTP post request. 
@@ -80,32 +63,27 @@
 /* - CONFIG - 
  Please chose if you want to use verbose server outputs or not. 
  The verbose messages will appear in the ncurses menu if ncurses
- is enabled or in the server-window if yChat has been compiled 
+ is enabled or in the server-window if yhttpd has been compiled 
  without ncurses support. This option shows you all incoming
  requests with the client IP and port numbers. You probably want
- this to be turned off if you have heavy server load.
+ this to be turned of if you have heavy server load.
 */
 //#define VERBOSE
 
 /* - CONFIG - 
  If you want to enable EXPERIMENTAL features, then set this val-
  ue to true. Else use false which is recommended! All experimen-
- al features are marked inside of the running yChat!
+ al features are marked inside of the running yhttpd!
 */
 //#define EXPERIM
 
 /* - CONFIG -
- Should yChat get compiled with logging support? 
-*/ 
-#define LOGGING
-
-/* - CONFIG -
- Should yChat get compiled with ncurses support?
+ Should yhttpd get compiled with ncurses support?
 */ 
 #define NCURSES
 
 /* - CONFIG -
- Should yChat get compiled with comand line interface support?
+ Should yhttpd get compiled with comand line interface support?
 */
 #define CLI
 
@@ -121,14 +99,6 @@
 // Enables debugging options 
 //#define DEBUG
 
-//<<*
-/* - CONFIG -
- Defines the amount of newlines which have to be sent to the clie-
- nt's chat stream after the first log-in. It prevents a white scr-
- een because of browser buffers or proxies.
-*/
-#define PUSHSTR 500
-//*>>
 
 
 // The following values define the positions of the data stats in the NCURSES interface.
@@ -154,8 +124,8 @@
 #define NCUR_CON_QUEUE_X 23 
 #define NCUR_CON_QUEUE_Y 35
 
-#define NCUR_CHAT_HEADER_X 21
-#define NCUR_CHAT_HEADER_Y 52
+#define NCUR_HTTPD_HEADER_X 21
+#define NCUR_HTTPD_HEADER_Y 52
 #define NCUR_NUM_ROOMS_X 22
 #define NCUR_NUM_ROOMS_Y 52 
 #define NCUR_SESSION_X 23
@@ -183,6 +153,8 @@
 
 using namespace std;
 
+// some custom typedefs for datatypes which are needed often.
+typedef map<string, string> map_string;
 typedef int function( void *v_arg );
 
 struct container

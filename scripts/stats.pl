@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# The yChat Project (2003 - 2004)
+# The yhttpd Project (2003 - 2004)
 #
 # This script generates source code and project statistics 
 
@@ -9,7 +9,6 @@ use strict;
 use scripts::modules::file;
 
 my %stats;
-my $param = shift;
 
 &recursive(".");
 
@@ -18,16 +17,19 @@ $stats{"Lines total"} = $stats{"Lines of source"}
                    + $stats{"Lines of text"}   
                    + $stats{"Lines of HTML"};
 
-unless (defined $param) {
-
- print "$_ = " . $stats{$_} . "\n"
-  for ( sort keys %stats );
-
-} else {
-
- print $stats{$_} . " "
-  for sort keys %stats;
-
+my $bool = 0;
+foreach ( sort keys %stats )
+{
+ if ($bool == 0)
+ { 
+  print "$_ = " . $stats{$_} . "\n";
+  $bool = 1;
+ }
+ else
+ {
+  print "$_ = " . $stats{$_} . "\n";
+  $bool = 0;
+ }
 }
 
 print "\n";

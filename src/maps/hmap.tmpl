@@ -104,17 +104,6 @@ void hmap<obj_type, key_type>::del_elem( const key_type & k )
         array[ i_current_pos ].info = DELETED;
 }
 
-// Remove item x from the hash table.
-template <class obj_type, class key_type>
-void hmap<obj_type, key_type>::rename_key( const key_type & k1, const key_type & k2 )
-{
-    int i_current_pos = find_pos( k1 );
-    if( is_active( i_current_pos ) ) {
-        array[ i_current_pos ].info = DELETED;
-	add_elem( array[ i_current_pos ].element, k2 );
-    }
-}
-
 // Finds item x and resets its value. 
 template <class obj_type, class key_type>
 obj_type hmap<obj_type, key_type>::set_elem( const obj_type & x, const key_type & k )

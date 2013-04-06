@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# The yChat Project (2003 - 2004)
+# The yhttpd Project (2003 - 2004)
 #
 
 if ! which perl >/dev/null
@@ -26,15 +26,12 @@ perl -e '
  my @headers = (
    "dlfcn.h",
    "pthread.h",
-   "mysql/mysql.h", #//<< Not needed for yhttpd
    "netinet/in.h",
    "time.h",
-   "ncurses.h",
-   "ext/hash_map"
+   "ncurses.h"
  );
 
  my @libs = (
-   "libmysqlclient.so", #//<< Not needed for yhttpd
    "libncurses.so"
  );
 
@@ -76,7 +73,6 @@ perl -e '
    "/include",
    "/usr/include",
    "/usr/local/include",
-   "/usr/lib/",
    "/usr/pkg/include",
    "/opt/include",
    "/opt/local/include"
@@ -93,14 +89,14 @@ perl -e '
    "/opt/local/lib"
  );
 
- if ( defined $ENV{YCHATHEADERPATHS} ) {
+ if ( defined $ENV{YHTTPDHEADERPATHS} ) {
    map { print "Adding $_...\n";
-         unshift @headerpaths, $_ } split /:/, $ENV{YCHATHEADERPATHS};
+         unshift @headerpaths, $_ } split /:/, $ENV{YHTTPDHEADERPATHS};
  }
 
- if ( defined $ENV{YCHATLIBPATHS} ) {
+ if ( defined $ENV{YHTTPDLIBPATHS} ) {
    map { print "Adding $_...\n";
-        unshift @libpaths, $_ } split /:/, $ENV{YCHATLIBPATHS};
+        unshift @libpaths, $_ } split /:/, $ENV{YHTTPDLIBPATHS};
  }
 
  sub check {
@@ -142,22 +138,17 @@ perl -e '
     print "NOT OK\n";
     print "Please make sure that you have the needed software installed!\n";
     print "If you have a special path for your includes then edit src/configure!\n";
-    print "Or set the environment variables YCHATHEADERPATHS and YCHATLIBPATHS.\n";
-    print " Example: setenv YCHATHEADERPATHS \"/your/header/includes:/a/includes\"\n";
+    print "Or set the environment variables YHTTPDHEADERPATHS and YHTTPDLIBPATHS.\n";
+    print " Example: setenv YHTTPDHEADERPATHS \"/your/header/includes:/a/includes\"\n";
     print "(The environment variables have to be seperated by an :)\n"; 
-    print "PS: You may use the locate and/or find command to search for files.\n"; 
     exit(1);
   }
-  `touch ../err`;
   return "";
  }
-
- print "Headers:\n";
 
  map { $incadd{&check($deepness, $_, @headerpaths)}++ } 
   @headers;
 
- print "Libraries:\n";
  map { $libadd{&check($deepness, $_, @libpaths)}++ } 
   @libs;
 
@@ -197,16 +188,14 @@ perl -e '
  my $compiler = `tail -n 1 ../g++.version`;
  my $version  = `tail -n 2 ../g++.version | head -n 1`;
  my $uname    = `uname -srm`;
- my $compopt  = join "; ", split /\n/, `cat ../g++.version`;
  chomp $uname;
- chomp $compopt;
  print "Configuring for $uname...\n";
  chomp $cpp;
  chomp $version;
  while (<Fin>) {
    s/^(CC=).*\n/$1$compiler/;
    s/^(SRCS=).*/$1$cpp/;
-   s/ -frepo//; # unless $version =~ /3\.4/;
+   s/ -frepo// unless $version =~ /3\.4/;
    if ( $uname !~ /Linux/i ) {
      print "Disabling -ldl flag...\n" if s/ -ldl//;
    }
@@ -241,7 +230,6 @@ perl -e '
  open F, ">msgs.h" or die "msgs.h: $!\n";
  foreach (@msgs) {
    s/(UNAME)(.+)$/UNAME "$uname"/;
-   s/(COMPOPT)(.+)$/COMPOPT "$compopt"/;
    print F; 
  }
  close F;
@@ -249,9 +237,7 @@ perl -e '
  if ( -d "mods" ) {
    chdir("mods");
    my $cflags = "-fno-inline -fno-default-inline";
-   $cflags .= " -nostdlib" 
-	if $uname =~ /FreeBSD/i 
-	&& `uname -r` =~ /^4\./;
+   $cflags .= " -nostdlib" if $uname !~ /Linux/i;
    system("echo $cflags > cflags.add");
    system("./configure");
    chdir("..");

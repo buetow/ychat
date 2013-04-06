@@ -30,7 +30,6 @@ class smap : public hmap<obj_type, key_type>
     void add_elem ( const obj_type &x, const key_type &k );
     obj_type set_elem ( const obj_type &x, const key_type &k );
     void del_elem ( const key_type &k );
-    void rename_key ( const key_type &k1, const key_type &k2 );
     bool is_avail ( const key_type &k );
     obj_type get_elem ( const key_type &k );
     obj_type pop_elem ( const key_type &k );
