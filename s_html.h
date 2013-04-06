@@ -5,22 +5,21 @@
 
 using namespace std;
 
-class s_html
+class s_html 
 {
 private:
-  static html* obj;
+ static html* obj; 
 
 public:
-  static void init()
-  {
-    obj = new html();
-  }
+ static void init()
+ {
+   obj = new html();
+ }
 
-  static html& get
-    ()
-  {
-    return *obj;
-  }
+ static html& get()
+ {
+  return *obj;
+ }
 };
 
 

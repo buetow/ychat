@@ -1,6 +1,6 @@
 // class cont declaration. defines a simple data container class.
 
-#ifndef CONT_H
+#ifndef CONT_H 
 #define CONT_H
 
 #include "incl.h"
@@ -8,22 +8,19 @@
 
 using namespace std;
 
-class cont
+class cont 
 {
 protected:
-  map_string map_vals;
+ map_string map_vals;
 
 public:
-  cont::~cont();
+ cont::~cont();
 
-  // small inline methods:
-  void clear_vals()
-  {
-    map_vals.clear();
-  } // removes all values.
+ // small inline methods:
+ void clear_vals() { map_vals.clear(); } // removes all values.
 
-  // public methods:
-  virtual string get_val( string s_key ); // get a specific map_vals value.
+ // public methods:
+ virtual string get_val( string s_key ); // get a specific map_vals value.
 };
 
 #endif

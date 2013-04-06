@@ -9,9 +9,11 @@
 using namespace std;
 
 cmnd::cmnd( )
-{}
+{
+}
 
 cmnd::~cmnd()
-{}
+{
+}
 
 #endif

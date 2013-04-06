@@ -10,23 +10,19 @@
 
 using namespace std;
 
-class sman
-{
+class sman{
 
-private:
-  hmap<sess *, string> *sessions;
-  string generateId( int len );
-  int sessioncount;
-public:
-  sman();
-  ~sman();
-  sess *getSession( string s_id );
-  int getSessionCount( )
-  {
-    return this->sessioncount;
-  }
-  sess *createSession( );
-  void destroySession( string s_id );
+	private:
+		hmap<sess *, string> *sessions;
+		string generateId( int len );
+		int sessioncount;	
+	public:
+		sman();
+		~sman();
+		sess *getSession( string s_id );
+		int getSessionCount( ) { return this->sessioncount; }
+		sess *createSession( );
+		void destroySession( string s_id );
 
 
 };

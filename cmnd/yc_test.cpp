@@ -2,12 +2,11 @@
 
 using namespace std;
 
-extern "C"
-{
-  export int function(void *v_arg);
+extern "C" {
+ export int function(void *v_arg);
 
-  int function(void *v_arg)
-  {
-    cout << "Hallo " << (char*)v_arg << endl;
-  }
+ int function(void *v_arg)
+ {
+  cout << "Hallo " << (char*)v_arg << endl;
+ }
 }

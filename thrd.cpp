@@ -10,7 +10,7 @@ using namespace std;
 
 thrd::thrd( int i_sock )
 {
-  this->i_sock = i_sock;
+ this->i_sock = i_sock;
 }
 
 thrd::~thrd()
@@ -22,8 +22,7 @@ thrd::~thrd()
 void
 thrd::run()
 {
-  s_sock::get
-    ().read_write( this, i_sock );
+ s_sock::get().read_write( this, i_sock );
 }
 
 #endif

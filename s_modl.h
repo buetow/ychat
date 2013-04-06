@@ -5,22 +5,21 @@
 
 using namespace std;
 
-class s_modl
+class s_modl 
 {
 private:
-  static modl* obj;
+ static modl* obj; 
 
 public:
-  static void init()
-  {
-    obj = new modl();
-  }
+ static void init()
+ {
+   obj = new modl();
+ }
 
-  static modl& get
-    ()
-  {
-    return *obj;
-  }
+ static modl& get()
+ {
+  return *obj;
+ }
 };
 
 

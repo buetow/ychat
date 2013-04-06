@@ -1,6 +1,6 @@
 // contains header files which are included by all classes.
 
-// include some std headers.
+// include some std headers. 
 #include <iostream>
 
 // since thread synchronization is a big issue this header needs
@@ -12,5 +12,5 @@
 
 // include all the custom global variables.
 #include "glob.h"
-// include all the custom messages.
+// include all the custom messages. 
 #include "msgs.h"
