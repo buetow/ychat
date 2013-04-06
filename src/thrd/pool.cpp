@@ -1,27 +1,3 @@
-/*:*
- *: File: ./src/thrd/pool.cpp
- *: 
- *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
-
 #ifndef POOL_CPP
 #define POOL_CPP
 
@@ -29,146 +5,224 @@
 
 using namespace std;
 
-int pool::i_num_avail_threads;
-int pool::i_num_total_threads;
+int pool::i_thrd_used = 0;
 
-int pool::i_max_queue_size;
-int pool::i_cur_queue_index;
-int pool::i_free_queue_index;
-
-task** pool::queue_tasks;
-
-pthread_mutex_t pool::mut_threads;
-pthread_mutex_t pool::mut_queue_tasks;
-pthread_mutex_t pool::mut_num_avail_threads;
-pthread_cond_t pool::cond_new_task;
-
-void
-pool::init()
+pool::pool()
 {
-  pthread_mutex_init(&mut_threads, 0);
-  pthread_mutex_init(&mut_queue_tasks, 0);
-  pthread_mutex_init(&mut_num_avail_threads, 0);
-  pthread_cond_init(&cond_new_task, 0);
-
-  i_num_total_threads = i_cur_queue_index = i_free_queue_index = 0;
-  i_num_avail_threads = tool::string2int( wrap::CONF->get_elem( "httpd.thread.initpoolsize" ) );
-  i_max_queue_size = tool::string2int( wrap::CONF->get_elem( "httpd.thread.maxqueuesize" ) );
-
-  queue_tasks = new task*[i_max_queue_size];
-  for (int i = 0; i < i_max_queue_size; ++i)
-	queue_tasks[i] = NULL;
-
-  increase_pool(i_num_avail_threads);
+    i_thrd_pool_size  = tool::string2int( wrap::CONF->get_elem( "httpd.thread.initpoolsize" ) );
+    i_thrd_pool_queue = tool::string2int( wrap::CONF->get_elem( "httpd.thread.queuesize" ) );
+    tpool_init( &thread_pool, i_thrd_pool_size, i_thrd_pool_queue);
 }
 
 void
-pool::destroy()
+pool::tpool_init( tpool_t *tpoolp, int num_worker_threads, int max_queue_size)
 {
-  pthread_mutex_lock(&mut_queue_tasks);
-  delete [] queue_tasks;
-  pthread_mutex_unlock(&mut_queue_tasks);
+    int i, rtn;
+    tpool_t tpool;
 
-  pthread_mutex_destroy(&mut_threads);
-  pthread_mutex_destroy(&mut_queue_tasks);
-  pthread_mutex_destroy(&mut_num_avail_threads);
-  pthread_cond_destroy(&cond_new_task);
-}
-
-int
-pool::increase_pool(int i_num)
-{
-  wrap::system_message(POOLFLL + tool::int2string(i_num) +","+tool::int2string(i_num_total_threads)+")");
-  int i_max_pool_size = tool::string2int( wrap::CONF->get_elem( "httpd.thread.maxpoolsize" ) );
-
-  for ( int i = 0; i < i_num; ++i )
-  {
-    if ( i_max_pool_size != 0 && i_num_total_threads >= i_max_pool_size )
+    // allocate a pool data structure
+    if (( tpool = (tpool_t) malloc( sizeof( struct tpool ) ) ) == 0 )
     {
-      wrap::system_message(POOLER2+tool::int2string(i_max_pool_size)+")");
-      wrap::system_message(POOLER1+tool::int2string(i)+")");
-      return i;
+     wrap::system_message( POOLERR );
+     exit(-1);
     }
 
-    ++i_num_total_threads;
-    pthread_t p_pthread;
-    pthread_create(&p_pthread, 0, wait_for_task, (void*) p_pthread );
-  }
+    // initialize th fields
+    tpool->num_threads    = num_worker_threads;
+    tpool->max_queue_size = max_queue_size;
 
-  return i_num;
+    if ( ( tpool->threads = (pthread_t*) malloc( sizeof(pthread_t)*num_worker_threads ) ) == 0 )
+    {
+        wrap::system_message( POOLERR );
+        exit(-1);
+    }
+
+    tpool->cur_queue_size = 0;
+    tpool->queue_head     = 0;
+    tpool->queue_tail     = 0;
+
+    if ( ( rtn = pthread_mutex_init( &(tpool->queue_lock), 0 ) ) != 0 )
+    {
+        string s_err( "pthread_mutex_init " );
+        s_err.append( strerror( rtn ) );
+
+        wrap::system_message( s_err );
+
+        exit(-1);
+    }
+
+    else if ( ( rtn = pthread_cond_init( &(tpool->queue_not_empty), 0 ) ) != 0 )
+    {
+        string s_err( "pthread_cond_init (1): " );
+        s_err.append( strerror( rtn ) );
+
+        wrap::system_message( s_err );
+
+        exit(1);
+    }
+
+    else if ( ( rtn = pthread_cond_init( &(tpool->queue_not_full), 0 ) ) != 0 )
+    {
+        string s_err( "pthread_cond_init (2): " );
+        s_err.append( strerror( rtn ) );
+
+        wrap::system_message( s_err );
+
+        exit(1);
+    }
+
+    else if ( ( rtn = pthread_cond_init( &(tpool->queue_empty), 0 ) ) != 0 )
+    {
+        string s_err( "pthread_mutex_init " );
+        s_err.append( strerror( rtn ) );
+
+        wrap::system_message( s_err );
+
+        exit(1);
+    }
+
+    // create threads
+    for ( i = 0; i < num_worker_threads; i++ )
+        pthread_create( &(tpool->threads[i]) , 0, tpool_thread, (void*)tpool );
+
+    *tpoolp = tpool;
 }
 
 void*
-pool::wait_for_task( void* p_void )
+pool::tpool_thread( void* p_void )
 {
-  for (;;)
-  {
-    pthread_mutex_lock(&mut_threads);
-    pthread_cond_wait(&cond_new_task, &mut_threads);
+    tpool_t tpool = (tpool_t) p_void;
+    tpool_work_t *my_workp;
 
-    pthread_mutex_lock(&mut_num_avail_threads);
-    if ( --i_num_avail_threads < 5 )
+    for( ;; )
     {
-      int i_size = 9 - i_num_avail_threads;
-      i_size = increase_pool(i_size);
-      i_num_avail_threads += i_size;
+        pthread_mutex_lock( &(tpool->queue_lock) );
+
+        while ( tpool->cur_queue_size == 0) 
+           pthread_cond_wait( &(tpool->queue_not_empty), &(tpool->queue_lock) );
+
+        my_workp = tpool->queue_head;
+        tpool->cur_queue_size--;
+
+        if ( tpool->cur_queue_size == 0)
+            tpool->queue_head = tpool->queue_tail = 0;
+
+        else
+            tpool->queue_head = my_workp->next;
+
+        if ( tpool->cur_queue_size == ( tpool->max_queue_size - 1 ) )
+            pthread_cond_signal( &(tpool->queue_not_full) );
+
+        if ( tpool->cur_queue_size == 0 ) 
+            pthread_cond_signal( &(tpool->queue_empty) );
+
+        pthread_mutex_unlock( &(tpool->queue_lock) );
+
+        (*(my_workp->routine))(my_workp->p_void);
+
+        pthread_mutex_lock( &(tpool->queue_lock) );
+        --i_thrd_used;
+#ifdef NCURSES
+        print_threads(i_thrd_used);
+#endif
+        pthread_mutex_unlock( &(tpool->queue_lock) );
+
+        //free( (void*) my_workp );
+        free( my_workp );
     }
-    pthread_mutex_unlock(&mut_num_avail_threads);
+}
 
-    pthread_mutex_lock(&mut_queue_tasks);
-    task* p_task = queue_tasks[i_cur_queue_index];
-    queue_tasks[i_cur_queue_index++] = NULL;
-    i_cur_queue_index %= i_max_queue_size;
-    pthread_mutex_unlock(&mut_queue_tasks);
+void pool::run_func( void *p_void )
+{
+    int* p_sock = (int*)p_void;
+    wrap::SOCK->read_write( p_sock );
+    delete p_sock;
+}
 
-    pthread_mutex_unlock(&mut_threads);
+int
+pool::tpool_add_work( tpool_t tpool, void(*routine)(void*), void* p_void ) ///
+{
+    tpool_work_t *workp;
+    pthread_mutex_lock( &(tpool->queue_lock) );
 
-    (*(p_task->p_func))(p_task->p_void);
-    delete p_task;
+    if ( ++i_thrd_used == tpool->num_threads ) 
+    {
+      int i_max_pool_size = tool::string2int( wrap::CONF->get_elem( "httpd.thread.maxpoolsize" ) );
+      if ( i_max_pool_size != 0 && i_thrd_used > i_max_pool_size )
+      {
+        wrap::system_message(POOLER2+tool::int2string(i_thrd_used)+")");
+      }
 
-    pthread_mutex_lock(&mut_num_avail_threads);
-    i_num_avail_threads++;
-    pthread_mutex_unlock(&mut_num_avail_threads);
-  }
+      else
+      {
+        int i_size = tpool->num_threads * 2;
 
-  return 0;
+        wrap::system_message(POOLFLL+tool::int2string(i_size)+")");
+
+        tpool->threads = (pthread_t*)realloc((void*)tpool->threads, sizeof(pthread_t)*tpool->num_threads);
+
+        for ( int i = tpool->num_threads; i < i_size; ++i )
+          pthread_create( &(tpool->threads[i]) , 0, tpool_thread, (void*)tpool );
+
+        i_thrd_pool_size = tpool->num_threads = i_size;
+#ifdef NCURSES
+        print_pool_size();
+#endif
+      }
+    }
+
+#ifdef NCURSES
+    print_threads(i_thrd_used);
+#endif
+
+    while (tpool->cur_queue_size == tpool->max_queue_size) 
+        pthread_cond_wait( &(tpool->queue_not_full), &(tpool->queue_lock) );
+
+    // allocate work structure:
+    workp = (tpool_work_t*) malloc( sizeof( tpool_work_t ) );
+
+    workp->routine = routine;
+    workp->p_void  = p_void;
+    workp->next    = 0;
+
+    if (tpool->cur_queue_size == 0 )
+    {
+        tpool->queue_tail = tpool->queue_head = workp;
+    }
+
+    else
+    {
+        (tpool->queue_tail)->next = workp;
+        tpool->queue_tail         = workp;
+    }
+
+    pthread_cond_signal( &tpool->queue_not_empty );
+    tpool->cur_queue_size++;
+    pthread_mutex_unlock( &(tpool->queue_lock) );
+
+    return 0;
+}
+
+#ifdef NCURSES
+void
+pool::print_threads(int i_thrd_used)
+{
+    if ( wrap::NCUR->is_ready() )
+    {
+     mvprintw( NCUR_POOL_RUNNING_X,NCUR_POOL_RUNNING_Y, "In use: %d ", i_thrd_used);
+     refresh();
+   }
 }
 
 void
-pool::run(void* p_void)
+pool::print_pool_size()
 {
-  pthread_mutex_lock(&mut_queue_tasks);
-  queue_tasks[i_free_queue_index++] = new task(run_func, p_void);
-  i_free_queue_index %= i_max_queue_size;
-
-  pthread_mutex_unlock(&mut_queue_tasks);
-
-  pthread_cond_signal(&cond_new_task);
-}
-
-void
-pool::run_func(void *p_void)
-{
-  _socket* p_sock = static_cast<_socket*>(p_void);
-  wrap::SOCK->read_write(p_sock);
-}
-
-bool
-pool::allow_user_login()
-{
-  pthread_mutex_lock(&mut_num_avail_threads);
-  if ( i_num_avail_threads < 2 )
-  {
-    int i_max_pool_size = tool::string2int( wrap::CONF->get_elem( "httpd.thread.maxpoolsize" ) );
-    if ( i_max_pool_size != 0 && i_max_pool_size == i_num_total_threads )
+    if ( wrap::NCUR->is_ready() )
     {
-      pthread_mutex_unlock(&mut_num_avail_threads);
-      return false;
-    }
-  }
-  pthread_mutex_unlock(&mut_num_avail_threads);
-
-  return true;
+     mvprintw( NCUR_POOL_SIZE_X,NCUR_POOL_SIZE_Y, "Size: %d %d", i_thrd_pool_size, i_thrd_pool_queue );
+     refresh();
+   }
 }
+#endif
 
 #endif

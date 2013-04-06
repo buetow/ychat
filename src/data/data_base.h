@@ -11,33 +11,38 @@
 using namespace std;
 
 class data_base : protected list<con*>
-{
-private:
-  pthread_mutex_t mut_con;
-  int i_max_con;
+  {
+  private:
+    pthread_mutex_t mut_con;
+    int i_max_con;
 
-protected:
-  hashmap< vector<string> > map_queries;
-  void print_query( string s_query );
-#ifdef DATA_PRINT_QUERIES
+#ifdef NCURSES
 
-  virtual void print_query_( string s_query );
+    void print_queue_size();
 #endif
 
-  con* get_con();
-  void push_con( con* p_con );
+  protected:
+    map< string, vector<string> > map_queries;
+    void print_query( string s_query );
+#ifdef DATA_PRINT_QUERIES
 
-public:
-  data_base();
-  ~data_base();
+    virtual void print_query_( string s_query );
+#endif
 
-  void init_connections();
-  virtual hashmap<string> select_user_data( string s_user, string s_query );
-  virtual void insert_user_data( string s_user, string s_query, hashmap<string> insert_map );
-  virtual void update_user_data( string s_user, string s_query, hashmap<string> update_map );
-  void disconnect_all_connections();
-  void check_data_con_timeout();
-};
+    con* get_con();
+    void push_con( con* p_con );
+
+  public:
+    data_base();
+    ~data_base();
+
+    void initialize_connections();
+    virtual map<string,string> select_user_data( string s_user, string s_query );
+    virtual void insert_user_data( string s_user, string s_query, map<string,string> insert_map );
+    virtual void update_user_data( string s_user, string s_query, map<string,string> update_map );
+    void disconnect_all_connections();
+    void check_data_con_timeout();
+  };
 
 #endif
 #endif

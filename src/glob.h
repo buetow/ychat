@@ -1,85 +1,185 @@
-/*:*
- *: File: ./src/glob.h
- *: 
- *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
+/*
+ Notice: 
 
-#include "maps/hashmap.h"
+ All #defines which start with an CONFIG can be edited through
+ gmake config in the main directory!
+*/
+
+#include <map>
 
 // global variables.
 #ifndef GLOB_H
 #define GLOB_H
 
-#include "config.h"
-
 // Definition of boolean values.
-#ifndef true
 #define true   1
-#endif
-#ifndef false
 #define false  0
-#endif
 
-//<<*
-/* FIRST THE YCHAT ONLY OPTIONS */
-
-#ifdef HAVE_LIBMYSQLCLIENT 
-#ifdef HAVE_MYSQL_MYSQL_H 
-#define USE_MYSQL
-#define DATABASE
-#define DATA_PRINT_QUERIES
-#endif
-#endif
-
-#define PUSHSTR 500
-
-#ifdef HAVE_LIBSSL
-#ifdef HAVE_OPENSSL_SSL_H 
-#define OPENSSL
-#endif
-#endif
-
-#define CLI
+/* - CONFIG -
+ What should be the name of the config file?
+*/
 #define CONFILE "ychat.conf"
 
-//#define DEBUG
+/* - CONFIG -
+ In which prefix should yChat be installed if typing gmake inst-
+ all? 
+*/
+#define PREFIX "/usr/local"
+
+//<<*
+/* - CONFIG - 
+ Should yChat get compiled with database support? Currently MyS-
+ QL only is a supported database. 
+*/
+//#define DATABASE
+
+#ifdef DATABASE
+/* - CONFIG - 
+ Should all database queries printed out at the admin interface? 
+ (This option wont take action if database support has not been 
+ chosen) 
+*/
+#define DATA_PRINT_QUERIES
+
+#define USE_MYSQL 
+#endif
+//*>>
+
+/* - CONFIG -
+ Please enter the highest networking port which is allowed to be 
+ used. If yChat is unable to create the server socket on a cert-
+ ain port, it will increment the port number and retries to cre-
+ ate another socket on the incremented port number. This proced-
+ ure will continue until MAXPORT has been reached.
+*/
+#define MAXPORT 65535
+
+/* - CONFIG - 
+ Please specify the maximum length of a line read from a socket 
+ or a file. ( config-file, html-template )
+*/
+#define READSOCK 2048
+
+/* - CONFIG - 
+ Please specify the size of a temporary buffer. (Will be used f-
+ or different tasks) 
+*/
+#define READBUF 2048
+
+/* - CONFIG - 
+ Please specify the maximum length of a HTTP post request. 
+*/
+#define POSTBUF 512
+
+/* - CONFIG - 
+ Please specify the maximum occupancy of the internal hash-map
+ data structures given in percentage. 0.9 means 90% iccupancy.  
+*/
+#define HMAPOCC .9
+
+/* - CONFIG - 
+ Please chose if you want to use verbose server outputs or not. 
+ The verbose messages will appear in the ncurses menu if ncurses
+ is enabled or in the server-window if yChat has been compiled 
+ without ncurses support. This option shows you all incoming
+ requests with the client IP and port numbers. You probably want
+ this to be turned off if you have heavy server load.
+*/
+//#define VERBOSE
+
+/* - CONFIG - 
+ If you want to enable EXPERIMENTAL features, then set this val-
+ ue to true. Else use false which is recommended! All experimen-
+ al features are marked inside of the running yChat!
+*/
 //#define EXPERIM
 
+/* - CONFIG -
+ Should yChat get compiled with logging support? 
+*/ 
 #define LOGGING
-#define MAXPORT 65535
-#define MAXLINES 30
-#define MAXLENGTH 1024
 
-#ifdef HAVE_LIBREADLINE
-#ifdef HAVE_READLINE_READLINE_H
-#define READLINE
-#endif
-#endif
+/* - CONFIG -
+ Should yChat get compiled with ncurses support?
+*/ 
+#define NCURSES
 
-#define POSTBUF 1024
-#define READBUF 2048 
-#define READSOCK 2048
+/* - CONFIG -
+ Should yChat get compiled with comand line interface support?
+*/
+#define CLI
+
+
+/* - CONFIG -
+ DO NOT USE TOGETHER WITH NCURSES! Displays important server mes-
+ ages. This one will print all messages to stdout if no NCURSES
+ is defined. Don't use this until NCURSES is defined! all messag-
+ es will appear in the ncurses interface anyways.
+*/
 //#define SERVMSG
-//#define CTCSEGV
-//#define VERBOSE
+
+// Enables debugging options 
+//#define DEBUG
+
+//<<*
+/* - CONFIG -
+ Defines the amount of newlines which have to be sent to the clie-
+ nt's chat stream after the first log-in. It prevents a white scr-
+ een because of browser buffers or proxies.
+*/
+#define PUSHSTR 500
+//*>>
+
+
+// The following values define the positions of the data stats in the NCURSES interface.
+#ifdef NCURSES
+#define NCUR_SERVER_HEADER_X 21
+#define NCUR_SERVER_HEADER_Y 2 
+#define NCUR_PORT_X 22
+#define NCUR_PORT_Y 2
+#define NCUR_HITS_X 23
+#define NCUR_HITS_Y 2
+
+#define NCUR_POOL_HEADER_X 21
+#define NCUR_POOL_HEADER_Y 18 
+#define NCUR_POOL_SIZE_X 22
+#define NCUR_POOL_SIZE_Y 18 
+#define NCUR_POOL_RUNNING_X 23
+#define NCUR_POOL_RUNNING_Y 18 
+
+#define NCUR_DATA_HEADER_X 21
+#define NCUR_DATA_HEADER_Y 35 
+#define NCUR_GARBAGE_X 22
+#define NCUR_GARBAGE_Y 35
+#define NCUR_CON_QUEUE_X 23 
+#define NCUR_CON_QUEUE_Y 35
+
+#define NCUR_CHAT_HEADER_X 21
+#define NCUR_CHAT_HEADER_Y 52
+#define NCUR_NUM_ROOMS_X 22
+#define NCUR_NUM_ROOMS_Y 52 
+#define NCUR_SESSION_X 23
+#define NCUR_SESSION_Y 52 
+
+#define NCUR_CACHED_HEADER_X 21
+#define NCUR_CACHED_HEADER_Y 68 
+#define NCUR_CACHED_DOCS_X 22
+#define NCUR_CACHED_DOCS_Y 68 
+#define NCUR_CACHED_MODS_X 23 
+#define NCUR_CACHED_MODS_Y 68 
+
+#define NCUR_MENU_CHAR_X 0
+#define NCUR_MENU_CHAR_Y 33 
+#define NCUR_UPTIME_X 0
+#define NCUR_UPTIME_Y 44
+#define NCUR_TIME_X 0
+#define NCUR_TIME_Y 64
+
+#endif
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// DO NOT CHANGE ANYTHING BEHIND THIS LINE!
+//////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 
@@ -87,20 +187,20 @@ typedef int function( void *v_arg );
 
 struct container
 {
-  void* elem[4];
+    void* elem[4];
 };
 
 struct dynmod
 {
-  function *the_func  ;
-  void     *the_module;
+    function *the_func  ;
+    void     *the_module;
 };
 
 typedef enum method_ {
+  METH_NCURSES,
   METH_RETSTRING
 } method;
 
 // Define external executables:
-#define GMAKE "/usr/local/bin/gmake "
-
+#define GMAKE "/usr/local/bin/gmake \0"
 #endif

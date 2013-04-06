@@ -1,0 +1,215 @@
+#ifndef SMAP_CPP
+#define SMAP_CPP
+
+#include "smap.h"
+
+template <class obj_type, class key_type>
+smap<obj_type, key_type>::smap( double moc ) : hmap<obj_type, key_type>::hmap(moc)
+{
+ pthread_mutex_init( &mut_smap  , NULL);
+}
+
+template <class obj_type, class key_type>
+smap<obj_type, key_type>::~smap()
+{
+ pthread_mutex_destroy( &mut_smap );
+}
+
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::lock_mutex() {
+ pthread_mutex_lock( &mut_smap );
+}
+
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::unlock_mutex() {
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template <class obj_type, class key_type> int
+smap<obj_type, key_type>::get_size()
+{
+ int i_size;
+ pthread_mutex_lock  ( &mut_smap );
+ i_size = hmap<obj_type,key_type>::get_size();
+ pthread_mutex_unlock( &mut_smap );
+ return i_size;
+}
+
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::make_empty()
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::make_empty();
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template <class obj_type, class key_type>
+void smap<obj_type, key_type>::make_empty( void (*func)(key_type) )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::make_empty( func );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+
+template <class obj_type, class key_type>
+void smap<obj_type, key_type>::add_elem( const obj_type &x, const key_type &k  )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::add_elem( x, k );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template <class obj_type, class key_type>
+obj_type smap<obj_type, key_type>::set_elem( const obj_type &x, const key_type &k  )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::set_elem( x, k );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::del_elem( const key_type & k )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::del_elem( k );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::rename_key( const key_type & k1, const key_type & k2 )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::rename_key( k1, k2 );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+
+template <class obj_type, class key_type>
+obj_type smap<obj_type, key_type>::get_elem( const key_type &k )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ obj_type ret_val = hmap<obj_type,key_type>::get_elem( k );
+ pthread_mutex_unlock( &mut_smap );
+ return ret_val;
+}
+template <class obj_type, class key_type>
+obj_type smap<obj_type, key_type>::pop_elem( const key_type &k )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ obj_type ret_val = hmap<obj_type,key_type>::pop_elem( k );
+ pthread_mutex_unlock( &mut_smap );
+ return ret_val;
+}
+
+template <class obj_type, class key_type>
+bool smap<obj_type, key_type>::is_avail( const key_type &k )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ bool ret_val = hmap<obj_type,key_type>::is_avail( k );
+ pthread_mutex_unlock( &mut_smap );
+ return ret_val;
+}
+
+template<class obj_type, class key_type> void
+smap<obj_type, key_type>::run_func( void (*func)(obj_type) )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::run_func( func );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template<class obj_type, class key_type> void
+smap<obj_type, key_type>::run_func( void (*func)(obj_type, void*), void* v_arg )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::run_func( func, v_arg );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template<class obj_type, class key_type> void
+smap<obj_type, key_type>::run_func_on( void (*func)(obj_type), const key_type & k )
+{
+ pthread_mutex_lock  ( &mut_smap );
+ hmap<obj_type,key_type>::run_func_on( func, k );
+ pthread_mutex_unlock( &mut_smap );
+}
+
+template<class obj_type, class key_type> vector<key_type>*
+smap<obj_type, key_type>::get_key_vector()
+{
+ pthread_mutex_lock  ( &mut_smap );
+ vector<key_type>* p_ret_vector = hmap<obj_type,key_type>::get_key_vector();
+ pthread_mutex_unlock( &mut_smap );
+ return p_ret_vector;
+}
+
+// INSECURE METHODS
+
+template <class obj_type, class key_type> int
+smap<obj_type, key_type>::get_size_insecure()
+{
+ return hmap<obj_type,key_type>::get_size();
+}
+
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::make_empty_insecure()
+{
+ hmap<obj_type,key_type>::make_empty();
+}
+
+template <class obj_type, class key_type>
+void smap<obj_type, key_type>::make_empty_insecure( void (*func)(key_type) )
+{
+ hmap<obj_type,key_type>::make_empty( func );
+}
+
+template <class obj_type, class key_type>
+void smap<obj_type, key_type>::add_elem_insecure( const obj_type &x, const key_type &k  )
+{
+ hmap<obj_type,key_type>::add_elem( x, k );
+}
+
+template <class obj_type, class key_type> void
+smap<obj_type, key_type>::del_elem_insecure( const key_type & k )
+{
+ hmap<obj_type,key_type>::del_elem( k );
+}
+
+template <class obj_type, class key_type>
+obj_type smap<obj_type, key_type>::get_elem_insecure( const key_type &k )
+{
+ return hmap<obj_type,key_type>::get_elem( k );
+}
+
+template <class obj_type, class key_type>
+obj_type smap<obj_type, key_type>::pop_elem_insecure( const key_type &k )
+{
+ return hmap<obj_type,key_type>::pop_elem( k );
+}
+
+template <class obj_type, class key_type>
+bool smap<obj_type, key_type>::is_avail_insecure( const key_type &k )
+{
+ return hmap<obj_type,key_type>::is_avail( k );
+}
+
+template<class obj_type, class key_type> void
+smap<obj_type, key_type>::run_func_insecure( void (*func)(obj_type) )
+{
+ hmap<obj_type,key_type>::run_func( func );
+}
+
+template<class obj_type, class key_type> void
+smap<obj_type, key_type>::run_func_insecure( void (*func)(obj_type, void*), void* v_arg )
+{
+ hmap<obj_type,key_type>::run_func( func, v_arg );
+}
+
+template<class obj_type, class key_type> vector<key_type>*
+smap<obj_type, key_type>::get_key_vector_insecure()
+{
+ return hmap<obj_type,key_type>::get_key_vector();
+}
+
+#endif

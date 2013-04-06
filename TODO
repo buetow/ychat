@@ -1,46 +1,53 @@
-- Must do's for next RELEASE -
-$ Finish make install PREFIX check (ychat.conf, conf/conf.cpp)
-$ Add gmake check
-$ Test yttpdbase rule of ./Makefile
-$ Use libevent
+Might do's for next RELEASE:
+- dir : public vector<string>
+- Remove modl from yhttpd base (keep only in yChat base).
+- Disable /help command for commands wich are not accessible for the
+  specific user.
+- Flood protection
+- Add /nick, /beam, /su
+- Improve /ko, /msg, so they can used on several users at once with /ko (user1,user2)
+- Improve /ko, so that there can be a reason specified as well.
+- Add / to whisper to the last person to whom the user has been whispered the last time.
+- Room maxuser limit.
 
-- Might do's for next RELEASE -
-$ ip-ban
-$ Store banned nicks and ips to database
-$ Add thread pool decreasing
-$ dir : public vector<string>
-$ Disable /help command for commands wich are not accessible for the
-$ specific user.
-$ Add /nick, /beam, /su
-$ Add / to whisper to the last person to whom the user has been whispered the last time.
+Known Bugs:
+- Not found sites should get a 404 error site!
 
-- Known bugs -
-$ Using yChat via proxy sometimes causes a white chat stream. This might be
-$ resolved by implementing last modified and current time/date informations
-$ into the HTTP header.
-$ Opera doesnt work
+To do in general for some later RELEASE:
+- Implement login counter.
+- Implement msg post counter.
+- Implement online time counter.
+- Implement hall of fame rankings of the counters above. Also add a msg/minute hall of fame.
+- Make the thread pool size dynamic
+- Make CLI accessible through a chat command /cli
+- Disable http-refresh of the online frame. Reload it only if there has been s.t. changed.
+- Implement a http:// url detection and make a link out of it!
+- Add scroll pause button to input.html
+- Remove user.cpp member variables as possible and replace them with hash maps 
+  for (integer,mutex) and (string,mutex) pairs. Maybe use s.t. like this:
+  p_user->val("name"); to get the users name and p_user->val("name","val"); to
+  reset his name. Maybe use templates to get different types besides strings:
+  p_user->val<int>("hits"); 
+- Add socket timeouts
+- Improve some HTTPD-Stuff
+- Add traffic stats
+- Write changes of the configuration back into XML if wished.
+- Add some chat commands
+- Make more values of the conf object dynamic (on the fly changable by the CLI)
+- New dynamic command permission method
+  The admin should allow/deny commands for each user seperately
+- Add SSL sockets with OpenSSL
+- Add user profiles
+- Add action form to input.html
+- FreeBSD ports tree inclusion
+- Several HTML styles, each user can use his favourite style
+- Chat moderator option
+- Possibility sending Mails through external SMTP server 
+  (for password reminder etc)
+- Add IRC support
+- Add MPI support (load balancing)
+- Forum 
+- Compatibility to Opera, Links, Konqueror and Safari
+- Add browser side caching for gfx files support 
+- Add own tiny ncursed XML editor
 
-- To do in general for some later RELEASE -
-$ Implement MPI support for some nice load balancing stuff
-$ Implement msession support (only optional)
-$ Implement a switch so that all dynamic dlopen modules can be compiled within the yChat executable not using dlopen. 
-$ Implement dynamic timer
-$ Implement ODBC support
-$ Implement login counter.
-$ Implement msg post counter.
-$ Implement online time counter.
-$ Implement hall of fame rankings of the counters above. Also add a msg/minute hall of fame.
-$ Implement traffic stats
-$ Implement more chat commands
-$ Implement new dynamic command permission method
-$ Implement user profiles
-$ Implement action form to input.html
-$ Implement IRC support
-$ Implement possibility sending Mails through external SMTP server (for password reminder etc)
-$ Implement chat moderator option
-$ Implement several HTML styles, each user can use his favourite style
-$ Implement compatibility to Opera, Links, Konqueror and Safari
-$ Implement browser side caching for gfx files support 
-$ Implement a http:// url detection and make a link out of it!
-$ Remove user.cpp member variables as possible and replace them with hash maps 
-$ Write changes of the configuration back into XML if wished.
