@@ -11,17 +11,10 @@ using namespace std;
 
 chat::chat( )
 {
-#ifdef VERBOSE
- cout << "chat::chat()" << endl;
-#endif
-
 }
 
 chat::~chat( )
 {
-#ifdef VERBOSE
- cout << "chat::~chat()" << endl;
-#endif
 }
 
 user*
@@ -34,12 +27,6 @@ chat::get_user( string &s_user )
 user*
 chat::get_user( string &s_user, bool &b_found )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "chat::get_user( " << s_user << ", bool& )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  container param;
 
  param.elem[0] = (void*) &s_user ;
@@ -56,11 +43,6 @@ chat::get_user( string &s_user, bool &b_found )
 void
 chat::get_user_( name *name_obj, void *v_arg )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "chat::get_user_( name *name_obj, void *v_arg )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
  container* param = (container*) v_arg;
  room *room_obj = static_cast<room*>(name_obj); 
  param->elem[2] = (void*)room_obj->get_elem( *((string*)param->elem[0]), *((bool*)param->elem[1]) ); 
@@ -69,12 +51,6 @@ chat::get_user_( name *name_obj, void *v_arg )
 void
 chat::login( map_string &map_params )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "chat::login( map_params )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  string s_user = map_params["nick"];
 
  // prove if nick is empty 
@@ -131,12 +107,6 @@ chat::login( map_string &map_params )
 void 
 chat::post( user* u_user, map_string &map_params )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "chat::post( user* u_user, map_string &map_params )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  string s_msg( "<font color=\""   );
  s_msg.append( u_user->get_col1() )
       .append( "\">"              )

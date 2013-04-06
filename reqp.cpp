@@ -7,6 +7,7 @@
 #include "CHAT.h"
 #include "HTML.h"
 #include "MUTX.h"
+#include "sock.h"
 
 using namespace std;
 
@@ -20,27 +21,29 @@ string reqp::HTTP_COTYPE = "Content-Type: text/html\n\n";
 
 reqp::reqp( )
 {
-#ifdef VERBOSE
- cout << "reqp::reqp()" << endl;
-#endif
 }
 
 string
-reqp::get_url( string s_req, map_string &map_params )
+reqp::get_url( thrd* p_thrd, string s_req, map_string &map_params )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "reqp::get_url( s_req )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
+ auto unsigned int pos;
+ string s_ret ( "" );
+ string s_vars( "" );
+ auto int i_request;
 
- auto unsigned int pos = s_req.find( "HTTP", 0 );
- string s_ret = s_req.substr( 5, pos-6 );
+ i_request= ( s_req.find("GET",0) != string::npos ) ? RQ_GET : RQ_POST;
+
+ pos = s_req.find( "HTTP", 0 );
+
+ if( i_request == RQ_GET )
+ 	s_ret.append( s_req.substr( 5, pos-6 ) );
+ else
+ 	s_ret.append( s_req.substr( 6, pos-7 ) );
 
  // remove ".." from the request.
  do
  {
-  pos = s_ret.find( "..", 0 );
+  pos = s_ret.find( "../", 0 );
 
   if ( pos == string::npos )
    break; 
@@ -50,32 +53,52 @@ reqp::get_url( string s_req, map_string &map_params )
  while( true );
 
  // do not add the string behind "?" tp s_ret and add all params behind "?" to map_params. 
- pos = s_ret.find( "?", 0 );
+ if( i_request == RQ_GET )
+  	pos = s_ret.find( "?", 0 );
+ else
+  	pos = s_req.find("\r\n\r\n", 0);
+
+ auto string s_params( "" );
  if ( pos != string::npos )
  {
-  auto string s_params = s_ret.substr( pos+1, s_ret.length() -pos-1 ); 
+  if( i_request == RQ_GET )
+   s_params.append( s_ret.substr( pos+1, s_ret.length() -pos-1 ) ); 
+
+  else
+   s_params = s_req.substr( pos+4, s_req.length() -pos-1 ); 
+
   s_ret = s_ret.substr( 0, pos );
-
-  auto unsigned int pos2;
-  do
-  {
-   pos  = s_params.find( "=", 0 );
-   if ( pos == string::npos )
-    break;
-
-   pos2 = s_params.find( "&", 0 );
-   if ( pos2 == string::npos )
-   {
-    map_params[ s_params.substr( 0, pos ) ] = s_params.substr( pos+1, s_params.length()-pos-1 );
-    break;
-   }
-
-   map_params[ s_params.substr( 0, pos ) ] = s_params.substr( pos+1, pos2-pos-1 );
-   s_params = s_params.substr( pos2+1, s_params.length()-pos2-1 );
-  }
-  while( true );
-
  }
+
+ if ( i_request == RQ_POST && s_params.empty() )
+ {
+  char c_req[READBUF];
+  read ( p_thrd->get_sock() , c_req, READBUF );
+  s_params = string( strstr( c_req, "event" ) ); 
+ }
+
+ auto unsigned int pos2;
+ do
+ {
+  pos  = s_params.find( "=", 0 );
+  if ( pos == string::npos )
+   break;
+
+  pos2 = s_params.find( "&", 0 );
+  if ( pos2 == string::npos )
+  {
+   auto string sValue( s_params.substr(pos+1, s_params.length()-pos-1) );
+   auto string tmpstr( url_decode(sValue) );
+   map_params[ s_params.substr( 0, pos ) ] = tmpstr;
+   break;
+  }
+
+  auto string s_temp= s_params.substr( pos+1, pos2-pos-1 );
+  map_params[ s_params.substr( 0, pos ) ] = url_decode(s_temp);
+   
+  s_params = s_params.substr( pos2+1, s_params.length()-pos2-1 );
+ }
+ while( true );
 
 #ifdef _VERBOSE
  pthread_mutex_lock  ( &MUTX::get().mut_stdout );
@@ -88,15 +111,57 @@ reqp::get_url( string s_req, map_string &map_params )
  return s_ret;
 }
 
+int
+reqp::htoi(string *s)
+{
+	int value;
+	int c;
+	
+	c=s->c_str()[0];
+	if(isupper(c))
+		c=tolower(c);
+
+	value=(c>='0' && c<='9'?c-'0':c-'a'+10)*16;
+
+	c=s->c_str()[1];
+	if(isupper(c))
+		c=tolower(c);
+
+	value+=c>='0' && c<='9'?c-'0':c-'a'+10;
+	return value;
+}
+
+string
+reqp::url_decode( string s_str )
+{
+	auto string sDest="";
+	int len = s_str.size();
+
+	for(int i=0;i<len;i++)
+	{
+		char ch = s_str.at(i);
+		if(ch=='+')
+		{
+			sDest+=" ";
+		}
+		else if(ch=='%')
+		{
+			auto string sTmp=s_str.substr(i+1,2);
+			ch=(char)htoi(&sTmp);
+			sDest+=ch;
+			i+=2;
+		
+		}
+		else
+
+		sDest+=ch;
+	}
+	return sDest;
+}
+
 string
 reqp::get_from_header( string s_req, string s_hdr )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "reqp::get_from_header( s_req, \"" << s_hdr << "\" )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  auto unsigned int pos[2];
  pos[0] = s_req.find( s_hdr, 0 );
  pos[1] = s_req.find( "\n", pos[0] );
@@ -106,14 +171,8 @@ reqp::get_from_header( string s_req, string s_hdr )
 }
 
 string
-reqp::parse( string s_req, map_string &map_params )
+reqp::parse( thrd* p_thrd, string s_req, map_string &map_params )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "reqp::parse( s_req )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  // create the http header.
  string s_rep( HTTP_CODEOK ); s_rep.append( HTTP_SERVER );
  s_rep.append( HTTP_CONTAC ); s_rep.append( HTTP_CACHEC );
@@ -121,7 +180,7 @@ reqp::parse( string s_req, map_string &map_params )
 
  // store all request informations in map_params. store the url in 
  // map_params["request"].
- get_url( s_req, map_params ); 
+ get_url( p_thrd, s_req, map_params ); 
 
  // check the event variable.
  string s_event( map_params["event"] );

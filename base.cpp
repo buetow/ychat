@@ -4,39 +4,20 @@
 #define BASE_CPP
 
 #include "base.h"
-#include "MUTX.h"
 
 base::base()
 {
-#ifdef VERBOSE
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "base::base()" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  pthread_mutex_init (&mut_vec_elem, NULL ); 
 }
 
 base::~base( )
 {
-#ifdef VERBOSE
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "base::~base( )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  pthread_mutex_destroy( &mut_vec_elem );
 }
 
 void
 base::add_elem( name* p_name )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "base::add_elem( name* )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  pthread_mutex_lock  ( &mut_vec_elem   );
  vec_elem.push_back  ( p_name          ); 
  pthread_mutex_unlock( &mut_vec_elem   );
@@ -45,12 +26,6 @@ base::add_elem( name* p_name )
 bool
 base::del_elem( string &s_name )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "base::del_elem( \"" << s_name << "\" )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  vector<name*>::iterator iter;
  pthread_mutex_lock  ( &mut_vec_elem );
 
@@ -73,12 +48,6 @@ base::del_elem( string &s_name )
 name*
 base::get_elem( string &s_name, bool &b_found )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "base:get_elem( \"" << s_name << "\", bool )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  vector<name*>::iterator iter;
  pthread_mutex_lock  ( &mut_vec_elem );
 
@@ -104,12 +73,6 @@ base::get_elem( string &s_name, bool &b_found )
 void
 base::run_func( void (*func)(name*, void*), void* v_arg )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "base:run_func( void (*func)(name*, void*), void* )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  vector<name*>::iterator iter;
  pthread_mutex_lock  ( &mut_vec_elem );
 

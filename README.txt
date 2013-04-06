@@ -1,5 +1,5 @@
-yChat++; Version Basic 0.1b (030320); Homepage: www.yChat.org
-Copyright (C) 2003 Paul C. Buetow ( Snooper@yChat.org, ICQ: 11655527 )
+yChat++; Homepage: www.yChat.org; Version 0.2
+Copyright (C) 2003 Paul C. Buetow, Volker Richter
 -----------------------------------------------------------------
 
 This program is free software; you can redistribute it and/or
@@ -57,6 +57,10 @@ base.cpp - Encapsulates vector fields of room's or user ( may be later
 
 main.cpp - This includes the required manager headers for starting 
            the server and finally regulates the correct starting.
+
+pool.cpp - The implementation of the thread pool. all threads are stored 
+           in a queue. Each thread will be reused if the assigned job is 
+           finished.
 
 reqp.cpp - This class implements the http request parser. If a client
            starts a request to the server the reqp class will be
@@ -163,7 +167,11 @@ chat     room     user
   /      \
 conf     html
 
-History of lines of code ( including embedded comments ):
+Version  Lines of code
+ 0.1     2402
+ 0.2     2377
 
-Version:	Lines:	
- Basic 0.1b      2402
+New in 0.2:
+ - POST request now work.
+ - Thread pool ( pool.cpp ).
+ - Bugfixes 

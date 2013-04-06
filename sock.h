@@ -15,6 +15,7 @@
 #include <unistd.h>
 
 #include "incl.h"
+#include "pool.h"
 #include "reqp.h"
 #include "thrd.h"
 
@@ -25,23 +26,16 @@ class sock
 private:
  // total number of server requests. 
  unsigned long long int i_req; 
- queue<pthread_t> thrd_pool;
-
- int i_thrd_pool_size;
 
  bool  b_run;      // true while socket manager is running.
  reqp* req_parser; // parses the http requests from clients.
+ pool* thrd_pool;  // the thread pool.
 
  // the chat stream there all the chat messages will sent through.
-#ifdef THRDMOD
  static void chat_stream( int i_sock, map_string &map_params );
-#else
- static void chat_stream( int i_sock, map_string &map_params, queue<pthread_t> &thrd_pool );
-#endif
- virtual int make_socket( uint16_t port );
 
- static void *posix_thread_func ( void *v_pointer );
- static void *posix_thread_func_( void *v_pointer );
+ // creates a server socket.
+ virtual int make_socket( uint16_t port );
 
 public:
  // small inline methods:
@@ -50,10 +44,8 @@ public:
 
  // public methods.
  explicit sock( ); // simple constructor.
- virtual int  read_write( int filedes   );
+ virtual int  read_write( thrd* p_thrd, int filedes   );
  virtual int  start();
-
- virtual void refill_thrd_pool( ); // refills the thread pool with new thewads.
 };
 
 #endif

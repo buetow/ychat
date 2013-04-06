@@ -26,6 +26,7 @@ private:
  room*  p_room;   // pointer to the user's room.
 
  pthread_mutex_t mut_b_online;
+ pthread_mutex_t mut_i_sock;
  pthread_mutex_t mut_l_time;
  pthread_mutex_t mut_s_mess;
  pthread_mutex_t mut_p_room;
@@ -37,9 +38,6 @@ public:
  // small inline methods:
  string get_col1()         const    { return  s_col1;	       }
  void   set_col1  ( string s_col1 ) { this -> s_col1 = s_col1; }
-
- int    get_sock()         const    { return  i_sock;	       }
- void   set_sock  ( int    i_sock ) { this -> i_sock = i_sock; }
 
  rang   get_rang  ( )      const    { return  r_rang;	       }
  void   set_rang  ( rang   r_rang ) { r_oldr = this -> r_rang;   
@@ -60,6 +58,9 @@ public:
  virtual void  set_online( bool b_online );
  virtual room* get_p_room();
  virtual void  set_p_room( room* p_room );
+ virtual int   get_sock  ( );
+ virtual void  set_sock  ( int i_sock );
+
 
  virtual void  renew_stamp();
 

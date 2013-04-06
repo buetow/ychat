@@ -12,25 +12,12 @@ using namespace std;
 
 html::html( )
 {
-#ifdef VERBOSE
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "html::html()" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  set_name( CONF::get().get_val( "HTMLTEMP" ) );
-
  pthread_mutex_init( &mut_map_vals, NULL );
 }
 
 html::~html( )
 {
-#ifdef VERBOSE
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "html::~html()" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  pthread_mutex_destroy( &mut_map_vals );
 }
 
@@ -45,13 +32,6 @@ html::clear_cache( )
 string
 html::parse( map_string &map_params ) 
 {
-
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "html::parse( map_string& )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  string s_file = map_params["request"];
 
  // check if s_file is in the container.
@@ -132,12 +112,6 @@ html::parse( map_string &map_params )
 void
 html::online_list( user *p_user, map_string &map_params )
 {
-#ifdef VERBOSE_
- pthread_mutex_lock  ( &MUTX::get().mut_stdout );
- cout << "html::online_list( user*, map_string& )" << endl;
- pthread_mutex_unlock( &MUTX::get().mut_stdout );
-#endif
-
  // prepare user_list.
  string s_list     ( ""     );
  string s_seperator( "<br>" );

@@ -19,8 +19,8 @@
 #define CFILEOK "Parsing config file "
 #define CFILENO "Failed opening config file "
 #define CONNECT "Receiving connection "
-#define CONTACT "EMail: Snooper@yChat.org, ICQ: 11655527 "
-#define DESCRIP "yChat++ Basic Copyright (C) 2003 Paul C. Buetow " 
+#define CONTACT "Contact: www.yChat.org, Mail@yChat.org "
+#define DESCRIP "yChat++ Copyright (C) 2003 Paul C. Buetow, Volker Richer " 
 #define DOWNMSG "Shutting down "
 #define LOGINPR "Login procedure succeeded for nick " 
 #define NEWROOM "Adding room "
@@ -31,9 +31,8 @@
 #define SOCKRDY "Server socket is ready. See port above "
 #define STARTMS "Starting up "
 #define TECACHE "Caching template "
-#define THREAD1 "Spawning thread ( Mode 1 ) "
-#define THREAD2 "Spawning thread ( Mode 2 ) "
-#define THRPOOL "Refilling thread pool "
-#define VERSION "Version Basic 0.1b (030320) " 
+#define THREADS "Starting thread job "
+#define THREADE "Exiting thread job "
+#define VERSION "Version: 0.2" 
 
 #endif

@@ -10,26 +10,16 @@ using namespace std;
 
 conf::conf( string s_conf = CONFILE ) : name( s_conf )
 {
-#ifdef VERBOSE
- cout << "conf::conf()" << endl;
-#endif
-
  parse( ); // parse the config file. 
 }
 
 conf::~conf()
 {
-#ifdef VERBOSE
- cout << "conf::~conf()" << endl;
-#endif
 }
 
 void
 conf::parse()
 {
-#ifdef VERBOSE_
- cout << "conf::parse()" << endl;
-#endif
 #ifdef _VERBOSE
  cout << CFILEOK << get_name() << endl;
 #endif
