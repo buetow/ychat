@@ -4,13 +4,13 @@
 #define ROOM_H
 
 #include "incl.h"
-#include "base.h"
+#include "data.h"
 #include "name.h"
 #include "user.h"
 
 using namespace std;
 
-class room : public base<user>, public name
+class room : public data<user>, public name
 {
 private:
  

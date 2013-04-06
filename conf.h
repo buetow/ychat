@@ -1,7 +1,7 @@
 // class conf declaration. this class parses the server config file.
 
-#ifndef s_conf_H
-#define s_conf_H
+#ifndef CONF_H
+#define CONF_H
 
 #include "incl.h"
 #include "cont.h"

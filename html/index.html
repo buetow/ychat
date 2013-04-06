@@ -1,27 +1,31 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>
- %%yhttpd.version%%
+ %%PGETITLE%%
 </title>
-<link rel=stylesheet href="style.css" type=text/css>
 </head>
-<body> 
-<table align=center width=500>
-<tr>
-<td align=center class=header>%%yhttpd.version%%<br><br>%%INFO%%</td>
-</tr>
-<tr>
-<td colspan=2>&nbsp;</td>
-</tr>
-<tr>
-<td align=center colspan=2>
-This is the demo website provided by yhttpd :-)
-</td>
-</tr>
-</table>
-<br><br>
-<center><span class="signature">yhttpd is OpenSource - get it at <a class="fancy" target="_blank" href="http://www.yChat.org">http://www.yChat.org</a></span></center>
+<body>
+Welcome to
+<pre>
+	 ___ _           _
+ _   _  / __\ |__   __ _| |_ 
+| | | |/ /  | '_ \ / _` | __|
+| |_| / /___| | | | (_| | |_ 
+ \__, \____/|_| |_|\__,_|\__|
+ |___/  
+</pre>
+
+<br>
+%%PGETITLE%%
+<br>
+<br>
+%%INFO%%
+Enter your nick:
+<form action="frameset.html">
+ <input type="hidden" name="event" value="login">
+ <input type="hidden" name="room"  value="%%STRDROOM%%">
+ <input type="text"   name="nick">
+ <input type="submit" value="login">
+</form>
 </body>
 </html>

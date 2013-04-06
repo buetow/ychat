@@ -1,6 +1,6 @@
 /*
- * yChat++; Contact: www.yChat.org; Mail@yChat.org
- * Copyright (C) 2003 Paul C. Buetow, Volker Richter 
+ * yChat++; Homepage: www.yChat.org
+ * Copyright (C) 2003 Paul C. Buetow ( Snooper@yChat.org, ICQ: 11655527 )
  * -----------------------------------------------------------------
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  *
  */
 
+
 // needed for ignoring SIGPIPE.
 #include <signal.h>
 
@@ -26,25 +27,25 @@
 #include "incl.h"
 
 // include the chat manager.
-#include "s_chat.h"
+#include "CHAT.h"
 
 // include the config manager.
-#include "s_conf.h"
+#include "CONF.h"
 
 // include the html-template manager.
-#include "s_html.h"
+#include "HTML.h"
 
 // include the mutex manager for global synchronization.
-#include "s_mutx.h"
+#include "MUTX.h"
 
 // include the socket manager.
-#include "s_sock.h"
+#include "SOCK.h"
 
 using namespace std;
 
 int main()
 {
-#ifdef VERBOSE
+#ifdef _VERBOSE
 
 cout  <<  "         ___ _           _   "     << endl
       <<  " _   _  / __\\ |__   __ _| |_ "    << endl
@@ -53,8 +54,9 @@ cout  <<  "         ___ _           _   "     << endl
       <<  " \\__, \\____/|_| |_|\\__,_|\\__|" << endl
       <<  " |___/ 			"     << endl << endl 
 
-      << DESCRIP << endl 
-      << VERSION << ", " 
+      << DESCRIP  
+      << VERSION << endl
+      << VERSION << endl
       << CONTACT << endl 
       << SEPERAT << endl 
       << STARTMS << endl ;
@@ -66,19 +68,19 @@ cout  <<  "         ___ _           _   "     << endl
 
  // all the static data classes have to be initialized once. otherwise they will
  // contain only empty pointers and the chat server won't work correctly. 
- // the order of the initializations is very importand. for example the s_html::init()
- // invokations assumes an initialized s_conf class.
- s_mutx::init(); // init the mutex manager.
- s_conf::init(); // init the config manager.
- s_html::init(); // init the html-template manager. 
- s_sock::init(); // init the socket manager. 
- s_chat::init(); // init the chat manager.
+ // the order of the initializations is very importand. for example the HTML::init()
+ // invokations assumes an initialized CONF class.
+ MUTX::init(); // init the mutex manager.
+ CONF::init(); // init the config manager.
+ HTML::init(); // init the html-template manager. 
+ SOCK::init(); // init the socket manager. 
+ CHAT::init(); // init the chat manager. 
 
  // start the socket manager. this one will listen for incoming http requests and will
  // forward them to the specified routines which will generate a http response.
- s_sock::get().start();
+ SOCK::get().start();
 
-#ifdef VERBOSE
+#ifdef _VERBOSE
  cout << DOWNMSG << endl;
 #endif
 

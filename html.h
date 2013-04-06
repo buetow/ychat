@@ -1,14 +1,13 @@
 // class html declaration. this class manages the html-template files.
 
-#ifndef s_html_H
-#define s_html_H
+#ifndef HTML_H
+#define HTML_H
 
 #include "incl.h"
 #include "cont.h"
-#include "s_conf.h"
+#include "CONF.h"
 #include "user.h"
 #include "name.h"
-
 
 using namespace std;
 

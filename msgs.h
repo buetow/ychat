@@ -2,18 +2,13 @@
 #define MSGS_H
 
 // message templates.
-
-// will be posed if a command does not exist for an user.
-#define ERRORCMD " <font color='#FF0000'>No such command!</font><br>\n"
 // will post "nickname enters the chat" into the room.
 #define USERENTR " enters the chat<br>\n"
-// will post "nickname leaves the chat" into the room.
 #define USERLEAV " leaves the chat<br>\n"
 
 // several error messages which will apear by the clients.
-#define E_ALPNUM "The nick you have specified is not alphanumeric, please change that.<br><br>"
-#define E_NONICK "You need to specify a nick name.<br><br>"
-#define E_NOTONL "An error occured. Your nick is not online.<br><br>"
+#define E_NONICK "You need to specify a nick name<br><br>"
+#define E_NOTONL "An error occured. Your nick is not online<br><br>"
 #define E_ONLINE "The nick you have specified is already online. Try another nick.<br><br>"
 
 // all the custom messages for verbosity outputs. this messages may not
@@ -24,8 +19,8 @@
 #define CFILEOK "Parsing config file "
 #define CFILENO "Failed opening config file "
 #define CONNECT "Receiving connection "
-#define CONTACT "Contact: www.yChat.org, Mail@yChat.org "
-#define DESCRIP "yChat++ Copyright (C) 2003 Paul C. Buetow, Volker Richer " 
+#define CONTACT "EMail: Snooper@yChat.org, ICQ: 11655527 "
+#define DESCRIP "yChat++ Basic Copyright (C) 2003 Paul C. Buetow " 
 #define DOWNMSG "Shutting down "
 #define LOGINPR "Login procedure succeeded for nick " 
 #define NEWROOM "Adding room "
@@ -36,8 +31,9 @@
 #define SOCKRDY "Server socket is ready. See port above "
 #define STARTMS "Starting up "
 #define TECACHE "Caching template "
-#define THREADS "Starting thread job "
-#define THREADE "Exiting thread job "
-#define VERSION "Version: CVS" 
+#define THREAD1 "Spawning thread ( Mode 1 ) "
+#define THREAD2 "Spawning thread ( Mode 2 ) "
+#define THRPOOL "Refilling thread pool "
+#define VERSION "Version Basic 0.1b (030320) " 
 
 #endif

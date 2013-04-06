@@ -1,11 +1,7 @@
-BRAIN-STORMING:
-
 mysql
-security: tempid and crypto
+tempid
 commands
-hash_map []-operator
-hash_map in cont
-several different html templatetes
-
-10: bugfixes
-20: goto 10
+hash_maps
+free pthread memory ( reusable thread pool ? )
+pthread mode 2
+semaphore sync ( ?? )

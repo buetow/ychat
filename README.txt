@@ -1,0 +1,169 @@
+yChat++; Version Basic 0.1b (030320); Homepage: www.yChat.org
+Copyright (C) 2003 Paul C. Buetow ( Snooper@yChat.org, ICQ: 11655527 )
+-----------------------------------------------------------------
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+-----------------------------------------------------------------
+
+Notes: I programmed this on FreeBSD but should also compile without 
+big problems on Linux or other UNIX-like systems.
+If you have tested one of those then pleace write me the name of the OS,
+kernel version, make version and compiler & version. I will list it
+right here:
+
+The following platforms have been tested with success:
+
+- FreeBSD 5.0-RELEASE, GCC 3.2.1, FreeBSD 5.0 make and GNU make 3.80
+
+- Linux Kernel 2.4.19, GCC 3.2.0, GNU make 3.79.1
+
+Before you compile the source you have to be sure to use at least GCC
+version 3.x with pthreads enabled. ( Type gcc -v to check it ).
+GCC 2.95 did not work while testing on linux and won't be supported!
+
+If you like to support yChat++, please write me an email and tell me
+what you can/like/would help ;-]. Please also take a look at the
+yChat++ homepage ( www.yChat.org ).
+
+Installation: Just invoke "make", edit the conf.txt and run the
+server with ./ychat, point your webbrowser to http://yourip:port/index.html
+( ignoring the index.html on the end of the url will not work! ).
+... have fun :-).
+
+If you like customizing the design/layout/language of yChat, you will have 
+to edit msgs.h and glob.h before you compile the sources. Afterwards you can
+change the html-template files which are placed in the html/ subdirectory.
+
+Files: 
+
+conf.txt - The yChat configuration file. ( read by conf.cpp ).
+
+base.cpp - Encapsulates vector fields of room's or user ( may be later
+           hash_maps ) and provides methods for manipulating base data
+           objects.
+
+main.cpp - This includes the required manager headers for starting 
+           the server and finally regulates the correct starting.
+
+reqp.cpp - This class implements the http request parser. If a client
+           starts a request to the server the reqp class will be
+           invoked.
+
+room.cpp - Specifies a chat room. For each chat room an instance of
+           this class exists.
+
+thrd.cpp - This class is needed by sock.cpp while creating a POSIX thread.
+           All data which a thread needs to do its tasks are stored in a
+           thrd object and then a pointer to it will be passed to the
+           POSIX thread function.
+
+user.cpp - Specifies a chat user. For each chat user an instance of
+           this class exists.
+
+Abstract classes:
+
+cont.cpp - All classes which need to store "key - value" data sets
+           inherit from this class. ( cont for content ). 
+
+name.cpp - All classes which own a private member string name inherit
+           from this class. It also provides public get_name and 
+           set_name methods.
+
+As described ( main.cpp ), there are so called managers. Managers are 
+accessible through their assigned wrapper classes and may be 
+instanciated only once.       
+
+chat.cpp - The chat manager. Is responsible for managing the internal
+           data structure of the system and also covers a lot of
+           important methods of the system.
+
+conf.cpp - The config manager. Parses the config file specified in
+           glob.h and stores all the values of it in a map.
+
+html.cpp - The html-template manager. Reads the requested html-template
+           files, stores them in an internal cache ( averts reading 
+           template-files from hd twice or more ) and parses the 
+           partivular template in order to substituate dynamic values
+           of it.
+
+mutx.cpp - The mutex manager. Contains all global mutex handlers for
+           synchronizing POSIX thread shared data. until now only the
+           stdout is synchronized by mutx.cpp because most of objects
+           use their own mutex'.
+
+sock.cpp - The socket manager. Manages the socket connections. There 
+           are multiplexed sockets. For each requests a new POSIX thread
+           will be created.
+
+Files written in capital letters contain static C++ classes
+
+CHAT.cpp - Static wrapper for the dynamic chat class. holds one global 
+           reachable instance of chat until the program shuts down. 
+
+CONF.cpp - Static wrapper for the dynamic conf class. holds one global 
+           reachable instance of conf until the program shuts down. 
+
+HTML.cpp - Static wrapper for the dynamic html class. holds one global 
+           reachable instance of conf until the program shuts down. 
+
+MUTX.cpp - Static wrapper for the dynamic mutx class. holds one global 
+           reachable instance of conf until the program shuts down. 
+
+SOCK.cpp - Static wrapper for the dynamic sock class. holds one global 
+           reachable instance of conf until the program shuts down. 
+
+TOOL.cpp - Static class which includes some usefull global reachable
+           methods which are not integraded in independent classes.
+
+Special header files ( all other header files which are not listed here
+belong to their respective .cpp files ):
+
+data.h   - Implements a generic class ( template class ) for accessing
+           data from a base ( see base.cpp ) object. this methods are
+           all inline and use rekursive algorithm and function pointers.  
+
+glob.h   - Defines global variables which are known by compilation 
+           time. 
+
+incl.h   - This file is included from every other header file and
+           includes a set of headers which every class should be able
+           to use.
+
+msgs.h  -  Defines console output messages for verbosity level 0 ( see
+           glob.h for setting up verbosity levels ). and also defines
+           all the system messages. you may edit this file for translating
+           the system user language.
+
+
+The basic class structure:
+
+    base
+     |
+     |
+ data<type>  name
+   /    \   /    \
+  /      \ /      \
+chat     room     user
+
+    cont
+   /    \
+  /      \
+conf     html
+
+History of lines of code ( including embedded comments ):
+
+Version:	Lines:	
+ Basic 0.1b      2402

@@ -1,20 +1,19 @@
 // class chat declaration.
 
-#ifndef s_chat_H
-#define s_chat_H
+#ifndef CHAT_H
+#define CHAT_H
 
 #include <vector>
 #include "incl.h"
-#include "base.h"
+#include "data.h"
 #include "room.h"
 #include "user.h"
 
 using namespace std;
 
-class chat : public base<room>
+class chat : public data<room>
 {
 private:
- bool b_strip_html;
 
 public:
  room* get_room( string &s_name, bool &b_found )

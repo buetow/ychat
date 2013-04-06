@@ -1,65 +1,125 @@
-/*
-	This file is part of yChat
-
-	$Author: paul $
-	$Date: 2003/03/30 01:35:21 $
-	
-	$Header: /home/cvsroot/ychat/base.cpp,v 1.7 2003/03/30 01:35:21 paul Exp $
-*/
 // template class data implementation;
 
 #ifndef BASE_CPP
 #define BASE_CPP
 
 #include "base.h"
+#include "MUTX.h"
 
-template<class type>
-base<type>::base()
+base::base()
 {
- map_elem = new hmap<name*,string>(80);
- pthread_mutex_init (&mut_map_elem, NULL ); 
+#ifdef VERBOSE
+ pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+ cout << "base::base()" << endl;
+ pthread_mutex_unlock( &MUTX::get().mut_stdout );
+#endif
+
+ pthread_mutex_init (&mut_vec_elem, NULL ); 
 }
 
-template<class type>
-base<type>::~base( )
+base::~base( )
 {
- pthread_mutex_destroy( &mut_map_elem );
+#ifdef VERBOSE
+ pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+ cout << "base::~base( )" << endl;
+ pthread_mutex_unlock( &MUTX::get().mut_stdout );
+#endif
+
+ pthread_mutex_destroy( &mut_vec_elem );
 }
 
-template<class type> void
-base<type>::add_elem( name* p_name )
+void
+base::add_elem( name* p_name )
 {
- pthread_mutex_lock  ( &mut_map_elem   );
- map_elem->add_elem  ( p_name, p_name->get_name()); 
- pthread_mutex_unlock( &mut_map_elem   );
+#ifdef VERBOSE_
+ pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+ cout << "base::add_elem( name* )" << endl;
+ pthread_mutex_unlock( &MUTX::get().mut_stdout );
+#endif
+
+ pthread_mutex_lock  ( &mut_vec_elem   );
+ vec_elem.push_back  ( p_name          ); 
+ pthread_mutex_unlock( &mut_vec_elem   );
 }
 
-template<class type> void
-base<type>::del_elem( string &s_name )
+bool
+base::del_elem( string &s_name )
 {
- pthread_mutex_lock  ( &mut_map_elem );
- map_elem->del_elem  ( s_name	     ); 
- pthread_mutex_unlock( &mut_map_elem );
+#ifdef VERBOSE_
+ pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+ cout << "base::del_elem( \"" << s_name << "\" )" << endl;
+ pthread_mutex_unlock( &MUTX::get().mut_stdout );
+#endif
+
+ vector<name*>::iterator iter;
+ pthread_mutex_lock  ( &mut_vec_elem );
+
+ iter = vec_elem.begin();
+ while( iter != vec_elem.end() )
+ {
+   if ( (*iter)->get_name() == s_name ) 
+   {
+    vec_elem.erase( iter );
+    pthread_mutex_unlock( &mut_vec_elem );
+    return true;
+   }
+   iter++;
+ }
+
+ pthread_mutex_unlock( &mut_vec_elem );
+ return false;
 }
 
-template<class type> name*
-base<type>::get_elem( string &s_name, bool &b_found )
+name*
+base::get_elem( string &s_name, bool &b_found )
 {
- pthread_mutex_lock  ( &mut_map_elem );
- name* p_name = map_elem->get_elem( s_name ); 
- pthread_mutex_unlock( &mut_map_elem );
+#ifdef VERBOSE_
+ pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+ cout << "base:get_elem( \"" << s_name << "\", bool )" << endl;
+ pthread_mutex_unlock( &MUTX::get().mut_stdout );
+#endif
 
- b_found = p_name == NULL ?  false : true;
+ vector<name*>::iterator iter;
+ pthread_mutex_lock  ( &mut_vec_elem );
 
- return p_name; 
+ iter = vec_elem.begin();
+ while( iter != vec_elem.end() )
+ {
+   if ( (*iter)->get_name() == s_name ) 
+   {
+    b_found = true;
+    pthread_mutex_unlock( &mut_vec_elem );
+    return (*iter);
+   }
+   iter++;
+ }
+
+ pthread_mutex_unlock( &mut_vec_elem );
+
+ b_found = false;
+
+ return new name(); 
 }
 
-template<class type> void
-base<type>::run_func( void (*func)(name*, void*), void* v_arg )
+void
+base::run_func( void (*func)(name*, void*), void* v_arg )
 {
- pthread_mutex_lock  ( &mut_map_elem );
- map_elem->run_func( func, v_arg ); 
- pthread_mutex_unlock( &mut_map_elem );
+#ifdef VERBOSE_
+ pthread_mutex_lock  ( &MUTX::get().mut_stdout );
+ cout << "base:run_func( void (*func)(name*, void*), void* )" << endl;
+ pthread_mutex_unlock( &MUTX::get().mut_stdout );
+#endif
+
+ vector<name*>::iterator iter;
+ pthread_mutex_lock  ( &mut_vec_elem );
+
+ // execute func foreach element of vec_elem with 
+ // 1st argument: a pointer of a element of vec_elem.
+ // 2nd argument: a void pointer of a object.
+ for( iter = vec_elem.begin(); iter != vec_elem.end(); iter++ )
+   ( *func ) ( (*iter), v_arg );
+ 
+ pthread_mutex_unlock( &mut_vec_elem );
 }
 
 #endif
