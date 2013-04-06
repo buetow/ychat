@@ -1,0 +1,74 @@
+template<class obj_type>
+obj_type
+hashmap<obj_type>::get_set_elem(obj_type t_obj, string s_key)
+{
+  typename hashmap<obj_type>::iterator iter = this->find(s_key);
+
+  if ( iter == this->end() )
+  {
+    set_elem(t_obj, s_key);
+    return obj_type();
+  }
+
+  obj_type t_ret = iter->second;
+  iter->second = t_obj;
+
+  return t_ret;
+}
+
+template<class obj_type>
+void
+hashmap<obj_type>::set_elem(obj_type t_obj, string s_key)
+{
+  (*this)[s_key] = t_obj;
+}
+
+template<class obj_type>
+obj_type
+hashmap<obj_type>::get_elem(string s_key)
+{
+  typename hashmap<obj_type>::iterator iter = this->find(s_key);
+
+  if ( iter != this->end() )
+    return iter->second;
+
+  return obj_type();
+}
+
+template<class obj_type>
+vector<string>*
+hashmap<obj_type>::get_key_vector()
+{
+  vector<string>* p_vec = new vector<string>;
+  typename hashmap<obj_type>::iterator iter;
+
+  for ( iter = this->begin(); iter != this->end(); ++iter )
+    p_vec->push_back(iter->first);
+
+  return p_vec;
+}
+
+template<class obj_type>
+bool
+hashmap<obj_type>::exists(string s_key)
+{
+  return this->find(s_key) != this->end();
+}
+
+template<class obj_type>
+void
+hashmap<obj_type>::run_func( void (*func)(obj_type) )
+{
+  typename hashmap<obj_type>::iterator iter;
+  for ( iter = this->begin(); iter != this->end(); ++iter )
+    ( *func ) ( iter->second );
+}
+
+template<class obj_type>
+void
+hashmap<obj_type>::run_func( void (*func)(obj_type, void*), void* v_arg )
+{
+  typename hashmap<obj_type>::iterator iter;
+  for ( iter = this->begin(); iter != this->end(); ++iter )
+    ( *func ) ( iter->second, v_arg );
+}

@@ -1,0 +1,111 @@
+########################### yChat.de UPDATE LIST  ###########################
+##    Copyright by Paul C. Bütow aka Snooper 2000 (paul@buetow.oxg.de)     ##
+#############################################################################
+Hier sind alle Erneuerungen der Versionen dokumentiert:
+
+Update von 0.4.0 auf 0.4.1 (22.12.2k)
+        - Design wurde geändert.
+        - Unter "Optionen" ist nun eine komplette Farbtabelle eingebaut.
+          Es wurde dafür die Seperate Datei "colors.txt" angelegt. Diese
+          enthält alle in den Chatoptionen zur verfügungstehenden Farben.
+          Vielen Dank an Dave aka Truhe :-)
+        - Folgende Oberwächterbefehle wurden nun auch für normale Wächter
+          freigegeben: /ip /ban /rban
+
+Update von 0.2.6 auf 0.4.0 (19.12.2k)
+	- Der berüchtigte "IP-Bug" wurde beseitigt! Und zwar wurden TempIDs
+	  eingeführt => Eine dauerhafte Überprüfung der Benutzer-IP-Nummer
+	  ist also nicht mehr notwendig.
+	- Die totale Chat-Online-Zeit wird protokolliert und kann jew. mit
+	  "/online Alias" aufgerufen werden. Die Onlinezeit wird alle 20 Sek.
+	  aktualisiert.
+	- Neue Befehle: "/seen Alias" zeigt an, vor wieviel St. sich Alias
+	  zuletzt in das System eingelogt hat. Der Befehle "/rmgb" entfernt
+	  alle Einträge des eigenen Benutzergästebuchs im Profil.
+
+Update von 0.2.5 auf 0.2.6 (17.12.2k)
+	- Das Eingabeframe reloaded sich nicht mehr nach jedem Posting.
+	  Vielen Dank an Truhe aka Dave und Klepper aka Andreas Buchwald!
+	  Bei den Chatbefehlen /col /away /j und /ju muß sich das
+	  Eingabeframe weiterhin reloaden.
+	- Der Befehl // wurde entfernt. Dieser war nicht mehr erforderlich.
+	  weil Nachrichten werden nur noch sehr selten verschluckt. Dieser
+	  Chatbefehl postete die letzte Nachricht nocheinmal.
+	- Neuer Befehl: mit "/memo Alias hier der Text" hinterläßt man
+	  Alias eine Memo. Logt sich Alias in den Chat ein, dann erhält
+	  er diese sofort. Dafür wurde das Verzeichnis ".data/user/memos/"
+	  angelegt.
+	- Programmcode wurde ein wenig optimiert.
+	- Das Design wurde ein wenig geändert.
+	- Beseitigung diverser Bugs.
+
+Update von 0.2.4 auf 0.2.5 (15.12.2k)
+        - Derjenige, der einen Raum zuerst betritt, hat Raumbesetzerrechte.
+        - Raumbesetzer, Wächter und Oberwächte können weitere Raumbesetzer
+          bestimmen. Diese können Raumbeseter auch wieder degradieren.
+        - Raumbesetzer, Wächter und Oberwächter können dem aktuellen Raum
+          auf/absperren und Themen geben. Wächter und Oberwächter können
+          abgesperrte Räume betreten.
+        - Das Verzeichnis ".data/htdocs" wurde entfernt. Die Datei help_html
+          heist nun help.sno und befindet sich im yChat-Hauptverzeichnis.
+        - Das Verzeichnis ".data/user/lastlogin" wurde hinzugefügt. Hier
+          wird beim erfolgreichen Einloggen ein "Timestamp" gesetzt. Später
+          sollen Oberwächter "veraltete" Benutzer entfernen können.
+        - Neuer Oberwächterbefehl: "/kill Alias" entfernt Alias ganz und gar
+          vom System. Oberwächter und Wächter können nicht entfernt werden.
+        - Perl-Cache wurde im gesamten System komplett deaktiviert ( Weniger
+          Ladezeiten der HTML-Dokumente ).
+        - Nur Nachrichten aus dem Raum "Cyberbar" werden gelogt.
+          Selbsterstellte Räume werden nichtmehr gelogt. Viele Logfunktionen
+          wurden entfernt (weniger Serverbalast).
+        - Beseitigung einiger kleinen Bugs.
+        - Unter "Optionen" im Chat wir die Farbe nun mit einem Drop-Down-Menü
+          ausgewählt ( Vielen dank an Michi aka Snoopy ).
+        - Auf der Startseite wird nun angezeigt wieviele Benutzer eingelogt
+          sind. Ist keiner eingelogt, dann wird das System "aufgeräumt". D.h.
+          Dateien die nicht mehr gebraucht werden und noch nicht gelöscht
+          wurden werden entfernt ( z.B. Nachrichtendateien der einzelnen
+          Chatter und die Dateien die die IP-Nummern der eingelogten Benutzer
+          beinhalteten usw.).
+        - Hunzufügung einer TODO-Liste. Hier sind mehrere Funktionen
+          vermerkt, die in späteren yChat-Versionen eingebaut werden sollen.
+          (www.todo.yChat.de oder TODO.txt).
+
+Update von 0.2.3 auf 0.2.4 (30.11.2k)
+        - Optimierung bzw. Verbesserung der Push-Routine push.pl.
+        - Server-Ping wurde von 2-Pings-per-Minute auf 4 erhöht.
+        - yChat-Banner wurde erstellt und ist unter
+          documents.yChat.de/yBanner.jpg vorzufinden.
+        - Unter der URL servers.yChat.de wurde eine Serverliste angelegt,
+          welche anzeigt wo yChat-Systeme laufen.
+        - Des weiteren wurden die URLs updates.yChat.de, install.yChat.de
+          und liesmich.yChat.de eingerichtet.
+        - Die Menüpunkte wurden zusammengefaßt, damit sie unter einer
+          Auflösung von 800x600 nur eine Zeile belegen.
+        - Einige Bugs wurden entfernt.
+
+Update von 0.2.2 auf 0.2.3 (25.11.2k)
+        - Smooth scrolling JavaScript ( Vielen Dank an Andreas Buchwald ).
+        - "IP#-Fehler" wurde so gut wie beseitigt.
+        - Aufrufe der einzelnen Benutzerprofile wird gezählt und angezeigt.
+          Diese werden in data/user/counts/* gespeichert.
+	- Automatische Einrichtung des Chats mit setup.sh und Telnet.
+	- Menüpunkt "Dein Profil" wurde entfernt da eigenes Profil auch
+	  stets über die Onlineliste aufgerufen werden kann.
+
+Update von 0.2.1 auf 0.2.2 (23.11.2k)
+        - Einige Bugs wurden entfernt.
+        - Geschwindigkeit des Chats wurde optimiert.
+        - Eine Liste aller eingelogten Benutzer erscheint am Rand. Hierfür
+          wurde die Datei online.pl eingeführt. Sie aktuallisiert sich alle
+          20 Sekunden.
+        - Die UPDATES.txt wurde eingeführt.
+
+Update von 0.2.0 auf 0.2.1
+        - Einige Bugs wurden entfernt.
+        - Die IP# der eingelogten Benutzer werden nun anders verwaltet.
+
+Update von Alpha XVIII auf 0.2.0
+        - Die Handhabung der eingelogten Benutzer im System wurde komplett neu
+          überarbeitet.
+        - Neue Versionsnumern wurden eingeführt.

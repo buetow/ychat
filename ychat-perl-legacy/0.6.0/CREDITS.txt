@@ -1,0 +1,33 @@
+########################### yChat.de CREDITS ################################
+##      Copyright by Paul C. Bütow 2000 -  2001 (mail@paulbuetow.de)       ##
+#############################################################################
+
+Vielen Dank an alle Personen, dir mit geholfen haben ( und immernoch helfen )
+yChat besser zu machen:
+
+  - Andreas Buchwald aka Anklepper, für ...
+    ... die Programmierung des "Nach-UntenScroll-JavaScripts", des
+        "Nachrichten-Verlauf-JavaScripts" im Texteingabeframe.
+    ... die technische Umsetzung, daß sich das Inputframe bei jedem
+        Textposting nicht wieder reloadet.
+    ... ein nettes JavaScript, welches erlaubt, Formularwerte
+        frameübergreifend zu ändern.
+    ... die Erstellung der Flashanimationen.
+    ... die Programmierung der Auto-Away- und der Auto-Logout Funktion.
+    ... die Optimierung der Statusgrafiken in der Onlineliste.
+    ( www.anklepper.de ).
+
+  - Dave aka Truhe, für ...
+    ... die Erstellung der Farbtabelle unter Chatoptionen inkl.
+        Auswähl-JavaScript!
+    ... die Erstellung einiger CSS.
+    ... die Unterstützung der Umsetzung der Auto-Away- und Auto-Logout
+        Funktion.
+    ... die Erstellung der "Chatiquette".
+    ... einige Bugfixes in JavaScript-Codes.
+    ( maligree.yi.org )
+
+  - Dommi für die Erstellung der Away-Grafik. Diese wurde jedoch nachträglich
+    von mir verfärbt :-)
+
+  - Larry Wall, für die Erfindung von Perl !

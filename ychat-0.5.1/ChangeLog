@@ -1,0 +1,484 @@
+2003-09-14 16:55  snooper
+
+	* cmnd/yc_version.cpp: Added /version command.
+
+2003-09-14 16:48  snooper
+
+	* README, msgs.h: Changed Version to 0.5 ( Will be released as soon
+	  as possible ).
+
+2003-09-14 16:34  snooper
+
+	* msgs.h: Changed version description.
+
+2003-09-14 16:31  snooper
+
+	* README, conf.txt, glob.h, reqp.cpp, sock.cpp, cmnd/compile.sh:
+	  Fixed all known bugs which already have been fixed in yChat++
+	  Advanced.
+
+2003-09-13 20:52  snooper
+
+	* gfx/y_ani_black.gif, gfx/y_ani_white.gif, html/favicon.ico: [no
+	  log message]
+
+2003-09-07 14:49  snooper
+
+	* pool.cpp:
+	  Removed a pthread_cond_signal which has been set twice!
+
+2003-09-06 23:34  rover
+
+	* pool.cpp: fixed a typo ( multi thread bug )
+
+2003-09-03 18:30  rover
+
+	* reqp.cpp: modified End-Of-Headers to RFC compliant version
+
+2003-07-26 14:30  snooper
+
+	* reqp.cpp: Added Pragma: no-cache and Expires: 0 to the HTTP
+	  header.  ( this is a bugfix ).
+
+2003-04-19 21:39  rover
+
+	* chat.cpp, reqp.cpp, sess.cpp, sess.h, sman.h, sock.cpp, user.h:
+	  identification now only depends on session
+
+2003-04-19 18:16  rover
+
+	* Makefile.in, chat.cpp, chat.h, conf.txt, main.cpp, s_sman.cpp,
+	  sess.cpp, sman.cpp, s_sman.h, sess.h, sman.h: added session
+	  manager and session object.
+
+2003-04-10 17:36  rover
+
+	* logd.cpp: fixed a typo
+
+2003-04-07 15:24  rover
+
+	* hmap.cpp: added a really really important newline ( this is just
+	  a loginfo test )
+
+2003-04-07 15:18  rover
+
+	* msgs.h: message templates are now replaced by language manager
+
+2003-04-05 00:17  rover
+
+	* Makefile.in: language support
+
+2003-04-05 00:14  rover
+
+	* chat.cpp, chat.h, conf.txt, lang.cpp, lang.h, main.cpp,
+	  s_lang.cpp, s_lang.h, sock.cpp, user.cpp, user.h, lang/de,
+	  lang/en: support for different languages in chat output
+
+2003-04-04 23:35  rover
+
+	* conf.cpp, conf.txt, glob.h, s_conf.h, sock.cpp: another bug that
+	  was caused due sed conversion
+
+2003-04-04 17:42  rover
+
+	* Makefile.in: added log_daemon
+
+2003-04-04 17:19  rover
+
+	* conf.txt, logd.cpp, logd.h, reqp.cpp, reqp.h, sock.cpp, sock.h:
+	  added access log compatible logging
+
+2003-04-04 13:13  rover
+
+	* sock.cpp: added IP / PORT to map_params to make logging possible
+	  with only this map
+
+2003-04-04 12:41  rover
+
+	* s_tool.cpp, s_tool.h: added trim() function to strip whitespaces
+	  at the beginning and end of a string
+
+2003-04-04 12:40  rover
+
+	* reqp.cpp, reqp.h: http headers are now stored in the requestmap
+
+2003-04-03 01:01  snooper
+
+	* s_modl.cpp, s_modl.h, user.h: Minor modifications. New static
+	  class wrapper.
+
+2003-04-02 23:57  snooper
+
+	* Makefile.in, chat.h, conf.txt, main.cpp, modl.cpp, sock.cpp,
+	  user.cpp, user.h, cmnd/yc_q.cpp: Added first command. /q ...
+	  Todo: each user should  have his own hashmap of executable
+	  modules. Right now all users use the same module hash map.
+
+2003-04-02 15:23  rover
+
+	* modl.cpp, modl.h: module loader
+
+2003-04-02 12:52  snooper
+
+	* dltest.cpp, yc_test.cpp, cmnd/yc_q.cpp, cmnd/yc_test.cpp: [no log
+	  message]
+
+2003-04-02 12:50  snooper
+
+	* Makefile.in, README, base.cpp, base.h, chat.cpp, chat.h,
+	  conf.cpp, dltest.cpp, glob.h, hmap.cpp, hmap.h, html.cpp, msgs.h,
+	  reqp.cpp, reqp.h, sock.cpp: Dynamic module loader class.  Better
+	  hash map functionality.  Some bugfixes.
+
+2003-03-30 15:40  paul
+
+	* hmap.h:
+	  Implementation of operator[].
+
+2003-03-30 13:12  volker
+
+	* html/: style.css, y_black.gif: added stylesheet and an image
+
+2003-03-30 03:48  paul
+
+	* todo.txt: [no log message]
+
+2003-03-30 03:35  paul
+
+	* base.cpp, conf.txt, hmap.cpp, hmap.h: The hach map now supports
+	  explicit key bindings on each value. The [] operator still has to
+	  be implemented.
+
+2003-03-30 01:34  volker
+
+	* conf.txt, html/index.html, html/input.html, html/online.html,
+	  html/stream.html: modified appearance and added css
+
+2003-03-30 01:26  paul
+
+	* README, README.txt, cont.h: Renamed.
+
+2003-03-30 01:14  paul
+
+	* base.cpp, base.h, hmap.cpp, hmap.h: All user objects and all room
+	  objects are stored in a hash map.
+
+2003-03-30 01:06  volker
+
+	* conf.txt, reqp.cpp, reqp.h, s_tool.cpp, s_tool.h: support for
+	  different content-types
+
+2003-03-30 00:21  paul
+
+	* hmap.cpp, hmap.h, main.cpp: Now handles pointer of data objects
+	  instead of references.
+
+2003-03-30 00:18  volker
+
+	* html.cpp: removed possible deadlock
+
+2003-03-30 00:11  volker
+
+	* conf.txt, html.cpp: changed format how files are read into
+	  templatecache
+
+2003-03-28 17:16  volker
+
+	* todo.txt: todo is now up to date
+
+2003-03-28 03:51  paul
+
+	* data.h:
+
+	  Removed data.h
+
+2003-03-28 03:51  paul
+
+	* README.txt, base.h, chat.h, data.h, room.h:
+
+	  Put data.h and base.h together.
+
+2003-03-28 03:08  paul
+
+	* README.txt:
+
+	  Actualizing because of the new configure script.
+
+2003-03-28 03:02  volker
+
+	* configure, configure.in: [no log message]
+
+2003-03-28 02:59  volker
+
+	* configure, configure.in: -ldl is not needed under *bsd. Added a
+	  check
+
+2003-03-28 02:38  volker
+
+	* Makefile, Makefile.in, configure, configure.in: added support for
+	  bsd
+
+2003-03-28 01:38  volker
+
+	* base.cpp: changed a bug in cvs keywords
+
+2003-03-28 01:32  volker
+
+	* base.cpp: [no log message]
+
+2003-03-28 01:27  volker
+
+	* COPYING, configure.in: this file should be in every repository ;)
+
+2003-03-28 01:18  volker
+
+	* Makefile, Makefile.in, configure, configure.in: configure
+	  dependent files
+
+2003-03-28 00:22  paul
+
+	* hmap.cpp, hmap.h:
+
+	  Optimization of the hash map.
+
+2003-03-27 17:14  volker
+
+	* dltest.cpp, yc_test.cpp: Dynamic module test
+
+2003-03-26 18:50  paul
+
+	* html/index.html:
+
+	  Changed POST back to GET due read bug.
+
+2003-03-26 17:40  paul
+
+	* reqp.cpp:
+
+	  Bugfix.
+
+2003-03-26 16:44  paul
+
+	* reqp.cpp, sock.cpp, sock.h:
+
+	  Fixed segfault bug. ( stream.html request without existing user
+	  object ).
+
+2003-03-26 16:17  paul
+
+	* sock.cpp:
+
+	  Deletion of variables which are no longer needed after procession
+	  ( e.g. map_params ).
+
+2003-03-26 15:57  paul
+
+	* thrd.cpp:
+
+	  Bugfix. Now every socket connection will be closed the right way
+	  ;).
+
+2003-03-26 00:03  paul
+
+	* chat.cpp, chat.h, sock.cpp:
+
+	  Bugfix + added to the class chat a private bool b_strip_html
+	  member.
+
+2003-03-25 23:52  paul
+
+	* chat.cpp:
+
+	  Style fix.
+
+2003-03-25 23:41  paul
+
+	* msgs.h, sock.cpp:
+
+	  Bugfix.
+
+2003-03-25 23:21  paul
+
+	* name.h:
+
+	  Bugfix.
+
+2003-03-25 23:19  paul
+
+	* Makefile, README.txt, base.cpp, base.h, conf.txt, data.h,
+	  hmap.cpp, hmap.h, name.cpp, name.h:
+
+	  Changed because of hashmap integration. base.cpp and base.h still
+	  have to be modified. Afterwards, all user and rooms will be
+	  stored in a hash map.
+
+2003-03-25 21:06  paul
+
+	* Makefile, hmap.cpp, hmap.h, user.h:
+
+	  Hash Map implementation.
+
+2003-03-25 20:12  volker
+
+	* chat.cpp, conf.txt, s_tool.cpp, s_tool.h: added possibility to
+	  turn html tags on/off in chat messages
+
+2003-03-25 19:53  paul
+
+	* conf.txt, html.cpp:
+
+	  Bugfix.
+
+2003-03-25 18:44  paul
+
+	* conf.txt:
+
+	  Bugfix.
+
+2003-03-25 17:22  volker
+
+	* conf.txt, main.cpp: removed some typos that where created due to
+	  sed conversation
+
+2003-03-25 15:54  volker
+
+	* CHAT.cpp, CHAT.h, CONF.cpp, CONF.h, HTML.cpp, HTML.h, MUTX.cpp,
+	  MUTX.h, Makefile, README.txt, SOCK.cpp, SOCK.h, TOOL.cpp, TOOL.h,
+	  chat.cpp, chat.h, cmnd.cpp, conf.cpp, conf.h, conf.txt, cont.cpp,
+	  data.h, glob.h, html.cpp, html.h, main.cpp, msgs.h, mutx.cpp,
+	  mutx.h, pool.cpp, reqp.cpp, s_chat.cpp, s_chat.h, s_conf.cpp,
+	  s_conf.h, s_html.cpp, s_html.h, s_mutx.cpp, s_mutx.h, s_sock.cpp,
+	  s_sock.h, s_tool.cpp, s_tool.h, sock.cpp, sock.h, thrd.cpp,
+	  user.cpp: changed filenames to windows compatible ones
+
+2003-03-25 00:49  paul
+
+	* README.txt:
+
+	  Bugfixes.
+
+2003-03-25 00:40  paul
+
+	* todo.txt:
+
+	  New brainstorming.
+
+2003-03-25 00:16  paul
+
+	* TOOL.cpp, TOOL.h, chat.cpp, msgs.h:
+
+	  Added check routine if a login nick is alphanumeric or not. If
+	  not a message will appear on the startpage instead of logging in
+	  which may would end in a segmentation fault.
+
+2003-03-24 23:45  paul
+
+	* main.cpp: [no log message]
+
+2003-03-24 23:43  paul
+
+	* README.txt, chat.cpp, msgs.h, user.cpp, user.h:
+
+	  Added support for chat commands ( chat commands still have to be
+	  implemented ).  If you type "/testhere" ychat will tell that
+	  there is no such command!
+
+2003-03-24 00:30  paul
+
+	* Makefile, cmnd.cpp, main.cpp, msgs.h, reqp.cpp, reqp.h, sock.cpp,
+	  sock.h, thrd.cpp, user.cpp, user.h: [no log message]
+
+2003-03-23 23:34  vrichter
+
+	* reqp.cpp: removed bogus sock.h
+
+2003-03-23 23:29  vrichter
+
+	* reqp.cpp, sock.cpp: bugfix POST system
+
+2003-03-23 20:03  vrichter
+
+	* html/index.html: changed the method of the login form to POST
+
+2003-03-23 20:02  vrichter
+
+	* reqp.cpp, reqp.h: the request parser now supports POST
+
+2003-03-23 16:16  paul
+
+	* pool.cpp:
+
+	  Fixed changing date! ( System clock was set wrong ),
+
+2003-03-23 16:05  paul
+
+	* pool.cpp: [no log message]
+
+2003-03-23 12:33  paul
+
+	* conf.txt, pool.cpp: [no log message]
+
+2003-03-23 06:41  paul
+
+	* base.cpp, chat.cpp, conf.cpp, cont.cpp, html.cpp, main.cpp,
+	  mutx.cpp, name.cpp, reqp.cpp, room.cpp, thrd.cpp, user.cpp,
+	  msgs.h: [no log message]
+
+2003-03-23 06:26  paul
+
+	* pool.cpp: [no log message]
+
+2003-03-23 05:55  paul
+
+	* Makefile, README.txt, conf.txt, glob.h, main.cpp, msgs.h,
+	  pool.cpp, pool.h, reqp.h, sock.cpp, sock.h: [no log message]
+
+2003-03-22 23:07  paul
+
+	* README.txt: [no log message]
+
+2003-03-22 22:56  paul
+
+	* html.h: [no log message]
+
+2003-03-22 07:40  vrichter
+
+	* reqp.h: fixed a paste error
+	  ----------------------------------------------------------------------
+
+2003-03-21 20:38  vrichter
+
+	* yc.tgz, ychat: removed binary files that were transfered
+
+2003-03-21 19:31  vrichter
+
+	* reqp.cpp, reqp.h, ychat: added url decoding
+
+2003-03-21 16:54  root
+
+	* CHAT.cpp, CHAT.h, CONF.cpp, CONF.h, HTML.cpp, HTML.h, MUTX.cpp,
+	  MUTX.h, Makefile, README.txt, SOCK.cpp, SOCK.h, TOOL.cpp, TOOL.h,
+	  base.cpp, base.h, chat.cpp, chat.h, cmnd.cpp, cmnd.h, conf.cpp,
+	  conf.h, conf.txt, cont.cpp, cont.h, data.h, glob.h, html.cpp,
+	  html.h, incl.h, main.cpp, msgs.h, mutx.cpp, mutx.h, name.cpp,
+	  name.h, reqp.cpp, reqp.h, room.cpp, room.h, sock.cpp, sock.h,
+	  thrd.cpp, thrd.h, todo.txt, user.cpp, user.h, yc.tgz, ychat,
+	  gfx/y_ani_black.gif, gfx/y_ani_white.gif, html/blank.html,
+	  html/frameset.html, html/index.html, html/input.html,
+	  html/notfound.html, html/online.html, html/stream.html,
+	  html/y_ani.gif: Initial revision
+
+2003-03-21 16:54  root
+
+	* CHAT.cpp, CHAT.h, CONF.cpp, CONF.h, HTML.cpp, HTML.h, MUTX.cpp,
+	  MUTX.h, Makefile, README.txt, SOCK.cpp, SOCK.h, TOOL.cpp, TOOL.h,
+	  base.cpp, base.h, chat.cpp, chat.h, cmnd.cpp, cmnd.h, conf.cpp,
+	  conf.h, conf.txt, cont.cpp, cont.h, data.h, glob.h, html.cpp,
+	  html.h, incl.h, main.cpp, msgs.h, mutx.cpp, mutx.h, name.cpp,
+	  name.h, reqp.cpp, reqp.h, room.cpp, room.h, sock.cpp, sock.h,
+	  thrd.cpp, thrd.h, todo.txt, user.cpp, user.h, yc.tgz, ychat,
+	  gfx/y_ani_black.gif, gfx/y_ani_white.gif, html/blank.html,
+	  html/frameset.html, html/index.html, html/input.html,
+	  html/notfound.html, html/online.html, html/stream.html,
+	  html/y_ani.gif: imported files into ychat cvs
+

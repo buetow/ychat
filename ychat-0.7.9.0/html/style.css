@@ -1,0 +1,48 @@
+body, div {
+	font-family: Verdana, Helvetica, sans-serif;
+	background-color: #000000;
+	color: #FFFFEF;
+	font-size: 11pt;
+}
+
+input {
+	color: #000000;
+	font-family: Verdana, Helvetica, sans-serif;
+ 	text-decoration: none; 
+	font-size: 9pt;
+	padding: 2px;
+}
+
+input.text {
+	background-color: #FFFFEF;
+}
+
+.fancy {
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 9pt;
+ 	color: #FFFFEF; 
+	padding: 2px;
+}
+
+a:hover.fancy { 
+ 	text-decoration: none; 
+ 	color: #FFFFEF; 
+ 	background-color: #000000; 
+} 
+
+h1 {
+	background-color: #ffa500;
+	border: solid #000000 1px; 
+	font-size: 20pt;
+	padding: 13px;
+	font-width: bold;
+}
+
+body.stream {
+	background-color: #323232;
+}
+
+.signature {
+	color: #AAAAAA;
+	font-size: 9pt;
+}

@@ -1,0 +1,308 @@
+########################### yChat.de UPDATE LIST  ###########################
+##      Copyright by Paul C. Bütow 2000 -  2001 (mail@paulbuetow.de)       ##
+#############################################################################
+Hier sind alle Erneuerungen der Versionen dokumentiert:
+
+In Planung für 0.8.0:
+	# Kompletter rewrite des Systems.
+	+ Chatdaemon, kein CGI-Chat mehr! (Natürlich auch in Perl). Der
+	  Chat beantsprucht dann seinen eigenen Port und ist gleichzeitig
+	  auch HTTP-Server für die Chat-Seiten!
+	- Evtl MySQL-Datenbank.
+	+ Design komplett Template-basierend.
+        + Schlicht und einfaches Design, gut individualisierbar.
+	+ Objektorientierte Programmierung.
+        + Multiplex-Serversockets und Fork-Prozesse.
+        + Raumnamen dürfen Sonderzeichen enthalten.
+        + Sauschnell!!!
+        - Fast alle alten und viele viele neue Chat-Befehle!
+        - Das Online-Frame soll aus/anschaltbar sein und wird nicht mehr
+	  per HTTP-Refresh-, sondern JavaScript frameübergreifend 
+          aktualisiert.
+	(Das neue System wird dieses Jahr wohl noch erscheinen und auch 
+	 kostenlos sein. Eine 0.7.x-Beta existiert schon. Für weitere 
+         Informationen bitte an die oben stehende Mail-Adresse wenden.
+         Die mit einem +-Zeichen gekennzeichneten Punkte sind bereits
+         erfolgreich implentiert worden.)
+
+U.A. in Planung für 0.6.3:
+	- Nach dem Login eine richtige Start-Seite, wo alle verfügbaren
+	  Chat-Räume aufgelistet sind. Per Mausklick soll der/die  Chatter/
+	  Chatterin in den gewünschten Raum gelangen.
+
+Update von 0.6.1 auf 0.6.2 (09.08.01)
+        - Wächter können nun auch IP# verbannen.
+        - Verbannte IP# können keine neuen Nicks mehr registrieren.
+        - Benutzerlimit wurde eingeführt.
+        - yChat aller 0.6.X Versionen und früher sind Freeware.
+	- Sonderchatter ohne Rechte: UvL (Unschuld vom Lande)
+        - In der config.pm kann man nun den Administrator und UvL bestimmen. 
+        - Beseitigung vieler vieler Bugs.
+	- Neuer Befehl für Wa und Ow: mit /img kann das Superuser-Logo im
+	  Online-Frame de/reaktiviert werden. Gleichzeitig wird auch die
+	  Liste im Menüpunkt "Superuser" ergänzt. Wa und Ow können
+	  allerdings auch Inkognito-Superuser in dieser Liste sehen.
+ 
+Update von 0.6.0 auf 0.6.1 (28.02.01)
+        - Alternativ zu "/msg Alias Nachricht" und "/ Nachricht" kann man
+          nun mit "/Alias Nachricht" auch nachrichten flüstern. Dies geht
+          allerdings nur dann, wenn Alias nicht gleich einem Chatbefehl ist!
+        - Wächter können keine verschlossenen Räume mehr betreten.
+        - Registriert sich ein neuer Chatter und hat noch keine feste Farbe
+          deffiniert, dann werden diese zufällig Generiert.
+        - Wird bei dem Befehl "/col" keine Farbe mit angegeben, dann werden
+          zufällige Chatfarben generiert!
+        - In der "config.pm" wurde die zusätliche Variable $admin
+          hinzugefügt. Sie beinhaltet den Alias vom Chatadministrator.
+        - Neue Administratorbefehle.
+        - Das Verzeichnis "data/online/tmpid" wurde angelegt. Hier befinden
+          sich alle aktuellen Temp-IDs. Die IDs werden nun schneller und
+          sicherer auf Richtigkeit überprüft.
+        - Temp-IDs können nun auch die Zeichen "." und "-" beinhalten.
+        - Raumnamen dürfen keine Spezialcharackter mehr beinhalten!
+
+
+Update von 0.4.9 auf 0.6.0 (22.02.01)
+        - Auf der Startseite wird angezeigt, wer alles eingeloggt ist.
+        - Das Skript 'online.pl' wurde komplett überarbeitet.
+        - Viele Programmteile des gesamten Systems wurden überarbeitet und
+          optimiert.
+        - Der Chat hat den neuen Menüpunkt "Chatiquette" bekommen, dort
+          stehen die wichtigsten Verhaltensregeln für Chatter.
+        - Oberwächter können in der "Statistik" die Serverumgebungsvariablen
+          einsehen.
+        - Erweiterung der Errorlogfunktion.
+        - Neue Befehle: mit "/banip Alias" wird ie IP-Nummer von Alias aus
+          dem Chat verbannt. Mit "/rbanip ip://x.x.x.x" wird diese IP-Nummer
+          entbannt. Mir "/rban ip://x.x.x.x" läßt sich eine verbannte
+          IP-Nummer zwar auch entbannen, diese wird jedoch allen Chattern
+          offen präsentiert. Die verbannten IP-Nummern sind mit dem bisher
+          bekannten Befehl "/ban" einzusehen. Die Liste der verbannten
+          IP-Nummern befindet sich in der Datei "data/ban".
+        - Die Liste der Chatbefehle wurde übersichtlicher gemacht.
+        - Noch zufälligere TempIDs.
+        - Bei "/kill Alias" wird Alias auch aus der Datei "data/ban"
+          entfernt.
+
+Update von 0.4.8 auf 0.4.9 (11.02.01)
+        - "/online Alias" zeigt die Onlinezeit in Stunden, nicht mehr in
+          Minuten an.
+        - Hinzufügung des Statistikskripts "stat.pl" unter dem Menüpunkt
+          "Statistik". Das Top 40 - PHP Skript wurde nicht mehr benötigt und
+          gelöscht.
+        - Neue Befehle: /me/ und /m/ (Müssen inmitten des Textes eingegeben
+          werden.)
+        - Wird ein Benutzer aus dem Chat gekillt, so wird dies in der Datei
+          "data/kill" protokolloert.
+        - In der main.pl wird die Datei "config.pm" per "require" nur noch
+          in das Dokument eingefügt, wenn es notwendig ist.
+        - In der Onlineliste neben dem Raumnamen steht nun, wieviele Benutzer
+          sich im aktuellen Raum befinden. Ausserdem wird in der Onlineliste
+          angezeigt, ob ein Benutzer abgemeldet ist oder nicht und welche
+          Rechte er hat. Die Onlineliste ist nun Alphabetisch sortiert.
+        - Wird das Profil geändert und das http:// bei der Homepage-Adresse
+          vergessen, so wird dies automatisch hinzugefügt.
+        - Viele Bugfixes.
+
+Update von 0.4.7 auf 0.4.8 (26.01.01)
+        - Top 20 Ranking Liste in PHP4.
+        - Überarbeitung des Flash-Intros.
+        - PIDs für die Signalhandler werden zuverlässiger abgespeichert und
+          ggf. wieder gelöscht.
+        - Das push.pl-Skript (endlosschleife) benötigt nun nurnoch halb so
+          viel Speicher beim Ausführen. Die Datei config.pm wird nicht mehr
+          mit "require config;" eingebunden.
+        - Benutzernamen dürfen maximal nurnoch 15 Zeichen lang sein.
+        - Chatnachrichten dürfen maximal nurnoch 300 Zeichen lang sein.
+        - Wenn ein Benutzer eine Nachricht textet, überprüft das System, ob
+          derjenige sich auch wirklich im jew. Raum befindet.
+        - In den Chatoptionen kann man zusätzliche Einstellungen vornehmen:
+          1.) Anzahl der Nachrichten im Nachrichten-Verlauf
+          2.) Anordnung der Nachrichten im Nachrichten-Verlauf.
+          Neueinstellungen dieser Optionen werden erst nach einem
+          Neueinloggen aktiv.
+        - Die Error-Logdatei "data/error" wurde erweitert.
+
+Update von 0.4.6 auf 0.4.7 (20.01.01)
+        - Auto-Away: Ist ein Chatter 5 Minuten inaktiv, dann erscheint im
+          aktuellen Raum die Nachricht "Alias wurde vom System
+          abgemeldet ..." . Bei Wiederaufnahme des Chats, meldet sich Alias
+          wieder zurück.
+        - Auto-Logout: Ist ein Chatter 20 Minuten inaktiv, dann wird dieser
+          aus dem System automatisch ausgelogt.
+        - Neue CSS für die Formulareingabefelder und dem Chat-Menü.
+          (Funktioniert allerdings nicht mit NN4.x, hier werden alle
+          Formulareingabefelder ohne CSS-Definitionen angezeigt.)
+
+Update von 0.4.5 auf 0.4.6 (18.01.01)
+        - Verbesserung: Beim Posten einer neuen Chatnachricht wird sogleich
+          ein Signal an alle laufenden Chatprozesse (PIDs) gesendet, so daß
+          diese aufgefordert werden, aus der Nachrichtendatei die neuen
+          Zeilen einzulesen. Das Push-Skript (push.pl) muß so nicht jede
+          Sekunde prüfen, ob neue Nachrichten da sind, da es diese
+          Information über das Signal erhält. Das Push-Skript verbraucht nun
+          weniger Prozessorleistung, da es jetzt 15 Sekunden lang
+          "dauerschläft" (sleep 15;), lediglich einen <!--PING--> versendet
+          und dann weiter schläft usw. Beendet sich push.pl, oder wird ein
+          Raum gewechselt, dann wird auch die PID aus der PID-Liste des
+          aktuellen Raums gelöscht und ggf. neu geschrieben.
+          Die Dateien "./data/online/pids/*" beinhalten alle aktuellen PIDs,
+          wobei * der jew. Raum ist.
+
+Update von 0.4.4 auf 0.4.5 (16.01.01)
+        - Jeder Chatraum hat nun eine globale Nachrichtendatei. Bisher
+          existierte für jeden Chatter enzelnd eine. Die Nachrichten werden
+          nun schneller gepostet.
+        - Neue Wächterbefehle:
+          "/st Raum Thema" ermöglicht das Ändern das Themas eines anderen
+          Raums.
+          "/sl Raum" ermöglicht das auf- und absperren eines anderen Raums.
+        - Nur noch Oberwächter können die Chatlogs lesen.
+        - Referenzierung der Variable $msg in main.pl.
+        - Flashanimationen.
+
+Update von 0.4.3 auf 0.4.4 (04.01.01)
+        - Optimiertung aller Chatbefehle.
+        - Neuer WÄ-Befehl: Mit "/ss Raum Nachricht" wird aus dem aktuellen
+          Raum heraus in den angegebenen Raum eine beliebige Nachricht
+          gerufen.
+        - Das Skript main.pl wurde in zwei verschiedene Skripts unterteilt:
+          main.pl => Beinhaltet hauptsächlich die Chatbefehle
+          input.pl => Beinhaltet das zu generierende Chateingabeframe.
+        - Das Chateingabeframe wird nun nie wieder reloadet. (Dies geschah
+          bisher noch nach Ausführung der Befehle /col /j /ju /msg und nach
+          Änderung der Chateinstellungen und erwies sich als recht nervige
+          Angelegenheit.) JavaScript macht es möglich.
+        - Überarbeitung und Erweiterung der Dokudateien.
+
+Update von 0.4.2 auf 0.4.3 (30.12.2k)
+        - Optimierung der Zuweisung der Variabeln im Programmcode:
+          Variablen werden nun wirklich nur deffiniert, wenn diese auch
+          erforderlich sind.
+        - Komplette Neuprogrammierung diverser Subs (nun leistungsfähiger)
+        - Bei Aufrug der Login-Seite  wird der gesamte Chat auf leerstehende
+          Räume und "alte" Chatter überprüft und ggf. entfernt.
+        - Verbesserung diverser JavaScript-Codes.
+        - Editiert ein Benutzer sein Profil, so wird dies mit der Meldung
+          "Alias hat sein Profil geändert ..." bekanntgegeben.
+        - Mit "/t" ohne weiteren Text erscheint die Nachricht "Alias hat das
+          Thema des Raums gelöscht ..."
+        - Hinzufügung diverser Administratorbefehle: "/pw Alias" zeigt
+          Zugangspassword von Alias an. "/ow Alias" ernennt Alias zum OW.
+          "/row Alias" entzieht Alias die OW-Rechte.
+
+Update von 0.4.1 auf 0.4.2 (25.12.2k)
+        - Im Texteingabeformular werden nun per JavaScript die letzten 10
+          Postings zwischengespeichert und können per Drop-Down-Menü
+          wieder in das Submittextfeld geladen werden um erneuert getextet
+          zu werden.
+        - Neues Design.
+        - Diverse Dateien wurden umbenannt:
+          INSTALL.txt -> SETUP.txt
+          LIESMICH.txt -> README.txt
+        - Die Datei CREDITS.txt wurde angelegt und somit auch die URL
+          www.credits.yChat.de.
+
+Update von 0.4.0 auf 0.4.1 (22.12.2k)
+        - Design wurde geändert.
+        - Unter "Optionen" ist nun eine komplette Farbtabelle eingebaut.
+        - Folgende Oberwächterbefehle wurden nun auch für normale Wächter
+          freigegeben: /ip /ban /rban.
+
+Update von 0.2.6 auf 0.4.0 (19.12.2k)
+        - Der berüchtigte "IP-Bug" wurde beseitigt! Und zwar wurden TempIDs
+          eingeführt => Eine dauerhafte Überprüfung der Benutzer-IP-Nummer
+          ist also nicht mehr notwendig.
+        - Die totale Chat-Online-Zeit wird protokolliert und kann jew. mit
+          "/online Alias" aufgerufen werden. Die Onlinezeit wird alle 20 Sek.
+          aktualisiert.
+        - Neue Befehle: "/seen Alias" zeigt an, vor wieviel St. sich Alias
+          zuletzt in das System eingelogt hat. Der Befehle "/rmgb" entfernt
+          alle Einträge des eigenen Benutzergästebuchs im Profil.
+
+Update von 0.2.5 auf 0.2.6 (17.12.2k)
+        - Das Eingabeframe reloaded sich nicht mehr nach jedem Posting.
+          Vielen Dank an Truhe aka Dave und Klepper aka Andreas Buchwald!
+          Bei den Chatbefehlen /col /away /j und /ju muß sich das
+          Eingabeframe weiterhin reloaden.
+        - Der Befehl // wurde entfernt. Dieser war nicht mehr erforderlich.
+          weil Nachrichten werden nur noch sehr selten verschluckt. Dieser
+          Chatbefehl postete die letzte Nachricht nocheinmal.
+        - Neuer Befehl: mit "/memo Alias hier der Text" hinterläßt man
+          Alias eine Memo. Logt sich Alias in den Chat ein, dann erhält
+          er diese sofort. Dafür wurde das Verzeichnis ".data/user/memos/"
+          angelegt.
+        - Programmcode wurde ein wenig optimiert.
+        - Das Design wurde ein wenig geändert.
+        - Beseitigung diverser Bugs.
+
+Update von 0.2.4 auf 0.2.5 (15.12.2k)
+        - Derjenige, der einen Raum zuerst betritt, hat Raumbesetzerrechte.
+        - Raumbesetzer, Wächter und Oberwächte können weitere Raumbesetzer
+          bestimmen. Diese können Raumbeseter auch wieder degradieren.
+        - Raumbesetzer, Wächter und Oberwächter können dem aktuellen Raum
+          auf/absperren und Themen geben. Wächter und Oberwächter können
+          abgesperrte Räume betreten.
+        - Das Verzeichnis ".data/htdocs" wurde entfernt. Die Datei help_html
+          heist nun help.sno und befindet sich im yChat-Hauptverzeichnis.
+        - Das Verzeichnis ".data/user/lastlogin" wurde hinzugefügt. Hier
+          wird beim erfolgreichen Einloggen ein "Timestamp" gesetzt. Später
+          sollen Oberwächter "veraltete" Benutzer entfernen können.
+        - Neuer Oberwächterbefehl: "/kill Alias" entfernt Alias ganz und gar
+          vom System. Oberwächter und Wächter können nicht entfernt werden.
+        - Perl-Cache wurde im gesamten System komplett deaktiviert ( Weniger
+          Ladezeiten der HTML-Dokumente ).
+        - Nur Nachrichten aus dem Raum "Cyberbar" werden gelogt.
+          Selbsterstellte Räume werden nichtmehr gelogt. Viele Logfunktionen
+          wurden entfernt (weniger Serverbalast).
+        - Beseitigung einiger kleinen Bugs.
+        - Unter "Optionen" im Chat wir die Farbe nun mit einem Drop-Down-Menü
+          ausgewählt ( Vielen dank an Michi aka Snoopy ).
+        - Auf der Startseite wird nun angezeigt wieviele Benutzer eingelogt
+          sind. Ist keiner eingelogt, dann wird das System "aufgeräumt". D.h.
+          Dateien die nicht mehr gebraucht werden und noch nicht gelöscht
+          wurden werden entfernt ( z.B. Nachrichtendateien der einzelnen
+          Chatter und die Dateien die die IP-Nummern der eingelogten Benutzer
+          beinhalteten usw.).
+        - Hunzufügung einer TODO-Liste. Hier sind mehrere Funktionen
+          vermerkt, die in späteren yChat-Versionen eingebaut werden sollen.
+          (www.todo.yChat.de oder TODO.txt).
+
+Update von 0.2.3 auf 0.2.4 (30.11.2k)
+        - Optimierung bzw. Verbesserung der Push-Routine push.pl.
+        - Server-Ping wurde von 2-Pings-per-Minute auf 4 erhöht.
+        - yChat-Banner wurde erstellt und ist unter
+          documents.yChat.de/yBanner.jpg vorzufinden.
+        - Unter der URL servers.yChat.de wurde eine Serverliste angelegt,
+          welche anzeigt wo yChat-Systeme laufen.
+        - Des weiteren wurden die URLs updates.yChat.de, install.yChat.de
+          und liesmich.yChat.de eingerichtet.
+        - Die Menüpunkte wurden zusammengefaßt, damit sie unter einer
+          Auflösung von 800x600 nur eine Zeile belegen.
+        - Einige Bugs wurden entfernt.
+
+Update von 0.2.2 auf 0.2.3 (25.11.2k)
+        - Smooth scrolling JavaScript ( Vielen Dank an Andreas Buchwald ).
+        - "IP#-Fehler" wurde so gut wie beseitigt.
+        - Aufrufe der einzelnen Benutzerprofile wird gezählt und angezeigt.
+          Diese werden in data/user/counts/* gespeichert.
+        - Automatische Einrichtung des Chats mit setup.sh und Telnet.
+        - Menüpunkt "Dein Profil" wurde entfernt da eigenes Profil auch
+          stets über die Onlineliste aufgerufen werden kann.
+
+Update von 0.2.1 auf 0.2.2 (23.11.2k)
+        - Einige Bugs wurden entfernt.
+        - Geschwindigkeit des Chats wurde optimiert.
+        - Eine Liste aller eingelogten Benutzer erscheint am Rand. Hierfür
+          wurde die Datei online.pl eingeführt. Sie aktuallisiert sich alle
+          20 Sekunden.
+        - Die UPDATES.txt wurde eingeführt.
+
+Update von 0.2.0 auf 0.2.1
+        - Einige Bugs wurden entfernt.
+        - Die IP# der eingelogten Benutzer werden nun anders verwaltet.
+
+Update von Alpha XVIII auf 0.2.0
+        - Die Handhabung der eingelogten Benutzer im System wurde komplett neu
+          überarbeitet.
+        - Neue Versionsnumern wurden eingeführt.

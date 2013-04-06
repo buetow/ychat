@@ -1,0 +1,17 @@
+template<class obj_type>
+obj_type
+memb<obj_type>::get_elem(string s_key)
+{
+  mutexed_tupel<obj_type> *p_tupel = map_elems.get_elem(s_key);
+  if ( p_tupel )
+    return p_tupel->get_elem();
+
+  return obj_type();
+}
+
+template<class obj_type>
+void
+memb<obj_type>::set_elem(obj_type t_obj, string s_key)
+{
+  //  mutexed_tupel<obj_type> *p_tupel = map_elems
+}

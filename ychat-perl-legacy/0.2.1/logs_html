@@ -1,0 +1,391 @@
+<br>
+<div>
+ In der System-Logdatei tauchen folgende Ursachen auf:
+</div>
+<br>
+<table border=0 width=100% bgcolor=555555>
+ <tr>
+  <th bgcolor=666666>
+   <div>
+    Ursache
+   </div>
+  </th>
+  <th bgcolor=666666>
+   <div>
+    Beschreibung
+   </div>
+  </th>
+ </tr>
+ <tr>
+  <td>
+   <div>
+   edit_profile_ok
+   </div>
+  </td>
+  <td>
+   <div>
+   Angegebener Benutzername hat sein Profil erfolgreich editiert.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    edit_pw_wrong
+   </div>
+  </td>
+  <td>
+   <div>
+   Beim Editieren der Chat-Optionen stimmten die beiden Passwortfelder nicht überein.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    edit_colors_ok
+   </div>
+  </td>
+  <td>
+   <div>
+   Angegebener Benutzername hat seine Chatfarben erfolgreich gewechselt.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+edit_options_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Angegebener Benutzername hat seine Chat-Optionen erfolgreich editiert.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+first_http_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Der angegebenen IP# wurde Startseite erfolgreich angezeigt. (Benutzername noch nicht vorhanden)
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+login_alias_banned
+   </div>
+  </td>
+  <td>
+   <div>
+    Angegebener Benutzer konnte sich nicht in das System einloggen, da sein benutzername verbannt war.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    login_alias_notexists
+   </div>
+  </td>
+  <td>
+   <div>
+    Beim Einlogversuch existierte der angegebene Benutzername nicht.
+   </div>
+  </td>
+ </tr>
+  <tr>
+  <td>
+   <div>
+login_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Angegebener Benutzer hat sich erfolgreich in das System eingelogt.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    login_pw_wrong
+   </div>
+  </td>
+  <td>
+   <div>
+    Beim Einloggen wurde das falsche PW eingegeben.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    logout_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Angegebener Benutzer hat sich erfolgreich (manuell) aus dem System ausgelogt. ("... verläßt den Chat ...")
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    logout_<font color=red>Alias</font>_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    User hat gemerkt, daß sich
+    <font color=red>
+     Alias
+    </font>
+    nicht mehr im Chat befindet. ("... hat den Chat verlassen ...").
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+ow_ban_<font color=red>Alias</font>_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat
+    <font color=red>
+     Alias
+    </font>
+    verbannt
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+ow_ban_<font color=red>Alias</font>_ow
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat ohne Erfolg versucht
+    <font color=red>
+     Alias
+    </font>
+    zu verbannen (
+    <font color=red>
+     Alias
+    </font>
+    war Oberwächter und konnte nicht verbannt werden )
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+ow_rban_<font color=red>Alias</font>_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat
+    <font color=red>
+     Alias
+    </font>
+    "entbannt"
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    ow_wa_<font color=red>Alias</font>_exists
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat ohne Erfolg versucht
+    <font color=red>
+     Alias
+    </font>
+    zum Wächter zu ernennen. (
+    <font color=red>
+     Alias
+    </font>
+    war bereits als Wächter eingetragen.)
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    ow_wa_<font color=red>Alias</font>_notexists
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat ohne Erfolg versucht
+    <font color=red>
+     Alias
+    </font>
+    zum Wächter zu ernennen. (
+    <font color=red>
+     Alias
+    </font>
+    existierte nicht in der Benutzerdatenbank.)
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    ow_wa_<font color=red>Alias</font>_ow-exists
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat ohne Erfolg versucht
+    <font color=red>
+     Alias
+    </font>
+    zum Wächter zu ernennen. (
+    <font color=red>
+     Alias
+    </font>
+    war bereits als Oberwächter eingetragen. Oberwächter können nicht zeitgleich Wächter sein.)
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    ow_wa_<font color=red>Alias</font>_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat
+    <font color=red>
+     Alias
+    </font>
+    erfolgreich zum Wächter ernannt.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    ow_rwa_<font color=red>Alias</font>_notexists
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter konnte
+    <font color=red>
+     Alias
+    </font>
+    nicht zum Wächter ernennen. (War nicht als WÄ registriert)..
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    ow_rwa_<font color=red>Alias</font>_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Oberwächter hat
+    <font color=red>
+     Alias
+    </font>
+    vom Wächter zum normalen Chatter degradiert.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    reg_alias_exists
+   </div>
+  </td>
+  <td>
+   <div>
+    Bei der Registrierung war der Benutzername bereits vorhanden.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    reg_alias_prohibited
+   </div>
+  </td>
+  <td>
+   <div>
+    Bei der Registrierung war der angegebene Benutzername verboten (enthielt Sonderzeichen).
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    reg_ok
+   </div>
+  </td>
+  <td>
+   <div>
+    Angegebener Benutzername hat sich erfolgreich registriert.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    reg_pw_wrong
+   </div>
+  </td>
+  <td>
+   <div>
+    Bei der Registrierung wurde das PW falsch eingegeben.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    secure_ip
+   </div>
+  </td>
+  <td>
+   <div>
+    Unbefugter Zugriff der angegebenen IP# auf den angegebenen Benutzernamen.
+   </div>
+  </td>
+ </tr>
+ <tr>
+  <td>
+   <div>
+    sys_msg_<font color=red>Raum</font>
+   </div>
+  </td>
+  <td>
+   <div>
+    Angegebener Oberwächter schreibt eine Systemnachricht aus
+    <font color=red>
+     Raum
+    </font>.
+   </div>
+  </td>
+ </tr>
+</table>
+<br>

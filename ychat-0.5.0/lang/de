@@ -1,0 +1,3 @@
+ERRORCMD="<font color=#ff0000>Befehl nicht gefunden!</font><br>";
+USERENTR=" betritt den Chat.<br>";
+USERLEAV=" verl&auml;&szlig;t den Chat.<br>"

@@ -1,0 +1,38 @@
+############################## yChat.de TODO ################################
+##       Copyright by Paul C. Bütow 200 -  2001 (mail@paulbuetow.de)       ##
+#############################################################################
+
+Folgende Funktionen werden demnächst in yChat integriert:
+
+ - Neue Befehle:
+   Für WÄs:
+   /sl $room - Einen anderen Raum öffnen/schliessen
+   /st $room $msg - Einen anderen Raum ein Thema ageben
+
+ - Nach 5 Minuten Inaktivität soll der Benutzer automatisch
+   auf "away" gesetzt werden.
+   Nach 20 Minuten Inaktivität soll der Benutzer automatisch
+   aus dem System ausgelogt werden.
+
+ - Die Schlucht (Ein Raum wo Chatter hineingeworfen werden,
+   die sich nicht benehmen und noch nicht aus dem Chat
+   katapultiert werden sollen).
+
+ - Löschung aller Chatter, die sich seit 60 Tagen nicht mehr
+   eingelogt haben.
+
+ - IP-Adressen ver-/entbannen.
+
+ - E-Mail zusendung bei verlorenem Passwort.
+
+ - Eine Top 20 (Onlinezeit) der Chatter
+
+ - Unter "Benutzer" sollen Chatter über eine Eingabemaske nach
+   dem Anfangsbuchstaben gesucht werden können (vergl. Kilahu).
+
+ - Der Cybarkeeper (künstlich intilligenter Chatroboter, der
+   sich im Hauptraum Cyberbar aufhält, virtuelle Drinks verteilt
+   und von Real-Chattern übernommen werden kann. (Zukunftsmusik)
+
+Für weitere Vorschläge bitte in das yChat-Board unter www.yChat.de
+texten oder eine E-Mail an paul@buetow.oxg.de :-)

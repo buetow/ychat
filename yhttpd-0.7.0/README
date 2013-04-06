@@ -1,0 +1,295 @@
+yhttpd; Homepage: www.yhttpd.org; Version 0.7-RELEASE
+
+Copyright (C) 2003 Paul C. Buetow, Volker Richter
+Copyright (C) 2004 Paul C. Buetow
+-----------------------------------------------------------------
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-----------------------------------------------------------------
+
+YHTTPD TABLE OF CONTENTS: 
+
+1.0.0 REQUIREMENTS
+1.1.0 TESTED PLATFORMS
+1.2.0 IMPORTANT NOTICES
+1.3.0 HOW TO OBTAIN YHTTPD
+1.3.1 INSTALLATION
+1.3.2 INSTALLATION QUICK-START
+1.4.0 HOW TO USE SCREEN WITH YHTTPD
+1.5.0 CUSTOMIZATION
+1.6.0 FILES
+1.7.0 WRITING BUG REPORTS
+1.8.0 CONTACT
+
+
+1.0.0 REQUIREMENTS: 
+
+- GNU GCC G++ 3.4 or 3.3 or 3.2 or 3.1 
+  The GNU C++ compiler. G++ version 3.0 or 2.x does NOT work.
+
+- GNU make 3.80 (gmake) or higher
+  If you dont have a gmake executable but make is gnu make then you need
+  to add a symlink or alias from gmake to make.
+  yhttpd Makefiles only have been tested with GNU make and may not work with
+  other make versions.
+
+- mysql-client 4.x (3.x may do too but is not supported)
+  Includes libmysqlclient and the mysql.h header files.
+
+- ncurses 5.x   
+  Includes libncurses and the ncurses.h header files.
+
+- Screen
+  Only needed if yhttpd should run in background with
+  ncurses enabled.
+
+- Perl 5.x
+  Is needed for some scripts. Is not needed if you use precompiled binaries.
+
+1.1.0 TESTED PLATFORMS:
+
+The following platforms have been tested with success. If you find out that
+a listed platform did not work at all please contact me:
+
+  Operating system (arch)	GNU G++		GNU make
+- FreeBSD 5.2.1-RELEASE (i386)	3.3.3 		3.80		
+- FreeBSD 4.9-RELEASE (i386)	3.3.4		3.80
+- FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
+- Gentoo Linux 2004.2 (i386)	3.3.2		3.80
+- OpenBSD 3.6 MP (i386)		3.3.2		3.80
+- Slackware Linux 10.0 (i386)	3.4.0		3.80 
+- SUSE Linux 8.0, G (i386)	3.3.1		3.80
+
+Other platforms like Linux based systems, other BSD-Systems or UNICES
+are very likely to work too. 
+
+1.2.0 IMPORTANT NOTICES:
+
+Before you compile the source you have to be sure to use at least GCC
+version 3.1 with pthreads enabled. ( Type gcc -v to check it ).
+GCC 2.95 and 3.0 did not work while testing and WON'T BE SUPPORTED!
+If you like to support yhttpd++, please write us an email and tell what 
+you can/like/would help ;-]. Please also take a look at the yhttpd++
+homepage which is located at http://www.yhttpd.org.
+
+1.3.0 HOW TO OBTAIN YHTTPD++:
+
+yhttpd can be downloaded as a source package or through CVS. 
+
+The packages are located at http://www.yhttpd.org -> Sourcecode -> 
+Packages or go to http://pub.buetow.org/yhttpd/CPP-yhttpd .
+
+For CVS download type:
+
+cvs -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot login
+( You will be asked for a password. Use "just enter" ).
+
+vs -z3 -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot co yhttpd
+( The sources will be copied into your local folder )
+
+cvs -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot logout
+( Logs your CVS session out ).
+
+Now you may continue with the installation.
+
+1.3.1 INSTALLATION:
+
+Invoke "./configure". Afterwards you will get prompted with the before-compile
+options of yhttpd. After choosing those options you are ready to type "gmake"
+afterwards. 
+
+
+You may also invoke gmake with the following options (the PREFIX can be set
+in the yhttpd configurator which will be launched by the top configure script
+or gmake config):
+
+ gmake or gmake all (compiles everything, also modules)
+ gmake base (only compiles the base)
+ gmake base_start (only compiles the base and starts the server)
+ gmake clean (cleans everything)
+ gmake clean_base (only cleans the base obj and rpo files)
+ gmake clean_modules (only cleans the modules .so files) 
+ gmake config (runs yhttpd configurator)
+ gmake deinstall (deinstalls yhttpd from PREFIX)
+ gmake gpl (shows the GNU General Public License)		
+ gmake help (shows all available yhttpd gmake targets)
+ gmake install (installs yhttpd to PREFIX)
+ gmake modules (only compiles modules)
+ gmake mrproper (same as gmake clean plus removing all temp files) 
+ gmake setup (runs all configure scripts and afterwards gmake all)
+ gmake start (compiles everything and starts the server)
+ gmake stats (generates yhttpd statistics)
+ gmake uninstall (same as deinstall)
+ gmake version (shows the current version of yhttpd)
+
+Example: "gmake all install clean" compiles everything, installs it to PREFIX
+and cleans the source directories.
+
+Now its time to run the server with ./bin/yhttpd.
+
+Aferwards point your webbrowser to http://yourip:port !
+
+... have fun :-).
+
+1.3.2 INSTALLATION QUICK START:
+
+If you in hury, then you may just type gmake setup. In the yhttpd configurator
+you may just choose all the default values. If done, yhttpd will get compiled
+and is ready to run with ./bin/yhttpd! 
+
+
+1.4.0 HOW TO USE SCREEN WITH YHTTPD:
+
+If you are running yhttpd in ncurses mode you might want to install
+the tool which is called "screen". This will enable you putting the
+ncurses interface into the background, closing the terminal session
+and reusing the interface later through another terminal. 
+
+Just do:
+ 
+ screen -S yhttpd ./bin/yhttpd ( creates a new session and starts yhttpd in it )
+ ctrl+d+a ( will detach the yhttpd session )
+ ( closing the terminal )
+ ( opening a new terminal )
+ screen -r yhttpd ( will return you to the yhttpd process )
+
+Screen will terminate automaticaly if all processes in its sessions are 
+terminated.
+
+For a closer look read the screen manual page ( man screen ). 
+
+1.5.0 CUSTOMIZATION:
+
+If you like to customize the design/layout/language of yhttpd, you will have 
+to edit src/msgs.h and src/glob.h before you compile the sources. Afterwards 
+you can change the html-template files which are placed in the html/ 
+subdirectory and the language-templates which are placed in the XML config 
+file (etc/yhttpd.conf).
+
+Notice, that you dont have to edit the src/glob.h file by hand any more, its
+already done by the top ./configure script for you.
+
+You can edit the etc/yhttpd.conf to fit your needs. If you dont want to change
+the config file, then you also can use yhttpd start parameters.
+
+Exmpl: ./bin/yhttpd -o chat.database.password secretpassword
+
+You can also use multiple words for a specific option.
+
+Exmpl: ./bin/yhttpd -o yhttpd.version "word1 word2 word3"
+
+will overwrite the default database password value of the yhttpd.conf. You can
+do this with every configuration element by adding several -o option value 
+arguments to the start command.
+
+Dynamic loadable modules can be found in the mods/ subdirectory. (chat 
+commands are realized through modules too). Sources of modules can be found
+in src/mods instead. If you want to create a new module just create a new
+.cpp file and run in src/mods the ./configure script again. Next time
+you run gmake your new module gets compiled.
+
+All messages defined in the msgs.h file contain server messages only ( a chat
+user never wont read them, only the administrator will get to see them ).
+
+1.6.0 FILES:
+
+etc/yhttpd.conf  - The yhttpd configuration file
+html/*		- The html template files
+src/*		- The yhttpd base sources
+src/mods/*	- The dynamic loadable modules sources
+scripts/*	- Some nice scripts needed for building & co.
+
+The following is created by building yhttpd:
+obj/*		- The object files of the compiled yhttpd base 
+mods/*		- The compiled dynamic loadable modules
+bin/yhttpd	- The yhttpd binary (linked by the object files)
+
+Customizable source files (if changed you need to run gmake clean all) 
+src/glob.h	- Contains some global building options
+src/msgs.h	- Defines some server side messages
+
+
+1.7 WRITING BUG REPORTS
+
+How to submit a good bug report?
+
+Send them to Bug@yhttpd.org.
+
+First you should give the following information:
+- yhttpd version, if CVS (or devel. tarball) then which day?
+- operating system / distribution and it's version
+- when did it crash? did you do something? can you reproduce the crash?
+
+Getting backtrace of the crash also helps a lot, especially if yhttpd crashes 
+randomly. If after crash you see text:
+
+ "segmentation fault (core dumped)" 
+
+It writes a file named "core" or "yhttpd.core" depending on your OS to directory
+where you started yhttpd. If it doesn't print the "(core dumped)" or you can't
+find the core file, you'll have to raise the limit for max. core file size
+before running yhttpd. To do this, say:
+
+ ulimit -c unlimited 
+
+So, if you have the core file and GNU debugger (gdb), you can get the 
+backtrace with:
+
+ gdb ./bin/yhttpd yhttpd.core 
+ bt 
+
+Paste all the lines starting from line having #0 at the beginning.
+
+Here's an example session:
+
+ in reqp::parse(thrd*, std::string, std::map<std::string, std::string, 
+ std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >&) ()
+ (gdb) bt
+ #0 0x0805c287 in reqp::parse(thrd*, std::string, std::map<std::string, 
+ std::string, std::less<std::string>, std::allocator<std::pair<std::string
+ const, std::string> > >&) ()
+ #1 0x0806060f in sock::read_write(thrd*, int) ()
+ #2 0x080612ba in thrd::run() ()
+ #3 0x0805a3b8 in pool::run_func(void*) ()
+ #4 0x0805a375 in pool::tpool_thread(void*) ()
+ #5 0x281d44ae in _thread_start () from /usr/lib/libc_r.so.5
+ (gdb) 
+
+If you dont get such a gdb output, you need to recompile the yhttpd using
+debuggig symbols. You can do it this way:
+
+cd yhttpd
+gmake mrproper
+./configure -g3 -ggdb
+gmake start
+
+1.8 CONTACT:
+
+You may contact us through the following addresses:
+
+- Homepage
+  The yhttpd homepage is located at http://www.yhttpd.org
+
+- E-Mail
+  Paul C. Buetow: Snooper at yhttpd point org ( core developer )
+  Volker Richter: Rover at yhttpd dot org ( core developer )
+  Mail at yhttpd dot org ( reaches everybody of yhttpd )
+ 
+- ICQ
+  Paul C. Buetow: 11655527
+
+- IRC
+  #Ychat and #Coding at irc.german-elite.net  
+

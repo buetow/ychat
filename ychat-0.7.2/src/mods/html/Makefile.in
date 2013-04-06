@@ -1,0 +1,18 @@
+MODS=$(addprefix ../../../mods/html/, $(SRCS:.cpp=.so))
+CC=COMPILER
+INCLUDES=`cat ../../includes.add`
+CFLAGS=`cat ../cflags.add`
+all: mods
+$(MODS): 
+	@echo -n "Compiling html module `basename $@` " 
+	@if ! test -d `dirname $@`; then mkdir -p `dirname $@`; fi
+	@$(CC) $(CFLAGS) $(INCLUDES) -shared -s -o $@ `echo $(notdir $@) | sed s/.so/.cpp/`
+	@du -hc $@ | tail -n 1 | sed s/total// | sed "s/ //g"
+infotext:
+	@echo Compiling html modules
+mods:	infotext $(MODS) 
+	@echo "Num of html modules: "
+	@ls ../../../mods/html/*.so | wc -l
+clean:
+	@echo Cleaning html modules
+	@if test -d ../../../mods/html; then rm -Rf ../../../mods/html; fi

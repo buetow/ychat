@@ -1,0 +1,26 @@
+#! /bin/sh
+
+if ! test -f ../../g++.version
+then
+ echo You need to run ./configure of the top level source dir first
+ exit 1
+fi 
+
+echo Creating module Makefiles...
+for dir in commands html
+do
+ if test -d $dir
+ then
+  cd $dir &&
+  srcs="SRCS=`ls *.cpp`" &&
+  echo $srcs > Makefile
+  compiler=`tail -n 1 ../../../g++.version`
+  sed s/COMPILER/$compiler/ Makefile.in >> Makefile &&
+  for i in *.cpp
+  do
+   echo "../../../mods/$dir/`echo $i | sed s/.cpp/.so/`: $i" >> Makefile 
+  done
+  cd .. 
+ fi
+done
+

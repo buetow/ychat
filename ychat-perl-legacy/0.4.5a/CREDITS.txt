@@ -1,0 +1,21 @@
+########################### yChat.de CREDITS ################################
+##      Copyright by Paul C. Bütow 2000 -  2001 (mail@paulbuetow.de)       ##
+#############################################################################
+
+Vielen Dank an alle Personen, dir mit geholfen haben ( und immernoch helfen )
+yChat besser zu machen:
+
+  - Andreas Buchwald aka Anklepper, für die Programmierung des
+    "Nach-UntenScroll-JavaScripts", des "Ferlaufform-JavaScripts" im
+    Texteingabeframe und für die technische Umsetzung, daß sich das
+    Inputframe bei jedem Textposting nicht wieder reloadet.
+    Für ein nettes JavaScript, welches erlaubt, Formularwerte
+    frameübergreifend zu ändern.
+    Für die Erstellung der Flashanimationen.
+    ( www.anklepper.de ).
+
+  - Dave aka Truhe, für die Erstellung der Farbtabelle unter Chatoptionen inkl.
+    Auswähl-JavaScript!
+    ( maligree.yi.org )
+
+  - Larry Wall, für die Erfindung von Perl !

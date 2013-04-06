@@ -1,0 +1,46 @@
+#
+# please notice this: 
+# the server parses this configuration file while starting or by an 
+# administrator's request.
+#
+# not allowed are semicolons ';' inside or before the quotes " ", 
+# otherwise this might result in errors.
+#
+# the syntax is easy: KEYNAME="value";
+#
+# all lines which do not contain a semicolon and at least two quotes 
+# or start with a # will be ignored.
+#
+# greets, paul c. buetow ( snooper@ychat.org );
+#
+
+# server specific configurations ( not allowed to be removed ):
+
+HTMLTEMP="html/";  # directory of the html-template files.
+THRDPOOL="100";    # thread pool size. every time all threads are used so many new
+                   # threads will be added to the pool. 
+SRVRPORT="2000";   # local port on which the server listens. 
+STRDROOM="Lounge"; # the name of the standard room.
+
+# the html template file which will be send if the requested file does not exists. 
+NOTFOUND="notfound.html";
+# specifies the standard start html-template. 
+STARTMPL="index.html";
+# user's standard nick color.
+USERCOL1="#000000";
+
+# superuser level names. level 0 has the most provileges.
+SULEVEL0="Coder"; # programmer.
+SULEVEL1="Admin"; # administrator.
+SULEVEL2="Magic"; # super user with special privileges.
+SULEVEL3="Super"; # temporary super user.
+SULEVEL4="Basic"; # normal user without special privileges.
+SULEVEL5="Guest"; # guest user, has almost no privileges.
+SULEVEL6="Restr"; # a very restricted user.
+SULEVEL7="Outbn"; # banned out of the system.
+
+# values which are used by the html-templates and are not sticked within the yC++ core source!
+GRAPHICS="http://paul.buetow.info/yChat"; # url for graphic files etc. 
+PGETITLE="yChat++ Basic - Fast Simple Extensible";
+
+# end.

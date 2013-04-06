@@ -1,0 +1,2 @@
+Can't locate config.pm in @INC (@INC contains: /usr/lib/perl5/5.6.1/i686-linux /usr/lib/perl5/5.6.1 /usr/lib/perl5/site_perl/5.6.1/i686-linux /usr/lib/perl5/site_perl/5.6.1 /usr/lib/perl5/site_perl .) at ychatd.pl line 5.
+BEGIN failed--compilation aborted at ychatd.pl line 5.

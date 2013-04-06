@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+ <title>
+  %%HTML_TITLE_TAG_CONTENT%%
+ </title>
+<link rel=stylesheet href="style.css" type=text/css>
+ <script language="JavaScript">
+  var scrolling;
+  var ison;
+  function autoscroll()
+  {
+   if(!ison){
+    scrolling = window.setInterval("window.scroll(1,1606682)",70);
+    ison = true;
+   }
+  }
+  function stopscroll()
+  {
+   if(ison)
+   {
+    window.clearInterval(scrolling);
+    ison = false;
+   }
+  }
+ </script>
+</head>
+<body class="stream">
+<h1>Engine: %%ychat.version%%</h2>
+<script language="JavaScript">
+ autoscroll();
+</script>
+
+ Welcome to the chat, %%nick%%!
+ <br>
+ <br>
+

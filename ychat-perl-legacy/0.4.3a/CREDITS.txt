@@ -1,0 +1,26 @@
+############################## yChat.de SETUP ###############################
+##    Copyright by Paul C. Bütow aka Snooper 2000 (paul@buetow.oxg.de)     ##
+#############################################################################
+
+Vielen Dank an alle Personen, dir mit geholfen haben ( und immernoch helfen )
+yChat besser zu machen:
+
+  - Andreas Buchwald aka Anklepper, für die Programmierung des
+    "Nach-UntenScroll-JavaScripts", des "Ferlaufform-JavaScripts" im
+    Texteingabeframe und für die technische Umsetzung, daß sich das
+    Inputframe bei jedem Textposting nicht wieder reloadet.
+    ( www.anklepper.de ).
+
+  - Dave aka Truhe, für die Erstellung der Farbtabelle unter Chatoptionen inkl.
+    Auswähl-JavaScript!
+    ( maligree.yi.org )
+
+  - Michi aka Snoopy, für das Testen des Skripts auf seinem Server.
+    ( www.berlin-singeltreff.de ).
+
+  - Florian B. aka RocketKid für designtechnische Anregungen.
+    ( www.Rocket-Kid.de und www.proa.de )
+
+  - Larry Wall, für die Erfindung von Perl !
+
+  - Stefan Münz, für die Erstellung von SelfHTML !

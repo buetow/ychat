@@ -1,0 +1,32 @@
+<html>
+ <head>
+  <title>
+   %%PGETITLE%%
+  </title>
+  <script language="JavaScript">
+   <!--
+    function delout()
+    {
+     document.input.message.focus();
+     document.input.message.select();
+     document.input.submit();
+     return false;
+    }
+    function selectinput()
+    {
+     document.input.message.select();
+    }
+   //-->
+  </script>
+ </head>
+ <body>
+  <form name="input" action="input.html" target="blank" onsubmit="return delout();">
+   <input type="hidden" name="event"   value="post"> 
+   <input type="hidden" name="nick"    value="%%nick%%"> 
+   <input type="hidden" name="tmpid"   value="%%tmpid%%"> 
+   <input type="text"   name="message" size="50">
+   <input type="submit" value="send">
+   <input type="button" value="select"  onclick="javascript:selectinput();">
+  </form>
+ </body>
+</html>

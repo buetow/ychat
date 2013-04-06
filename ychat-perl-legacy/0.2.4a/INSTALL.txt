@@ -1,0 +1,107 @@
+#############################################################################
+## yChat.de Version 0.2.4  by CXG.de: The chatters of the next generation  ##
+##    Copyright by Paul C. Bütow aka Snooper 2000 (paul@buetow.oxg.de)     ##
+#############################################################################
+yChat findest Du im Internet unter der Adresse www.yChat.de. Bei Kritik,
+Anregungen oder Fragen bitte in das dort vorhandene Board posten oder eine
+E-Mail an die oben stehende Adresse senden. Ich bemühe mich, yChat so gut wie
+möglich zu machen und bin über Ratschläge immer sehr erfreut :-) ...
+
+Die Installation kann auf Unix-Systemen voll automatisch duchgeführt werden.
+Allerdings ist dafür ein Telnet-Zugang notwendig. Kopiere alle vorhandenen
+Dateien in das Verzeichnis cgi-bin/yChat und führe dann das Shellskript
+setup.sh mit dem Befehl ./setup.sh aus. Alle Verzeichnisse werden
+automatisch erstellt. Dies wurde allerdings nur auf SuSE Linux Systemen
+mit root-Zugriff getestet. Solltest Du ein anderes System verwenden oder
+den Chat auf einen virtuellen Webserver installieren wollen, dann mußt Du
+unter umständen das Verzeichnis "../../htdocs/yChat" nach "../../yChat"
+in der setup.sh umbenennen. Ansonsten werden die dazugehörigen Grafikdateien
+falsch oder garnicht kopiert.
+
+Wenn Du keinen Telnet-Zugang hast, kannst Du hier die Verzeichnisse manuell
+erstellen:
+
+Folgende Basis-Dateien sind im Chat enthalten und müssen in das cgi-bin
+Verzeichnis kopiert werden. Z.B. nach ./cgi-bin/yChat/:
+
+config.pm	=> Configurationsdatei ("Shared subs")
+htdocs.pl	=> HTML-Dokumentdateien (Nicht unbedingt erforderlich)
+index.pl	=> Startskript (Registrierung, Frameset, Login, Daten edit.)
+main.pl		=> Hauptskript (Alle Hauptfunktionen des Chats)
+main2.pl	=> Skript für editieren der Benutzerdaten etc.
+online.pl       => Anzeige und Überprüfung der eingelogten Benutzer
+push.pl		=> Server-Push-Routine
+setup.sh	=> Dient zur automatischen Einrichtung des Chats.
+LIESMICH.txt	=> Beinhaltet wichtige Informationen
+UPDATES.txt     => Updateliste der verschiedenen Versionen
+INSTALL.txt	=> Dieses Dokument
+
+Folgende Verzeichnisse müssen erstellt werden (chmod 777 sollte
+funktionieren):
+
+- Hier befinden sich alle für den Chat notwenidgen Daten:
+   ./cgi-bin/yChat/data/*
+
+- Hier befinden sich alle für den Chat notwendigen HTML-Dokumente:
+   ./cgi-bin/yChat/data/htdocs/*
+
+   Folgende Dateien müssen in das "data/htdocs" verzeichnis bewegt werden:
+
+	   help_html	=> 101 Hilfedatei
+   	   logs_html	=> 101 Logbeschreibung
+
+- Hier befinden sich alle Logdateien, die vom Chat erstellt werden:
+   ./cgi-bin/yChat/data/logs/*
+
+- Hier befinden sich alle Oberwächter-Logdateien:
+   ./cgi-bin/yChat/data/logs/ow/*
+
+- Hier befinden sich die Message-Dateien der eingelogten Benutzer:
+   ./cgi-bin/yChat/data/msgs/*
+
+- Hier befinden sich alle Daten der registrierten Benutzer:
+   ./cgi-bin/yChat/data/user/*
+
+- Hier wird abgespeichert, wie oft ein Benutzerprofil insgesant schon
+  aufgerufen wurde:
+   ./cgi-bin/yChat/data/user/counts/*
+
+- Hier befinden sich alle Chat-Optionen und Passwörter der registrierten
+  Benutzer:
+   ./cgi-bin/yChat/data/user/options/*
+
+- Hier befinden sich alle Benutzerprofile der Benutzer:
+   ./cgi-bin/yChat/data/user/profiles/*
+
+- Hier befinden sich alle Gästebucheinträge der Benutzer:
+   ./cgi-bin/yChat/data/user/gbooks/*
+
+- Hier befinden sich alle Daten zu den aktuellen Chaträumen und User die online sind
+   ./cgi-bin/yChat/data/online/*
+
+- Hier befinden sich alle offnenen Räume
+   ./cgi-bin/yChat/data/online/rooms/*
+
+- Hier befinden sich die Chatter, die sich in den jew. Räumen befinden
+   ./cgi-bin/yChat/data/online/rooms/RAUMNAME/*
+
+- Hier befinden sich alle Chatter, die sich z.Z. im System befinden
+   ./cgi-bin/yChat/data/online/users/*
+
+- Hier befinden sich alle IP-Nummern der eingelogten Chatter
+   ./cgi-bin/yChat/data/online/ident/*
+
+Folgende GRafikdateien sollten in ein nicht-CGI-BIN-Verzeichnis kopiert werden. Z.B.
+nach ./yChat/
+	
+	bar.gif  	=> Der gelb gestreifte Rand auf den meisten Seiten
+	unten.gif	=> Der Hintergrund für das Eingabeformular im Chat
+	yChat.gif	=> Das yChat-Logo auf der Startseite
+
+Zum schluß sollte die config.pm-Datei nach wünschen editiert werden. Allerdings sollten
+die Copyright Hinweise und die Versionsnummern nicht manipuliert werden.
+
+Folgende Dateien werden von yChat automatisch erstellt:
+
+Viel Spaß beim Chatten ...
+			Snooper

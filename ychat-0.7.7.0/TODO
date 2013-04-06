@@ -1,0 +1,40 @@
+Might do's for next RELEASE:
+- Remove Chat stuff from yhttpd.conf
+- dir : public vector<string>
+- Disable /help command for commands wich are not accessible for the
+  specific user.
+- Flood protection
+- Add /nick, /beam, /su
+- Add / to whisper to the last person to whom the user has been whispered the last time.
+- Room maxuser limit.
+
+To do in general for some later RELEASE:
+- Not found sites should get a 404 error site!
+- Implement dynamic timer
+- Implement ncurse object browser 
+- Implement yXML subproject
+- Implement ODBC support
+- Implement login counter.
+- Implement msg post counter.
+- Implement online time counter.
+- Implement hall of fame rankings of the counters above. Also add a msg/minute hall of fame.
+- Implement traffic stats
+- Implement more chat commands
+- Implement new dynamic command permission method
+- Implement SSL sockets with OpenSSL
+- Implement user profiles
+- Implement action form to input.html
+- Implement IRC support
+- Implement possibility sending Mails through external SMTP server (for password reminder etc)
+- Implement chat moderator option
+- Implement several HTML styles, each user can use his favourite style
+- Implement compatibility to Opera, Links, Konqueror and Safari
+- Implement browser side caching for gfx files support 
+- Implement a http:// url detection and make a link out of it!
+- Remove user.cpp member variables as possible and replace them with hash maps 
+  for (integer,mutex) and (string,mutex) pairs. Maybe use s.t. like this:
+  p_user->val("name"); to get the users name and p_user->val("name","val"); to
+  reset his name. Maybe use templates to get different types besides strings:
+  p_user->val<int>("hits"); 
+- Write changes of the configuration back into XML if wished.
+

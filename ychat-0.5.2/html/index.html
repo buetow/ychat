@@ -1,0 +1,32 @@
+<html>
+<head>
+<title>
+ %%PGETITLE%%
+</title>
+<link rel=stylesheet href="style.css" type=text/css>
+</head>
+<body bgcolor=#000000 text=#ffff00>
+<table align=center width=500>
+<tr>
+<td align=center><img src="y_black.gif" alt="ychat"></td>
+<td align=center class=header>%%PGETITLE%%<br>%%INFO%%</td>
+</tr>
+<tr>
+	<td colspan=2>&nbsp;</td>
+</tr>
+<tr>
+	<td align=center colspan=2>
+Enter your nick:
+<form action="frameset.html" method="GET">
+ <input type="hidden" name="event" value="login">
+ <input type="hidden" name="room"  value="%%STRDROOM%%">
+ <input type="text"   name="nick">
+ <input type="submit" value="login">
+</form>
+</td>
+</tr>
+</table>
+<br><br>
+<center><span class="signature">yChat is OpenSource - get it at <a target="_blank" href="http://www.yChat.org">http://www.yChat.org</a></span></center>
+</body>
+</html>

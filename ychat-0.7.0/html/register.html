@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>
+ Nick registration - %%ychat.version%%
+</title>
+<link rel=stylesheet href="style.css" type=text/css>
+</head>
+<body bgcolor=#000000 text=#ffff00>
+<table align=center width=500>
+<tr>
+<td align=center><img src="images/y_black.png" alt="yChat"></td>
+<td align=center class=header>Nick registration<br><br>%%INFO%%</td>
+</tr>
+<tr>
+<td colspan=2>&nbsp;</td>
+</tr>
+<tr>
+<td align=center colspan=2>
+<form action="register.html" method="POST">
+ <input type="hidden" value="register" name="event">
+Enter your desired nick:<br>
+ <input type="text" maxlength="%%chat.maxlength.username%%"  name="nick" value="%%nick%%" accesskey="n">
+<br>
+<br>
+Enter your E-Mail address:<br>
+ <input type="text" maxlength="%%chat.maxlength.emailaddress%%" name="email" value="%%email%%" accesskey="e">
+<br>
+<br>
+Enter your password:<br>
+ <input type="password" maxlength="%%chat.maxlength.password%%" name="pass" accesskey="p">
+<br>
+<br>
+Enter your password again:<br>
+ <input type="password" maxlength="%%chat.maxlength.password%%" name="pass2" accesskey="q">
+<br>
+<br>
+ <input type="hidden" name="end" value="end">
+ <input type="submit" value="Register" accesskey="s">
+</form>
+<br>
+If you don't want to register go <a href="%%httpd.startsite%%">back</a>
+</td>
+</tr>
+</table>
+<br><br>
+<center><span class="signature">yChat is OpenSource - get it at <a target="_blank" href="http://www.yChat.org">http://www.yChat.org</a></span></center>
+</body>
+</html>

@@ -1,0 +1,7 @@
+mysql
+tempid
+commands
+hash_maps
+free pthread memory ( reusable thread pool ? )
+pthread mode 2
+semaphore sync ( ?? )

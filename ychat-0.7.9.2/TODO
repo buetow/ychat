@@ -1,0 +1,43 @@
+- Must do's for next RELEASE -
+$ None specific
+
+- Might do's for next RELEASE -
+$ Add CLI dump command (writes internal data structure into file, for debugging)
+$ Add thread pool decreasing
+$ dir : public vector<string>
+$ Disable /help command for commands wich are not accessible for the
+$ specific user.
+$ Flood protection
+$ Add /nick, /beam, /su
+$  Add / to whisper to the last person to whom the user has been whispered the last time.
+
+- Known bugs -
+$ The session manager sometimes does not free a session. The user object might hang.
+$ Using yChat via proxy sometimes causes a white chat stream.
+
+- To do in general for some later RELEASE -
+$ Use libevent
+$ Not found sites should get a 404 error site!
+$ Implement dynamic timer
+$ Implement ncurse object browser 
+$ Implement yXML subproject
+$ Implement ODBC support
+$ Implement login counter.
+$ Implement msg post counter.
+$ Implement online time counter.
+$ Implement hall of fame rankings of the counters above. Also add a msg/minute hall of fame.
+$ Implement traffic stats
+$ Implement more chat commands
+$ Implement new dynamic command permission method
+$ Implement SSL sockets with OpenSSL
+$ Implement user profiles
+$ Implement action form to input.html
+$ Implement IRC support
+$ Implement possibility sending Mails through external SMTP server (for password reminder etc)
+$ Implement chat moderator option
+$ Implement several HTML styles, each user can use his favourite style
+$ Implement compatibility to Opera, Links, Konqueror and Safari
+$ Implement browser side caching for gfx files support 
+$ Implement a http:// url detection and make a link out of it!
+$ Remove user.cpp member variables as possible and replace them with hash maps 
+$ Write changes of the configuration back into XML if wished.

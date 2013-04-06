@@ -1,0 +1,29 @@
+<html>
+ <head>
+ <title>
+  %%PGETITLE%%
+ </title>
+ <script language="JavaScript">
+  function autoScroll()
+  {
+   window.scroll(1, 50000 );
+   timer = setTimeout('autoScroll()',200);
+  }
+
+  autoScroll();
+
+  function stopScroll()
+  {
+   clearTimeout(timer);
+  }
+
+  function startScroll()
+  {
+   timer = setTimeout('autoScroll()', 200);
+  }
+ </script>
+</head>
+<body>
+ Welcome to yChat %%nick%%!
+ <br>
+ <br>

@@ -1,0 +1,37 @@
+template<class obj_type>
+tupel<obj_type>::tupel()
+{
+  pthread_mutex_init( &mut_tupel, NULL );
+}
+
+template<class obj_type>
+tupel<obj_type>::tupel(obj_type t_obj)
+{
+  this->t_obj = t_obj;
+  pthread_mutex_init( &mut_tupel, NULL );
+}
+
+template<class obj_type>
+tupel<obj_type>::~tupel()
+{
+  pthread_mutex_destroy( &mut_tupel );
+}
+
+template<class obj_type>
+obj_type
+tupel<obj_type>::get_elem()
+{
+  pthread_mutex_lock( &mut_tupel );
+  obj_type t_ret = t_obj;
+  pthread_mutex_unlock( &mut_tupel );
+  return t_ret;
+}
+
+template<class obj_type>
+void
+tupel<obj_type>::set_elem(obj_type t_obj)
+{
+  pthread_mutex_lock( &mut_tupel );
+  this->t_obj = t_obj;
+  pthread_mutex_unlock( &mut_tupel );
+}

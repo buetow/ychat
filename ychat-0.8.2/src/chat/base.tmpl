@@ -1,0 +1,64 @@
+#ifndef BASE_CPP
+#define BASE_CPP
+
+#include "base.h"
+
+template<class type>
+base<type>::base()
+{}
+
+template<class type>
+base<type>::~base( )
+{}
+
+template<class type>
+type*
+base<type>::get_elem( string s_name, bool &b_found )
+{
+  s_name = to_lower(s_name);
+  type* p_type = nhashmap<type*>::get_elem( s_name );
+  b_found = p_type == NULL ?  false : true;
+  return p_type;
+}
+
+template<class type>
+type*
+base<type>::get_elem( string s_name)
+{
+  bool b;
+  return get_elem(s_name, b);
+}
+
+template<class type>
+void
+base<type>::add_elem( type* p_type )
+{
+  nhashmap<type*>::add_elem(p_type, p_type->get_lowercase_name());
+}
+
+template<class type>
+void
+base<type>::dumpit()
+{
+  dumpable::add
+    ("[base]");
+  vector<string>* p_vec = nhashmap<type*>::get_key_vector();
+
+  vector<string>::iterator iter;
+  for (iter = p_vec->begin(); iter != p_vec->end(); ++iter)
+  {
+    dumpable::add
+      (*iter);
+    type* p_elem = get_elem(*iter);
+    if (p_elem)
+    {
+      dumpable::next_no_newline();
+      dumpable::add
+        (p_elem->dump(dumpable::get_level()));
+    }
+  }
+
+  delete p_vec;
+}
+
+#endif

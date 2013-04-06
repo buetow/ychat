@@ -1,0 +1,11 @@
+Changes from 0.5.2-LEGACYRELEASE to 0.5.3-LEGACYRLEASE
+- Code cleanup
+- Added ./scripts/*
+- Added gmake stats option
+
+Changes from 0.5.1-RELEASE to 0.5.2-LEGACYRLEASE
+- Changed this branch into a LEGACY branch.
+- Rewrote the dynamic thread pool (backport from 0.7.8-CURRENT).
+- Added scripts/*
+- Code now uses ANSI C++ style with 2 space code indenting. 
+

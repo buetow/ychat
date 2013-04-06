@@ -1,0 +1,332 @@
+#!/bin/sh
+
+#
+# The yChat Project (2003 - 2005)
+#
+
+if ! ../scripts/checkperl.sh
+then
+ exit 1
+fi
+
+if ! test -f ../g++.version
+then
+ echo You need to run ./configure of the top level source dir first
+ exit 1
+fi 
+
+perl -e '
+ use strict;
+ $|=1;
+
+ my %libadd;
+ my %incadd;
+ my $deepness = 500;
+
+ my @headers = (
+   "dlfcn.h",
+   "pthread.h",
+   "mysql/mysql.h", #//<< Not needed for yhttpd
+   "netinet/in.h",
+   "time.h",
+   "ncurses.h",
+   "::test::ext/hash_map"
+ );
+
+ my @libs = (
+   "libmysqlclient.so", #//<< Not needed for yhttpd
+   "libncurses.so"
+ );
+
+ my @headerpaths = (
+   $ENV{HOME}."/include",
+   $ENV{HOME}."/usr/include",
+   "/include",
+   "/usr/include",
+   "/usr/local/include",
+   "/usr/lib/",
+   "/usr/pkg/include",
+   "/opt/include",
+   "/opt/local/include"
+ );
+
+ my @libpaths = (
+   $ENV{HOME}."/lib",
+   $ENV{HOME}."/usr/lib",
+   "/lib",
+   "/usr/lib",
+   "/usr/local/lib",
+   "/usr/pkg/lib",
+   "/opt/lib",
+   "/opt/local/lib"
+ );
+
+ open FILE, "glob.h" or die "glob.h: $!\n";
+ while(<FILE>)
+ {
+  if ( /\/\/#define DATABASE/ )
+  {
+   remove_from_array("mysql/mysql.h",\@headers);
+   remove_from_array("libmysqlclient.so",\@libs);
+  }
+
+  elsif ( /\/\/#define NCURSES/ )
+  {
+   remove_from_array("ncurses.h",\@headers);
+   remove_from_array("libncurses.so",\@libs);
+  }
+ }
+ close FILE;
+
+ if ( defined $ENV{YCHATHEADERPATHS} )
+ {
+   map { print "Adding $_...\n";
+   unshift @headerpaths, $_ } split /:/, $ENV{YCHATHEADERPATHS};
+ }
+
+ if ( defined $ENV{YCHATLIBPATHS} )
+ {
+   map { print "Adding $_...\n";
+   unshift @libpaths, $_ } split /:/, $ENV{YCHATLIBPATHS};
+ }
+
+
+ print "Headers:\n";
+
+ my $testit = 0;
+ map { $incadd{&check($deepness, $_, @headerpaths)}++ } 
+  @headers;
+
+ $testit = 0;
+ print "Libraries:\n";
+ map { $libadd{&check($deepness, $_, @libpaths)}++ } 
+  @libs;
+
+ my $incadd = &make_add("-I", \%incadd);
+ my $libadd = &make_add("-L", \%libadd);
+
+ for ( @libs ) 
+ {
+  $libadd .= "-l$_ " if s/^lib// and s/\.so$//;
+ } 
+
+ print "Incadd: $incadd\n";
+ print "Libadd: $libadd\n";
+
+ `echo $incadd > includes.add`;
+ `echo $libadd > libs.add`;
+
+ print "Creating new base Makefile...\n";
+ unlink("Makefile") if -f "Makefile";
+ unlink("../err") if -f "../err";
+ open Fin, "Makefile.in" or die "Makefile.in: $!\n";
+ open Fout, ">Makefile" or die "Makefile: $!\n";
+
+ my $cpp = `echo *.cpp */*.cpp contrib/*/*.cpp | sort`;
+ my $compiler = `tail -n 1 ../g++.version`;
+ my $version  = `tail -n 2 ../g++.version | head -n 1`;
+ my $uname    = `uname -srm`;
+ my $compopt  = join "; ", split /\n/, `cat ../g++.version`;
+
+ chomp $uname;
+ chomp $compopt;
+
+ print "Configuring for $uname...\n";
+ chomp $cpp;
+ chomp $version;
+
+ while (<Fin>)
+ {
+   s/^(CC=).*\n/$1$compiler/;
+   s/^(SRCS=).*/$1$cpp/;
+   s/ -frepo//; # unless $version =~ /3\.4/;
+   if ( $uname !~ /Linux/i ) {
+     print "Disabling -ldl flag...\n" if s/ -ldl//;
+   }
+   print Fout;
+ }
+ close Fin;
+ 
+ my $args = join(" -",@ARGV);
+ $args = "-".$args unless $args eq "";
+
+ for my $cppfile (split / /, $cpp)
+ {
+   my $ofile = $cppfile;
+   $ofile =~ s/\.cpp/\.o/;
+   print Fout "../obj/$ofile: $cppfile\n";
+   print Fout "\t\@if ! test -d `dirname ../obj/$ofile`; then mkdir -p `dirname ../obj/$ofile`; fi\n";
+   my $class = $ofile;
+   $class =~ s/\.o//; 
+   if ( $class =~ /contrib\/.+/ )
+   {
+    my $dirname = `dirname $class`;
+     print Fout "\t\@echo -n \"Compiling contributed class $class \"\n";
+   }
+
+   else
+   {
+    print Fout "\t\@echo -n \"Compiling base class $class \"\n";	
+   }
+
+   print Fout "\t\@\$(CC) \$(CFLAGS) \$(INCLUDES) $args -c -o ../obj/$ofile $cppfile\n";
+   print Fout "\t\@du -hc ../obj/$ofile | tail -n 1 | sed s/total// | sed \"s/ //g\"\n";
+ }
+
+ close Fout;
+
+ open F, "msgs.h" or die "msgs.h: $!\n";
+ my @msgs = <F>;
+ close F;
+ unlink("msgs.h");
+ open F, ">msgs.h" or die "msgs.h: $!\n";
+
+ for (@msgs)
+ {
+   s/(UNAME)(.+)$/UNAME "$uname"/;
+   s/(COMPOPT)(.+)$/COMPOPT "$compopt"/;
+   print F; 
+ }
+ close F;
+
+ if ( -d "mods" )
+ {
+   chdir("mods");
+   my $cflags = "-fno-inline -fno-default-inline";
+
+   $cflags .= " -nostdlib" if $uname =~ /FreeBSD/i && `uname -r` =~ /^4\./;
+
+   system("echo $cflags > cflags.add");
+   system("./configure");
+   chdir("..");
+ }
+
+ sub remove_from_array
+ {
+  my $elem  = shift;
+  my $array = shift;
+
+  for ( my $i = 0; $i <= $#$array; ++$i )
+  {
+   if ( $$array[$i] eq $elem )
+   {
+    splice(@$array,$i,1); 
+    last;
+   }
+  } # for
+ } 
+  
+ sub check {
+  my $deep  = shift;
+
+  if ($deep == 0) {
+    print "Looking too deep! ($deepness)\n";
+    exit(1);
+  } 
+
+  my $check = shift;
+  $testit = 1 if $check =~ s/::test:://;
+
+  my $print = 1;
+  if ( $_[-1] eq "subsearch"  ) {
+    $print = 0;
+    pop(@_);
+  }
+
+  if ($print)
+  {
+    print "Checking for $check...";
+    print "\n" if $testit;
+  }
+
+  for (@_)
+  {
+    if ( -f "$_/$check" )
+    {
+      if ($testit)
+      {
+	 return $_ if test_include($_, $check);
+         return "";
+      }
+
+      else
+      {
+        print "OK\n";
+        return "" if $_ eq "/usr/lib" or $_ eq "/usr/include"; 
+        return $_;
+      }
+    }
+  }
+
+  for (@_)
+  {
+    next unless -d $_;
+    opendir D, $_ or warn "$_: $!\n";
+    my @dir = readdir(D);
+    closedir D;
+
+    for my $dir ( @dir )
+    {
+       next if $dir =~ /^\.+$/ or !-d "$_/$dir";
+       my $path = &check($deep-1, $check, "$_/$dir", "subsearch");
+       return $path if $path ne "";
+    }
+  }
+
+  if ($print)
+  {
+    print "NOT OK\n";
+    print "Please make sure that you have the needed software installed!\n";
+    print "If you have a special path for your includes then edit src/configure!\n";
+    print "Or set the environment variables YCHATHEADERPATHS and YCHATLIBPATHS.\n";
+    print " Example: setenv YCHATHEADERPATHS \"/your/header/includes:/a/includes\"\n";
+    print "(The environment variables have to be seperated by an :)\n"; 
+    print "PS: You may use the locate and/or find command to search for files.\n"; 
+    exit(1);
+  }
+
+  `touch ../err`;
+  return "";
+ }
+
+ sub make_add {
+  my $flag = shift;
+  my $add  = shift;
+  my $ret  = "";
+
+  for (reverse keys %$add) {
+    next unless /.+/;
+    $ret .= "$flag$_ ";
+  }
+  return $ret;
+ }
+
+ sub test_include
+ {
+   my $shift = shift;
+   my $check = shift;
+   my $return = 0;
+   print "Testing $shift/$check...";
+
+   `echo "\#include \\"maps/hashmap.h\\"" > __test.cpp`; 
+   `echo "int main(void){return 0;}" >> __test.cpp`; 
+   my $cmd = "`tail -n 1 ../g++.version` -I$shift __test.cpp -o /dev/null 2>/dev/null";
+   system $cmd;
+
+   unless ($?)
+   {
+     print "OK\n";
+     $return = 1;
+   }
+
+   else
+   {
+     print "Not OK\n"; 
+   }
+
+   unlink "__test.cpp" if -f "__test.cpp";
+   return $return;
+ }
+
+ exit(0);
+' `echo "$*" | sed "s/-//g"` 

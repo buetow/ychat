@@ -1,0 +1,24 @@
+#############################################################################
+## yChat.de Version 0.2.1  by CXG.de: The chatters of the next generation  ##
+##    Copyright by Paul C. Bütow aka Snooper 2000 (paul@buetow.oxg.de)     ##
+#############################################################################
+Hallo Du,
+vielen Dank, daß Du Dir die Zeit nimmst, dieses Dokument sorgfältig zu
+lesen. Die grundliegende Idee von yChat.de ist die, ein funktionsfähiges,
+einfach zu bedienendes und zu installierendes Chat-System zu bieten. yChat
+ist keineswegs Free- oder Shareware und darf somit NICHT ohne die Erlaubnis
+vom Autor weitergegeben oder kopiert werden. 
+Diejenigen, die dazu befugt sind, yChat vom eigenen Server aus zu betreiben,
+dürfen keineswegs die Copyright-Hinweise des Systems so manipulieren, daß
+diese für den Besucher nicht mehr ersichtlich sind.
+Weitergabe des yChat-Systems darf nur durch Einwilligung des Autors
+durchgeführt werden. Dies geschieht nur gegen entsprechende Gegenleistungen
+wie z.B. Bannerwerbung für www.yChat.de auf viel Besuchten Seiten (
+Seitenbesuche müssen nachgewiesen werden ), Werbung in vielgelesenen
+Newslettern o.Ä. . Allerdings sollte dem Autor vorher um Erlaubnis geboten
+werden. Gegen Geld ist das yChat-System noch nicht zu haben. Allerdings
+wird der Preis in etwa DM 500,- betragen. Für Fragen und Antworten bitte an
+die obrige E-Mail Adresse wenden.
+Installationshinweise findest Du in der datei INSTALL.txt
+MfG
+Paul C. Bütow aka Snooper

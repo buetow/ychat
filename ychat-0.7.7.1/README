@@ -1,0 +1,455 @@
+yChat; Homepage: www.yChat.org; Version 0.7.7.1-RELEASE
+Copyright (C) 2003 Paul C. Buetow, Volker Richter
+Copyright (C) 2004, 2005 Paul C. Buetow
+-----------------------------------------------------------------
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-----------------------------------------------------------------
+
+YCHAT TABLE OF CONTENTS: 
+
+0.0.0 YCHAT FEATURES //<<
+1.0.0 REQUIREMENTS
+1.1.0 TESTED PLATFORMS
+1.2.0 IMPORTANT NOTICES
+1.3.0 HOW TO OBTAIN YCHAT
+1.3.1 INSTALLATION
+1.3.2 INSTALLATION QUICK-START
+1.3.3 MYSQL SETUP //<<
+1.4.0 HOW TO USE SCREEN WITH YCHAT
+1.5.0 CUSTOMIZATION
+1.6.0 FILES
+1.7.0 WRITING BUG REPORTS
+1.8.0 CONTACT
+1.9.0 YHTTPD CODE BASE GENERATION //<<
+
+//<<*
+0.0.0 YCHAT FEATURES
+
+- Its free & portable -
+yChat is developed under the GNU general public license and is based on GNU 
+tools (gcc, gmake), other open source library stuff (such as libncurses etc.)
+and should run on any POSIX capable operating system (such as all Linux based 
+systems, FreeBSD, NetBSD, OpenBSD and other BSD-Systems and on UNICES like 
+IRIX, HP-UX, Solaris etc.).
+
+- There is no need for special chat clients -
+yChat is web based, that means clients may only connect to the chat server 
+with an normal web browser such as Microsoft Internet Explorer or any Gecko-
+Engine powerd browsers like Mozilla, Firefox, Camino etc.
+
+- It has features of a real HTTP webserver -
+yChat runs completely stand alone and does not need another webserver to build
+on like Apache and does not need to be run via any kind of CGI. yChat creates 
+its own socket on a customized port (standard port: 2000) and seems to be a full
+featured HTTP web server to the clients (web browsers). 
+
+The yChat code base can be converted to an yhttpd code base automaticaly. yhttpd
+is the webserver subset of yChat which runs completely stand alone and provides
+normal websites to the net. It also supports Common Gateway Interface (CGI)
+scripting.
+
+- Its fast and secure -
+yChat is written in C++ which is faster than any Java based Chat-Server or any
+server written in a scripting language like PHP, Python or Perl. As the
+internal data structures hash maps are used to garuantee searching certain
+values in O(1) amount of time. If a hash maps gets full, it will be rehashed.
+Currently, yChat has been measured providing over 1000 hits/requests per second 
+on a FreeBSD based server box while using less than 2% of CPU usage
+on a Athlon XP 1900+. Performance seems to be limited by your bandwith only. 
+Also, each user gets its own session id (random string) with a standard length 
+of 50 chars to authenticate each logged in user. The length of the session id 
+can be redefined as well. Also, the session id will get md5-hashed optionally 
+so thats even harder to reverse engineering the session ids of other users.
+
+- Its HTML template based and easy to customize via XML based configuration -
+All HTML sites are predefined as HTML-Template files and can be easily modified
+to use with an customized web design. Also, a lot of yChat preferences can be
+set in the main configuration file (ychat.conf). ychat.conf is completely written
+in XML 1.0 which makes it easier to use the configuration options in programs of
+3rd persons which may want to write some usefull tools for yChat.
+yChat caches all HTML and web images to improve overall performance. If needed, the
+cache can be cleared to recache new versions of the template files.
+
+- Its language template based -
+The administrator can easily create a new language in which all system messages
+appear to the Chat-User. The predefined languages is english but others can be
+added easily. The language can be edited in the XML based configuration file.
+
+- MySQL based database -
+Registered users are stored in a MySQL database. C++ Programmers may feel free
+to replace the database wrapper class (data.h) with another database routines
+to use other databases such as PostgreSQL, SQLite or a text based database etc.
+If wished, you can disable database support in the pre-compile options.
+
+- It has an administration interface -
+yChat includes an ncurses based administration interface which tracks some
+interesting statistics and system messages and enables you to do certain
+administrative tasks. In addition, you can switch to the CLI (command line
+interface) mode of the administration interface in order to be provided with
+more available functions (like keeping track of the current system usage etc.).
+If you dont like ncurses and/or the CLI you can disable both options in the pre-
+compile options. 
+
+- It has logging capabilities -
+The logging manager keeps track to all yChat system messages (such as users 
+wich log in and out, modules which are loaded, MySQL queries etc.). Also, an
+Apache-Style combined log file format is created by yChat (you can parse this
+logfile with any Apache logfile parser like awstats etc.). And last but not
+least, all public messages of all available rooms will be logged to disk as 
+well . To improve performance, you can define the logging puffer (standardly
+new logs will be written to disk after each 20 lines). If you want to log
+everything immediately, you can reset this option to 1 in ychat.conf.
+
+- Its modular through own command and dynamic HTML engine -
+All chat commands are realized through dynamic loadable module files which can
+be recompiled and reloaded without restarting the whole yChat server. Also 
+HTML-Sites with certain tasks can be compiled as a module like 
+mods/html/yc_register.so, mods/html/yc_options.so and mods/html/yc_colors.so
+etc. so you can also program your dynamic yChat websites in C++.
+
+- Its multi threaded (POSIX threads) -
+There is only one main process which spawns several threads, each for its own
+unique task. For example one thread is used to handle the socket manager which
+waits for incoming TCP/IP requests, another thread schedules the system timer
+which proves if clients are still active or frees not needed memory in certain
+time intervals (see also "Garbage collector"). Also, each Chat-User gets it own
+thread. There is no need of memory wastage by creating for each task a new
+process. All User-Threads are managed by a thread pool to avoid CPU wastage
+creating every time a new thread by reusing thread objects which have done its
+jobs already and have been readded into the queue of the thread pool. The 
+standard sizes of the queue and the total pool size can be set in ychat.conf.
+
+- Its using a smart garbage collection engine -
+All users and rooms which dont have to be kept in the main memory (because the
+user has logged out or the room has been destroyed because it was empty) will
+not be deleted immediately but be placed for about 10 minutes in the yChat
+garbage collector. Each time a new room is created the systems checks the
+garbage to reuse an inactive room object. If a certain user wants to log in, the
+system checks if he is already present in the garbage collector. If yes, he will
+be reactivated without wasting expensive database queries to fetch the user's
+options. This improves overall performance on heavily loaded yChat servers if a
+lot of user and room objects are created and destroyed frequently.
+//*>>
+
+1.0.0 REQUIREMENTS: 
+
+- GNU GCC G++ 3.4 or 3.3 or 3.2 or 3.1 
+  The GNU C++ compiler. G++ version 3.0 or 2.x does NOT work.
+
+- GNU make 3.80 (gmake) or higher
+  If you dont have a gmake executable but make is gnu make then you need
+  to add a symlink or alias from gmake to make.
+  yChat Makefiles only have been tested with GNU make and may not work with
+  other make versions.
+
+- SGI STL extension 
+  Includes ext/hash_map which may be already default on every Linux distro.
+  On *BSD you have to install it first before compiling. On FreeBSD
+  /usr/ports/devel/stlport is your friend.
+
+//<<*
+- mysql-client 4.x (3.x may do too but is not supported)
+  Includes libmysqlclient and the mysql.h header files.
+
+//*>>
+- ncurses 5.x   
+  Includes libncurses and the ncurses.h header files.
+
+- Screen
+  Only needed if yChat should run in background with
+  ncurses or CLI enabled.
+
+- Perl 5.x
+  Is needed for some scripts. Is not needed if you use precompiled binaries.
+
+1.1.0 TESTED PLATFORMS:
+
+The following platforms have been tested with success. If you find out that
+a listed platform did not work at all please contact me:
+
+  Operating system (arch)	GNU G++		GNU make
+- FreeBSD 5.3-RELEASE (i386)	3.4.2		3.80
+- FreeBSD 5.2.1-RELEASE (i386)	3.3.3 		3.80		
+- FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
+- FreeBSD 4.9-RELEASE (i386)	3.3.4		3.80
+- Gentoo Linux 2004 (i386)	3.3.2		3.80
+- OpenBSD 3.6 SMP (i386)	3.3.2		3.80
+- Red Hat Linux 8.0 SMP	(i386)	3.2-7		3.79
+- Slackware Linux 10.0 (i386)	3.4.0		3.80 
+- SUSE Linux 9.0 (i386)		3.3.1		3.80
+- SUSE Linux 8.1 (i386)		3.2		3.79.1
+
+Other platforms like Linux based systems, other BSD-Systems or UNICES
+are very likely to work too. 
+
+1.2.0 IMPORTANT NOTICES:
+
+Before you compile the source you have to be sure to use at least GCC
+version 3.1 with pthreads enabled. ( Type gcc -v to check it ).
+GCC 2.95 and 3.0 did not work while testing and WON'T BE SUPPORTED!
+If you like to support yChat, please write us an email and tell what 
+you can/like/would help ;-]. Please also take a look at the yChat
+homepage which is located at http://www.yChat.org.
+
+1.3.0 HOW TO OBTAIN YCHAT:
+
+yChat can be downloaded as a source package or through CVS. 
+
+The packages are located at http://www.yChat.org -> Sourcecode -> 
+Packages or go to http://pub.buetow.org/yChat/CPP-yChat .
+
+For CVS download type:
+
+cvs -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot login
+( You will be asked for a password. Use "just enter" ).
+
+vs -z3 -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot co ychat
+( The sources will be copied into your local folder )
+
+cvs -d:pserver:anonymous@buetow.org:/usr/home/cvs/cvsroot logout
+( Logs your CVS session out ).
+
+Now you may continue with the installation.
+
+1.3.1 INSTALLATION:
+
+Invoke "./configure". Afterwards you will get prompted with the before-compile
+options of yChat. After choosing those options you are ready to type "gmake"
+afterwards. See below what gmake is doing. 
+
+//<<*
+If you have choosen MySQL database support, then take a look at section 1.3.2 
+how to setup a valid database table. Be also sure to enter the valid MySQL 
+accessing data in the yChat configuration file which is normally located in 
+the etc/ychat.conf file if not changed by you with the yChat configurator.
+//*>>
+
+You may also invoke gmake with the following options (the PREFIX can be set
+in the yChat configurator which will be launched by the top configure script
+or gmake config):
+
+ gmake or gmake all (compiles everything, also modules and runs "gmake mail")
+ gmake base (only compiles the base)
+ gmake base_start (only compiles the base and starts the server)
+ gmake clean (cleans everything)
+ gmake clean_base (only cleans the base obj and rpo files)
+ gmake clean_modules (only cleans the modules .so files) 
+ gmake config (runs yChat configurator)
+ gmake gpl (shows the GNU General Public License)		
+ gmake help (shows all available ychat gmake targets)
+ gmake mail (sends a mail to the yChat developers containing build opts.)
+ gmake modules (only compiles modules)
+ gmake mrproper (same as gmake clean plus removing all temp files) 
+ gmake setup (runs all configure scripts and afterwards gmake all)
+ gmake start (compiles everything and starts the server)
+ gmake stats (generates ychat statistics)
+ gmake version (shows the current version of yChat)
+//<<*
+ gmake yhttpdbase (generates an yhttpd code base)
+//*>> (See section 1.9 to read about this marks)
+
+Example: "gmake all install clean" compiles everything, installs it to PREFIX
+and cleans the source directories.
+
+Now its time to run the server with ./bin/ychat.
+
+Aferwards point your webbrowser to http://yourip:port !
+
+... have fun :-).
+
+1.3.2 INSTALLATION QUICK START:
+
+If you in hury, then you may just type gmake setup. In the yChat configurator
+you may just choose all the default values. If done, yChat will get compiled
+and is ready to run with ./bin/ychat! 
+
+
+//<<*
+1.3.3 MYSQL SETUP
+
+If you chose to use MySQL database support you have to create a valid database
+to use with yChat.
+
+Create a new MySQL database called 'ychat' and type the following command into
+a MySQL command line client of your choice:
+
+USE ychat
+CREATE TABLE `user` ( 
+  `uid` int(10) NOT NULL auto_increment, 
+  `nick` varchar(30) NOT NULL default '', 
+  `password` varchar(30) NOT NULL default '', 
+  `color1` varchar(30),
+  `color2` varchar(30),
+  `email` varchar(50) default '-', 
+  `registerdate` varchar(30) default '-', 
+  `logincounter` varchar(10) default '0', 
+  `status` char(1) default '3', 
+  PRIMARY KEY  (`uid`), 
+  KEY `uid` (`uid`) 
+) TYPE=MyISAM;
+GRANT ALL PRIVILEGES ON ychat.* to ychat@localhost IDENTIFIED BY "yctest";
+
+This database uses the default MySQL access informations which are stored in the
+ychat.conf file.
+//*>>
+
+1.4.0 HOW TO USE SCREEN WITH YCHAT:
+
+If you are running yChat in ncurses mode you might want to install
+the tool which is called "screen". This will enable you putting the
+ncurses interface into the background, closing the terminal session
+and reusing the interface later through another terminal. 
+
+Just do:
+ 
+ screen -S ychat ./bin/ychat ( creates a new session and starts yChat in it )
+ ctrl+d+a ( will detach the yChat session )
+ ( closing the terminal )
+ ( opening a new terminal )
+ screen -r ychat ( will return you to the yChat process )
+
+Screen will terminate automaticaly if all processes in its sessions are 
+terminated.
+
+For a closer look read the screen manual page ( man screen ). 
+
+1.5.0 CUSTOMIZATION:
+
+If you like to customize the design/layout/language of yChat, you will have 
+to edit src/msgs.h and src/glob.h before you compile the sources. Afterwards 
+you can change the html-template files which are placed in the html/ 
+subdirectory and the language-templates which are placed in the XML config 
+file (etc/ychat.conf).
+
+Notice, that you dont have to edit the src/glob.h file by hand any more, its
+already done by the top ./configure script for you.
+
+You can edit the etc/ychat.conf to fit your needs. If you dont want to change
+the config file, then you also can use ychat start parameters.
+
+Exmpl: ./bin/ychat -o chat.database.password secretpassword
+
+You can also use multiple words for a specific option.
+
+Exmpl: ./bin/ychat -o ychat.version "word1 word2 word3"
+
+will overwrite the default database password value of the ychat.conf. You can
+do this with every configuration element by adding several -o option value 
+arguments to the start command.
+
+Dynamic loadable modules can be found in the mods/ subdirectory. (chat 
+commands are realized through modules too). Sources of modules can be found
+in src/mods instead. If you want to create a new module just create a new
+.cpp file and run in src/mods the ./configure script again. Next time
+you run gmake your new module gets compiled.
+
+All messages defined in the msgs.h file contain server messages only ( a chat
+user never wont read them, only the administrator will get to see them ).
+
+1.6.0 FILES:
+
+etc/ychat.conf  - The yChat configuration file
+html/*		- The html template files
+src/*		- The yChat base sources
+src/mods/*	- The dynamic loadable modules sources
+scripts/*	- Some nice scripts needed for building & co.
+
+The following is created by building yChat:
+obj/*		- The object files of the compiled yChat base 
+mods/*		- The compiled dynamic loadable modules
+bin/ychat	- The yChat binary (linked by the object files)
+
+Customizable source files (if changed you need to run gmake clean all) 
+src/glob.h	- Contains some global building options
+src/msgs.h	- Defines some server side messages
+
+
+1.7 WRITING BUG REPORTS
+
+How to submit a good bug report?
+
+Send them to Bug@yChat.org.
+
+First you should give the following information:
+- yChat version, if CVS (or devel. tarball) then which day?
+- operating system / distribution and it's version
+- when did it crash? did you do something? can you reproduce the crash?
+
+Getting backtrace of the crash also helps a lot, especially if yChat crashes 
+randomly. If after crash you see text:
+
+ "segmentation fault (core dumped)" 
+
+It writes a file named "core" or "ychat.core" depending on your OS to directory
+where you started yChat. If it doesn't print the "(core dumped)" or you can't
+find the core file, you'll have to raise the limit for max. core file size
+before running yChat. To do this, say:
+
+ ulimit -c unlimited 
+
+So, if you have the core file and GNU debugger (gdb), you can get the 
+backtrace with:
+
+ gdb ./bin/ychat ychat.core 
+ bt 
+
+Paste all the lines starting from line having #0 at the beginning.
+
+Here's an example session:
+
+ in reqp::parse(thrd*, std::string, std::map<std::string, std::string, 
+ std::less<std::string>, std::allocator<std::pair<std::string const, std::string> > >&) ()
+ (gdb) bt
+ #0 0x0805c287 in reqp::parse(thrd*, std::string, std::map<std::string, 
+ std::string, std::less<std::string>, std::allocator<std::pair<std::string
+ const, std::string> > >&) ()
+ #1 0x0806060f in sock::read_write(thrd*, int) ()
+ #2 0x080612ba in thrd::run() ()
+ #3 0x0805a3b8 in pool::run_func(void*) ()
+ #4 0x0805a375 in pool::tpool_thread(void*) ()
+ #5 0x281d44ae in _thread_start () from /usr/lib/libc_r.so.5
+ (gdb) 
+
+If you dont get such a gdb output, you need to recompile the yChat using
+debuggig symbols. You can do it this way:
+
+cd ychat
+gmake mrproper
+./configure -g3 -ggdb
+gmake start
+
+1.8 CONTACT:
+
+You may contact us through the following addresses:
+
+- Homepage
+  The yChat homepage is located at http://www.yChat.org
+
+- E-Mail
+  Paul C. Buetow: Snooper at yChat point org ( core developer )
+  Volker Richter: Rover at yChat dot org ( core developer )
+  Mail at yChat dot org ( reaches everybody of yChat )
+ 
+- ICQ
+  Paul C. Buetow: 11655527
+
+- IRC
+  #Ychat and #Coding at irc.german-elite.net  
+
+//<<*
+1.9 YHTTPD CODE BASE GENERATION
+
+See docs/yhttpd.txt
+//*>>

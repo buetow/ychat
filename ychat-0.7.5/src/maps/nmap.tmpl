@@ -1,0 +1,31 @@
+#ifndef NMAP_CPP
+#define NMAP_CPP
+
+#include "nmap.h"
+
+template <class obj_type, class key_type>
+nmap<obj_type, key_type>::nmap( double moc ) : smap<obj_type, key_type>::smap(moc)
+{
+}
+
+template <class obj_type, class key_type>
+nmap<obj_type, key_type>::~nmap()
+{
+}
+
+template <class obj_type, class key_type>
+obj_type nmap<obj_type, key_type>::get_elem ( const key_type &k ) {
+    // Create new object;
+     obj_type ret_val;
+
+     smap<obj_type, key_type>::lock_mutex(); 
+     int i_current_pos = find_pos( k );
+     if( smap<obj_type, key_type>::is_active( i_current_pos ) )
+         ret_val = smap<obj_type, key_type>::array[ i_current_pos ].element;
+ //    else
+ //       ret_val = new obj_type();
+     smap<obj_type, key_type>::unlock_mutex();
+     return ret_val;
+}
+
+#endif
