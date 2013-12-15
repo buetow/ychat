@@ -1,0 +1,2 @@
+This is legacy software and might be broken
+Please go to http://dev.buetow.org

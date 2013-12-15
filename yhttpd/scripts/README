@@ -1,6 +1,0 @@
-All scripts should be run from the yhttpd main directory, example:
-
-./scripts/makeyhttpd.pl
-
-
-A ./makeyhttpd.pl WILL NOT work :)

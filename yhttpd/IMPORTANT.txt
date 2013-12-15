@@ -1,0 +1,1 @@
+Important notice: The development of the yhttpd has been stalled. There will be no further development on this project. This project always was a proof of concept only. For current programming projects please visit http://programming.buetow.org  and enjoy :) 

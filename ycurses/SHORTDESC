@@ -1,3 +1,0 @@
-ycurses is a small C++ wrapper around the C ncurses API designed to be used in
-the yChat core. 
-
