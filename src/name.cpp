@@ -1,9 +1,10 @@
 /*:*
  *: File: ./src/name.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.5.6-BASIC
+ *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
  *: 
- *: Copyright (C) 2003, 2004 Paul C. Buetow, Volker Richter
+ *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
+ *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
  *: 
  *: This program is free software; you can redistribute it and/or
@@ -21,34 +22,52 @@
  *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *:*/
 
-// class name implementation.
-
-#ifndef NAME_CXX
-#define NAME_CXX
+#ifndef NAME_CPP
+#define NAME_CPP
 
 #include "name.h"
+#include "tool/tool.h"
 
 using namespace std;
 
+name::name()
+{
+  pthread_mutex_init( &mut_s_name, NULL);
+}
+
 name::name( string s_name )
 {
-    set_name( s_name );
+  pthread_mutex_init( &mut_s_name, NULL);
+  set_name( s_name );
 }
 
 name::~name()
-{}
+{
+  pthread_mutex_destroy( &mut_s_name );
+}
 
 string
-name::get_name() const
+name::get_name()
 {
-    return s_name;
+  string s_ret;
+  pthread_mutex_lock  ( &mut_s_name );
+  s_ret = s_name;
+  pthread_mutex_unlock( &mut_s_name );
+  return s_ret;
+}
+
+string
+name::get_lowercase_name()
+{
+  return tool::to_lower( get_name() );
 }
 
 void
 name::set_name( string s_name )
 {
-    this->s_name = s_name;
+  pthread_mutex_lock  ( &mut_s_name );
+  this->s_name = s_name;
+  pthread_mutex_unlock( &mut_s_name );
 }
-
 
 #endif
