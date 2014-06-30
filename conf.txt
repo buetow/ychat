@@ -11,15 +11,15 @@
 # all lines which do not contain a semicolon and at least two quotes 
 # or start with a # will be ignored.
 #
-# greets, paul c. buetow ( snooper@ychat.org );
+# greets, paul c. buetow ( snooper at ychat dot org );
 #
 
 # server specific configurations ( not allowed to be removed ):
 
 HTMLTEMP="html/";  # directory of the html-template files.
-THRDPOOL="50";    # thread pool size. 
-THRDQUEU="50";    # length of the thread pool queue.
-SRVRPORT="3000";   # local port on which the server listens. 
+THRDPOOL="1";      # Initial pool size. 
+THRDPMAX="52";     # Max thread pool size 
+SRVRPORT="2000";   # local port on which the server listens. 
 STRDROOM="Lounge"; # the name of the standard room.
 LANGUAGE="en"; # language of the chat outputs ( CONSOLE OUTPUT IS NOT AFFECTED )
 
@@ -48,7 +48,7 @@ LOG_LINES="10";
 
 # values which are used by the html-templates and are not sticked within the yC++ core source!
 GRAPHICS="http://paul.buetow.info/yChat"; # url for graphic files etc. 
-PGETITLE="yChat++ Basic - Fast Simple Extensible";
+PGETITLE="yChat 0.5 - Fast Simple Extensible";
 
 # do not edit beyond this line
 

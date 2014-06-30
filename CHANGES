@@ -1,0 +1,36 @@
+Changes from 0.5.5-STABLERELEASE to 0.5.6-BASIC
+- Rearanged the startup messages
+- Set 2000 as the standard port (3000 has been used before)
+- Run astyle on src/*.{h,cpp}
+- Fixed some errors in the README file
+- Added the SHORTDESC file
+- Changed Copyright to EXA Digital Solutions
+- Added .pm to scripts/stats.pl
+- Modified the README (New CVS pserver)
+- Added the headers and header rules to the Makefile
+- Added the docs directory and the containing header.txt file which
+  does have a header skel for the source files (all source files now do
+  have a new source header containgin copyrights)
+- The ychat-0.5 CVS branch now also has ychat-basic as its synonym
+- Added the replace rule to the top level Makefile
+
+Changes from 0.5.4-STABLERELEASE to 0.5.5-STABLERELEASE
+- Added scripts/version.sh (can be invoked by gmake version)
+- Fixed a bug in the session manager.
+- Removed the large animated GIF graphic.
+
+Changes from 0.5.3-LEGACYRELEASE to 0.5.4-STABLERELEASE
+- Backported reqp::get_url from yChat 0.7.8-CURRENT.
+- Tagged 0.5-STABLE
+
+Changes from 0.5.2-LEGACYRELEASE to 0.5.3-LEGACYRLEASE
+- Code cleanup
+- Added ./scripts/*
+- Added gmake stats option
+
+Changes from 0.5.1-RELEASE to 0.5.2-LEGACYRLEASE
+- Changed this branch into a LEGACY branch.
+- Rewrote the dynamic thread pool (backport from 0.7.8-CURRENT).
+- Added scripts/*
+- Code now uses ANSI C++ style with 2 space code indenting. 
+
