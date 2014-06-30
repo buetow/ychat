@@ -1,0 +1,30 @@
+<html>
+ <head>
+ <title>
+  %%PGETITLE%%
+ </title>
+<link rel=stylesheet href="style.css" type=text/css>
+ <script language="JavaScript">
+  function autoScroll()
+  {
+   window.scroll(1, 50000 );
+   timer = setTimeout('autoScroll()',200);
+  }
+
+  autoScroll();
+
+  function stopScroll()
+  {
+   clearTimeout(timer);
+  }
+
+  function startScroll()
+  {
+   timer = setTimeout('autoScroll()', 200);
+  }
+ </script>
+</head>
+<body bgcolor=#000000 text=#ffffff>
+ Welcome to yChat %%nick%%!
+ <br>
+ <br>

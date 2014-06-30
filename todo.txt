@@ -1,0 +1,11 @@
+BRAIN-STORMING:
+
+mysql
+security: tempid and crypto
+commands
+hash_map []-operator
+hash_map in cont
+several different html templatetes
+
+10: bugfixes
+20: goto 10
