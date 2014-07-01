@@ -1,0 +1,11 @@
+BODY, TD {
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 11pt;
+}
+A {
+	color: #dddddd;
+}
+.signature {
+	color: #dddddd;
+	font-size: 9pt;
+}
