@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/chat/room.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -128,9 +128,12 @@ room::set_name( string s_name )
 void
 room::dumpit()
 {
-  dumpable::add("[room]");
-  dumpable::add("Name: "+get_name());
-  dumpable::add("Topic: "+get_topic());
+  dumpable::add
+    ("[room]");
+  dumpable::add
+    ("Name: "+get_name());
+  dumpable::add
+    ("Topic: "+get_topic());
   base<user>::dumpit();
 }
 

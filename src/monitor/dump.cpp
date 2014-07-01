@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/monitor/dump.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -62,7 +62,8 @@ dumpable::dump(int i_level)
 }
 
 void
-dumpable::add(string s_line) 
+dumpable::add
+  (string s_line)
 {
   if ( i_lined > i_max_level )
     i_lined = i_max_level;

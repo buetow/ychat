@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/sign.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -52,21 +52,9 @@ sign::sigsev_received(int i_param)
 void
 sign::terminate_received(int i_param)
 {
-
-#ifdef NCURSES
   //<<*
-  if ( ! wrap::GCOL->remove_garbage() )
-    wrap::NCUR->print( GAROFFNE );
-  //*>>
-
-  mvprintw( 21,2, "Good bye !");
-  wrap::NCUR->close_ncurses();
-
-  //<<*
-#else
   wrap::GCOL->remove_garbage();
   //*>>
-#endif
 
   exit(0);
 }
@@ -81,8 +69,10 @@ sign::init_signal_handlers()
   signal(SIGUSR1, clean_template_cache);
   signal(SIGUSR2, reload_dlopen_modules); //<<
 #ifdef CTCSEGV
-  signal(SIGSEGV, sigsev_received); 
+
+  signal(SIGSEGV, sigsev_received);
 #endif
+
   signal(SIGHUP, terminate_received);
   signal(SIGINT, terminate_received);
   signal(SIGTERM, terminate_received);

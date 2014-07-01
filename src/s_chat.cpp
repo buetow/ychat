@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/s_chat.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.5.6-BASIC
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003, 2004 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2005 EXA Digital Solutions GbR
@@ -24,10 +24,10 @@
 #ifndef GCHT_CXX
 #define GCHT_CXX
 
-#include "s_chat.h"
-
-using namespace std;
-
-chat* s_chat::obj;
+#define VERSION "0.8.3"
+#define BRANCH "CURRENT"
+#define BUILDNR 4268
+#define UNAME "Undefined"
+#define COMPOPT "Undefined"
 
 #endif

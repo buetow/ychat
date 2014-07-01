@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/wrap.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -56,18 +56,6 @@ dynamic_wrap* wrap::WRAP = NULL;
 void
 wrap::system_message( string s_message )
 {
-#ifdef NCURSES
-  if(NCUR)
-  {
-    NCUR->print( s_message );
-  }
-
-  else
-  {
-    cout << s_message << endl;
-  }
-#endif
-
 #ifdef SERVMSG
   cout << s_message << endl;
 #endif
@@ -107,6 +95,8 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
   // Init the socket manager.
   int i_port = tool::string2int( wrap::CONF->get_elem( "httpd.serverport" ) );
 
+#ifndef OPENSSL
+
   WRAP->SOCK = SOCK = new sock;
 
   // create the server socket and set it up to accept connections.
@@ -116,29 +106,7 @@ wrap::init_wrapper(map<string,string>* p_main_loop_params)
     exit(-1);
   }
 
-#ifdef NCURSES
-
-  WRAP->NCUR = NCUR = new ncur; 	// init the ncurses admin interface.
-  NCUR->run();				// run the thread
-
-  // Wait until ncurses interface has been initialized.
-  do
-  {
-    usleep(1000);
-  }
-  while ( ! NCUR->is_ready() );
-
-  HTML->print_cached(0);
-#else
-#ifdef CLI
-
-  cli* p_cli = new cli;
-  p_cli->run();
-#endif
-#endif
-
-  // Init the thread pool
-  WRAP->POOL = POOL = new pool;
+  pool::init();
 
   //<<*
   // Init the chat manager.

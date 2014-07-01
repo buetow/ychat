@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/sock/sock.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -46,67 +46,57 @@
 
 using namespace std;
 
-class sock : public shashmap
-      < string, uint32_t, self_hash<uint32_t>, equals_allocator<uint32_t> >
+class sock 
 {
 protected:
 #ifdef LOGGING
 
   logd *log_daemon; // the log daemon
 #endif
+  shashmap< string, unsigned, self_hash<unsigned>, equals_allocator<unsigned> > *ip_cache_map;
 
   int i_server_sock;
   int i_server_port;
 
-  // total number of server requests.
-  unsigned long long i_req;
-  bool  b_run;      // true while socket manager is running.
-  reqp *req_parser; // parses the http requests from clients.
-  char *c_buffer;   // char buffer!
+  unsigned long long i_req; // total number of server requests.
+  bool  b_run;      		// true while socket manager is running.
+  reqp *req_parser; 		// parses the http requests from clients.
+  char *c_buffer;   		// char buffer!
   pthread_mutex_t mut_hits;
 
   static string inet_ntoa_callback(void* p_void);
 
 public:
   // creates a server socket.
-  int read_http(socketcontainer *p_sock, char *c_zbuf, int i_buflen, int  &i_payloadoffset);
-  string read_http_line(socketcontainer *p_sock);
+  int read_http(_socket *p_sock, char *c_zbuf, int  &i_payloadoffset);
+  string read_http_line(_socket *p_sock);
 
   // small inline methods:
-  bool get_server_() const
-  {
-    return b_run;
-  }
-  // small inline methods:
-  bool get_run() const
-  {
-    return b_run;
-  }
-  bool set_run( bool b_run )
-  {
-    this->b_run = b_run;
-  }
+
+  string dump() { return ip_cache_map->dump(); }
+  bool get_server_() const { return b_run; }
+  bool get_run() const { return b_run; }
+  bool set_run( bool b_run ) { this->b_run = b_run; }
 
   sock();
 
-  int read_write( socketcontainer* p_sock );
+  int read_write(_socket* p_sock);
 
   int start();
   void clean_ipcache();
 
   // the chat stream there all the chat messages will sent through.
-  void chat_stream( socketcontainer* p_sock, user* p_user, map<string,string> &map_params ); //<<
-  virtual inline int _send(socketcontainer *p_sock, const char *sz, int len);
-  virtual inline int _read(socketcontainer *p_sock, char *sz, int len);
-  virtual inline int _close(socketcontainer *p_sock);
+  void chat_stream(_socket* p_sock, user* p_user, map<string,string> &map_params); //<<
+  virtual int _send(_socket *p_sock, const char *sz, int len);
+  virtual int _read(_socket *p_sock, char *sz, int len);
+  virtual int _close(_socket *p_sock);
   virtual void _main_loop_init();
-  virtual inline socketcontainer* _create_container(int& i_sock);
-  virtual int _make_server_socket(int i_port);
 
-#ifdef NCURSES
-  void print_server_port();
-  void print_hits();
+#ifdef OPENSSL
+  virtual bool _main_loop_do_ssl_stuff(int& i_new_sock);
 #endif
 
+  virtual _socket* _create_container(int& i_sock);
+  virtual int _make_server_socket(int i_port);
 };
 #endif

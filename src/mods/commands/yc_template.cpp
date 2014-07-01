@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/mods/commands/yc_template.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -22,28 +22,39 @@
  *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *:*/
 
-#include <iostream>
-#include "../../chat/user.h"
+template<class obj_type>
+tupel<obj_type>::tupel()
+{
+  pthread_mutex_init(&mut_tupel, NULL);
+}
 
-/*
- gcc -shared -o yc_name.so yc_name.cpp
-*/
+template<class obj_type>
+tupel<obj_type>::tupel(obj_type t_obj)
+{
+  this->t_obj = t_obj;
+  pthread_mutex_init(&mut_tupel, NULL);
+}
 
-using namespace std;
+template<class obj_type>
+tupel<obj_type>::~tupel()
+{
+  pthread_mutex_destroy(&mut_tupel);
+}
 
 extern "C"
 {
-  int extern_function(void *v_arg)
-  {
-    container *c=(container *)v_arg;
+  pthread_mutex_lock(&mut_tupel);
+  obj_type t_ret = t_obj;
+  pthread_mutex_unlock(&mut_tupel);
+  return t_ret;
+}
 
-    user *p_user = (user*)c->elem[1];		// the corresponding user
-    vector<string> *params=(vector<string>*)c->elem[2];	// param array
-
-    string *quitstring=new string("Text to send<br>");
-    p_user->msg_post( quitstring );
-
-    return 0;
-  }
+template<class obj_type>
+void
+tupel<obj_type>::set_elem(obj_type t_obj)
+{
+  pthread_mutex_lock(&mut_tupel);
+  this->t_obj = t_obj;
+  pthread_mutex_unlock(&mut_tupel);
 }
 

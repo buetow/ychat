@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/sign.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -31,9 +31,10 @@
 class sign
 {
 private:
-  static void clean_template_cache(int i_param); 
+  static void clean_template_cache(int i_param);
   static void reload_dlopen_modules(int i_param); //<<
 #ifdef CTCSEGV
+
   static void sigsev_received(int i_param);
 #endif
 

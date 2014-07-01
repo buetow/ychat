@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/chat/sman.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -32,7 +32,7 @@
 
 sman::sman()
 {
-  i_session_count = 0;
+  i_continous_session_count = i_session_count = 0;
   pthread_mutex_init( &mut_i_session_count, NULL );
 }
 
@@ -85,10 +85,9 @@ sess *sman::create_session( )
 
   pthread_mutex_lock( &mut_i_session_count );
   i_session_count++;
-#ifdef NCURSES
-
-  print_sessions();
-#endif
+  wrap::system_message(string(SESSIOC) + "(" +
+		tool::int2string(++i_continous_session_count) + "," + 
+		tool::int2string(reinterpret_cast<int>(p_sess)) + ")" );
 
   pthread_mutex_unlock( &mut_i_session_count );
 
@@ -106,12 +105,15 @@ sess *sman::get_session( string s_id )
 void
 sman::destroy_session( string s_id )
 {
+  sess* p_sess = get_elem(s_id);
+
   pthread_mutex_lock( &mut_i_session_count );
   i_session_count--;
 #ifdef NCURSES
 
-  print_sessions();
-#endif
+  wrap::system_message(string(SESSIOD) + "(" +
+		tool::int2string(i_continous_session_count) + "," + 
+		tool::int2string(reinterpret_cast<int>(p_sess)) + ")" );
 
   pthread_mutex_unlock( &mut_i_session_count );
 
@@ -142,12 +144,18 @@ void sman::print_init_ncurses()
 int
 sman::get_session_count()
 {
-  int i_ret;
   pthread_mutex_lock( &mut_i_session_count );
-  i_ret = i_session_count;
+  int i_ret = i_session_count;
   pthread_mutex_unlock( &mut_i_session_count );
   return i_ret;
 }
 
-#endif
+/*
+void
+sman::dump() {
+  shashmap<sess*>::dump(); 
+  cout << "BLA" << endl;
+}
+*/
+
 #endif

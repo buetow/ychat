@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/chat/base.tmpl
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -64,18 +64,21 @@ template<class type>
 void
 base<type>::dumpit()
 {
-  dumpable::add("[base]");
+  dumpable::add
+    ("[base]");
   vector<string>* p_vec = nhashmap<type*>::get_key_vector();
 
   vector<string>::iterator iter;
   for (iter = p_vec->begin(); iter != p_vec->end(); ++iter)
   {
-    dumpable::add(*iter);
+    dumpable::add
+      (*iter);
     type* p_elem = get_elem(*iter);
     if (p_elem)
     {
       dumpable::next_no_newline();
-      dumpable::add(p_elem->dump(dumpable::get_level()));
+      dumpable::add
+        (p_elem->dump(dumpable::get_level()));
     }
   }   
 

@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/chat/gcol.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -36,10 +36,6 @@ gcol::gcol()
   p_map_users = new shashmap<user*>;
   wrap::system_message( GARBAGE );
 
-#ifdef NCURSES
-
-  print_garbage();
-#endif
 }
 
 gcol::~gcol()
@@ -66,14 +62,10 @@ void
 gcol::add_user_to_garbage( user* p_user )
 {
   p_user->s_mess_delete();
-  p_map_users->add_elem( p_user, tool::to_lower(p_user->get_name()) );
-  wrap::system_message( GARUSER + p_user->get_name() );
+  p_map_users->add_elem(p_user, tool::to_lower(p_user->get_name()));
+  wrap::system_message(GARUSER + p_user->get_name());
   p_user->destroy_session();
 
-#ifdef NCURSES
-
-  print_garbage();
-#endif
 }
 
 bool
@@ -128,11 +120,6 @@ gcol::get_room_from_garbage()
   vec_rooms.pop_back();
   pthread_mutex_unlock( &mut_vec_rooms );
 
-#ifdef NCURSES
-
-  print_garbage();
-#endif
-
   return p_room;
 }
 
@@ -151,7 +138,6 @@ gcol::get_user_from_garbage( string s_user )
 {
 
   user* p_user = p_map_users->get_elem( tool::to_lower(s_user) );
-  ;
 
   if ( p_user != NULL )
   {
@@ -161,11 +147,6 @@ gcol::get_user_from_garbage( string s_user )
     p_user->set_invisible( false );
     p_user->renew_timeout();
     wrap::system_message(GARUSE2 + p_user->get_name() );
-#ifdef NCURSES
-
-    print_garbage();
-#endif
-
   }
 
   return p_user;
@@ -190,20 +171,5 @@ gcol::unlock_mutex()
 {
   pthread_mutex_unlock ( &mut_vec_rooms );
 }
-
-#ifdef NCURSES
-void
-gcol::print_garbage( )
-{
-  if ( wrap::NCUR->is_ready() )
-  {
-    pthread_mutex_lock  ( &mut_vec_rooms );
-    mvprintw( NCUR_GARBAGE_X,NCUR_GARBAGE_Y, "Garbage: %d ", p_map_users->size() + vec_rooms.size() );
-    pthread_mutex_unlock( &mut_vec_rooms );
-    refresh();
-  }
-}
-
-#endif
 
 #endif

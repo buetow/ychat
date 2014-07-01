@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/conf/conf.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -47,7 +47,8 @@ public:
   ~conf();
 
   string colored_error_msg(string s_key);  //<<
-  int get_int(string s_key);  
+  int get_int(string s_key);
+  vector<string> get_vector(string s_key);
 };
 
 #endif

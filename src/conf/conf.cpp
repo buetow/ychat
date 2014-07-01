@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/conf/conf.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -201,4 +201,19 @@ conf::get_int(string s_key)
    return tool::string2int(get_elem(s_key));
 }
 
+vector<string>
+conf::get_vector(string s_key)
+{
+  vector<string> vec_ret;
+  string s_val = get_elem(s_key);
+
+  for (unsigned i_pos = s_val.find(" "); i_pos != string::npos; i_pos = s_val.find(" "))
+  {
+    vec_ret.push_back(s_val.substr(0, i_pos));
+    s_val = s_val.substr(i_pos+1);
+  }
+
+  vec_ret.push_back(s_val);
+  return vec_ret;
+}
 #endif

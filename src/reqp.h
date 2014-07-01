@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/reqp.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -57,7 +57,7 @@ private:
 
 public:
   reqp( );
-  string parse( socketcontainer* p_sock, string s_req, map<string,string> &map_params, int &i_postpayloadoffset );
+  string parse( _socket* p_sock, string s_req, map<string,string> &map_params, int &i_postpayloadoffset );
   string url_decode ( string s_url );
   string get_content_type( string& s_file );
   void parse_headers( string s_req, map<string,string> &map_params );
