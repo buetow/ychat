@@ -1,8 +1,8 @@
-yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
 
 Copyright (C) 2003 Paul C. Buetow, Volker Richter
-Copyright (C) 2004 Paul C. Buetow
 Copyright (C) 2005 EXA Digital Solutions GbR
+Copyright (C) 2004, 2006 Paul C. Buetow
 -----------------------------------------------------------------
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -56,6 +56,9 @@ srcipts/yhttpdbase.pl script in the chat's source tree.
 - The ycurses -
 ycurses is a easy to use and small C++ wrapper of the C ncurses API. 
 
+- The ycurses -
+ycurses is a easy to use and small C++ wrapper around the C ncurses API. 
+
 There are different branches:
 
 - CURRENT - 
@@ -98,6 +101,34 @@ in mind, that a RELEASE of the STABLE branch is recommended over a
 RELEASE of a CURRENT or a LEGACY branch in a production environment.
 RELEASEs of CURRENT are still the bleeding edge and RELEASEs of LEGACY
 may be out of date.
+
+- Short names -
+
+In addition, each description also has short names: (short names are needed 
+if your text space is limited which happens very fast in IRC channel topics)
+
+CURRENT aka CUR aka C
+RELEASE aka REL aka R
+LEGACY  aka LEG aka L
+STABLE  aka SBL aka S
+BASIC  aka BSC aka B
+DEVEL   aka DEV aka D
+PRE     aka P
+
+STABLERELEASE aka STBREL aka SR
+PRERELEASE aka PREREL aka PR
+PRELEGACYRELEASE aka PRELEGREL aka PLR
+etc...
+
+The short name of the chat is "yC"
+The short name of the httpd is "yh"
+The short name of ycurses is "yu"
+
+- Versioning - 
+In general, versions are made up like X.Y.Z.W. X specifies the major version,
+Y specifies the branch of the major version, Z specifies a sub revision
+of a specific branch. The optional W can be used to specify a maintenance
+revision which only changes small issues. 
 
 //<<*
 0.0.1 YCHAT FEATURES
@@ -164,8 +195,8 @@ interesting statistics and system messages and enables you to do certain
 administrative tasks. In addition, you can switch to the CLI (command line
 interface) mode of the administration interface in order to be provided with
 more available functions (like keeping track of the current system usage etc.).
-If you dont like ncurses and/or the CLI you can disable both options in the pre-
-compile options. 
+If you dont like libreadline and/or the CLI you can disable both options in the
+pre- compile options. 
 
 - It has logging capabilities -
 The logging manager keeps track to all yChat system messages (such as users 
@@ -245,10 +276,11 @@ The following platforms have been tested with success. If you find out that
 a listed platform did not work at all please contact me:
 
   Operating system (arch)	GNU G++		GNU make
+- FreeBSD 6.0-RELEASE (i386)	3.4.4		3.80	
 - FreeBSD 5.3-RELEASE (i386)	3.4.2		3.80
 
   Tested longer time before:
-- FreeBSD 5.2.1-RELEASE (i386)	3.3.3 		3.80		
+- FreeBSD 5.4-RELEASE (i386)	3.4.2		3.80
 - FreeBSD 4.10-RELEASE (i386)	3.4.1		3.80
 - FreeBSD 4.9-RELEASE (i386)	3.3.4		3.80
 - Gentoo Linux 2004 (i386)	3.3.2		3.80
@@ -269,8 +301,6 @@ GCC 2.95 and 3.0 did not work while testing and WON'T BE SUPPORTED!
 If you like to support yChat, please write us an email and tell what 
 you can/like/would help ;-]. Please also take a look at the yChat
 homepage which is located at http://www.yChat.org.
-
-1.3.0 HOW TO OBTAIN YCHAT:
 
 yChat can be downloaded as a source package or through CVS. 
 
@@ -528,8 +558,8 @@ You may contact us through the following addresses:
   The EXA Digital Solutions homepage is located at http://www.exa-ds.com
 
 - E-Mail
-  Paul C. Buetow: Buetow at yChat point org ( core developer )
-  Mail at yChat dot org ( reaches everybody of yChat )
+  Paul C. Buetow: buetow at yChat point org (core developer)
+  Mail at yChat dot org (reaches everybody of yChat)
  
 - ICQ
   Paul C. Buetow: 11655527
@@ -548,13 +578,6 @@ You may contact us through the following addresses:
 See docs/yhttpd.txt
 //*>>
 
-2.0.0 CREDITS
-
-Thanks to the following persons. Without them yChat would not be like today:
-
-- Volker Richter <volker at exa-ds dot de> of EXA Digital Solutions GbR
-  (http://www.exa-ds.com) for adding initial MySQL support and lots of more
-  code.
-
-- Joshia Teitelbaum <joshuat at cryptomail.org> of CryptpMail.org for adding
-  lots of security patches in the HTTP header handling.
+- Joshua Teitelbaum <joshuat at cryptomail.org> of CryptpMail.org for adding
+  initial OpenSSL support and lots of security patches in the HTTP header
+  handling.

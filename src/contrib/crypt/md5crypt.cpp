@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/contrib/crypt/md5crypt.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -66,11 +66,11 @@ char *
 MD5Crypt(const char *pw, const char *salt)
 {
   static char	*magic = "$1$";	/*
-                      						 * This string is magic for
-                      						 * this algorithm.  Having
-                      						 * it this way, we can get
-                      						 * get better later on
-                      						 */
+                        						 * This string is magic for
+                        						 * this algorithm.  Having
+                        						 * it this way, we can get
+                        						 * get better later on
+                        						 */
   static char     passwd[120], *p;
   static const char *sp,*ep;
   unsigned char	final[16];

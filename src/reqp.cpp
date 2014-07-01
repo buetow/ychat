@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/reqp.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -247,7 +247,7 @@ reqp::get_from_header( string s_req, string s_hdr )
 }
 
 string
-reqp::parse( socketcontainer *p_sock, string s_req, map<string,string> &map_params, int &i_postpayloadoffset )
+reqp::parse( _socket *p_sock, string s_req, map<string,string> &map_params, int &i_postpayloadoffset )
 {
 
   // store all request informations in map_params. store the url in

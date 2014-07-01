@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/wrap.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -32,6 +32,10 @@ struct socketcontainer
 {
   int i_sock;
 };
+#define _socket socketcontainer 
+#else
+#define _socket int 
+#endif
 
 #ifdef DATABASE
 #include "data/data.h"
@@ -61,7 +65,6 @@ struct socketcontainer
 #include "monitor/stats.h"
 #include "time/timr.h"
 #include "thrd/pool.h"
-
 
 using namespace std;
 
@@ -138,11 +141,6 @@ public:
 
   static logd* LOGD;
 #endif
-#ifdef NCURSES
-
-  static ncur* NCUR;
-#endif
-
   static sock* SOCK;
   static stats* STAT;
   static timr* TIMR;

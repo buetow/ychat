@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/chat/user.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -49,6 +49,7 @@ user::~user()
   pthread_mutex_destroy( & mut_b_invisible );
   pthread_mutex_destroy( & mut_b_has_sess );
   pthread_mutex_destroy( & mut_b_is_reg );
+  pthread_mutex_destroy( & mut_b_is_gag );
   pthread_mutex_destroy( & mut_s_mess );
   pthread_mutex_destroy( & mut_s_pass );
   pthread_mutex_destroy( & mut_p_room );
@@ -65,6 +66,12 @@ user::~user()
 void
 user::initialize()
 {
+  time(&t_flood_time);
+  init_strings(wrap::CONF->get_vector("chat.fields.userstrings"));
+  init_ints(wrap::CONF->get_vector("chat.fields.userints"));
+  init_bools(wrap::CONF->get_vector("chat.fields.userbools"));
+
+  this -> p_room = NULL;
   this -> b_is_reg = false;
   this -> b_set_changed_data = false;
   this -> b_away = false;
@@ -80,6 +87,7 @@ user::initialize()
   pthread_mutex_init( & mut_b_invisible , NULL );
   pthread_mutex_init( & mut_b_has_sess , NULL );
   pthread_mutex_init( & mut_b_is_reg , NULL );
+  pthread_mutex_init( & mut_b_is_gag , NULL );
   pthread_mutex_init( & mut_s_mess , NULL );
   pthread_mutex_init( & mut_s_pass , NULL );
   pthread_mutex_init( & mut_p_room , NULL );
@@ -112,7 +120,8 @@ user::destroy_session()
 #ifdef DATABASE
   // Store all changed data into the mysql table if this user is registered:
   if ( b_is_reg )
-    wrap::DATA->update_user_data( get_name(), "savechangednick", map_changed_data );
+    wrap::DATA->update_user_data( get_name(), "savechangednick", 
+		    map_changed_data );
 #endif
 
   set_has_sess(false);
@@ -200,10 +209,28 @@ user::get_is_reg( )
   return b_ret;
 }
 
+bool
+user::get_is_gag( )
+{
+  bool b_ret;
+  pthread_mutex_lock  ( &mut_b_is_gag );
+  b_ret = b_is_gag;
+  pthread_mutex_unlock( &mut_b_is_gag );
+  return b_ret;
+}
+
 void
 user::set_is_reg( bool b_is_reg )
 {
   this -> b_is_reg = b_is_reg;
+}
+
+void
+user::set_is_gag( bool b_is_gag )
+{
+  pthread_mutex_lock  ( &mut_b_is_gag );
+  this -> b_is_gag = b_is_gag;
+  pthread_mutex_unlock( &mut_b_is_gag );
 }
 
 void
@@ -498,7 +525,7 @@ user::s_mess_delete( )
 
 
 void
-user::msg_post( string *p_msg )
+user::s_mess_delete( )
 {
   pthread_mutex_lock  ( &mut_s_mess );
   s_mess.append( *p_msg );
@@ -506,6 +533,47 @@ user::msg_post( string *p_msg )
 
   pthread_cond_signal( &cond_message );
 }
+
+void
+user::post_action_msg(string s_msgkey)
+{
+   get_room()->msg_post(wrap::TIMR->get_time()+" "+get_colored_bold_name()+wrap::CONF->get_elem(s_msgkey)+"<br>\n");
+}
+
+
+void
+user::renew_timeout() 
+{
+  timo::renew_timeout();
+  double d_time_diff = wrap::TIMR->get_time_diff(t_flood_time);
+
+  if (d_time_diff < static_cast<double>(wrap::CONF->get_int("chat.floodprotection.seconds")))
+  {
+    if (++i_flood_messages > static_cast<double>(wrap::CONF->get_int("chat.floodprotection.messages"))) 
+    { 
+       room* p_room = get_room();
+       if (p_room == 0)
+       {
+         i_flood_messages = 0;
+         return;
+       }
+
+       wrap::system_message(CHATFLO+get_name()+","+p_room->get_name()+","+tool::int2string(i_flood_messages)+")");
+       msg_post(wrap::CONF->colored_error_msg("chat.msgs.err.flooding"));
+       if (!get_is_gag())
+       {
+         set_is_gag(true);
+         post_action_msg("chat.msgs.floodgag"); 
+       }
+    } 
+  }
+
+  else
+  {
+    time(&t_flood_time);
+    i_flood_messages = 0;
+  }
+}  
 
 void
 user::check_timeout( int* i_idle_timeout )
@@ -610,10 +678,22 @@ user::dumpit()
 {
   dumpable::add("[user]");
   dumpable::add("Name: " + get_name() +
-	"; Room: " + get_room()->get_name() +
-	"; Status: " + tool::int2string(get_status())); 
+        "; Room: " + get_room()->get_name() +
+        "; Status: " + tool::int2string(get_status()));
   dumpable::add("TempID: " + get_tmpid());
 }
 
+bool
+user::same_rooms(user *p_user)
+{
+  return p_user->get_room()->get_lowercase_name()
+	.compare(this->get_room()->get_lowercase_name()) == 0;
+}
+
+string
+user::make_colors(string s_msg)
+{
+  return "<font color=\"#" + get_col1() + "\">" + s_msg + "</font>";
+}
 
 #endif

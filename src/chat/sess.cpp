@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/chat/sess.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -72,7 +72,7 @@ sess::set_user(user* p_user)
 
 
 void
-sess::invalidate()
+sess::invalidate() 
 {
   this->s_tmpid = "0";
 }

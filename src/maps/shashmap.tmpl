@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/maps/shashmap.tmpl
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -67,7 +67,7 @@ shashmap<obj_type, key_type_, hash_type, alloc_type>::get_or_callback_set
 {
   pthread_mutex_lock( &mut_shashmap );
   obj_type t_ret = hashmap<obj_type, key_type_, hash_type, alloc_type>::get_or_callback_set
-	(func, p_void, t_key);
+                   (func, p_void, t_key);
   pthread_mutex_unlock( &mut_shashmap );
   return t_ret;
 }

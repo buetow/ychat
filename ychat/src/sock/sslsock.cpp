@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/sock/sslsock.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -69,7 +68,7 @@ sslsock::_make_server_socket(int i_port)
 
   int i_sock = sock::_make_server_socket(i_port);
 
-  if (i_sock <= 0)
+  if(i_sock <= 0)
   {
     wrap::system_message(SSLERR1);
     return -1;
@@ -116,17 +115,23 @@ sslsock::_make_server_socket(int i_port)
   return i_sock;
 }
 
+void
+sslsock::_main_loop_init()
+{
+  wrap::system_message(SOCKSEC);
+}
+
 bool
 sslsock::_main_loop_do_ssl_stuff(int& i_new_sock)
 {
   SSL* p_ssl = SSL_new(p_ctx);
 
-  if (p_ssl == NULL || i_new_sock < 0)
+  if( p_ssl == NULL || i_new_sock < 0)
   {
     wrap::system_message(SSLERR3);
 
     close(i_new_sock);
-    if (p_ssl != NULL)
+    if(p_ssl != NULL)
       SSL_free(p_ssl);
 
     return 1;
@@ -135,7 +140,7 @@ sslsock::_main_loop_do_ssl_stuff(int& i_new_sock)
   else
   {
     SSL_set_fd(p_ssl, i_new_sock);
-    if (SSL_accept(p_ssl) == -1)
+    if(SSL_accept(p_ssl) == -1)
     {
       wrap::system_message(SSLERR4);
       close(i_new_sock);

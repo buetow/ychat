@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/monitor/dump.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -46,13 +46,22 @@ private:
   void reset();
 
 protected:
-  void add(unsigned i_num) 
-  { add("<unsigned>"); }
+  void add
+    (unsigned i_num)
+  {
+    add
+      ("<unsigned>");
+  }
 
-  void add(int i_num) 
-  { add("<int>"); }
+  void add
+    (int i_num)
+  {
+    add
+      ("<int>");
+  }
 
-  void add(string s_line);
+  void add
+    (string s_line);
   dumpable();
 
   void next_no_newline() 

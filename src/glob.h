@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/glob.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -42,13 +42,8 @@
 //<<*
 /* FIRST THE YCHAT ONLY OPTIONS */
 
-/* - CONFIG -
- Should yChat get compiled with database support? Currently MyS-
- QL only is a supported database. 
-*/
-//#define DATABASE
-
-#ifdef DATABASE
+#ifdef HAVE_LIBMYSQLCLIENT 
+#ifdef HAVE_MYSQL_MYSQL_H 
 #define USE_MYSQL
 /* - CONFIG -
  Should all database queries printed out at the admin interface? 
@@ -58,15 +53,13 @@
 #define DATA_PRINT_QUERIES
 #endif
 
-/* - CONFIG -
- Defines the amount of newlines which have to be sent to the clie-
- nt's chat stream after the first log-in. It prevents a white scr-
- een because of browser buffers or proxies.
-*/
 #define PUSHSTR 500
 
-/* AFTERWARDS THE YCHAT AND YHTTPD OPTIONS */
-//*>>
+#ifdef HAVE_LIBSSL
+#ifdef HAVE_OPENSSL_SSL_H 
+#define OPENSSL
+#endif
+#endif
 
 /* - CONFIG -
  Should yChat get compiled with comand line interface support?
@@ -124,101 +117,12 @@
 */
 #define POSTBUF 512
 
-/* - CONFIG -
- Please specify the size of a temporary buffer. (Will be used f-
- or different tasks) 
-*/
-#define READBUF 2048
-
-/* - CONFIG -
- Please specify the maximum length of a line read from a socket 
- or a file. ( config-file, html-template )
-*/
+#define POSTBUF 1024
+#define READBUF 2048 
 #define READSOCK 2048
-
-/* - CONFIG -
- In which prefix should yChat be installed if typing gmake inst-
- all? 
-*/
-#define PREFIX "/usr/local"
-
-/* - CONFIG -
- DO NOT USE TOGETHER WITH NCURSES! Displays important server mes-
- ages. This one will print all messages to stdout if no NCURSES
- is defined. Don't use this until NCURSES is defined! all messag-
- es will appear in the ncurses interface anyways.
-*/
 //#define SERVMSG
-
-/* - CONFIG -
- Set to true if you want yChat to catch the SIGSEGV signal. yChat
- will print a warning message into the system messages and will 
- not core dump if an error occurs. 
-*/
 //#define CTCSEGV
-
-/* - CONFIG -
- Please chose if you want to use verbose server outputs or not. 
- The verbose messages will appear in the ncurses menu if ncurses
- is enabled or in the server-window if yChat has been compiled 
- without ncurses support. This option shows you all incoming
- requests with the client IP and port numbers. You probably want
- this to be turned off if you have heavy server load.
-*/
 //#define VERBOSE
-
-
-
-
-// The following values define the positions of the data stats in the NCURSES interface.
-#ifdef NCURSES
-#define NCUR_SERVER_HEADER_X 21
-#define NCUR_SERVER_HEADER_Y 2
-#define NCUR_PORT_X 22
-#define NCUR_PORT_Y 2
-#define NCUR_HITS_X 23
-#define NCUR_HITS_Y 2
-
-#define NCUR_POOL_HEADER_X 21
-#define NCUR_POOL_HEADER_Y 16
-#define NCUR_POOL_WAIT_X 22
-#define NCUR_POOL_WAIT_Y 16
-#define NCUR_POOL_RUNNING_X 23
-#define NCUR_POOL_RUNNING_Y 16
-
-#define NCUR_DATA_HEADER_X 21
-#define NCUR_DATA_HEADER_Y 35
-#define NCUR_GARBAGE_X 22
-#define NCUR_GARBAGE_Y 35
-#define NCUR_CON_QUEUE_X 23
-#define NCUR_CON_QUEUE_Y 35
-
-#define NCUR_CHAT_HEADER_X 21
-#define NCUR_CHAT_HEADER_Y 52
-#define NCUR_NUM_ROOMS_X 22
-#define NCUR_NUM_ROOMS_Y 52
-#define NCUR_SESSION_X 23
-#define NCUR_SESSION_Y 52
-
-#define NCUR_CACHED_HEADER_X 21
-#define NCUR_CACHED_HEADER_Y 68
-#define NCUR_CACHED_DOCS_X 22
-#define NCUR_CACHED_DOCS_Y 68
-#define NCUR_CACHED_MODS_X 23
-#define NCUR_CACHED_MODS_Y 68
-
-#define NCUR_MENU_CHAR_X 0
-#define NCUR_MENU_CHAR_Y 33
-#define NCUR_UPTIME_X 0
-#define NCUR_UPTIME_Y 44
-#define NCUR_TIME_X 0
-#define NCUR_TIME_Y 64
-
-#endif
-
-//////////////////////////////////////////////////////////////////////////////////////////
-// DO NOT CHANGE ANYTHING BEHIND THIS LINE!
-//////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 
@@ -236,7 +140,6 @@ struct dynmod
 };
 
 typedef enum method_ {
-  METH_NCURSES,
   METH_RETSTRING
 } method;
 

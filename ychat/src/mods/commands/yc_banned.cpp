@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/mods/commands/yc_banned.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -44,18 +43,15 @@ extern "C"
 
     if ( map_banned_nicks->size() > 0 )
     {
-      vector<string>* vec_keys = map_banned_nicks->get_key_vector();
+      vector<string>* vec_keys = map_banned_nicks->get_key_vector();     
 
-      for (vector<string>::iterator iter = vec_keys->
-                                           begin();
-           iter != vec_keys->end();
-           ++iter)
-        s_msg.append(*iter + ": " + map_banned_nicks->get_elem(*iter) + "<br>\n");
-
+      for (vector<string>::iterator iter = vec_keys->begin(); iter != vec_keys->end(); ++iter)
+      	s_msg.append(*iter + ": " + map_banned_nicks->get_elem(*iter) + "<br>\n");
+  
     }
     else
     {
-      s_msg = "<font color=\"#"
+        s_msg = "<font color=\"#"
               + p_conf->get_elem("chat.html.errorcolor")
               + "\">"
               + p_conf->get_elem("chat.msgs.err.nobanned")

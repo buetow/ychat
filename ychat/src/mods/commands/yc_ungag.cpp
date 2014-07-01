@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/mods/commands/yc_ungag.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -61,15 +60,15 @@ extern "C"
           s_reason.append( *iter + " " );
 
         if ( s_reason.length() > 0 )
-          s_reason = " (" + p_user->make_colors(s_reason) + ")";
+	  s_reason = " (" + p_user->make_colors(s_reason) + ")";
 
         string s_msg = s_time + "<i> " + p_user->get_colored_bold_name() + " " + p_conf->get_elem("chat.msgs.ungag") + " "
-                       + p_ungag_user->get_colored_bold_name() + s_reason + "</i><br>\n";
+			+ p_ungag_user->get_colored_bold_name() + s_reason + "</i><br>\n";
 
 
-        p_user->msg_post(s_msg);
-        if (! p_user->same_rooms(p_ungag_user) )
-          p_ungag_user->msg_post(s_msg);
+	p_user->msg_post(s_msg);
+	if (! p_user->same_rooms(p_ungag_user) )
+	  p_ungag_user->msg_post(s_msg);
 
         p_ungag_user->set_is_gag(false);
 

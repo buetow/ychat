@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/msgs.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -86,13 +86,6 @@
 #define SIGNSEG "Signal: Received SIGSEGV"
 #endif
 
-#define NCURADM "ADMINISTRATOR's MAIN MENU"
-#define NCURMSG "SERVER SYSTEM MESSAGES"
-#define NCURSE0 "HTTP server: "
-#define NCURSE1 "Thread pool: "
-#define NCURSE2 "Data stats: "
-#define NCURSE3 "Chat stats: "
-#define NCURSE4 "Caching: "
 #define NEWREQU "Sock: New request "
 #define NEWROOM "Chat: New room "
 #define NEWUSER "Chat: New user "
@@ -107,6 +100,9 @@
 #define REQUEST "Reqp: Request string "
 #define SELCERR "Sock: Select error "
 #define SEPERAT "-----------------------"
+#define SESSIOC "Session: Create "	 
+#define SESSIOD "Session: Destroy "	 
+#define SESSIOI "Session: Invalidated a session "	 
 #define SESSION "Session: Count "
 #define SESSDMP "Session: Dump of session"
 #define SESSERR "Session: Could not find session "
@@ -125,6 +121,7 @@
 #define SOCKSRV "Sock: Initializing server socket "
 #define SOCKERR "Sock: Can't create socket, trying next port "
 #define SOCKER2 "Sock: Unknown hostname "
+#define SOCKER4 "Sock: Incomplete HTTP request"
 #define SOCKRDY "Sock: Server socket is ready "
 #define SOCKCAC "Sock: Caching IP "
 #define SOCKCA2 "Sock: Cleaning IP cache ("
@@ -148,8 +145,9 @@
 
 #define HEADER1 "HTTP/1.1 200 OK\r\n"
 #define HEADER2 "Server: yChat/" VERSION "-" BRANCH "\r\n"
-#define HEADER3 "Cache-control: no-cache\r\n"
-#define HEADER4 "Pragma: no-cache\r\n"
+#define HEADER3 "Cache-Control: no-cache\r\n"
+#define HEADER4 ""
+//#define HEADER4 "Pragma: no-cache\r\n"
 #define HEADER5 "Transfer-Encoding: chunked\r\n"
 #define HEADER6 "Connection: keep-alive\r\n"
 #define HEADER7 "Content-Length: ";

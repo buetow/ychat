@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/chat/chat.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -40,9 +40,8 @@ chat::chat( )
     wrap::system_message(CHATREP);
     vector<string>* p_vec_keys = wrap::CONF->get_key_vector();
 
-    for (vector<string>::iterator iter = p_vec_keys->begin();
-         iter != p_vec_keys->end();
-         iter++ )
+    for (vector<string>::iterator iter = p_vec_keys-> begin();
+         iter != p_vec_keys->end(); iter++ )
     {
       if ( iter->length() >= 24 && iter->compare( 0, 22, "chat.html.replace.from" ) == 0 )
       {
@@ -147,12 +146,19 @@ chat::login( map<string,string> &map_params )
     return;
   }
 
-  // prove if maxpoolsize (threads) allows this login 
-  else if ( !wrap::POOL->allow_user_login() )
+  // prove if maxpoolsize (threads) allows this login
+  else if ( !pool::allow_user_login() )
   {
     map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.maxuserlimit" );
     map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" ); // redirect to the startpage.
     wrap::system_message( LOGINE5 + s_user);
+    return;
+  }
+
+  // prove if nick is banned from chat
+  if (map_banned_nicks.exists(tool::to_lower(s_user))) {
+    map_params["INFO"]    = wrap::CONF->get_elem( "chat.msgs.err.banned" );
+    map_params["request"] = wrap::CONF->get_elem( "httpd.startsite" );
     return;
   }
 
@@ -349,6 +355,13 @@ chat::post( user* p_user, map<string,string> &map_params )
   if ( i_pos == 0 )
     return p_user->command( s_msg );
 
+  if (p_user->get_is_gag())
+  {
+     p_user->msg_post(wrap::CONF->colored_error_msg("chat.msgs.err.gagged"));
+     return;
+  }
+
+
   string_replacer(&s_msg);
   string s_post;
 
@@ -387,8 +400,38 @@ chat::string_replacer(string *p_msg)
 void
 chat::dumpit()
 {
-  dumpable::add("[chat]");
+  dumpable::add
+    ("[chat]");
   base<room>::dumpit();
+}
+
+string
+chat::ban_nick(string &s_nick, string s_reason) {
+  string s_lower_nick(tool::to_lower(s_nick));
+
+  if (map_banned_nicks.exists(s_lower_nick))
+	return map_banned_nicks.get_elem(s_lower_nick);
+  
+  map_banned_nicks.add_elem(s_reason, s_lower_nick);
+  return "";
+}
+
+string
+chat::unban_nick(string &s_nick) {
+  string s_lower_nick(tool::to_lower(s_nick));
+
+  if (!map_banned_nicks.exists(s_lower_nick))
+	return "";
+  
+  string s_ret(map_banned_nicks.get_elem(s_lower_nick));
+  map_banned_nicks.del_elem(s_lower_nick);
+
+  return s_ret;
+}
+
+shashmap<string>*
+chat::get_map_banned_nicks() {
+  return &map_banned_nicks;
 }
 
 #endif

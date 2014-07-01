@@ -1,11 +1,11 @@
 SRCS=$(shell find ./ -name '*.cpp')
 MODS=$(addprefix ../../../mods/@CATEGORY@/, $(SRCS:.cpp=.so))
 CXX=@CXX@
-CXXFLAGS=@CXXFLAGS@
+CXXFLAGS=@CXXFLAGS@ 
 all: mods 
 ${MODS}: 
 	@if ! test -d `dirname $@`; then mkdir -p `dirname $@`; fi
-	@${CXX} ${CXXGLAGS} -fPIC -shared -s -o $@ ` \
+	@${CXX} ${CXXGLAGS} -shared -s -o $@ ` \
 		echo $(notdir $@) | sed s/.so/.cpp/`
 	@echo "mods:@CATEGORY@:`basename $@ | sed s/\.so// | sed s/yc_//` (` \
 		du -hs $@ | awk '{ print $$1 }'`) "

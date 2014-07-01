@@ -1,12 +1,11 @@
 /*:*
- *: File: ./src/mods/commands/yc_debug.cpp
+ *: File: ./src/mods/commands/yc_msg.cpp
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -52,13 +51,13 @@ extern "C"
       string s_test_user( *iter );
       bool b_found;
       user* p_whisper_user = p_chat->get_user( s_test_user, b_found );
-      sess *p_sess = p_sman->get_elem(p_user->get_tmpid());
+      sess *p_sess = p_sman->get_elem(p_user->get_tmpid()); 
 
-      string s_msg = "DEBUG-A: " + tool::long2string(reinterpret_cast<long>(p_sess->get_user())) + "<br>";
+      string s_msg = "DEBUG-A: " + tool::int2string(reinterpret_cast<int>(p_sess->get_user())) + "<br>";
       p_user->msg_post( &s_msg );
 
       //p_user->debug();
-      s_msg = "DEBUG-B: " + tool::long2string(reinterpret_cast<long>(p_sess->get_user())) + "<br>";
+      s_msg = "DEBUG-B: " + tool::int2string(reinterpret_cast<int>(p_sess->get_user())) + "<br>";
       p_user->msg_post( &s_msg );
     }
 

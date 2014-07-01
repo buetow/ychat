@@ -1,12 +1,11 @@
 /*:*
  *: File: ./src/memb/tupel.tmpl
  *: 
- *: yChat; Homepage: ychat.buetow.org; Version 0.9.0-CURRENT
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: Copyright (C) 2006, 2007 Paul C. Buetow
  *: 
  *: This program is free software; you can redistribute it and/or
  *: modify it under the terms of the GNU General Public License
@@ -25,23 +24,30 @@
 
 template<class obj_type>
 tupel<obj_type>::tupel()
-{}
+{
+  pthread_mutex_init(&mut_tupel, NULL);
+}
 
 template<class obj_type>
 tupel<obj_type>::tupel(obj_type t_obj)
 {
   this->t_obj = t_obj;
+  pthread_mutex_init(&mut_tupel, NULL);
 }
 
 template<class obj_type>
 tupel<obj_type>::~tupel()
-{}
+{
+  pthread_mutex_destroy(&mut_tupel);
+}
 
 template<class obj_type>
 obj_type
 tupel<obj_type>::get_elem()
 {
+  pthread_mutex_lock(&mut_tupel);
   obj_type t_ret = t_obj;
+  pthread_mutex_unlock(&mut_tupel);
   return t_ret;
 }
 
@@ -49,5 +55,7 @@ template<class obj_type>
 void
 tupel<obj_type>::set_elem(obj_type t_obj)
 {
+  pthread_mutex_lock(&mut_tupel);
   this->t_obj = t_obj;
+  pthread_mutex_unlock(&mut_tupel);
 }

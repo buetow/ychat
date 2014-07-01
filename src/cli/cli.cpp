@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/cli/cli.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -32,9 +32,6 @@ using namespace std;
 
 cli::cli( )
 {
-#ifdef NCURSES
-  start();
-#endif
 }
 
 cli::~cli()
@@ -51,7 +48,9 @@ cli::parse_input( string s_input )
   {
     if (s_input.empty()) 
     {
+      #ifndef READLINE
       cout << CLIPRMI;
+      #endif
       return 1;
     }
   
@@ -91,10 +90,10 @@ cli::parse_input( string s_input )
     cout << CLIPRMO << " (m)ysql       - Runs MySQL client on yChat DB" << endl
     << CLIPRMO << " (rel)oad      - Reloads all modules" << endl;
     //*>>
-#ifdef EXPERIM
 
+    #ifdef EXPERIM
     cout << CLIPRMO << " (re)conf      - Reloads configuration (EXPERIMENTAL)" << endl;
-#endif
+    #endif
 
     cout << CLIPRMO << " (r)usage      - Shows current resource usage" << endl
     << CLIPRMO << " (ru)sageh     - Shows resource usage history (yChat needs to run > 1 day)" << endl
@@ -105,25 +104,33 @@ cli::parse_input( string s_input )
     cout << CLIPRMO << " (unl)oad      - Unloads all loaded modules" << endl;//<<
     cout << CLIPRMO << " (u)nset VAR   - Deletes configuration value VAR" << endl
     << CLIPRMO << " (v)ersion     - Prints out version" << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   else if( s_input.at(0) == '!' )
   {
     system( s_input.substr(1).c_str() );
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
 
 #ifdef DEBUG
   else if ( s_input.compare("d") == 0 || s_input.compare("debug") == 0 )
   {
     debug_routine();
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
 #endif
   else if ( s_input.compare("du") == 0 || s_input.compare("dump") == 0 )
   {
     dump d(vectorize(s_param));
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   else if( s_input.compare("echo") == 0 || s_input.compare("e") == 0 )
   {
@@ -152,7 +159,9 @@ cli::parse_input( string s_input )
       s_val = "Value not set";
 
     cout << CLIPRMO << s_val << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
 
   //<<*
@@ -165,7 +174,9 @@ cli::parse_input( string s_input )
             wrap::CONF->get_elem("chat.database.user") ).c_str());
 
     cout << CLIPRMO << CLIWELC << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   //*>>
 
@@ -182,7 +193,9 @@ cli::parse_input( string s_input )
     cout << CLIPRMO;
     wrap::MODL->reload_modules();
     cout << MODRELO << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   //*>>
 
@@ -190,19 +203,25 @@ cli::parse_input( string s_input )
   else if( s_input.compare("reconf") == 0 || s_input.compare("re") == 0 )
   {
     wrap::CHAT->reconf();
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
 #endif
 
   else if( s_input.compare("rusage") == 0 || s_input.compare("r") == 0 )
   {
     print_rusage();
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   else if( s_input.compare("ru") == 0 || s_input.compare("rusageh") == 0 )
   {
     cout << wrap::STAT->get_rusage_history( "ru_maxrss", string(CLIPRMO) + " " );
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   else if( s_input.compare("set") == 0 )
   {
@@ -230,16 +249,20 @@ cli::parse_input( string s_input )
 
     wrap::CONF->add_elem(s_param, s_varname);
     cout << CLIPRMO << "New value: " << s_param << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   else if( s_input.compare("shell") == 0 || s_input.compare("sh") == 0 )
   {
     cout << CLIPRMO << CLISHEL << endl;
     system(wrap::CONF->get_elem("httpd.system.shell").c_str());
     cout << CLIPRMO << CLIWELC << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
-  else if( s_input.compare("shutdown") == 0 || s_input.compare("s") == 0 )
+  else if( s_input.compare("shutdown") == 0 || s_input.compare("shut") == 0 )
   {
     exit(0);
   }
@@ -247,7 +270,9 @@ cli::parse_input( string s_input )
   {
     cout << CLIPRMO  << "Time:   " << wrap::TIMR->get_time() << endl
     << CLIPRMO  << "Uptime: " << wrap::TIMR->get_uptime() << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
 
   //<<*
@@ -256,7 +281,9 @@ cli::parse_input( string s_input )
     cout << CLIPRMO;
     wrap::MODL->unload_modules();
     cout << MODUNLO << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   //*>>
 
@@ -274,25 +301,30 @@ cli::parse_input( string s_input )
       {
         cout << CLIPRMO << "Variable " << s_param << " was not set" << endl;
       }
+      #ifndef READLINE
       cout << CLIPRMI;
+      #endif
     }
   }
   else if( s_input.compare("v") == 0 || s_input.compare("version") == 0 )
   {
     cout << CLIPRMO  << tool::ychat_version() << " " << UNAME << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
   else
   {
     cout << CLIPRMO << CLIHELP << "\"" << s_input << "\"" << endl;
+    #ifndef READLINE
     cout << CLIPRMI;
+    #endif
   }
 
   return 1;
 }
 
 void
-#ifndef NCURSES
 cli::start(void* p_void)
 #else
 cli::start()
@@ -301,11 +333,23 @@ cli::start()
   cout << CLIPRMO << CLIWELC << endl;
 
   string s_input;
-  cout << CLIPRMI;
 
-  do
+  #ifndef READLINE
+  cout << CLIPRMI;
+  #endif
+
+  while(1)
   {
+    #ifndef READLINE
     getline(cin, s_input);
+    #else
+    char *c_line = readline(CLIPRMI);
+    s_input = string(c_line);
+    free(c_line);
+    #endif
+
+    if (!parse_input(s_input))
+ 	break;
   }
   while( parse_input(s_input) );
 }

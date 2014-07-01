@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/monitor/stats.cpp
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -141,10 +141,6 @@ stats::increment_num_rooms()
   pthread_mutex_lock  ( &mut_num_rooms );
   ++i_num_rooms;
   pthread_mutex_unlock( &mut_num_rooms );
-#ifdef NCURSES
-
-  print_num_rooms();
-#endif
 }
 void
 stats::decrement_num_rooms()
@@ -152,10 +148,6 @@ stats::decrement_num_rooms()
   pthread_mutex_lock  ( &mut_num_rooms );
   --i_num_rooms;
   pthread_mutex_unlock( &mut_num_rooms );
-#ifdef NCURSES
-
-  print_num_rooms();
-#endif
 }
 
 #ifdef NCURSES

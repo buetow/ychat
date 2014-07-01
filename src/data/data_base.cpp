@@ -1,27 +1,3 @@
-/*:*
- *: File: ./src/data/data_base.cpp
- *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
- *: 
- *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
- *: Copyright (C) 2004 Paul C. Buetow
- *: Copyright (C) 2005 EXA Digital Solutions GbR
- *: 
- *: This program is free software; you can redistribute it and/or
- *: modify it under the terms of the GNU General Public License
- *: as published by the Free Software Foundation; either version 2
- *: of the License, or (at your option) any later version.
- *: 
- *: This program is distributed in the hope that it will be useful,
- *: but WITHOUT ANY WARRANTY; without even the implied warranty of
- *: MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *: GNU General Public License for more details.
- *: 
- *: You should have received a copy of the GNU General Public License
- *: along with this program; if not, write to the Free Software
- *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
- *:*/
-
 #include "data_base.h"
 
 #ifdef DATABASE
@@ -153,11 +129,6 @@ data_base::get_con()
   con* p_con = *begin();
   pop_front();
 
-#ifdef NCURSES
-
-  print_queue_size();
-#endif
-
   pthread_mutex_unlock( &mut_con );
   wrap::system_message( DATAGET  );
 
@@ -171,9 +142,6 @@ data_base::push_con( con* p_con )
   pthread_mutex_lock( &mut_con );
   push_front( p_con );
 #ifdef NCURSES
-
-  print_queue_size();
-#endif
 
   pthread_mutex_unlock( &mut_con );
   wrap::system_message( DATAADD );
@@ -205,10 +173,6 @@ data_base::disconnect_all_connections()
   }
 
   pthread_mutex_unlock( &mut_con );
-#ifdef NCURSES
-
-  print_queue_size();
-#endif
 }
 
 void
@@ -237,11 +201,6 @@ data_base::check_data_con_timeout()
   for ( list< list<con*>::iterator >::iterator erase_iter = erase_list.begin();
         erase_iter != erase_list.end(); erase_iter++ )
     erase( *erase_iter );
-
-#ifdef NCURSES
-
-  print_queue_size();
-#endif
 
   pthread_mutex_unlock( &mut_con );
 }

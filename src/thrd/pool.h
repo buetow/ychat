@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/thrd/pool.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -27,53 +27,48 @@
 #ifndef POOL_H
 #define POOL_H
 
-#include <queue>
-
 using namespace std;
+
+struct task
+{
+  void(*p_func)(void*);
+  void *p_void;
+
+  task(void(*p_func)(void*), void *p_void)
+  {
+    this->p_func = p_func;
+    this->p_void = p_void;
+  }
+};
 
 class pool
 {
 private:
   friend class thro;
 
-  struct task
-  {
-    void(*p_func)(void*);
-    void *p_void;
+  static pthread_mutex_t mut_threads;
+  static pthread_mutex_t mut_queue_tasks;
+  static pthread_mutex_t mut_num_avail_threads;
+  static pthread_cond_t cond_new_task;
 
-    task(void(*p_func)(void*), void *p_void)
-    {
-      this->p_func = p_func;
-      this->p_void = p_void;
-    }
-  };
+  static int i_num_avail_threads;
+  static int i_num_total_threads;
 
-  pthread_mutex_t mut_threads;
-  pthread_mutex_t mut_queue_tasks;
-  pthread_mutex_t mut_num_avail_threads;
-  pthread_cond_t cond_new_task;
+  static int i_max_queue_size;
+  static int i_cur_queue_index;
+  static int i_free_queue_index;
+  static task** queue_tasks;
 
-  int i_num_avail_threads;
-  int i_num_total_threads;
-
-  queue<task*> queue_tasks;
-
-  int increase_pool(int i_num);
-  void add_task( void(*p_func)(void*), void* p_void );
+  static int increase_pool(int i_num);
   static void* wait_for_task(void *p_void);
   static void run_func(void *p_void);
 
 public:
-  pool();
-  ~pool();
+  static void init();
+  static void destroy();
 
-  void run(void* p_void);
-  bool allow_user_login();
-
-#ifdef NCURSES
-
-  void print_pool_size();
-#endif
+  static void run(void* p_void);
+  static bool allow_user_login();
 };
 
 #endif

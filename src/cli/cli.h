@@ -1,7 +1,7 @@
 /*:*
  *: File: ./src/cli/cli.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
+ *: yChat; Homepage: www.yChat.org; Version 0.8.3-CURRENT
  *: 
  *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
  *: Copyright (C) 2004 Paul C. Buetow
@@ -42,19 +42,12 @@
 #define CLI_H
 #ifdef CLI
 
-#ifndef NCURSES
 #include "../thrd/thro.h"
-#endif
-
 #include "../monitor/dump.h"
 
 using namespace std;
 
-#ifndef NCURSES
 class cli : public thro
-{
-#else
-class cli 
 {
 #endif
 private:
