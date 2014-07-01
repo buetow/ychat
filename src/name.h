@@ -1,9 +1,10 @@
 /*:*
  *: File: ./src/name.h
  *: 
- *: yChat; Homepage: www.yChat.org; Version 0.5.6-BASIC
+ *: yChat; Homepage: www.yChat.org; Version 0.7.9.5-RELEASE
  *: 
- *: Copyright (C) 2003, 2004 Paul C. Buetow, Volker Richter
+ *: Copyright (C) 2003 Paul C. Buetow, Volker Richter
+ *: Copyright (C) 2004 Paul C. Buetow
  *: Copyright (C) 2005 EXA Digital Solutions GbR
  *: 
  *: This program is free software; you can redistribute it and/or
@@ -21,33 +22,27 @@
  *: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  *:*/
 
-// class name declaration.
+#include "incl.h"
 
 #ifndef NAME_H
 #define NAME_H
-
-#include "incl.h"
 
 using namespace std;
 
 class name
 {
 protected:
-    // private members:
-    string s_name; // object's name.
+  string s_name; // object's name.
+  pthread_mutex_t mut_s_name;
 
 public:
-    virtual string get_name  ( ) const;
-    virtual void   set_name  ( string s_name );
+  virtual string get_name  ( );
+  virtual string get_lowercase_name  ( );
+  virtual void   set_name  ( string s_name );
 
-
-    // public methods:
-    explicit name( )
-    { }
-    ;      	      // a standard constructor.
-    explicit name( string s_name );      // a standard constructor.
-    ~name( );
-
+  name();
+  name( string s_name );      // a standard constructor.
+  ~name();
 };
 
 #endif
